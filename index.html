@@ -370,10 +370,10 @@ function spin(){
   if(!playedTitles.length)return;
   const box=$("#spinResult");let n=0;box.parentElement.classList.add("shuffling");
   const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduce){box.parentElement.classList.remove("shuffling");renderSpin(pick(playedTitles),false);return}
+  if(reduce){box.parentElement.classList.remove("shuffling");const r=pick(playedTitles);renderSpin(r,false);track("spin-result/"+r);return}
   const t=setInterval(()=>{
     $("#spinResult").innerHTML=`<p class="song-title">${esc(pick(playedTitles))}</p>`;
-    if(++n>9){clearInterval(t);box.parentElement.classList.remove("shuffling");renderSpin(pick(playedTitles),true)}
+    if(++n>9){clearInterval(t);box.parentElement.classList.remove("shuffling");const r=pick(playedTitles);renderSpin(r,true);track("spin-result/"+r)}
   },70);
 }
 $("#spinBtn").addEventListener("click",spin);
@@ -448,8 +448,8 @@ function renderBias(m,p){
   $("#biasResult").innerHTML=card.html;drawQR(document.getElementById(card.id),card.url,96);
   try{localStorage.setItem("arirang-bias",m.id)}catch(e){}
 }
-$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const m=MEMBERS.find(x=>x.id===b.dataset.id);renderBias(m,biasPick(m))});
-$("#biasBtn").addEventListener("click",()=>{const m=lastBias||pick(MEMBERS);renderBias(m,biasPick(m))});
+$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const m=MEMBERS.find(x=>x.id===b.dataset.id);const pk=biasPick(m);renderBias(m,pk);track("bias-song/"+m.en+"/"+(lastBiasPick||pk).title)});
+$("#biasBtn").addEventListener("click",()=>{const m=lastBias||pick(MEMBERS);renderBias(m,biasPick(m));track("bias-song/"+m.en+"/"+lastBiasPick.title)});
 
 /* ---------- Stats (GoatCounter events) ---------- */
 function track(path,title){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(path).slice(0,200),title:title||String(path),event:true})}catch(e){}}
