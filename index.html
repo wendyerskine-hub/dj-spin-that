@@ -132,7 +132,6 @@ footer a{color:var(--violet)}
 <div id="stage" aria-hidden="true">
   <div class="photo"></div>
   <canvas id="ambient"></canvas>
-  <video id="bgvideo" muted loop playsinline></video>
 </div>
 
 <main>
@@ -141,10 +140,7 @@ footer a{color:var(--violet)}
     <h1><span class="kicker">ARIRANG</span>DJ Spin That S**t!</h1>
     <p class="lede">Two throwback songs, picked fresh every night after "Dynamite." Spin the whole tour, look up the night you were there, or let your bias choose for you.</p>
     <div class="bg-controls">
-      <label class="btn ghost" for="vidfile" style="font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Set the ARIRANG promo video as backdrop</label>
-      <input id="vidfile" type="file" accept="video/*" hidden>
-      <span id="vidstatus">Choose the promo video file from your device and it plays behind the page.</span>
-      <a href="https://www.youtube.com/watch?v=Exukk6JO9i0" target="_blank" rel="noopener">Watch the promo on YouTube ↗</a>
+      <a class="btn ghost" href="https://www.youtube.com/watch?v=Exukk6JO9i0" target="_blank" rel="noopener" style="text-decoration:none;font-size:13px;color:var(--ink)">Watch the ARIRANG promo ↗</a>
     </div>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading setlists…</span></div>
     <div class="next" id="nextShow" hidden></div>
@@ -369,13 +365,6 @@ function renderNext(){
   el.innerHTML=html;
 }
 function setLive(state,asOf){const d=$("#liveDot");d.dataset.state=state==="snapshot"?"live":state;$("#liveText").textContent=state==="live"?"Live setlists · updates after every show":state==="snapshot"?"Setlists updated after every show"+(asOf?" · last update "+fmtDate(asOf,true):""):state==="off"?"Setlists unavailable right now. Reload the page to try again.":"Loading setlists…"}
-
-/* ---------- Backdrop video ---------- */
-$("#vidfile").addEventListener("change",e=>{
-  const f=e.target.files&&e.target.files[0];if(!f)return;
-  const v=$("#bgvideo");v.src=URL.createObjectURL(f);v.play().catch(()=>{});
-  $("#stage").classList.add("has-video");$("#vidstatus").textContent="Your video is playing behind the page. Only you can see it, and it stops when you reload.";
-});
 
 /* ---------- Ambient stage lights (shown until a video is set) ---------- */
 (function(){
