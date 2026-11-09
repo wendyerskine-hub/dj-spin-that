@@ -142,6 +142,24 @@ select option{background:#22123a;color:var(--ink)}
 .next .lbl{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
 .next b{color:var(--gold);font-weight:600}
 .next em{font-style:normal;color:var(--violet)}
+.vault #vaultResult{display:grid;gap:16px}
+.vault .row>.btn{flex:none}
+.v-title{font-family:var(--f-display);font-size:clamp(30px,5vw,48px);line-height:1;margin:0;text-wrap:balance}
+.v-sub{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-family:var(--f-mono);color:var(--jade);margin:0}
+.lyr-btns{display:flex;flex-wrap:wrap;gap:8px}
+.lyr-btns a.lyr{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px}
+.lyr-btns a.lyr:hover{border-color:var(--gold);background:rgba(199,125,255,.16)}
+.lyr-btns a.lyr b{font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--jade);letter-spacing:.08em}
+.v-plays{display:grid;gap:10px}
+.v-play{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.03);display:grid;gap:6px;min-width:0}
+.v-play h4{margin:0;font-size:15px;font-weight:600}
+.v-play h4 span{color:var(--muted);font-weight:400;font-family:var(--f-mono);font-size:12px;margin-left:6px}
+.v-why{margin:0;font-size:14px;color:var(--ink);max-width:65ch}
+.v-why.none{color:var(--muted);font-style:italic}
+.v-theory{margin:0;font-size:14px;color:var(--muted);border-left:2px solid var(--gold);padding-left:10px}
+.v-theory b{color:var(--ink);font-weight:600}
+.v-add{justify-self:start;background:none;border:0;padding:2px 0;color:var(--violet);font-size:13px;text-decoration:underline;cursor:pointer}
+.v-note{font-size:12px;color:var(--muted);margin:0}
 .watch form{display:grid;gap:14px}
 .watch .field{display:grid;gap:6px;min-width:0}
 .watch input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -157,6 +175,7 @@ select option{background:#22123a;color:var(--ink)}
 .yt-preview b{color:var(--ink);font-weight:600}
 .fix{background:var(--glass)}
 .fix form{display:grid;gap:14px}
+.fix textarea{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;resize:vertical}
 .fix input[type=text]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
 .fix input::placeholder{color:var(--muted);opacity:.7}
 .fix .field{display:grid;gap:6px;min-width:0}
@@ -228,6 +247,16 @@ footer a{color:var(--violet)}
   </div>
 
 
+  <section class="station vault" id="vault">
+    <h2><small>The song vault</small>Look up a surprise song</h2>
+    <p class="help">Pick any song from the tour to see where it was played, why that city might have gotten it, and where to read the lyrics in Korean, English and Japanese.</p>
+    <div class="row">
+      <div class="field"><label for="vaultSel">Surprise song</label><select id="vaultSel"></select></div>
+      <button class="btn ghost" id="vaultRandom" type="button">Random song</button>
+    </div>
+    <div id="vaultResult" aria-live="polite"></div>
+  </section>
+
   <section class="station watch" id="watch">
     <h2><small>Watch it again</small>BTS videos and concert footage</h2>
     <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
@@ -254,8 +283,8 @@ footer a{color:var(--violet)}
   </section>
 
   <section class="station fix" id="fix">
-    <h2><small>Spot a mistake?</small>Report a correction</h2>
-    <p class="help">Were you there, or have a video or setlist link? Tell us what was really played. Every report is checked before the site changes.</p>
+    <h2><small>Spot a mistake? Got a theory?</small>Report a correction or share a theory</h2>
+    <p class="help">Tell us what was really played, or why you think BTS picked a song for a city. You can send just a theory and leave the songs blank. Everything is checked before it goes on the site.</p>
     <form id="fixForm" novalidate>
       <div class="row">
         <div class="field"><label for="fixCity">City</label><select id="fixCity"></select></div>
@@ -269,6 +298,7 @@ footer a{color:var(--violet)}
         <div class="field"><label for="fixHow">How do you know?</label><select id="fixHow"><option>I was there</option><option>I watched a livestream or fancam</option><option>I have a link (add it below)</option></select></div>
         <div class="field"><label for="fixLink">Link or note (optional)</label><input id="fixLink" type="text" autocomplete="off" placeholder="setlist.fm, X post, fancam…"></div>
       </div>
+      <div class="field"><label for="fixTheory">Why do you think this city got this song? (optional)</label><textarea id="fixTheory" rows="3" placeholder="e.g. Crystal Snow is a Japanese original, so it was a gift for Japanese ARMY"></textarea></div>
       <div class="field"><label for="fixWho">Your name or ARMY handle (optional)</label><input id="fixWho" type="text" autocomplete="off" placeholder="@yourhandle"></div>
       <div class="row fix-actions">
         <a class="btn" id="fixSend" href="#" target="_blank" rel="noopener">Send correction ↗</a>
@@ -458,14 +488,63 @@ document.addEventListener("click",e=>{
   if(a){const card=a.closest(".ns");const t=card?card.querySelector("h3").textContent:(current||"");track((a.classList.contains("sp")?"spotify/":"apple-music/")+t);return}
   if(e.target.closest(".qrtoggle"))track("qr-code-shown");
   else if(e.target.closest("#ytGo"))track("youtube-search/"+$("#ytPreview").textContent);
-  else if(e.target.closest("#fixSend"))track("correction/sent/"+$("#fixCity").value);
+  else if(e.target.closest("a.lyr")){const l=e.target.closest("a.lyr");track("lyrics/"+l.dataset.lang+"/"+$("#vaultSel").value)}
+  else if(e.target.closest(".v-add"))track("theory-start/"+e.target.closest(".v-add").dataset.city+"/"+e.target.closest(".v-add").dataset.song);
+  else if(e.target.closest("#vaultRandom"))track("vault-random");
+  else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
   else if(e.target.closest("#fixCopy"))track("correction/copied/"+$("#fixCity").value);
   else if(e.target.closest('a[href*="Exukk6JO9i0"]'))track("promo-video");
   else if(e.target.closest("#spinBtn"))track("spin");
   else{const c=e.target.closest(".chip");if(c)track("bias/"+c.textContent.trim())}
 },true);
 citySel.addEventListener("change",()=>track("city/"+citySel.value));
+$("#vaultSel").addEventListener("change",()=>track("vault/"+$("#vaultSel").value));
 nightSel.addEventListener("change",()=>track("city/"+citySel.value+"/"+(nightSel.selectedOptions[0]||{}).textContent));
+
+/* ---------- Song vault ---------- */
+const JA_ORIG=new Set(["Crystal Snow","For You"]),EN_ORIG=new Set(["Permission to Dance"]);
+const genius=q=>"https://genius.com/search?q="+encodeURIComponent(q);
+function fillVault(){
+  const sel=$("#vaultSel"),keep=sel.value;
+  const titles=[...new Set(SHOWS.flatMap(s=>s.songTitles))].sort((a,b)=>a.localeCompare(b,"en",{sensitivity:"base"}));
+  sel.innerHTML=titles.map(t=>{const n=playsOf(t).length;return `<option value="${esc(t)}">${esc(t)}${n>1?` (${n}×)`:""}</option>`}).join("");
+  if(keep&&titles.includes(keep))sel.value=keep;else if(titles.includes("Crystal Snow"))sel.value="Crystal Snow";
+  renderVault(sel.value);
+}
+function lyricButtons(t){
+  const ja=JA_ORIG.has(t),en=EN_ORIG.has(t);
+  const L=[];
+  if(ja){L.push(["ja","Japanese",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ko","Korean",`BTS ${t} Korean translation`,"translation"])}
+  else if(en){L.push(["en","English",`BTS ${t} lyrics`,"original"],["ko","Korean",`BTS ${t} Korean translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese translation`,"translation"])}
+  else{L.push(["ko","Korean",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese ver. lyrics`,"Japanese ver. or translation"])}
+  return `<div class="lyr-btns">${L.map(([code,name,q,kind])=>`<a class="lyr" data-lang="${code}" href="${genius(q)}" target="_blank" rel="noopener">${name} <b>${kind}</b> ↗</a>`).join("")}</div>`;
+}
+function renderVault(t){
+  const box=$("#vaultResult");if(!t){box.innerHTML="";return}
+  const m=SONGS[t]||["","",""];const plays=playsOf(t);
+  const lang=JA_ORIG.has(t)?"Japanese":EN_ORIG.has(t)?"English":"Korean";
+  box.innerHTML=`<div class="reveal" style="display:grid;gap:16px">
+    <div><p class="v-sub">${esc([m[0],m[1],m[2],lang+" original"].filter(Boolean).join(" · "))}</p><p class="v-title">${esc(t)}</p></div>
+    <div style="display:grid;gap:8px"><div class="eyebrow" style="color:var(--muted)">Read the lyrics</div>${lyricButtons(t)}
+      <p class="v-note">Lyrics open on Genius. Spotify and Apple Music also show licensed lyrics in their apps.</p>${svcButtons(t)}</div>
+    <div style="display:grid;gap:10px"><div class="eyebrow" style="color:var(--muted)">Where it was played and why</div>
+      <div class="v-plays">${plays.map(p=>{
+        const note=p.notes&&p.notes[t];
+        const th=(p.theories||[]).filter(x=>!x.song||x.song===t);
+        const idx=ALL.filter(x=>x.city===p.city).indexOf(p);
+        return `<div class="v-play"><h4>${esc(p.city)} · ${esc(p.night)}<span>${esc(p.date?fmtDate(p.date,true):"")}</span></h4>
+          ${note?`<p class="v-why">${esc(note)}</p>`:`<p class="v-why none">No known reason yet. What's your theory?</p>`}
+          ${th.map(x=>`<p class="v-theory">ARMY theory: ${esc(x.text)}${x.by?` <b>— ${esc(x.by)}</b>`:""}</p>`).join("")}
+          <button type="button" class="v-add" data-city="${esc(p.city)}" data-idx="${idx}" data-song="${esc(t)}">Share why you think ${esc(p.city)} got this song</button></div>`}).join("")}</div>
+    </div></div>`;
+}
+$("#vaultSel").addEventListener("change",e=>renderVault(e.target.value));
+$("#vaultRandom").addEventListener("click",()=>{const o=[...$("#vaultSel").options];if(!o.length)return;const v=pick(o).value;$("#vaultSel").value=v;renderVault(v)});
+$("#vaultResult").addEventListener("click",e=>{const b=e.target.closest(".v-add");if(!b)return;
+  fixCity.dataset.touched="1";fixCity.value=b.dataset.city;fillFixNights();fixNight.value=b.dataset.idx;
+  $("#fixSong1").value="";$("#fixSong2").value="";
+  const ta=$("#fixTheory");if(!ta.value.trim())ta.value=b.dataset.song+": ";updateFix();
+  $("#fix").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});setTimeout(()=>ta.focus({preventScroll:true}),400)});
 
 /* ---------- YouTube search ---------- */
 const ytCity=$("#ytCity"),ytNight=$("#ytNight");
@@ -512,24 +591,27 @@ function fixText(){
   const list=ALL.filter(s=>s.city===fixCity.value);const sh=fixNight.value==="new"?null:list[+fixNight.value];
   const s1=$("#fixSong1").value.trim(),s2=$("#fixSong2").value.trim();
   const night=sh?`${sh.night}${sh.date?" ("+sh.date+")":""}`:"A night that's missing from the site";
-  const lines=[`City: ${fixCity.value}`,`Night: ${night}`,`Site currently says: ${sh&&sh.songTitles.length?sh.songTitles.join(" & "):"(nothing)"}`,`Correct surprise songs: ${[s1,s2].filter(Boolean).join(" & ")}`,`How I know: ${$("#fixHow").value}`];
+  const lines=[`City: ${fixCity.value}`,`Night: ${night}`,`Site currently says: ${sh&&sh.songTitles.length?sh.songTitles.join(" & "):"(nothing)"}`,];if(s1||s2)lines.push(`Correct surprise songs: ${[s1,s2].filter(Boolean).join(" & ")}`,`How I know: ${$("#fixHow").value}`);
+  const theory=$("#fixTheory").value.trim();
+  if(theory)lines.push(`Why this city (ARMY theory): ${theory}`);
   const link=$("#fixLink").value.trim(),who=$("#fixWho").value.trim();
   if(link)lines.push(`Link / note: ${link}`);if(who)lines.push(`From: ${who}`);
-  return {title:`Correction: ${fixCity.value} ${sh?sh.night:"(missing night)"}`,body:lines.join("\n"),ok:!!(s1||s2)};
+  const kind=(s1||s2)?"Correction":"Theory";
+  return {title:`${kind}: ${fixCity.value} ${sh?sh.night:"(missing night)"}`,body:lines.join("\n"),ok:!!(s1||s2||theory)};
 }
 function updateFix(){
   const t=fixText();const a=$("#fixSend");
   a.href=FIX_REPO+"?title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);
   a.setAttribute("aria-disabled",t.ok?"false":"true");
-  $("#fixMsg").textContent=t.ok?"":"Add at least one song to send.";
+  $("#fixMsg").textContent=t.ok?"":"Add a song or a theory to send.";
 }
 fixCity.addEventListener("change",()=>{fixNight.value="0";fillFixNights();updateFix()});
-["#fixNight","#fixSong1","#fixSong2","#fixHow","#fixLink","#fixWho"].forEach(sel=>$(sel).addEventListener("input",updateFix));
+["#fixNight","#fixSong1","#fixSong2","#fixHow","#fixLink","#fixWho","#fixTheory"].forEach(sel=>$(sel).addEventListener("input",updateFix));
 $("#fixNight").addEventListener("change",updateFix);$("#fixHow").addEventListener("change",updateFix);
 $("#fixForm").addEventListener("submit",e=>e.preventDefault());
 $("#fixSend").addEventListener("click",()=>{if(fixText().ok)setTimeout(()=>{$("#fixMsg").textContent="Thanks! Finish sending it in the GitHub tab."},300)});
 $("#fixCopy").addEventListener("click",async()=>{
-  const t=fixText();if(!t.ok){$("#fixMsg").textContent="Add at least one song first.";return}
+  const t=fixText();if(!t.ok){$("#fixMsg").textContent="Add a song or a theory first.";return}
   const text=t.title+"\n"+t.body;
   try{await navigator.clipboard.writeText(text);$("#fixMsg").textContent="Copied. Paste it in a DM to the site owner."}
   catch(e){$("#fixMsg").textContent="Copy didn't work here. Select the text below and copy it.";let pre=$("#fixPre");if(!pre){pre=document.createElement("textarea");pre.id="fixPre";pre.readOnly=true;pre.rows=7;pre.style.cssText="width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:12px";$("#fixForm").appendChild(pre)}pre.value=text;pre.select()}
@@ -598,7 +680,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();
+    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
