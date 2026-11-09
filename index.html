@@ -126,6 +126,16 @@ select option{background:#22123a;color:var(--ink)}
 .next .lbl{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
 .next b{color:var(--gold);font-weight:600}
 .next em{font-style:normal;color:var(--violet)}
+.fix{background:var(--glass)}
+.fix form{display:grid;gap:14px}
+.fix input[type=text]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.fix input::placeholder{color:var(--muted);opacity:.7}
+.fix .field{display:grid;gap:6px;min-width:0}
+.fix-actions{align-items:center}
+.fix-actions a.btn{text-decoration:none}
+.fix-actions a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.fix-msg{font-size:13px;color:var(--jade)}
+.help.small{font-size:12px}
 footer{color:var(--muted);font-size:12px;max-width:80ch;display:grid;gap:6px}
 footer a{color:var(--violet)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -186,6 +196,33 @@ footer a{color:var(--violet)}
       <div class="night-songs" id="biasResult" aria-live="polite"></div>
     </section>
   </div>
+
+
+  <section class="station fix" id="fix">
+    <h2><small>Spot a mistake?</small>Report a correction</h2>
+    <p class="help">Were you there, or have a video or setlist link? Tell us what was really played. Every report is checked before the site changes.</p>
+    <form id="fixForm" novalidate>
+      <div class="row">
+        <div class="field"><label for="fixCity">City</label><select id="fixCity"></select></div>
+        <div class="field"><label for="fixNight">Night</label><select id="fixNight"></select></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="fixSong1">Surprise song 1</label><input id="fixSong1" type="text" autocomplete="off" placeholder="e.g. Tomorrow"></div>
+        <div class="field"><label for="fixSong2">Surprise song 2</label><input id="fixSong2" type="text" autocomplete="off" placeholder="e.g. Hip Hop Phile"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="fixHow">How do you know?</label><select id="fixHow"><option>I was there</option><option>I watched a livestream or fancam</option><option>I have a link (add it below)</option></select></div>
+        <div class="field"><label for="fixLink">Link or note (optional)</label><input id="fixLink" type="text" autocomplete="off" placeholder="setlist.fm, X post, fancam…"></div>
+      </div>
+      <div class="field"><label for="fixWho">Your name or ARMY handle (optional)</label><input id="fixWho" type="text" autocomplete="off" placeholder="@yourhandle"></div>
+      <div class="row fix-actions">
+        <a class="btn" id="fixSend" href="#" target="_blank" rel="noopener">Send correction ↗</a>
+        <button class="btn ghost" id="fixCopy" type="button">Copy as text</button>
+        <span class="fix-msg" id="fixMsg" aria-live="polite"></span>
+      </div>
+      <p class="help small">Sending opens a pre-filled report on GitHub (a free account is needed). No account? Use “Copy as text” and send it to the site owner by DM.</p>
+    </form>
+  </section>
 
   <footer>
     <div>Setlists come from fan trackers and press coverage and are added automatically after each show. The ASIA leg starts Nov 19 in Kaohsiung. Nights marked "reports differ" have conflicting sources. Scan codes open a search for the song on Spotify or Apple Music. Fan-made page, not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
@@ -353,6 +390,48 @@ function renderBias(m,p){
 $("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const m=MEMBERS.find(x=>x.id===b.dataset.id);renderBias(m,biasPick(m))});
 $("#biasBtn").addEventListener("click",()=>{const m=lastBias||pick(MEMBERS);renderBias(m,biasPick(m))});
 
+/* ---------- Report a correction ---------- */
+const FIX_REPO="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
+const fixCity=$("#fixCity"),fixNight=$("#fixNight");
+function fillFixCities(){
+  const keep=fixCity.value;const cities=[...new Set(ALL.map(s=>s.city))];
+  fixCity.innerHTML=cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  if(keep&&cities.includes(keep))fixCity.value=keep;fillFixNights();
+}
+function fillFixNights(){
+  const keep=fixNight.value;const list=ALL.filter(s=>s.city===fixCity.value);
+  fixNight.innerHTML=list.map((s,i)=>`<option value="${i}">${esc(s.night)}${s.date?" · "+esc(fmtDate(s.date)):""}</option>`).join("")+`<option value="new">A night that's missing</option>`;
+  if(keep&&fixNight.querySelector(`option[value="${keep}"]`))fixNight.value=keep;
+}
+function fixText(){
+  const list=ALL.filter(s=>s.city===fixCity.value);const sh=fixNight.value==="new"?null:list[+fixNight.value];
+  const s1=$("#fixSong1").value.trim(),s2=$("#fixSong2").value.trim();
+  const night=sh?`${sh.night}${sh.date?" ("+sh.date+")":""}`:"A night that's missing from the site";
+  const lines=[`City: ${fixCity.value}`,`Night: ${night}`,`Site currently says: ${sh&&sh.songTitles.length?sh.songTitles.join(" & "):"(nothing)"}`,`Correct surprise songs: ${[s1,s2].filter(Boolean).join(" & ")}`,`How I know: ${$("#fixHow").value}`];
+  const link=$("#fixLink").value.trim(),who=$("#fixWho").value.trim();
+  if(link)lines.push(`Link / note: ${link}`);if(who)lines.push(`From: ${who}`);
+  return {title:`Correction: ${fixCity.value} ${sh?sh.night:"(missing night)"}`,body:lines.join("\n"),ok:!!(s1||s2)};
+}
+function updateFix(){
+  const t=fixText();const a=$("#fixSend");
+  a.href=FIX_REPO+"?title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);
+  a.setAttribute("aria-disabled",t.ok?"false":"true");
+  $("#fixMsg").textContent=t.ok?"":"Add at least one song to send.";
+}
+fixCity.addEventListener("change",()=>{fixNight.value="0";fillFixNights();updateFix()});
+["#fixNight","#fixSong1","#fixSong2","#fixHow","#fixLink","#fixWho"].forEach(sel=>$(sel).addEventListener("input",updateFix));
+$("#fixNight").addEventListener("change",updateFix);$("#fixHow").addEventListener("change",updateFix);
+$("#fixForm").addEventListener("submit",e=>e.preventDefault());
+$("#fixSend").addEventListener("click",()=>{if(fixText().ok)setTimeout(()=>{$("#fixMsg").textContent="Thanks! Finish sending it in the GitHub tab."},300)});
+$("#fixCopy").addEventListener("click",async()=>{
+  const t=fixText();if(!t.ok){$("#fixMsg").textContent="Add at least one song first.";return}
+  const text=t.title+"\n"+t.body;
+  try{await navigator.clipboard.writeText(text);$("#fixMsg").textContent="Copied. Paste it in a DM to the site owner."}
+  catch(e){$("#fixMsg").textContent="Copy didn't work here. Select the text below and copy it.";let pre=$("#fixPre");if(!pre){pre=document.createElement("textarea");pre.id="fixPre";pre.readOnly=true;pre.rows=7;pre.style.cssText="width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:12px";$("#fixForm").appendChild(pre)}pre.value=text;pre.select()}
+});
+function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.value;fillFixNights();fixNight.value=nightSel.value||"0"} updateFix() }
+fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
+
 /* ---------- Next show + live status ---------- */
 function renderNext(){
   const today=new Date().toISOString().slice(0,10);
@@ -414,7 +493,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();
+    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
