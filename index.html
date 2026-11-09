@@ -105,6 +105,21 @@ select option{background:#22123a;color:var(--ink)}
 .ns h3{margin:0;font-family:var(--f-display);font-size:22px;line-height:1.1}
 .ns .song-meta{margin-top:4px}
 .ns a{font-size:13px;color:var(--violet)}
+.svc-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.svc-btns a.svc{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:999px;font-weight:600;font-size:14px;line-height:1.2;text-decoration:none;color:var(--ink);background:rgba(255,255,255,.07);border:1px solid var(--line);transition:background .2s,border-color .2s}
+.svc-btns a.svc:hover{background:rgba(199,125,255,.18);border-color:var(--gold)}
+.svc .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.svc.sp .dot{background:#1ed760}
+.svc.am .dot{background:#fa2d48}
+.qrbox .svc-btns{justify-content:center;margin-top:4px}
+.qrtoggle{display:none;margin-top:8px;background:none;border:0;padding:4px 0;color:var(--muted);font-size:13px;text-decoration:underline;cursor:pointer}
+@media (hover:none) and (pointer:coarse){
+  .qrtoggle{display:inline-block}
+  .ns:not(.qr-open) .qr,.qrbox:not(.qr-open) .qr,.qrbox:not(.qr-open) .seg{display:none}
+  .ns:not(.qr-open){grid-template-columns:minmax(0,1fr)}
+  .svc-btns a.svc{flex:1 1 150px;padding:13px 16px;font-size:15px}
+  .qrbox{justify-items:stretch}
+}
 .flag{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(199,125,255,.5);border-radius:6px;padding:2px 6px;margin-top:6px}
 
 /* bias */
@@ -172,7 +187,8 @@ footer a{color:var(--violet)}
             <button type="button" data-svc="apple" aria-pressed="false">Apple Music</button>
           </div>
           <div class="qr" id="spinQR"></div>
-          <a class="qrlink" id="spinLink" target="_blank" rel="noopener"></a>
+          <div id="spinBtns"></div>
+          <button type="button" class="qrtoggle" aria-expanded="false">Show QR code</button>
         </div>
       </div>
       <div class="row"><button class="btn" id="spinBtn" type="button">Spin again</button></div>
@@ -180,7 +196,7 @@ footer a{color:var(--violet)}
 
     <section class="station" id="city">
       <h2><small>Station 2 · I was there</small>Your city, your songs</h2>
-      <p class="help">Pick the show you attended, including upcoming Asia and Australia dates, to get a scan code for each surprise song from that night.</p>
+      <p class="help">Pick the show you attended, including upcoming Asia and Australia dates, to play each surprise song from that night or share its QR code.</p>
       <div class="row">
         <div class="field"><label for="citySel">City</label><select id="citySel"></select></div>
         <div class="field"><label for="nightSel">Night</label><select id="nightSel"></select></div>
@@ -269,10 +285,16 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 let svc="spotify";
 try{const s=localStorage.getItem("arirang-svc");if(s==="apple"||s==="spotify")svc=s}catch(e){}
 
-function linkFor(title,artist){
+function linkForSvc(title,artist,which){
   const q=encodeURIComponent(((artist||"BTS")+" "+title.replace(/\s*\(.*?\)\s*/g," ")).trim());
-  return svc==="apple"?`https://music.apple.com/us/search?term=${q}`:`https://open.spotify.com/search/${q}`;
+  return which==="apple"?`https://music.apple.com/us/search?term=${q}`:`https://open.spotify.com/search/${q}`;
 }
+function linkFor(title,artist){return linkForSvc(title,artist,svc)}
+function svcButtons(title,artist){
+  return `<div class="svc-btns"><a class="svc sp" href="${linkForSvc(title,artist,"spotify")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Spotify</a><a class="svc am" href="${linkForSvc(title,artist,"apple")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Apple Music</a></div>`;
+}
+const QR_SHOW="Show QR code",QR_HIDE="Hide QR code";
+document.addEventListener("click",e=>{const b=e.target.closest(".qrtoggle");if(!b)return;const box=b.closest(".ns,.qrbox");const open=box.classList.toggle("qr-open");b.textContent=open?QR_HIDE:QR_SHOW;b.setAttribute("aria-expanded",open)});
 function drawQR(el,url,size){
   el.innerHTML="";
   if(window.QRCode){new QRCode(el,{text:url,width:size,height:size,colorDark:"#1a0b2e",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});}
@@ -303,7 +325,7 @@ function updateSpinQR(){
   if(!current)return;
   const url=linkFor(current);
   drawQR($("#spinQR"),url,156);
-  const a=$("#spinLink");a.href=url;a.textContent=svc==="apple"?"Open in Apple Music ↗":"Open in Spotify ↗";
+  $("#spinBtns").innerHTML=svcButtons(current);
 }
 function spin(){
   if(!playedTitles.length)return;
@@ -345,7 +367,7 @@ function fillNights(){
 function songCard(title,artist,sub,kindHTML,flag){
   const url=linkFor(title,artist);
   const id="q"+Math.random().toString(36).slice(2);
-  return {html:`<div class="ns reveal"><div class="qr" id="${id}"></div><div style="min-width:0">${kindHTML||""}<h3>${esc(title)}</h3><div class="song-meta">${esc(sub)}</div>${flag?`<div class="flag">Reports differ</div>`:""}<div style="margin-top:6px"><a href="${url}" target="_blank" rel="noopener">${svc==="apple"?"Open in Apple Music ↗":"Open in Spotify ↗"}</a></div></div></div>`,id,url};
+  return {html:`<div class="ns reveal"><div class="qr" id="${id}"></div><div style="min-width:0">${kindHTML||""}<h3>${esc(title)}</h3><div class="song-meta">${esc(sub)}</div>${flag?`<div class="flag">Reports differ</div>`:""}${svcButtons(title,artist)}<button type="button" class="qrtoggle" aria-expanded="false">Show QR code</button></div></div>`,id,url};
 }
 function renderCity(){
   const list=ALL.filter(s=>s.city===citySel.value);
