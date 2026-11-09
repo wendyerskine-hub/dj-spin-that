@@ -141,6 +141,19 @@ select option{background:#22123a;color:var(--ink)}
 .next .lbl{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
 .next b{color:var(--gold);font-weight:600}
 .next em{font-style:normal;color:var(--violet)}
+.watch form{display:grid;gap:14px}
+.watch .field{display:grid;gap:6px;min-width:0}
+.watch input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.watch input::placeholder{color:var(--muted);opacity:.7}
+.ytkinds{display:flex;flex-wrap:wrap;gap:8px}
+.ytkind{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600}
+.ytkind[aria-pressed="true"]{background:var(--gold);color:#1a0b2e;border-color:var(--gold)}
+.ytkind:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+.yt-actions{align-items:center}
+.yt-actions a.btn{text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.yt-dot{width:10px;height:10px;border-radius:50%;background:#ff3d3d}
+.yt-preview{font-size:13px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.yt-preview b{color:var(--ink);font-weight:600}
 .fix{background:var(--glass)}
 .fix form{display:grid;gap:14px}
 .fix input[type=text]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -213,6 +226,31 @@ footer a{color:var(--violet)}
     </section>
   </div>
 
+
+  <section class="station watch" id="watch">
+    <h2><small>Watch it again</small>BTS videos and concert footage</h2>
+    <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
+    <form id="ytForm" role="search">
+      <div class="row">
+        <div class="field"><label for="ytCity">Concert footage from</label><select id="ytCity"><option value="">Any ARIRANG show</option></select></div>
+        <div class="field"><label for="ytNight">Night</label><select id="ytNight"><option value="">Any night</option></select></div>
+      </div>
+      <div class="field"><label>What to watch</label>
+        <div class="ytkinds" role="group" aria-label="What to watch">
+          <button type="button" class="ytkind" data-q="surprise song" aria-pressed="true">Surprise songs</button>
+          <button type="button" class="ytkind" data-q="fancam" aria-pressed="false">Fancams</button>
+          <button type="button" class="ytkind" data-q="full concert" aria-pressed="false">Full concert</button>
+          <button type="button" class="ytkind" data-q="official MV" aria-pressed="false">Official MVs</button>
+          <button type="button" class="ytkind" data-q="Bangtan Bomb" aria-pressed="false">Behind the scenes</button>
+        </div>
+      </div>
+      <div class="field"><label for="ytQ">Add a song, member or moment (optional)</label><input id="ytQ" type="search" autocomplete="off" placeholder="e.g. Spring Day, Jimin, ending ment"></div>
+      <div class="row yt-actions">
+        <a class="btn" id="ytGo" href="https://www.youtube.com/results?search_query=BTS" target="_blank" rel="noopener"><span class="yt-dot" aria-hidden="true"></span>Search YouTube ↗</a>
+        <span class="yt-preview">Searching for <b id="ytPreview">BTS</b></span>
+      </div>
+    </form>
+  </section>
 
   <section class="station fix" id="fix">
     <h2><small>Spot a mistake?</small>Report a correction</h2>
@@ -412,6 +450,34 @@ function renderBias(m,p){
 $("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const m=MEMBERS.find(x=>x.id===b.dataset.id);renderBias(m,biasPick(m))});
 $("#biasBtn").addEventListener("click",()=>{const m=lastBias||pick(MEMBERS);renderBias(m,biasPick(m))});
 
+/* ---------- YouTube search ---------- */
+const ytCity=$("#ytCity"),ytNight=$("#ytNight");
+function fillYtCities(){
+  const keep=ytCity.value;const cities=[...new Set(SHOWS.map(s=>s.city))];
+  ytCity.innerHTML=`<option value="">Any ARIRANG show</option>`+cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  if(keep&&cities.includes(keep))ytCity.value=keep;fillYtNights();
+}
+function fillYtNights(){
+  const keep=ytNight.value;const list=SHOWS.filter(s=>s.city===ytCity.value);
+  ytNight.innerHTML=`<option value="">Any night</option>`+list.map(s=>{const n=(s.night.match(/\d+/)||[""])[0];return `<option value="${n}">${esc(s.night)}${s.date?" · "+esc(fmtDate(s.date)):""}</option>`}).join("");
+  ytNight.disabled=!ytCity.value;
+  if(keep&&ytNight.querySelector(`option[value="${keep}"]`))ytNight.value=keep;
+}
+function ytQuery(){
+  const kind=(document.querySelector('.ytkind[aria-pressed="true"]')||{}).dataset?.q||"";
+  const parts=["BTS"];
+  if(ytCity.value){parts.push("ARIRANG",ytCity.value);if(ytNight.value)parts.push("day "+ytNight.value)}
+  else if(kind!=="official MV"&&kind!=="Bangtan Bomb")parts.push("ARIRANG tour");
+  const extra=$("#ytQ").value.trim();if(extra)parts.push(extra);
+  if(kind)parts.push(kind);
+  return parts.join(" ");
+}
+function updateYt(){const q=ytQuery();$("#ytGo").href="https://www.youtube.com/results?search_query="+encodeURIComponent(q);$("#ytPreview").textContent=q}
+ytCity.addEventListener("change",()=>{ytNight.value="";fillYtNights();updateYt()});
+ytNight.addEventListener("change",updateYt);$("#ytQ").addEventListener("input",updateYt);
+document.querySelectorAll(".ytkind").forEach(b=>b.addEventListener("click",()=>{const on=b.getAttribute("aria-pressed")!=="true";document.querySelectorAll(".ytkind").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed",on?"true":"false");updateYt()}));
+$("#ytForm").addEventListener("submit",e=>{e.preventDefault();updateYt();$("#ytGo").click()});
+
 /* ---------- Report a correction ---------- */
 const FIX_REPO="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
 const fixCity=$("#fixCity"),fixNight=$("#fixNight");
@@ -515,7 +581,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();
+    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
