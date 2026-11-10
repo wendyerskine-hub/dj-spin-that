@@ -26,3 +26,13 @@ ffmpeg -framerate 30 -i fr_kaohsiung/f%04d.png -c:v libx264 -pix_fmt yuv420p -cr
 
 Every version except `bg=1` includes the line
 "Fan-made · Not affiliated with BTS, HYBE or BIGHIT MUSIC".
+
+## Make a GIF for every show played
+
+```bash
+node render-all.js /tmp/frames 8
+```
+
+Then encode each folder in `/tmp/frames` to `social/cities/dj-spin-that-<city>-night-<n>.gif` at 15 fps
+(see the ffmpeg GIF command used for the other loops). Nights marked as disputed get a
+"Setlist reports differ" line.

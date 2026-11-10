@@ -100,9 +100,11 @@ if(H<=W){wrap.style.padding='34px 26px 34px';wrap.style.gap='14px';document.quer
 if(P.get('bg')){['kick','q'].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()});document.querySelector('.word').remove();document.querySelector('.url').remove();document.querySelector('.fan').remove();wrap.style.padding='0';const c=document.querySelector('svg.ctrl');c.style.margin='0';c.style.width=(W>H?Math.round(W*0.86):Math.round(W*1.0))+'px';}
 if(P.get('city')){
   document.getElementById('kick').textContent='ARIRANG Tour · '+P.get('city')+' · '+P.get('night');
-  const [a,b]=P.get('songs').split('|');
-  const q=document.getElementById('q');q.outerHTML=`<div class="lab">Tonight's surprise songs</div><div class="songs"><span class="a">${a}</span><span class="x">×</span><span class="b">${b}</span></div>`;
-  if(H<=W)document.querySelector('.songs').style.fontSize='38px';
+  const list=P.get('songs').split('|');
+  const q=document.getElementById('q');
+  q.outerHTML=`<div class="lab">Tonight's surprise songs</div><div class="songs">${list.map((x,i)=>`<span class="${i%2?'b':'a'}">${x.replace(/[<>&]/g,'')}</span>`).join('<span class="x">×</span>')}</div>${P.get('disputed')?'<div class="fan" style="margin-top:-6px">Setlist reports differ</div>':''}`;
+  const sg=document.querySelector('.songs');let fs=H<=W?38:46;sg.style.fontSize=fs+'px';
+  while((sg.scrollHeight>fs*2.1||sg.scrollWidth>W-40)&&fs>22){fs-=2;sg.style.fontSize=fs+'px'}
 }})();
 // Deterministic frame renderer: setFrame(t) with t in [0,1) loops seamlessly.
 const $=id=>document.getElementById(id);
