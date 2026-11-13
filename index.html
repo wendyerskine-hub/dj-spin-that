@@ -148,6 +148,7 @@ select option{background:#22123a;color:var(--ink)}
 .v-sub{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-family:var(--f-mono);color:var(--jade);margin:0}
 .lyr-btns{display:flex;flex-wrap:wrap;gap:8px}
 .lyr-btns a.lyr{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;font-weight:600;font-size:14px}
+.lyr-btns a.lyr.doolset{border-color:var(--gold)}
 .lyr-btns a.lyr:hover{border-color:var(--gold);background:rgba(199,125,255,.16)}
 .lyr-btns a.lyr b{font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--jade);letter-spacing:.08em}
 .v-plays{display:grid;gap:10px}
@@ -631,7 +632,8 @@ function lyricButtons(t){
   if(ja){L.push(["ja","Japanese",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ko","Korean",`BTS ${t} Korean translation`,"translation"])}
   else if(en){L.push(["en","English",`BTS ${t} lyrics`,"original"],["ko","Korean",`BTS ${t} Korean translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese translation`,"translation"])}
   else{L.push(["ko","Korean",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese ver. lyrics`,"Japanese ver. or translation"])}
-  return `<div class="lyr-btns">${L.map(([code,name,q,kind])=>`<a class="lyr" data-lang="${code}" href="${genius(q)}" target="_blank" rel="noopener">${name} <b>${kind}</b> ↗</a>`).join("")}</div>`;
+  const doolset=`<a class="lyr doolset" data-lang="en-doolset" href="https://doolsetbangtan.wordpress.com/?s=${encodeURIComponent(t.replace(/\s*\(.*?\)\s*/g," ").trim())}" target="_blank" rel="noopener">English <b>Doolset Bangtan, with notes</b> ↗</a>`;
+  return `<div class="lyr-btns">${doolset}${L.map(([code,name,q,kind])=>`<a class="lyr" data-lang="${code}" href="${genius(q)}" target="_blank" rel="noopener">${name} <b>${kind}</b> ↗</a>`).join("")}</div>`;
 }
 function renderVault(t){
   const box=$("#vaultResult");if(!t){box.innerHTML="";return}
@@ -640,7 +642,7 @@ function renderVault(t){
   box.innerHTML=`<div class="reveal" style="display:grid;gap:16px">
     <div><p class="v-sub">${esc([m[0],m[1],m[2],lang+" original"].filter(Boolean).join(" · "))}</p><p class="v-title">${esc(t)}</p></div>
     <div style="display:grid;gap:8px"><div class="eyebrow" style="color:var(--muted)">Read the lyrics</div>${lyricButtons(t)}
-      <p class="v-note">Lyrics open on Genius. Spotify and Apple Music also show licensed lyrics in their apps.</p>${svcButtons(t)}</div>
+      <p class="v-note">Doolset Bangtan writes careful English translations with notes on wordplay and cultural references. The other buttons open Genius. Spotify and Apple Music also show licensed lyrics in their apps.</p>${svcButtons(t)}</div>
     <div style="display:grid;gap:10px"><div class="eyebrow" style="color:var(--muted)">Where it was played and why</div>
       <div class="v-plays">${plays.map(p=>{
         const note=p.notes&&p.notes[t];
