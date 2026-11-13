@@ -57,9 +57,9 @@ h1 .kicker{display:block;font-family:var(--f-mono);font-size:.22em;font-weight:6
 .bg-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
 .bg-controls a{color:var(--violet)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
 section.station{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
-section.spin{grid-column:1/-1}
+section.spin,section.disco,section.units{grid-column:1/-1}
 .station h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.1;text-wrap:balance}
 .station h2 small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
 .station p.help{margin:0;color:var(--muted);font-size:14px}
@@ -160,6 +160,40 @@ select option{background:#22123a;color:var(--ink)}
 .v-theory b{color:var(--ink);font-weight:600}
 .v-add{justify-self:start;background:none;border:0;padding:2px 0;color:var(--violet);font-size:13px;text-decoration:underline;cursor:pointer}
 .v-note{font-size:12px;color:var(--muted);margin:0}
+.disco-top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.disco-count{font-family:var(--f-mono);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.disco-count b{font-family:var(--f-display);font-size:28px;color:var(--ink)}
+.disco-count .bar{display:inline-block;width:160px;height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.disco-count .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--gold));transition:width .6s}
+.disco-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px 20px}
+.alb{min-width:0;border-top:1px solid var(--line);padding-top:10px}
+.alb h3{margin:0 0 6px;font-size:13px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:8px}
+.alb h3 span{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:400;white-space:nowrap}
+.alb ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.dsong{position:relative;display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;padding:4px 6px;margin:0 -6px;border-radius:8px;color:var(--muted);font:inherit;font-size:14px;cursor:default}
+.dsong .box{flex:none;width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(255,255,255,.28);display:grid;place-items:center;font-size:11px;line-height:1;color:#1a0b2e}
+.dsong.on{color:var(--ink);cursor:help}
+.dsong.on .box{background:var(--gold);border-color:var(--gold)}
+.dsong.on .box::before{content:"✓";font-weight:800}
+.dsong.main .box{background:transparent;border-color:var(--jade);border-style:dashed}
+.dsong .tag{margin-left:auto;font-family:var(--f-mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.dsong .n{font-family:var(--f-mono);font-size:10px;color:var(--gold);margin-left:4px}
+.dsong:hover,.dsong:focus-visible{background:rgba(255,255,255,.06)}
+.dsong .tip{position:absolute;z-index:5;left:28px;bottom:calc(100% + 6px);width:max-content;max-width:min(280px,80vw);background:#22123a;border:1px solid var(--gold);color:var(--ink);font-size:12px;line-height:1.4;padding:8px 10px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;white-space:normal}
+.dsong:hover .tip,.dsong:focus-visible .tip,.dsong.show .tip{opacity:1;transform:none}
+.dsong .tip b{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--jade);margin-bottom:3px}
+.disco-list.f-played .dsong:not(.on),.disco-list.f-left .dsong.on,.disco-list.f-left .dsong.main{display:none}
+.alb.empty{display:none}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+.ucard{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(255,255,255,.03);display:grid;gap:6px;min-width:0}
+.ucard h3{margin:0;font-family:var(--f-display);font-size:22px;line-height:1.1}
+.ucard .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--jade)}
+.ucard .where{font-size:13px;color:var(--muted)}
+.ucard .where b{color:var(--gold);font-weight:600}
+.unit-left{display:grid;gap:8px}
+.unit-chips{display:flex;flex-wrap:wrap;gap:8px}
+.unit-chips span{border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--muted)}
+.unit-chips span i{font-style:normal;font-family:var(--f-mono);font-size:10px;color:var(--jade);margin-left:6px}
 .watch form{display:grid;gap:14px}
 .watch .field{display:grid;gap:6px;min-width:0}
 .watch input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -227,6 +261,20 @@ footer a{color:var(--violet)}
       <div class="row"><button class="btn" id="spinBtn" type="button">Spin again</button></div>
     </section>
 
+    <section class="station disco" id="disco">
+      <h2><small>The checklist</small>BTS discography: played and still in the vault</h2>
+      <p class="help">Every BTS song from 2013 to 2023, including Japanese originals and solo tracks on group albums. The ARIRANG album isn't included, since surprise songs are throwbacks. Hover over a song, or tap it on a phone, to see where it was played.</p>
+      <div class="disco-top">
+        <div class="disco-count"><b id="discoPlayed">0</b> of <span id="discoTotal">0</span> played <span class="bar" aria-hidden="true"><i id="discoBar"></i></span></div>
+        <div class="seg" role="group" aria-label="Show songs">
+          <button type="button" data-f="all" aria-pressed="true">All</button>
+          <button type="button" data-f="played" aria-pressed="false">Played</button>
+          <button type="button" data-f="left" aria-pressed="false">Still in the vault</button>
+        </div>
+      </div>
+      <div class="disco-list" id="discoList"></div>
+    </section>
+
     <section class="station" id="city">
       <h2><small>Station 2 · I was there</small>Your city, your songs</h2>
       <p class="help">Pick the show you attended, including upcoming Asia and Australia dates, to play each surprise song from that night or share its QR code.</p>
@@ -243,6 +291,13 @@ footer a{color:var(--violet)}
       <div class="chips" id="chips" role="group" aria-label="Choose your bias"></div>
       <div class="row"><button class="btn ghost" id="biasBtn" type="button">Surprise me again</button></div>
       <div class="night-songs" id="biasResult" aria-live="polite"></div>
+    </section>
+
+    <section class="station units" id="units">
+      <h2><small>Station 4 · Subunits</small>Subunit songs played on the tour</h2>
+      <p class="help">Rap line is RM, SUGA and j-hope. Vocal line is Jin, Jimin, V and Jung Kook. Here's every subunit song BTS has pulled out so far, and the ones still waiting.</p>
+      <div class="unit-grid" id="unitPlayed"></div>
+      <div class="unit-left"><div class="eyebrow" style="color:var(--muted)">Not played yet</div><div class="unit-chips" id="unitLeft"></div></div>
     </section>
   </div>
 
@@ -491,6 +546,8 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("a.lyr")){const l=e.target.closest("a.lyr");track("lyrics/"+l.dataset.lang+"/"+$("#vaultSel").value)}
   else if(e.target.closest(".v-add"))track("theory-start/"+e.target.closest(".v-add").dataset.city+"/"+e.target.closest(".v-add").dataset.song);
   else if(e.target.closest("#vaultRandom"))track("vault-random");
+  else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
+  else if(e.target.closest("#disco .seg button"))track("checklist-filter/"+e.target.closest("button").dataset.f);
   else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
   else if(e.target.closest("#fixCopy"))track("correction/copied/"+$("#fixCity").value);
   else if(e.target.closest('a[href*="Exukk6JO9i0"]'))track("promo-video");
@@ -500,6 +557,63 @@ document.addEventListener("click",e=>{
 citySel.addEventListener("change",()=>track("city/"+citySel.value));
 $("#vaultSel").addEventListener("change",()=>track("vault/"+$("#vaultSel").value));
 nightSel.addEventListener("change",()=>track("city/"+citySel.value+"/"+(nightSel.selectedOptions[0]||{}).textContent));
+
+/* ---------- Discography checklist ---------- */
+const SOLO=m=>"Solo · "+m;
+const DISCO=[
+ ["2 Cool 4 Skool",2013,[["We Are Bulletproof Pt.2"],["No More Dream"],["I Like It"],["Like"]]],
+ ["O!RUL8,2?",2013,[["N.O"],["We On"],["If I Ruled the World"],["Coffee"],["Cypher Pt.1","Rap line"],["Attack on Bangtan"],["Paldogangsan"],["Outro: Luv in Skool"]]],
+ ["Skool Luv Affair",2014,[["Boy In Luv"],["Where You From"],["Just One Day"],["Tomorrow"],["Cypher Pt.2: Triptych","Rap line"],["Spine Breaker"],["Jump"],["Outro: Propose"],["Miss Right"]]],
+ ["Dark & Wild",2014,[["Danger"],["War of Hormone"],["Hip Hop Phile"],["Let Me Know"],["Rain"],["Cypher Pt.3: Killer","Rap line"],["Embarrassed"],["24/7=Heaven"],["Look Here"],["2nd Grade"],["Outro: Does That Make Sense?","Vocal line"]]],
+ ["The Most Beautiful Moment in Life Pt.1",2015,[["I NEED U"],["Hold Me Tight"],["Dope"],["Boyz With Fun"],["Converse High"],["Moving On"],["Love Is Not Over","Vocal line"]]],
+ ["The Most Beautiful Moment in Life Pt.2",2015,[["RUN"],["Butterfly"],["Whalien 52"],["Ma City"],["Baepsae (Silver Spoon)"],["Autumn Leaves"],["House of Cards","Vocal line"]]],
+ ["The Most Beautiful Moment in Life: Young Forever",2016,[["Epilogue: Young Forever"],["Fire"],["Save Me"]]],
+ ["Wings",2016,[["Blood Sweat & Tears"],["Begin",SOLO("Jung Kook")],["Lie",SOLO("Jimin")],["Stigma",SOLO("V")],["First Love",SOLO("SUGA")],["Reflection",SOLO("RM")],["MAMA",SOLO("j-hope")],["Awake",SOLO("Jin")],["Lost","Vocal line"],["Cypher Pt.4","Rap line"],["Am I Wrong"],["21st Century Girl"],["2! 3!"],["Spring Day"],["Not Today"],["Outro: Wings"],["A Supplementary Story: You Never Walk Alone"]]],
+ ["Love Yourself: Her",2017,[["Intro: Serendipity",SOLO("Jimin")],["DNA"],["Best of Me"],["Dimple"],["Pied Piper"],["MIC Drop"],["Go Go"],["Outro: Her","Rap line"]]],
+ ["Love Yourself: Tear",2018,[["Intro: Singularity",SOLO("V")],["Fake Love"],["The Truth Untold"],["134340"],["Paradise"],["Love Maze"],["Magic Shop"],["Airplane Pt.2"],["Anpanman"],["So What"],["Outro: Tear","Rap line"]]],
+ ["Love Yourself: Answer",2018,[["Euphoria",SOLO("Jung Kook")],["Trivia 起: Just Dance",SOLO("j-hope")],["I'm Fine"],["IDOL"],["Answer: Love Myself"],["Trivia 承: Love",SOLO("RM")],["Trivia 轉: Seesaw",SOLO("SUGA")],["Epiphany",SOLO("Jin")]]],
+ ["Map of the Soul: Persona",2019,[["Intro: Persona",SOLO("RM")],["Boy With Luv"],["Mikrokosmos"],["Make It Right"],["HOME"],["Jamais Vu","Jin, j-hope & Jung Kook"],["Dionysus"]]],
+ ["Map of the Soul: 7",2020,[["Interlude: Shadow",SOLO("SUGA")],["Black Swan"],["Filter",SOLO("Jimin")],["My Time",SOLO("Jung Kook")],["Louder than Bombs"],["ON"],["UGH!","Rap line"],["00:00 (Zero O'Clock)","Vocal line"],["Inner Child",SOLO("V")],["Friends","Jimin & V"],["Moon",SOLO("Jin")],["Respect","RM & SUGA"],["We Are Bulletproof: The Eternal"],["Outro: Ego",SOLO("j-hope")]]],
+ ["BE",2020,[["Life Goes On"],["Fly To My Room"],["Blue & Grey"],["Telepathy"],["Dis-ease"],["Stay"]]],
+ ["Proof",2022,[["Yet To Come"],["Run BTS"],["For Youth"],["Born Singer"]]],
+ ["Singles & soundtracks","2018–2023",[["DDAENG","Rap line"],["Heartbeat"],["Dynamite"],["Butter"],["Permission to Dance"],["Take Two"]]],
+ ["Japanese originals","2015–2021",[["For You"],["Crystal Snow"],["Don't Leave Me"],["Let Go"],["Lights"],["Your Eyes Tell"],["Stay Gold"],["Film out"]]]
+];
+const MAIN_SET=new Set(["dynamite"]);
+const SUBUNITS=new Set(["Rap line","Vocal line","Jin, j-hope & Jung Kook","Jimin & V","RM & SUGA"]);
+const UNIT_WHO={"Rap line":"Rap line · RM, SUGA, j-hope","Vocal line":"Vocal line · Jin, Jimin, V, Jung Kook"};
+const nk=t=>String(t).toLowerCase().replace(/[^a-z0-9]/g,"");
+let discoFilter="all";
+function playsByKey(){const m={};SHOWS.forEach(s=>s.songTitles.forEach(t=>{(m[nk(t)]=m[nk(t)]||[]).push(s)}));return m}
+function placesText(pl){return pl.map(s=>`${s.city} N${(s.night.match(/\d+/)||[""])[0]}${s.date?" ("+fmtDate(s.date)+")":""}`).join(", ")}
+function renderDisco(){
+  const P=playsByKey();const known=new Set();let played=0,total=0;
+  const groups=DISCO.map(([alb,yr,tracks])=>{
+    const items=tracks.map(([t,unit])=>{const k=nk(t);known.add(k);const pl=P[k]||[];const main=MAIN_SET.has(k);if(!main){total++;if(pl.length)played++}
+      const tip=main?`<b>Main set</b>Played every night before the surprise songs.`:pl.length?`<b>Played ${pl.length}×</b>${esc(placesText(pl))}`:`<b>Still in the vault</b>Not played yet on the ARIRANG tour.`;
+      return `<li><button type="button" class="dsong${pl.length&&!main?" on":""}${main?" main":""}" aria-label="${esc(t)}: ${pl.length?"played "+pl.length+" times":"not played yet"}"><span class="box" aria-hidden="true"></span><span>${esc(t)}${pl.length>1?`<span class="n">${pl.length}×</span>`:""}</span>${unit?`<span class="tag">${esc(unit.replace("Solo · ",""))}</span>`:""}<span class="tip" role="tooltip">${tip}</span></button></li>`}).join("");
+    return `<div class="alb"><h3>${esc(alb)}<span>${yr}</span></h3><ul>${items}</ul></div>`});
+  const extra=Object.keys(P).filter(k=>!known.has(k));
+  if(extra.length){const items=extra.map(k=>{const pl=P[k];const t=pl[0].songTitles.find(x=>nk(x)===k);played++;total++;return `<li><button type="button" class="dsong on"><span class="box" aria-hidden="true"></span><span>${esc(t)}</span><span class="tip" role="tooltip"><b>Played ${pl.length}×</b>${esc(placesText(pl))}</span></button></li>`}).join("");groups.push(`<div class="alb"><h3>Other songs played<span></span></h3><ul>${items}</ul></div>`)}
+  const list=$("#discoList");list.innerHTML=groups.join("");list.className="disco-list f-"+discoFilter;
+  $("#discoPlayed").textContent=played;$("#discoTotal").textContent=total;$("#discoBar").style.width=(total?played/total*100:0)+"%";
+  list.querySelectorAll(".alb").forEach(a=>a.classList.toggle("empty",discoFilter!=="all"&&![...a.querySelectorAll(".dsong")].some(b=>getComputedStyle(b).display!=="none")));
+  renderUnits(P);
+}
+document.querySelectorAll('#disco .seg button').forEach(b=>b.addEventListener("click",()=>{discoFilter=b.dataset.f;document.querySelectorAll('#disco .seg button').forEach(x=>x.setAttribute("aria-pressed",x===b));renderDisco()}));
+$("#discoList").addEventListener("click",e=>{const b=e.target.closest(".dsong");if(!b)return;const was=b.classList.contains("show");document.querySelectorAll(".dsong.show").forEach(x=>x.classList.remove("show"));if(!was)b.classList.add("show")});
+document.addEventListener("click",e=>{if(!e.target.closest(".dsong"))document.querySelectorAll(".dsong.show").forEach(x=>x.classList.remove("show"))});
+
+/* ---------- Station 4: subunits ---------- */
+function renderUnits(P){
+  const all=[];DISCO.forEach(([alb,yr,tr])=>tr.forEach(([t,u])=>{if(u&&SUBUNITS.has(u))all.push({t,u,alb,yr})}));
+  const played=all.filter(x=>P[nk(x.t)]),left=all.filter(x=>!P[nk(x.t)]);
+  const cards=played.map(x=>{const pl=P[nk(x.t)];const title=pl[0].songTitles.find(y=>nk(y)===nk(x.t))||x.t;const c=songCard(title,"BTS",`${x.alb} · ${x.yr}`,`<span class="kind">${esc(UNIT_WHO[x.u]||x.u)}</span>`);
+    return {html:c.html.replace('<div class="song-meta">',`<div class="where">Played in ${pl.map(s=>`<b>${esc(s.city)}</b> ${esc(s.night)}`).join(", ")}</div><div class="song-meta">`),id:c.id,url:c.url}});
+  $("#unitPlayed").innerHTML=cards.length?cards.map(c=>c.html).join(""):`<p class="help">No subunit songs yet.</p>`;
+  cards.forEach(c=>drawQR(document.getElementById(c.id),c.url,96));
+  $("#unitLeft").innerHTML=left.map(x=>`<span>${esc(x.t)}<i>${esc(x.u==="Rap line"||x.u==="Vocal line"?x.u:x.u)}</i></span>`).join("");
+}
 
 /* ---------- Song vault ---------- */
 const JA_ORIG=new Set(["Crystal Snow","For You"]),EN_ORIG=new Set(["Permission to Dance"]);
@@ -684,7 +798,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();
+    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();renderDisco();
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
