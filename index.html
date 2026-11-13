@@ -632,8 +632,18 @@ function lyricButtons(t){
   if(ja){L.push(["ja","Japanese",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ko","Korean",`BTS ${t} Korean translation`,"translation"])}
   else if(en){L.push(["en","English",`BTS ${t} lyrics`,"original"],["ko","Korean",`BTS ${t} Korean translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese translation`,"translation"])}
   else{L.push(["ko","Korean",`BTS ${t} lyrics`,"original"],["en","English",`BTS ${t} English translation`,"translation"],["ja","Japanese",`BTS ${t} Japanese ver. lyrics`,"Japanese ver. or translation"])}
-  const doolset=`<a class="lyr doolset" data-lang="en-doolset" href="https://doolsetbangtan.wordpress.com/?s=${encodeURIComponent(t.replace(/\s*\(.*?\)\s*/g," ").trim())}" target="_blank" rel="noopener">English <b>Doolset Bangtan, with notes</b> ↗</a>`;
-  return `<div class="lyr-btns">${doolset}${L.map(([code,name,q,kind])=>`<a class="lyr" data-lang="${code}" href="${genius(q)}" target="_blank" rel="noopener">${name} <b>${kind}</b> ↗</a>`).join("")}</div>`;
+  const q=encodeURIComponent(t.replace(/\s*\(.*?\)\s*/g," ").trim());
+  const FAN=[
+    ["doolset","Doolset Bangtan","translation + notes",`https://doolsetbangtan.wordpress.com/?s=${q}`],
+    ["doyoubangtan","do you, bangtan","translation",`https://doyoubangtan.wordpress.com/?s=${q}`],
+    ["btstranslation7","BTS Translation 7","translation",`https://btstranslation7.wordpress.com/?s=${q}`],
+    ["btslyrictranslations","BTS Lyric Translations","line-by-line + vocab","https://www.btslyrictranslations.com/"],
+    ["bangtansubs","Bangtansubs","translation team","https://www.bangtansubs.com/"],
+    ["armyproject529","ARMY Project 529","Hangul + romanization guides","https://www.armyproject529.com/bts-lyrics"]];
+  return `<div class="eyebrow" style="color:var(--muted)">Fan translators ARMY trust</div>
+    <div class="lyr-btns">${FAN.map(([k,n,d,u],i)=>`<a class="lyr fan${i===0?" doolset":""}" data-lang="fan-${k}" href="${u}" target="_blank" rel="noopener">${n} <b>${d}</b> ↗</a>`).join("")}</div>
+    <div class="eyebrow" style="color:var(--muted);margin-top:6px">On Genius</div>
+    <div class="lyr-btns">${L.map(([code,name,q2,kind])=>`<a class="lyr" data-lang="${code}" href="${genius(q2)}" target="_blank" rel="noopener">${name} <b>${kind}</b> ↗</a>`).join("")}</div>`;
 }
 function renderVault(t){
   const box=$("#vaultResult");if(!t){box.innerHTML="";return}
@@ -642,7 +652,7 @@ function renderVault(t){
   box.innerHTML=`<div class="reveal" style="display:grid;gap:16px">
     <div><p class="v-sub">${esc([m[0],m[1],m[2],lang+" original"].filter(Boolean).join(" · "))}</p><p class="v-title">${esc(t)}</p></div>
     <div style="display:grid;gap:8px"><div class="eyebrow" style="color:var(--muted)">Read the lyrics</div>${lyricButtons(t)}
-      <p class="v-note">Doolset Bangtan writes careful English translations with notes on wordplay and cultural references. The other buttons open Genius. Spotify and Apple Music also show licensed lyrics in their apps.</p>${svcButtons(t)}</div>
+      <p class="v-note">Doolset Bangtan, do you, bangtan and BTS Translation 7 open a search for this song. BTS Lyric Translations, Bangtansubs and ARMY Project 529 open their main pages. Spotify and Apple Music also show licensed lyrics in their apps.</p>${svcButtons(t)}</div>
     <div style="display:grid;gap:10px"><div class="eyebrow" style="color:var(--muted)">Where it was played and why</div>
       <div class="v-plays">${plays.map(p=>{
         const note=p.notes&&p.notes[t];
