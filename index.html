@@ -198,7 +198,7 @@ select option{background:#22123a;color:var(--ink)}
 .unit-chips{display:flex;flex-wrap:wrap;gap:8px}
 .unit-chips span{border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--muted)}
 .unit-chips span i{font-style:normal;font-family:var(--f-mono);font-size:10px;color:var(--jade);margin-left:6px}
-.army-grid{display:grid;grid-template-columns:minmax(0,560px);gap:12px}
+.watch-feat{display:grid;gap:8px;max-width:560px}
 .acard{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s;min-width:0}
 .acard:hover,.acard:focus-visible{border-color:var(--gold);background:rgba(199,125,255,.12)}
 .acard .aname{font-family:var(--f-display);font-size:22px;line-height:1.1}
@@ -407,21 +407,17 @@ footer a{color:var(--violet)}
     <div id="vaultResult" aria-live="polite"></div>
   </section>
 
-  <section class="station army" id="army">
-    <h2><small>ARMY to follow</small>Friend of DJ Spin That</h2>
-    <p class="help">A fellow ARMY sharing the ARIRANG tour with love. We only feature fan sites that respect BTS's privacy: no sasaeng content, ever.</p>
-    <div class="army-grid">
+  <section class="station watch" id="watch">
+    <h2><small>Watch it again</small>BTS videos and concert footage</h2>
+    <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
+    <div class="watch-feat">
+      <div class="eyebrow" style="color:var(--muted)">Watch with a fellow ARMY</div>
       <a class="acard" href="https://livestageview.com" target="_blank" rel="noopener" data-acct="livestageview">
         <span class="aname">LiveStageView</span><span class="ahandle">livestageview.com</span>
         <span class="adesc">A fan-made site for following the shows live, made by a fellow ARMY.</span>
         <span class="ago">Visit the site ↗</span></a>
+      <p class="v-note">We only feature fan sites that respect BTS's privacy: no sasaeng content, ever.</p>
     </div>
-    <p class="v-note">Want your account featured? Send it through "Report a correction or share a theory" below.</p>
-  </section>
-
-  <section class="station watch" id="watch">
-    <h2><small>Watch it again</small>BTS videos and concert footage</h2>
-    <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
     <form id="ytForm" role="search">
       <div class="row">
         <div class="field"><label for="ytCity">Concert footage from</label><select id="ytCity"><option value="">Any ARIRANG show</option></select></div>
@@ -872,7 +868,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","army","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
