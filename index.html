@@ -198,6 +198,13 @@ select option{background:#22123a;color:var(--ink)}
 .unit-chips{display:flex;flex-wrap:wrap;gap:8px}
 .unit-chips span{border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--muted)}
 .unit-chips span i{font-style:normal;font-family:var(--f-mono);font-size:10px;color:var(--jade);margin-left:6px}
+.army-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px}
+.acard{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s;min-width:0}
+.acard:hover,.acard:focus-visible{border-color:var(--gold);background:rgba(199,125,255,.12)}
+.acard .aname{font-family:var(--f-display);font-size:22px;line-height:1.1}
+.acard .ahandle{font-family:var(--f-mono);font-size:12px;color:var(--jade);overflow-wrap:anywhere}
+.acard .adesc{font-size:14px;color:var(--muted)}
+.acard .ago{margin-top:6px;font-size:13px;font-weight:600;color:var(--violet)}
 .watch form{display:grid;gap:14px}
 .watch .field{display:grid;gap:6px;min-width:0}
 .watch input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -398,6 +405,22 @@ footer a{color:var(--violet)}
       <button class="btn ghost" id="vaultRandom" type="button">Random song</button>
     </div>
     <div id="vaultResult" aria-live="polite"></div>
+  </section>
+
+  <section class="station army" id="army">
+    <h2><small>ARMY to follow</small>Friends of DJ Spin That</h2>
+    <p class="help">Fellow ARMY sharing the ARIRANG tour with love. We only feature accounts that respect BTS's privacy: no sasaeng content, ever.</p>
+    <div class="army-grid">
+      <a class="acard" href="https://livestageview.com" target="_blank" rel="noopener" data-acct="livestageview">
+        <span class="aname">LiveStageView</span><span class="ahandle">livestageview.com</span>
+        <span class="adesc">A fan-made site for following the shows live, made by a fellow ARMY.</span>
+        <span class="ago">Visit the site ↗</span></a>
+      <a class="acard" href="https://www.threads.com/@dianesjavier" target="_blank" rel="noopener" data-acct="dianesjavier">
+        <span class="aname">Diane</span><span class="ahandle">@dianesjavier</span>
+        <span class="adesc">Night-by-night ARIRANG surprise song roundups, with notes on repeats and debuts.</span>
+        <span class="ago">Follow on Threads ↗</span></a>
+    </div>
+    <p class="v-note">Want your account featured? Send it through "Report a correction or share a theory" below.</p>
   </section>
 
   <section class="station watch" id="watch">
@@ -644,6 +667,7 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("a.lyr")){const l=e.target.closest("a.lyr");track("lyrics/"+l.dataset.lang+"/"+$("#vaultSel").value)}
   else if(e.target.closest(".v-add"))track("theory-start/"+e.target.closest(".v-add").dataset.city+"/"+e.target.closest(".v-add").dataset.song);
   else if(e.target.closest("#vaultRandom"))track("vault-random");
+  else if(e.target.closest(".acard"))track("army/"+e.target.closest(".acard").dataset.acct);
   else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
   else if(e.target.closest("#disco .seg button"))track("checklist-filter/"+e.target.closest("button").dataset.f);
   else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
@@ -852,7 +876,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","army","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
