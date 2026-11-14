@@ -1,7 +1,39 @@
 {
   "favorites": [
-    {"file": "social/dj-spin-that.gif", "title": "DJ Spin That · the original loop"},
-    {"file": "social/dj-spin-that-square.gif", "title": "DJ Spin That · square"}
+    {
+      "file": "social/dj-spin-that.gif",
+      "title": "DJ Spin That · the original loop"
+    },
+    {
+      "file": "social/dj-spin-that-square.gif",
+      "title": "DJ Spin That · square"
+    }
   ],
-  "army": []
+  "army": [],
+  "giphy": [
+    {
+      "id": "AZPiPZThCcf6lwvQIR",
+      "url": "https://giphy.com/gifs/bts-sorry-for-my-fault-AZPiPZThCcf6lwvQIR",
+      "title": "BTS · Sorry for my fault",
+      "source": "",
+      "members": [],
+      "meme": "Sorry for my fault"
+    },
+    {
+      "id": "OUSPq0WJk7c7w4oFzy",
+      "url": "https://giphy.com/gifs/bts-sorry-for-my-fault-OUSPq0WJk7c7w4oFzy",
+      "title": "BTS · Sorry for my fault",
+      "source": "",
+      "members": [],
+      "meme": "Sorry for my fault"
+    },
+    {
+      "id": "YWrjhEypPnWCyxOcqG",
+      "url": "https://giphy.com/gifs/bts-sorry-for-my-fault-YWrjhEypPnWCyxOcqG",
+      "title": "BTS · Sorry for my fault",
+      "source": "",
+      "members": [],
+      "meme": "Sorry for my fault"
+    }
+  ]
 }
