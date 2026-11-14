@@ -236,6 +236,12 @@ select option{background:#22123a;color:var(--ink)}
 header.hero>.eyebrow{order:0}header.hero>h1{order:1}header.hero>.find{order:2}header.hero>.next{order:3}header.hero>.lede{order:4}header.hero>.bg-controls{order:5}header.hero>.live{order:6}
 @media (max-width:760px){header.hero{padding-block:4px 0}header.hero:not(.slim) h1{font-size:clamp(40px,12vw,64px)}header.hero .lede{font-size:15px}}
 header.hero.slim{padding-block:4px 0;gap:6px}
+section.intro{grid-column:1/-1;gap:14px}
+section.intro .lede{margin:0;color:var(--muted);font-size:16px;max-width:65ch}
+section.intro .bg-controls{margin-top:0}
+.city-find{margin:0}
+#city .find{margin-top:0;max-width:none}
+@media (max-width:760px){.tabbar button span{font-size:10.5px;line-height:1.1;text-align:center;white-space:normal;max-width:72px}}
 header.hero.slim h1{font-size:clamp(28px,7vw,44px)}
 header.hero.slim .lede,header.hero.slim .bg-controls,header.hero.slim .next,header.hero.slim .find,header.hero.slim .eyebrow{display:none}
 .find{display:grid;gap:6px;max-width:560px;margin-top:6px}
@@ -296,26 +302,17 @@ footer a{color:var(--violet)}
 </div>
 
 <nav class="tabbar" id="tabbar" aria-label="Sections">
-  <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span>Spin</span></button>
+  <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span>DJ Spin</span></button>
   <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>My Show</span></button>
-  <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Bias</span></button>
-  <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span>Checklist</span></button>
-  <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>More</span></button>
+  <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Bias &amp; Subunit Spin</span></button>
+  <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span>All Surprise Songs</span></button>
+  <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>ARMY Learn</span></button>
 </nav>
 <main>
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · Surprise Song Segment</div>
     <h1><span class="kicker">ARIRANG</span>DJ Spin That S**t!</h1>
-    <p class="lede">The vault opens after “Dynamite.” Find out what BTS pulled out for your night, spin the whole tour, or let your bias decide. Borahae 💜</p>
-    <div class="bg-controls">
-      <a class="btn ghost" href="https://www.youtube.com/watch?v=Exukk6JO9i0" target="_blank" rel="noopener" style="text-decoration:none;font-size:13px;color:var(--ink)">Watch the ARIRANG promo ↗</a>
-    </div>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading setlists…</span></div>
-    <div class="next" id="nextShow" hidden></div>
-    <div class="find" id="find">
-      <label for="findSel">Find your show</label>
-      <div class="find-row"><select id="findSel"><option value="">Loading shows…</option></select><button class="btn" id="findGo" type="button">See my songs</button></div>
-    </div>
   </header>
 
   <div class="grid">
@@ -336,6 +333,14 @@ footer a{color:var(--violet)}
       <div class="row"><button class="btn" id="spinBtn" type="button">Spin again</button></div>
     </section>
 
+    <section class="station intro" id="intro">
+  <div class="next" id="nextShow" hidden></div>
+  <p class="lede">The vault opens after “Dynamite.” Find out what BTS pulled out for your night, spin the whole tour, or let your bias decide. Borahae 💜</p>
+  <div class="bg-controls">
+        <a class="btn ghost" href="https://www.youtube.com/watch?v=Exukk6JO9i0" target="_blank" rel="noopener" style="text-decoration:none;font-size:13px;color:var(--ink)">Watch the ARIRANG promo ↗</a>
+      </div>
+    </section>
+
     <section class="station disco" id="disco">
       <h2><small>The checklist</small>BTS discography: played and still in the vault</h2>
       <p class="help">Every BTS song from 2013 to 2023, including Japanese originals and solo tracks on group albums, checked against the BTS Wiki. The ARIRANG album isn't included, since surprise songs are throwbacks. Hover over a song, or tap it on a phone, to see where it was played.</p>
@@ -352,9 +357,13 @@ footer a{color:var(--violet)}
     </section>
 
     <section class="station" id="city">
-      <h2><small>Station 2 · I was there</small>Your city, your songs</h2>
-      <p class="help">Pick the show you attended, including upcoming Asia and Australia dates, to play each surprise song from that night or share its QR code.</p>
-      <div class="row">
+      <h2><small>Station 2 · I was there</small>Find your show</h2>
+      <p class="help">Pick the city and night you went to, including upcoming Asia and Australia dates, to play that night's surprise songs or share them.</p>
+    <div class="find" id="find">
+      <label for="findSel">City and night</label>
+      <div class="find-row"><select id="findSel"><option value="">Loading shows…</option></select><button class="btn" id="findGo" type="button">See my songs</button></div>
+    </div>
+      <div class="row" hidden>
         <div class="field"><label for="citySel">City</label><select id="citySel"></select></div>
         <div class="field"><label for="nightSel">Night</label><select id="nightSel"></select></div>
       </div>
@@ -573,12 +582,14 @@ function songCard(title,artist,sub,kindHTML,flag){
 function renderCity(){
   const list=ALL.filter(s=>s.city===citySel.value);
   const show=list[+nightSel.value]||list[0];if(!show)return;
+  if(!show.songTitles.length){try{$("#findSel").value=showSlug(show)}catch(e){}}
   const head=`<div class="song-meta">${esc(show.city)} · ${esc(show.night)}${show.date?" · "+esc(showDate(show)):""}${show.venue?" · "+esc(show.venue):""}</div>`;
   if(!show.songTitles.length){
     $("#cityResult").innerHTML=head+(show.status==="cancelled"?`<div class="ns" style="grid-template-columns:1fr"><div><h3>Show cancelled</h3></div></div>`:"")+(show.status==="cancelled"?"":`<div class="ns" style="grid-template-columns:1fr"><div><h3>Not played yet</h3><div class="song-meta">The surprise songs appear here automatically after the show${show.tentative?". This date is still unconfirmed":""}.</div></div></div>`);
     return;
   }
   const cards=show.songs.map(t=>songCard(t.title,"BTS",metaLine(t.title),"",show.disputed));
+  try{$("#findSel").value=showSlug(show)}catch(e){}
   $("#cityResult").innerHTML=head+cards.map(c=>c.html).join("")+`<div class="share-row"><button class="btn ghost" type="button" id="shareShow">Share this show</button><span class="msg" aria-live="polite"></span></div>`;
   $("#shareShow").addEventListener("click",e=>shareShow(show,e.currentTarget));
   cards.forEach(c=>drawQR(document.getElementById(c.id),c.url,96));
@@ -832,7 +843,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
