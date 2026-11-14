@@ -1018,12 +1018,14 @@ function gifTile(file,title,sq){const abs="https://djspinthat.net/"+file;const n
 function giphyTile(x){const src=`https://media.giphy.com/media/${encodeURIComponent(x.id)}/giphy.gif`;const page=x.url||`https://giphy.com/gifs/${encodeURIComponent(x.id)}`;
   const cap=[x.title,x.source].filter(Boolean).join(" · ");
   return `<figure class="gif-tile wide"><img src="${src}" alt="${esc(cap)}" loading="lazy" decoding="async"><figcaption>${esc(cap)}</figcaption><span class="via">via GIPHY</span><div class="gbtns"><button type="button" data-copy="${esc(page)}">Copy link</button><a href="${esc(page)}" target="_blank" rel="noopener" data-giphy="${esc(x.id)}">Open on GIPHY ↗</a></div></figure>`}
+const srcGroup=v=>/^Run BTS/i.test(v||"")?"Run BTS":(v||"");
+const MEMBER_ORDER=["OT7","RM","Jin","SUGA","j-hope","Jimin","V","Jung Kook"];
 function renderGifFilters(){const box=$("#gifFilters");const L=GIFS.giphy||[];
   const uniq=a=>[...new Set(a.filter(Boolean))].sort();
-  const rows=[["source","Source",uniq(L.map(x=>x.source))],["member","Member",uniq(L.flatMap(x=>x.members||[]))],["meme","Meme",uniq(L.map(x=>x.meme))]].filter(r=>r[2].length);
+  const rows=[["source","Source",uniq(L.map(x=>srcGroup(x.source)))],["member","Member",uniq(L.flatMap(x=>x.members||[])).sort((a,b)=>MEMBER_ORDER.indexOf(a)-MEMBER_ORDER.indexOf(b))],["meme","Meme",uniq(L.map(x=>x.meme))]].filter(r=>r[2].length);
   box.innerHTML=rows.map(([k,lab,vals])=>`<div class="gif-frow" data-k="${k}"><span>${lab}</span><button type="button" data-v="" aria-pressed="${gifF[k]===""}">All</button>${vals.map(v=>`<button type="button" data-v="${esc(v)}" aria-pressed="${gifF[k]===v}">${esc(v)}</button>`).join("")}</div>`).join("")}
 function renderGifs(){const g=$("#gifGrid");if(!g)return;$("#gifCityWrap").hidden=gifMode!=="nights";$("#gifFilters").hidden=gifMode!=="bts";
-  if(gifMode==="bts"){renderGifFilters();const L=(GIFS.giphy||[]).filter(x=>(!gifF.source||x.source===gifF.source)&&(!gifF.member||(x.members||[]).includes(gifF.member))&&(!gifF.meme||x.meme===gifF.meme));
+  if(gifMode==="bts"){renderGifFilters();const L=(GIFS.giphy||[]).filter(x=>(!gifF.source||srcGroup(x.source)===gifF.source)&&(!gifF.member||(x.members||[]).includes(gifF.member))&&(!gifF.meme||x.meme===gifF.meme));
     g.innerHTML=L.length?L.map(giphyTile).join(""):`<p class="gif-empty">No GIFs match. Try "All".</p>`;return}
   if(gifMode==="fav"){g.innerHTML=GIFS.favorites.length?GIFS.favorites.map(x=>gifTile(x.file,x.title,/square/.test(x.file))).join(""):`<p class="gif-empty">Favorites are coming soon.</p>`;return}
   if(gifMode==="army"){g.innerHTML=GIFS.army.length?GIFS.army.map(x=>gifTile(x.file,x.title+(x.by?" · "+x.by:""),x.square)).join(""):`<p class="gif-empty">No ARMY GIFs yet. Be the first: share yours below.</p>`;return}
