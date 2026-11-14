@@ -25,5 +25,5 @@ iframe{border:0;width:390px;height:834px;transform:scale(.7692);transform-origin
 <div class="end" id="end"><div class="q">Which surprise song<br>did your city get?</div><div class="w"><span class="r">DJ Spin</span><br><span class="p">That</span></div><div class="u">DJSPINTHAT.NET</div><div class="f">Fan-made · Not affiliated with BTS, HYBE or BIGHIT MUSIC</div></div>
 <script>
 window.caption=(step,t,sub)=>{const c=document.getElementById('cap');c.classList.add('off');setTimeout(()=>{document.getElementById('step').textContent=step;document.getElementById('t').innerHTML=t;document.getElementById('sub').textContent=sub||'';c.classList.remove('off')},350)};
-window.endCard=()=>document.getElementById('end').classList.add('on');
+window.endCard=(q)=>{if(q)document.querySelector('#end .q').innerHTML=q;document.getElementById('end').classList.add('on')};
 </script></body></html>
