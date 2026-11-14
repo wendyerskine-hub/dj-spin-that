@@ -228,6 +228,8 @@ select option{background:#22123a;color:var(--ink)}
 .gif-tile figcaption{font-size:13px;color:var(--ink);line-height:1.3}
 .gif-tile .gbtns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .gif-tile .gbtns a,.gif-tile .gbtns button{flex:1 1 auto;text-align:center;font:inherit;font-size:12px;font-weight:600;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;cursor:pointer}
+.giphy-follow{text-decoration:none;display:inline-flex;align-items:center;gap:8px;font-size:14px}
+.giphy-follow .gdot{width:10px;height:10px;border-radius:2px;background:linear-gradient(135deg,#00ff99,#00ccff 35%,#9933ff 70%,#ff6666)}
 .gif-empty{grid-column:1/-1;color:var(--muted);font-size:14px;padding:12px 0}
 .gif-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
 .gif-act{border:1px dashed var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;min-width:0}
@@ -509,6 +511,7 @@ footer a{color:var(--violet)}
   <section class="station gifs" id="gifs">
     <h2><small>GIF corner</small>GIFs to share</h2>
     <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
+    <div class="row"><a class="btn ghost giphy-follow" href="https://giphy.com/channel/djspinthat" target="_blank" rel="noopener"><span class="gdot" aria-hidden="true"></span>Follow @djspinthat on GIPHY ↗</a></div>
     <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
       <button type="button" data-g="fav" aria-pressed="true">Favorites</button>
       <button type="button" data-g="nights" aria-pressed="false">Every night</button>
@@ -811,6 +814,7 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("[data-gif]"))track("gif/download/"+e.target.closest("[data-gif]").dataset.gif);
   else if(e.target.closest("[data-copy]"))track("gif/copy-link");
   else if(e.target.closest("#gifSubmit"))track("gif/submit");
+  else if(e.target.closest(".giphy-follow"))track("gif/giphy-channel");
   else if(e.target.closest("#gifReqSend"))track("gif/request");
   else if(e.target.closest(".acard"))track("army/"+e.target.closest(".acard").dataset.acct);
   else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
