@@ -542,12 +542,12 @@ footer a{color:var(--violet)}
     <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
     <div class="row"><a class="btn ghost giphy-follow" href="https://giphy.com/channel/djspinthat" target="_blank" rel="noopener"><span class="gdot" aria-hidden="true"></span>Follow @djspinthat on GIPHY ↗</a></div>
     <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
-      <button type="button" data-g="bts" aria-pressed="false">BTS GIFs</button>
-      <button type="button" data-g="fav" aria-pressed="true">Favorites</button>
+      <button type="button" data-g="bts" aria-pressed="true">BTS GIFs</button>
+      <button type="button" data-g="fav" aria-pressed="false">Favorites</button>
       <button type="button" data-g="nights" aria-pressed="false">Every night</button>
       <button type="button" data-g="army" aria-pressed="false">From ARMY</button>
     </div>
-    <div class="gif-filters" id="gifFilters" hidden></div>
+    <div class="gif-filters" id="gifFilters"></div>
     <div class="field" id="gifCityWrap" hidden><label for="gifCity">City</label><select id="gifCity"></select></div>
     <div class="gif-grid" id="gifGrid" aria-live="polite"></div>
     <div class="gif-actions">
@@ -757,11 +757,11 @@ function spin(){
 $("#spinBtn").addEventListener("click",spin);
 
 /* service toggle */
-document.querySelectorAll(".seg button").forEach(b=>{
+document.querySelectorAll(".qrbox .seg button").forEach(b=>{
   b.setAttribute("aria-pressed",b.dataset.svc===svc);
   b.addEventListener("click",()=>{
     svc=b.dataset.svc;try{localStorage.setItem("arirang-svc",svc)}catch(e){}
-    document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.svc===svc));
+    document.querySelectorAll(".qrbox .seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.svc===svc));
     updateSpinQR();renderCity();if(lastBias)renderBias(lastBias,lastBiasPick);
   });
 });
@@ -1013,7 +1013,7 @@ $("#ytForm").addEventListener("submit",e=>{e.preventDefault();updateYt();$("#ytG
 
 /* ---------- GIF corner ---------- */
 const ISSUES="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
-let GIFS={favorites:[],army:[],giphy:[]},gifMode="fav",gifF={source:"",member:"",meme:""};
+let GIFS={favorites:[],army:[],giphy:[]},gifMode="bts",gifF={source:"",member:"",meme:""};
 fetch("gifs.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{GIFS=j;renderGifs()}).catch(()=>renderGifs());
 function gifTile(file,title,sq){const abs="https://djspinthat.net/"+file;const name=file.split("/").pop();
   return `<figure class="gif-tile${sq?" sq":""}"><img src="${esc(file)}" alt="${esc(title)}" loading="lazy" decoding="async"><figcaption>${esc(title)}</figcaption><div class="gbtns"><a href="${esc(file)}" download="${esc(name)}" data-gif="${esc(name)}">Download</a><button type="button" data-copy="${esc(abs)}">Copy link</button></div></figure>`}
