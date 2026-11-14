@@ -684,8 +684,12 @@ function linkForSvc(title,artist,which){
   return which==="apple"?`https://music.apple.com/us/search?term=${q}`:`https://open.spotify.com/search/${q}`;
 }
 function linkFor(title,artist){return linkForSvc(title,artist,svc)}
-function dancePracticeBtn(title,artist){const q=((artist||"BTS")+" "+title.replace(/\s*\(.*?\)\s*/g," ")+" dance practice").replace(/\s+/g," ").trim();
-  return `<a class="svc dp" data-q="${esc(q)}" data-t="${esc(title)}" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Dance practice on YouTube</a>`}
+// Songs with an official BTS dance practice video (mostly title tracks). Everything else links to live performances.
+const DANCE_PRACTICE=new Set(["nomoredream","wearebulletproofpt2","no","boyinluv","justoneday","danger","warofhormone","ineedu","dope","run","fire","saveme","bloodsweattears","nottoday","micdrop","dna","gogo","fakelove","idol","boywithluv","dionysus","on","blackswan","dynamite","butter","permissiontodance","baepsaesilverspoon"]);
+function dancePracticeBtn(title,artist){const clean=title.replace(/\s*\(.*?\)\s*/g," ").trim();const key=title.toLowerCase().replace(/[^a-z0-9]/g,"");
+  const solo=artist&&artist!=="BTS";const dp=!solo&&DANCE_PRACTICE.has(key);
+  const q=((artist||"BTS")+" "+(key==="baepsaesilverspoon"?"Silver Spoon":clean)+(dp?" dance practice":" live performance")).replace(/\s+/g," ").trim();
+  return `<a class="svc dp${dp?"":" live"}" data-q="${esc(q)}" data-t="${esc(title)}" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${dp?"Dance practice on YouTube":"Live performance on YouTube"}</a>`}
 function svcButtons(title,artist){
   if(offStream(title))return `<div class="svc-btns"><a class="svc sc" href="${linkForSvc(title,artist,"soundcloud")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Listen on SoundCloud</a><a class="svc yt" data-t="${esc(title)}" data-a="${esc(artist||"BTS")}" href="${linkForSvc(title,artist,"youtube")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Watch on YouTube</a><span class="svc-note">Not on Spotify or Apple Music. BTS released it free on their official SoundCloud.</span>${dancePracticeBtn(title,artist)}</div>`;
   return `<div class="svc-btns"><a class="svc sp" data-t="${esc(title)}" data-a="${esc(artist||"BTS")}" href="${linkForSvc(title,artist,"spotify")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Spotify</a><a class="svc am" data-t="${esc(title)}" data-a="${esc(artist||"BTS")}" href="${linkForSvc(title,artist,"apple")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Apple Music</a>${dancePracticeBtn(title,artist)}</div>`;
@@ -878,7 +882,7 @@ $("#biasBtn").addEventListener("click",()=>{const m=lastBias||pick(MEMBERS);rend
 function track(path,title){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(path).slice(0,200),title:title||String(path),event:true})}catch(e){}}
 document.addEventListener("click",e=>{
   const a=e.target.closest("a.svc");
-  if(a){const card=a.closest(".ns");const t=card?card.querySelector("h3").textContent:(current||"");track((a.classList.contains("sp")?"spotify/":a.classList.contains("am")?"apple-music/":a.classList.contains("sc")?"soundcloud/":a.classList.contains("dp")?"dance-practice/":"youtube/")+t);return}
+  if(a){const card=a.closest(".ns");const t=card?card.querySelector("h3").textContent:(current||"");track((a.classList.contains("sp")?"spotify/":a.classList.contains("am")?"apple-music/":a.classList.contains("sc")?"soundcloud/":a.classList.contains("dp")?(a.classList.contains("live")?"live-performance/":"dance-practice/"):"youtube/")+t);return}
   if(e.target.closest(".qrtoggle"))track("qr-code-shown");
   else if(e.target.closest("#ytGo"))track("youtube-search/"+$("#ytPreview").textContent);
   else if(e.target.closest("a.lyr")){const l=e.target.closest("a.lyr");track("lyrics/"+l.dataset.lang+"/"+$("#vaultSel").value)}
