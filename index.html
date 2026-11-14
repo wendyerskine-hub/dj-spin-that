@@ -698,13 +698,13 @@ function svcButtons(title,artist){
    Apple Music: look up the exact track with Apple's free iTunes Search API (JSONP, runs in the visitor's browser)
    and point the button at that song. Spotify: on phones, open the app straight into a search for the song
    (spotify:search:), falling back to the Spotify website search if the app isn't installed. */
-const SONG_CACHE_KEY="djst-am-v1";let amCache={};try{amCache=JSON.parse(localStorage.getItem(SONG_CACHE_KEY)||"{}")}catch(e){}
+const SONG_CACHE_KEY="djst-am-v2";try{localStorage.removeItem("djst-am-v1")}catch(e){}let amCache={};try{amCache=JSON.parse(localStorage.getItem(SONG_CACHE_KEY)||"{}")}catch(e){}
 const normT=t=>String(t).toLowerCase().replace(/\(.*?\)/g," ").replace(/[^a-z0-9]+/g," ").trim();
 const amPending={};let amN=0;
-function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key]!==undefined)return cb(amCache[key]);
+function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key])return cb(amCache[key]);
   if(amPending[key]){amPending[key].push(cb);return}amPending[key]=[cb];
   const name="__djstIt"+(++amN),sc=document.createElement("script");let done=false;
-  const finish=url=>{if(done)return;done=true;amCache[key]=url||"";try{localStorage.setItem(SONG_CACHE_KEY,JSON.stringify(amCache))}catch(e){}(amPending[key]||[]).forEach(f=>f(url||""));delete amPending[key];try{delete window[name]}catch(e){}sc.remove()};
+  const finish=url=>{if(done)return;done=true;if(url){amCache[key]=url;try{localStorage.setItem(SONG_CACHE_KEY,JSON.stringify(amCache))}catch(e){}}(amPending[key]||[]).forEach(f=>f(url||""));delete amPending[key];try{delete window[name]}catch(e){}sc.remove()};
   window[name]=j=>{const want=normT(title),art=String(artist).toLowerCase();
     const rs=(j&&j.results||[]).filter(r=>r.trackViewUrl&&String(r.artistName||"").toLowerCase().includes(art==="bts"?"bts":art.split(" ")[0]));
     const ALT=/remix|mix\b|ver\.?|version|inst|instrumental|acoustic|live|remaster|edit|japanese|english|sped|slowed|karaoke/i;
@@ -713,7 +713,7 @@ function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key
       if(tl===raw)return 0;if(normT(tn)===want&&!alt)return 1;if(normT(tn).startsWith(want)&&!alt)return 2;if(normT(tn)===want)return 3;if(normT(tn).includes(want))return 4;return 9};
     const best=rs.map(r=>[score(r),r]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0])[0];
     finish(best?best[1].trackViewUrl:"")};
-  sc.onerror=()=>finish("");setTimeout(()=>finish(""),6000);
+  sc.onerror=()=>finish("");setTimeout(()=>finish(""),12000);
   sc.src="https://itunes.apple.com/search?"+new URLSearchParams({term:(artist+" "+title.replace(/\(.*?\)/g," ")).trim(),entity:"song",limit:"15",country:"us",callback:name});
   document.head.appendChild(sc)}
 const amIO="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const a=en.target;amIO.unobserve(a);
