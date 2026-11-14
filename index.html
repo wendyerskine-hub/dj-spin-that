@@ -76,6 +76,12 @@ select option{background:#22123a;color:var(--ink)}
 .row>.field{flex:1 1 180px;display:grid;gap:6px;min-width:0}
 
 /* spin result */
+.djwrap{margin:-4px -6px 0;position:relative}
+.djtable{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 24px rgba(0,0,0,.6))}
+.djtable text{font-family:inherit}
+#dj-title{transition:opacity .15s}
+.djwrap.landed #dj-title{animation:djland .6s ease-out}
+@keyframes djland{0%{opacity:.2}30%{opacity:1}55%{opacity:.6}100%{opacity:1}}
 .spin-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:center}
 @media (max-width:720px){.spin-body{grid-template-columns:1fr}}
 .song-title{font-family:var(--f-display);font-size:clamp(34px,6vw,64px);line-height:1;margin:0;text-wrap:balance}
@@ -336,6 +342,75 @@ footer a{color:var(--violet)}
 
     <section class="station spin" id="spin">
       <h2><small>Station 1 · DJ, spin that</small>A random surprise song from the tour</h2>
+      <div class="djwrap" aria-hidden="true">
+<svg class="djtable" role="img" aria-label="DJ turntables spinning to pick a surprise song" viewBox="40 50 1120 590" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="dj-bodyBaseGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#232938"/><stop offset="2%" stop-color="#141824"/><stop offset="98%" stop-color="#0E111A"/><stop offset="100%" stop-color="#05060A"/></linearGradient>
+<linearGradient id="dj-deckFaceGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1C2130"/><stop offset="100%" stop-color="#10131E"/></linearGradient>
+<linearGradient id="dj-centerMixerGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#181D29"/><stop offset="100%" stop-color="#0D1017"/></linearGradient>
+<filter id="dj-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+<radialGradient id="dj-platterBevel"><stop offset="0%" stop-color="#141824"/><stop offset="70%" stop-color="#090B10"/><stop offset="95%" stop-color="#2A3245"/><stop offset="100%" stop-color="#0B0D13"/></radialGradient>
+</defs>
+<rect x="40" y="50" width="1120" height="580" rx="36" fill="#0A0C12" stroke="#2D374D" stroke-width="1.5"/>
+<path d="M 40 590 L 60 630 L 1140 630 L 1160 590 Z" fill="#07080D"/>
+<rect x="46" y="56" width="1108" height="540" rx="28" fill="url(#dj-bodyBaseGrad)" stroke="#1F2637" stroke-width="2"/>
+<g fill="#3D4963" stroke="#121622" stroke-width="1.5"><circle cx="76" cy="86" r="4.5"/><circle cx="1124" cy="86" r="4.5"/><circle cx="76" cy="566" r="4.5"/><circle cx="1124" cy="566" r="4.5"/></g>
+<!-- LEFT DECK -->
+<rect x="70" y="80" width="370" height="490" rx="20" fill="url(#dj-deckFaceGrad)" stroke="#273145" stroke-width="1.5"/>
+<rect x="100" y="105" width="310" height="12" rx="6" fill="#180B10" stroke="#FF2A4B" stroke-opacity=".4"/>
+<rect id="dj-barL" x="102" y="107" width="220" height="8" rx="4" fill="#FF2A4B" filter="url(#dj-glow)" opacity=".9"/>
+<text x="100" y="135" fill="#6B7280" font-family="JetBrains Mono" font-size="9" letter-spacing="1">DECK A // MASTER</text>
+<text x="340" y="135" fill="#FF2A4B" font-family="JetBrains Mono" font-size="9" font-weight="bold">TEMPO +0.0%</text>
+<circle cx="255" cy="310" r="154" fill="none" stroke="#FF2A4B" stroke-opacity=".25" stroke-width="4"/>
+<circle cx="255" cy="310" r="148" fill="url(#dj-platterBevel)" stroke="#232C3D" stroke-width="3"/>
+<g id="dj-leftPlatter"><circle cx="255" cy="310" r="132" fill="none" stroke="#121620" stroke-width="6"/><circle cx="255" cy="310" r="118" fill="none" stroke="#19202E" stroke-width="1.5"/><circle cx="255" cy="310" r="105" fill="none" stroke="#151A26" stroke-width="1.5"/><circle cx="255" cy="310" r="92" fill="none" stroke="#1C2433" stroke-width="1.5"/><circle cx="255" cy="310" r="78" fill="none" stroke="#151A26" stroke-width="1.5"/>
+<circle cx="255" cy="310" r="140" fill="none" stroke="#FF2A4B" stroke-width="3" stroke-dasharray="3, 10" opacity=".8"/>
+<circle cx="255" cy="310" r="50" fill="#B91C1C" stroke="#FF2A4B" stroke-width="2.5"/><path d="M 255 310 L 290 265 A 50 50 0 0 1 305 310 Z" fill="#fff" opacity=".22"/><circle cx="255" cy="310" r="12" fill="#0F131D" stroke="#fff" stroke-width="1.5"/><circle cx="255" cy="310" r="4" fill="#fff"/></g>
+<g transform="translate(100,485)" font-family="JetBrains Mono" font-size="10" font-weight="bold" text-anchor="middle">
+<rect id="dj-padL1" x="0" y="0" width="36" height="30" rx="6" fill="#2A141A" stroke="#FF2A4B" stroke-width="1.5"/><text x="18" y="19" fill="#FF2A4B">HOT1</text>
+<rect id="dj-padL2" x="46" y="0" width="36" height="30" rx="6" fill="#2A141A" stroke="#FF2A4B" stroke-width="1.5"/><text x="64" y="19" fill="#FF2A4B">HOT2</text>
+<rect id="dj-padL3" x="92" y="0" width="36" height="30" rx="6" fill="#2A141A" stroke="#FF2A4B" stroke-width="1.5"/><text x="110" y="19" fill="#FF2A4B">LOOP</text>
+<rect x="138" y="0" width="36" height="30" rx="6" fill="#1C212E" stroke="#3A465F"/><text x="156" y="19" fill="#6B7280" font-weight="normal">ROLL</text>
+<circle cx="230" cy="15" r="18" fill="#1C1820" stroke="#FF2A4B" stroke-width="2"/><text x="230" y="19" fill="#FF2A4B" font-family="Barlow Condensed" font-size="13">CUE</text>
+<circle cx="280" cy="15" r="18" fill="#2E121B" stroke="#FF2A4B" stroke-width="2.5" filter="url(#dj-glow)"/><polygon points="276,10 288,15 276,20" fill="#fff"/></g>
+<!-- MIXER -->
+<rect x="460" y="80" width="280" height="490" rx="16" fill="url(#dj-centerMixerGrad)" stroke="#273145" stroke-width="1.5"/>
+<rect x="480" y="100" width="240" height="76" rx="10" fill="#080A0F" stroke="#2E394E" stroke-width="1.5"/>
+<svg x="490" y="110" width="220" height="50" viewBox="0 0 220 50" overflow="hidden"><g id="dj-wave">
+<path d="M -80 24 Q -60 8 -40 24 T 0 24 T 40 24 T 80 24 T 120 24 T 160 24 T 200 24 T 240 24 T 280 24" fill="none" stroke="#FF2A4B" stroke-width="2.5"/>
+<path d="M -80 24 Q -60 38 -40 24 T 0 24 T 40 24 T 80 24 T 120 24 T 160 24 T 200 24 T 240 24 T 280 24" fill="none" stroke="#A855F7" stroke-width="2.5"/></g>
+<line x1="110" y1="2" x2="110" y2="44" stroke="#fff" stroke-width="1.5" stroke-dasharray="2, 2"/></svg>
+<text x="496" y="164" fill="#94A3B8" font-family="JetBrains Mono" font-size="9">128.00 BPM</text><text x="704" y="164" text-anchor="end" fill="#94A3B8" font-family="JetBrains Mono" font-size="9">SYNC LOCK</text>
+<g transform="translate(515,200)" font-family="JetBrains Mono" font-size="8" fill="#6B7280" text-anchor="middle"><circle cx="0" cy="0" r="14" fill="#1F2636" stroke="#FF2A4B" stroke-width="2"/><line x1="0" y1="-3" x2="0" y2="-12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><text y="24">HI</text><circle cx="0" cy="50" r="14" fill="#1F2636" stroke="#FF2A4B" stroke-width="1.5"/><line x1="0" y1="47" x2="0" y2="38" stroke="#FF2A4B" stroke-width="2" stroke-linecap="round"/><text y="74">MID</text><circle cx="0" cy="100" r="14" fill="#1F2636" stroke="#FF2A4B" stroke-width="1.5"/><line x1="0" y1="97" x2="0" y2="88" stroke="#FF2A4B" stroke-width="2" stroke-linecap="round"/><text y="124">LOW</text></g>
+<g transform="translate(590,195)"><rect x="0" y="0" width="6" height="115" rx="3" fill="#11151F"/><rect id="dj-vuL" x="1" y="20" width="4" height="92" rx="2" fill="#FF2A4B" filter="url(#dj-glow)"/><rect x="14" y="0" width="6" height="115" rx="3" fill="#11151F"/><rect id="dj-vuR" x="15" y="15" width="4" height="97" rx="2" fill="#A855F7" filter="url(#dj-glow)"/></g>
+<g transform="translate(685,200)" font-family="JetBrains Mono" font-size="8" fill="#6B7280" text-anchor="middle"><circle cx="0" cy="0" r="14" fill="#1F2636" stroke="#A855F7" stroke-width="2"/><line x1="0" y1="-3" x2="0" y2="-12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><text y="24">HI</text><circle cx="0" cy="50" r="14" fill="#1F2636" stroke="#A855F7" stroke-width="1.5"/><line x1="0" y1="47" x2="0" y2="38" stroke="#A855F7" stroke-width="2" stroke-linecap="round"/><text y="74">MID</text><circle cx="0" cy="100" r="14" fill="#1F2636" stroke="#A855F7" stroke-width="1.5"/><line x1="0" y1="97" x2="0" y2="88" stroke="#A855F7" stroke-width="2" stroke-linecap="round"/><text y="124">LOW</text></g>
+<g transform="translate(515,345)"><rect x="-3" y="0" width="6" height="70" rx="3" fill="#0C0E14" stroke="#252D3F"/><rect x="-14" y="20" width="28" height="16" rx="3" fill="#2E374D" stroke="#E2E8F0" stroke-width="1.5"/><line x1="-14" y1="28" x2="14" y2="28" stroke="#FF2A4B" stroke-width="2"/></g>
+<g transform="translate(685,345)"><rect x="-3" y="0" width="6" height="70" rx="3" fill="#0C0E14" stroke="#252D3F"/><rect x="-14" y="25" width="28" height="16" rx="3" fill="#2E374D" stroke="#E2E8F0" stroke-width="1.5"/><line x1="-14" y1="33" x2="14" y2="33" stroke="#A855F7" stroke-width="2"/></g>
+<g transform="translate(480,445)"><rect x="0" y="0" width="240" height="65" rx="8" fill="#06070B" stroke="#242B3C" stroke-width="1.5"/><rect x="2" y="2" width="236" height="61" rx="6" fill="#0B0D14"/>
+<g id="dj-brand"><text x="120" y="32" text-anchor="middle" font-family="Barlow Condensed" font-weight="900" font-size="28" letter-spacing="1"><tspan fill="#FF2A4B" filter="url(#dj-glow)">DJ SPIN </tspan><tspan fill="#A855F7" filter="url(#dj-glow)">THAT</tspan></text>
+<text x="120" y="52" text-anchor="middle" fill="#94A3B8" font-family="JetBrains Mono" font-size="9" letter-spacing="3">DJSPINTHAT.NET</text></g>
+<text id="dj-title" x="120" y="38" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-weight="900" font-size="26" fill="#fff" opacity="0" filter="url(#dj-glow)"></text></g>
+<g transform="translate(530,532)"><rect x="0" y="6" width="140" height="6" rx="3" fill="#0A0D13" stroke="#273145"/><g id="dj-xfader"><rect x="58" y="0" width="24" height="18" rx="4" fill="#E2E8F0" stroke="#000" stroke-width="1.5"/><line x1="70" y1="2" x2="70" y2="16" stroke="#FF2A4B" stroke-width="2"/></g><text x="-12" y="12" fill="#FF2A4B" font-family="JetBrains Mono" font-size="9" font-weight="bold">A</text><text x="148" y="12" fill="#A855F7" font-family="JetBrains Mono" font-size="9" font-weight="bold">B</text></g>
+<!-- RIGHT DECK -->
+<rect x="760" y="80" width="370" height="490" rx="20" fill="url(#dj-deckFaceGrad)" stroke="#273145" stroke-width="1.5"/>
+<rect x="790" y="105" width="310" height="12" rx="6" fill="#130B1C" stroke="#A855F7" stroke-opacity=".4"/>
+<rect id="dj-barR" x="880" y="107" width="220" height="8" rx="4" fill="#A855F7" filter="url(#dj-glow)" opacity=".9"/>
+<text x="790" y="135" fill="#6B7280" font-family="JetBrains Mono" font-size="9" letter-spacing="1">DECK B // SLAVE</text>
+<text x="1030" y="135" fill="#A855F7" font-family="JetBrains Mono" font-size="9" font-weight="bold">TEMPO -0.4%</text>
+<circle cx="945" cy="310" r="154" fill="none" stroke="#A855F7" stroke-opacity=".25" stroke-width="4"/>
+<circle cx="945" cy="310" r="148" fill="url(#dj-platterBevel)" stroke="#232C3D" stroke-width="3"/>
+<g id="dj-rightPlatter"><circle cx="945" cy="310" r="132" fill="none" stroke="#121620" stroke-width="6"/><circle cx="945" cy="310" r="118" fill="none" stroke="#19202E" stroke-width="1.5"/><circle cx="945" cy="310" r="105" fill="none" stroke="#151A26" stroke-width="1.5"/><circle cx="945" cy="310" r="92" fill="none" stroke="#1C2433" stroke-width="1.5"/><circle cx="945" cy="310" r="78" fill="none" stroke="#151A26" stroke-width="1.5"/>
+<circle cx="945" cy="310" r="140" fill="none" stroke="#A855F7" stroke-width="3" stroke-dasharray="3, 10" opacity=".8"/>
+<circle cx="945" cy="310" r="50" fill="#7E22CE" stroke="#A855F7" stroke-width="2.5"/><path d="M 945 310 L 980 265 A 50 50 0 0 1 995 310 Z" fill="#fff" opacity=".22"/><circle cx="945" cy="310" r="12" fill="#0F131D" stroke="#fff" stroke-width="1.5"/><circle cx="945" cy="310" r="4" fill="#fff"/></g>
+<g transform="translate(790,485)" font-family="JetBrains Mono" font-size="10" font-weight="bold" text-anchor="middle">
+<rect id="dj-padR1" x="0" y="0" width="36" height="30" rx="6" fill="#1C142A" stroke="#A855F7" stroke-width="1.5"/><text x="18" y="19" fill="#A855F7">HOT1</text>
+<rect id="dj-padR2" x="46" y="0" width="36" height="30" rx="6" fill="#1C142A" stroke="#A855F7" stroke-width="1.5"/><text x="64" y="19" fill="#A855F7">HOT2</text>
+<rect id="dj-padR3" x="92" y="0" width="36" height="30" rx="6" fill="#1C142A" stroke="#A855F7" stroke-width="1.5"/><text x="110" y="19" fill="#A855F7">LOOP</text>
+<rect x="138" y="0" width="36" height="30" rx="6" fill="#1C212E" stroke="#3A465F"/><text x="156" y="19" fill="#6B7280" font-weight="normal">SLICER</text>
+<circle cx="230" cy="15" r="18" fill="#1A1820" stroke="#A855F7" stroke-width="2"/><text x="230" y="19" fill="#A855F7" font-family="Barlow Condensed" font-size="13">CUE</text>
+<circle cx="280" cy="15" r="18" fill="#27123A" stroke="#A855F7" stroke-width="2.5" filter="url(#dj-glow)"/><polygon points="276,10 288,15 276,20" fill="#fff"/></g>
+</svg>
+      </div>
       <div class="spin-body">
         <div id="spinResult" aria-live="polite"></div>
         <div class="qrbox">
@@ -561,15 +636,39 @@ function updateSpinQR(){
   drawQR($("#spinQR"),url,156);
   $("#spinBtns").innerHTML=svcButtons(current);
 }
+/* DJ table: platters spin up, titles flick on the mixer screen, then land */
+const DJ=(id=>document.getElementById("dj-"+id));
+const djReduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let djAngle=0,djSpeed=0,djIdle=djReduce?0:50,djBusy=false,djLast=0,djT=0;
+function djSetTitle(t,show){const el=DJ("title");if(!el)return;const u=String(t).toUpperCase();el.textContent=u;
+  el.removeAttribute("textLength");el.removeAttribute("lengthAdjust");el.setAttribute("font-size",u.length>16?20:26);
+  if(u.length>14){el.setAttribute("textLength","220");el.setAttribute("lengthAdjust","spacingAndGlyphs")}
+  el.setAttribute("opacity",show?1:0);DJ("brand").setAttribute("opacity",show?0:1)}
+function djFrame(ts){const dt=djLast?Math.min(.05,(ts-djLast)/1000):0;djLast=ts;djT+=dt;
+  if(!djBusy)djSpeed+=(djIdle-djSpeed)*Math.min(1,dt*2);
+  djAngle=(djAngle+djSpeed*dt)%360;const k=Math.min(1,djSpeed/1400);
+  const L=DJ("leftPlatter"),R=DJ("rightPlatter");if(L){L.setAttribute("transform",`rotate(${djAngle} 255 310)`);R.setAttribute("transform",`rotate(${djAngle*1.03} 945 310)`)}
+  const w=DJ("wave");if(w)w.setAttribute("transform",`translate(${(djT*(20+260*k))%80} 0)`);
+  const pulse=.5+.5*Math.sin(djT*(4+22*k));const vl=20+(30+60*k)*pulse,vr=20+(30+60*k)*(1-pulse*.7);
+  const vL=DJ("vuL"),vR=DJ("vuR");if(vL){vL.setAttribute("height",vl);vL.setAttribute("y",112-vl);vR.setAttribute("height",vr);vR.setAttribute("y",112-vr)}
+  const bl=DJ("barL"),br=DJ("barR");if(bl){bl.setAttribute("width",120+180*k*pulse+40);const wr=120+180*k*(1-pulse)+40;br.setAttribute("width",wr);br.setAttribute("x",1100-wr)}
+  const xf=DJ("xfader");if(xf)xf.setAttribute("transform",`translate(${(30+20*k)*Math.sin(djT*(1+3*k))} 0)`);
+  const step=Math.floor(djT*(2+14*k))%6;["padL1","padL2","padL3","padR1","padR2","padR3"].forEach((p,i)=>{const e=DJ(p);if(e)e.setAttribute("fill",i===step&&k>.05?(i<3?"#FF2A4B":"#A855F7"):(i<3?"#2A141A":"#1C142A"))});
+  if(!djReduce)requestAnimationFrame(djFrame);}
+if(DJ("leftPlatter"))requestAnimationFrame(djFrame);
 function spin(){
-  if(!playedTitles.length)return;
-  const box=$("#spinResult");let n=0;box.parentElement.classList.add("shuffling");
-  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduce){box.parentElement.classList.remove("shuffling");const r=pick(playedTitles);renderSpin(r,false);track("spin-result/"+r);return}
-  const t=setInterval(()=>{
-    $("#spinResult").innerHTML=`<p class="song-title">${esc(pick(playedTitles))}</p>`;
-    if(++n>9){clearInterval(t);box.parentElement.classList.remove("shuffling");const r=pick(playedTitles);renderSpin(r,true);track("spin-result/"+r)}
-  },70);
+  if(!playedTitles.length||djBusy)return;
+  const r=pick(playedTitles);const wrap=document.querySelector(".djwrap");
+  const land=()=>{djSetTitle(r,true);if(wrap){wrap.classList.remove("landed");void wrap.offsetWidth;wrap.classList.add("landed")}renderSpin(r,true);if(typeof track==="function")track("spin-result/"+r)};
+  if(djReduce||!DJ("leftPlatter")){land();return}
+  djBusy=true;const t0=performance.now(),UP=280,HOLD=1100,DOWN=1400,MAX=1400;let nextFlick=0;
+  (function run(now){const e=now-t0;
+    if(e<UP)djSpeed=djIdle+(MAX-djIdle)*(e/UP);
+    else if(e<UP+HOLD)djSpeed=MAX;
+    else if(e<UP+HOLD+DOWN){const f=(e-UP-HOLD)/DOWN;djSpeed=MAX*(1-f)*(1-f)}
+    else{djSpeed=0;djBusy=false;land();setTimeout(()=>{if(!djBusy)djIdle=50},1800);djIdle=0;return}
+    if(e>=nextFlick){const ft=pick(playedTitles);djSetTitle(ft,true);$("#spinResult").innerHTML=`<p class="song-title" style="opacity:.75">${esc(ft)}</p>`;nextFlick=e+60+(1-Math.min(1,djSpeed/MAX))*320}
+    requestAnimationFrame(run)})(t0);
 }
 $("#spinBtn").addEventListener("click",spin);
 
