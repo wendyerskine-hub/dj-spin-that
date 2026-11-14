@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>GIF labeler · DJ Spin That</title>
+<style>
+:root{--bg:#110a1d;--ink:#f4efff;--muted:#b8a9d6;--gold:#c77dff;--line:rgba(244,239,255,.16);--field:#1f1433}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,sans-serif;padding:20px max(16px,env(safe-area-inset-right)) 80px max(16px,env(safe-area-inset-left))}
+main{max-width:620px;margin:0 auto;display:grid;gap:16px}
+h1{font-size:24px;margin:0}p{color:var(--muted);margin:0}
+label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+textarea,input,select{width:100%;font:inherit;font-size:16px;padding:10px;border-radius:10px;background:var(--field);color:var(--ink);border:1px solid var(--line)}
+textarea{min-height:120px;font-size:13px;font-family:ui-monospace,monospace}
+.btn{font:inherit;font-weight:700;font-size:17px;padding:13px 22px;border:0;border-radius:999px;background:var(--gold);color:#1a0b2e;cursor:pointer}
+.c{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px}
+.c img{width:100%;border-radius:10px;background:#000;min-height:120px;object-fit:contain}
+.c code{color:var(--gold);font-size:12px;overflow-wrap:anywhere}
+.m{display:flex;flex-wrap:wrap;gap:6px}
+.m label{display:inline-flex;align-items:center;gap:6px;text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.m input{width:auto;margin:0;accent-color:var(--gold)}
+.row{display:grid;gap:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.msg{color:var(--gold);font-size:14px}
+</style></head><body><main>
+<h1>GIF labeler</h1>
+<p>1. Paste your GIPHY links below, one per line. 2. Tap <b>Load GIFs</b>. 3. Tick who's in each one and fix the title if you like. 4. Tap <b>Copy results</b> and paste them into the chat.</p>
+<div class="row"><label for="links">GIPHY links</label><textarea id="links" placeholder="https://giphy.com/gifs/...&#10;https://media.giphy.com/media/.../giphy.gif"></textarea></div>
+<div class="two">
+  <div class="row"><label for="src">Source for this batch</label><input id="src" value="Hot Ones"></div>
+  <div class="row"><label for="meme">Collection / meme</label><input id="meme" value="BTS on Hot Ones"></div>
+</div>
+<div class="row"><label for="col">Collection link on GIPHY (optional)</label><input id="col" placeholder="https://giphy.com/channel/DJSpinThat/..."></div>
+<button class="btn" type="button" id="load">Load GIFs</button>
+<div id="list" class="row"></div>
+<button class="btn" type="button" id="copy" hidden>Copy results</button>
+<span class="msg" id="msg"></span>
+<textarea id="out" readonly hidden></textarea>
+</main><script>
+const MEMBERS=["RM","Jin","SUGA","j-hope","Jimin","V","Jung Kook","OT7"];
+const idOf=u=>{u=u.trim();let m=u.match(/media\d*\.giphy\.com\/media\/([A-Za-z0-9]+)/)||u.match(/giphy\.com\/gifs\/(?:.*-)?([A-Za-z0-9]+)\/?$/)||u.match(/^([A-Za-z0-9]{10,})$/);return m?m[1]:null};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById('load').onclick=()=>{
+  const ids=[...new Set(document.getElementById('links').value.split(/\s+/).map(idOf).filter(Boolean))];
+  const L=document.getElementById('list');
+  if(!ids.length){L.innerHTML='<p>No GIPHY links found. Paste links like https://giphy.com/gifs/...</p>';return}
+  L.innerHTML=ids.map((id,i)=>`<div class="c" data-id="${id}"><img src="https://media.giphy.com/media/${id}/giphy.gif" alt="GIF ${i+1}" loading="lazy"><code>#${i+1} · ${id}</code>
+    <div class="m">${MEMBERS.map(m=>`<label><input type="checkbox" value="${esc(m)}">${esc(m)}</label>`).join('')}</div>
+    <div class="row"><label>Title (optional)</label><input class="t" placeholder="e.g. RM · too cool for the heat"></div></div>`).join('');
+  document.getElementById('copy').hidden=false;
+};
+document.getElementById('copy').onclick=()=>{
+  const src=document.getElementById('src').value.trim(),meme=document.getElementById('meme').value.trim(),col=document.getElementById('col').value.trim();
+  const rows=[...document.querySelectorAll('.c')].map((c,i)=>({n:i+1,id:c.dataset.id,members:[...c.querySelectorAll('input[type=checkbox]:checked')].map(x=>x.value),title:c.querySelector('.t').value.trim()}));
+  const text='GIF LABELS\n'+JSON.stringify({source:src,meme,collection:col,gifs:rows});
+  const o=document.getElementById('out');o.value=text;o.hidden=false;
+  navigator.clipboard.writeText(text).then(()=>{document.getElementById('msg').textContent='Copied! Paste it in the chat.'}).catch(()=>{o.select();document.getElementById('msg').textContent='Select the text below and copy it.'});
+};
+</script></body></html>
