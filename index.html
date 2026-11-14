@@ -1026,7 +1026,8 @@ function renderGifFilters(){const box=$("#gifFilters");const L=GIFS.giphy||[];
   box.innerHTML=rows.map(([k,lab,vals])=>`<div class="gif-frow" data-k="${k}"><span>${lab}</span><button type="button" data-v="" aria-pressed="${gifF[k]===""}">All</button>${vals.map(v=>`<button type="button" data-v="${esc(v)}" aria-pressed="${gifF[k]===v}">${esc(v)}</button>`).join("")}</div>`).join("")}
 function renderGifs(){const g=$("#gifGrid");if(!g)return;$("#gifCityWrap").hidden=gifMode!=="nights";$("#gifFilters").hidden=gifMode!=="bts";
   if(gifMode==="bts"){renderGifFilters();const L=(GIFS.giphy||[]).filter(x=>(!gifF.source||srcGroup(x.source)===gifF.source)&&(!gifF.member||(x.members||[]).includes(gifF.member))&&(!gifF.meme||x.meme===gifF.meme));
-    g.innerHTML=L.length?L.map(giphyTile).join(""):`<p class="gif-empty">No GIFs match. Try "All".</p>`;return}
+    const col=(GIFS.collections||[]).filter(c=>!gifF.meme||c.meme===gifF.meme);
+    g.innerHTML=(L.length?L.map(giphyTile).join(""):`<p class="gif-empty">No GIFs match. Try "All".</p>`)+col.map(c=>`<p class="gif-empty"><a class="btn ghost giphy-follow" href="${esc(c.url)}" target="_blank" rel="noopener" data-giphy="collection">See the full "${esc(c.meme)}" set on GIPHY ↗</a></p>`).join("");return}
   if(gifMode==="fav"){g.innerHTML=GIFS.favorites.length?GIFS.favorites.map(x=>gifTile(x.file,x.title,/square/.test(x.file))).join(""):`<p class="gif-empty">Favorites are coming soon.</p>`;return}
   if(gifMode==="army"){g.innerHTML=GIFS.army.length?GIFS.army.map(x=>gifTile(x.file,x.title+(x.by?" · "+x.by:""),x.square)).join(""):`<p class="gif-empty">No ARMY GIFs yet. Be the first: share yours below.</p>`;return}
   const city=$("#gifCity").value;const list=SHOWS.filter(s=>s.city===city);
