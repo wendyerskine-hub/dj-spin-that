@@ -684,8 +684,41 @@ function linkForSvc(title,artist,which){
 function linkFor(title,artist){return linkForSvc(title,artist,svc)}
 function svcButtons(title,artist){
   if(offStream(title))return `<div class="svc-btns"><a class="svc sc" href="${linkForSvc(title,artist,"soundcloud")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Listen on SoundCloud</a><a class="svc yt" href="${linkForSvc(title,artist,"youtube")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Watch on YouTube</a><span class="svc-note">Not on Spotify or Apple Music. BTS released it free on their official SoundCloud.</span></div>`;
-  return `<div class="svc-btns"><a class="svc sp" href="${linkForSvc(title,artist,"spotify")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Spotify</a><a class="svc am" href="${linkForSvc(title,artist,"apple")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Apple Music</a></div>`;
+  return `<div class="svc-btns"><a class="svc sp" data-t="${esc(title)}" data-a="${esc(artist||"BTS")}" href="${linkForSvc(title,artist,"spotify")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Spotify</a><a class="svc am" data-t="${esc(title)}" data-a="${esc(artist||"BTS")}" href="${linkForSvc(title,artist,"apple")}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Play on Apple Music</a></div>`;
 }
+/* ---------- Open the actual song, not just the app ----------
+   Apple Music: look up the exact track with Apple's free iTunes Search API (JSONP, runs in the visitor's browser)
+   and point the button at that song. Spotify: on phones, open the app straight into a search for the song
+   (spotify:search:), falling back to the Spotify website search if the app isn't installed. */
+const SONG_CACHE_KEY="djst-am-v1";let amCache={};try{amCache=JSON.parse(localStorage.getItem(SONG_CACHE_KEY)||"{}")}catch(e){}
+const normT=t=>String(t).toLowerCase().replace(/\(.*?\)/g," ").replace(/[^a-z0-9]+/g," ").trim();
+const amPending={};let amN=0;
+function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key]!==undefined)return cb(amCache[key]);
+  if(amPending[key]){amPending[key].push(cb);return}amPending[key]=[cb];
+  const name="__djstIt"+(++amN),sc=document.createElement("script");let done=false;
+  const finish=url=>{if(done)return;done=true;amCache[key]=url||"";try{localStorage.setItem(SONG_CACHE_KEY,JSON.stringify(amCache))}catch(e){}(amPending[key]||[]).forEach(f=>f(url||""));delete amPending[key];try{delete window[name]}catch(e){}sc.remove()};
+  window[name]=j=>{const want=normT(title),art=String(artist).toLowerCase();
+    const rs=(j&&j.results||[]).filter(r=>r.trackViewUrl&&String(r.artistName||"").toLowerCase().includes(art==="bts"?"bts":art.split(" ")[0]));
+    const ALT=/remix|mix\b|ver\.?|version|inst|instrumental|acoustic|live|remaster|edit|japanese|english|sped|slowed|karaoke/i;
+    const raw=String(title).toLowerCase().trim();
+    const score=r=>{const tn=String(r.trackName||"");const tl=tn.toLowerCase().trim();const alt=ALT.test(tn)&&!ALT.test(title);
+      if(tl===raw)return 0;if(normT(tn)===want&&!alt)return 1;if(normT(tn).startsWith(want)&&!alt)return 2;if(normT(tn)===want)return 3;if(normT(tn).includes(want))return 4;return 9};
+    const best=rs.map(r=>[score(r),r]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0])[0];
+    finish(best?best[1].trackViewUrl:"")};
+  sc.onerror=()=>finish("");setTimeout(()=>finish(""),6000);
+  sc.src="https://itunes.apple.com/search?"+new URLSearchParams({term:(artist+" "+title.replace(/\(.*?\)/g," ")).trim(),entity:"song",limit:"15",country:"us",callback:name});
+  document.head.appendChild(sc)}
+const amIO="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const a=en.target;amIO.unobserve(a);
+  itunesLookup(a.dataset.t,a.dataset.a,url=>{if(url){a.href=url;a.dataset.exact="1"}})}),{rootMargin:"200px"}):null;
+function upgradeAppleLinks(root){(root||document).querySelectorAll("a.svc.am[data-t]:not([data-am])").forEach(a=>{a.dataset.am="1";
+  if(amIO)amIO.observe(a);else itunesLookup(a.dataset.t,a.dataset.a,url=>{if(url){a.href=url;a.dataset.exact="1"}})})}
+new MutationObserver(()=>upgradeAppleLinks()).observe(document.body,{childList:true,subtree:true});upgradeAppleLinks();
+const isPhone=()=>matchMedia("(hover:none) and (pointer:coarse)").matches;
+document.addEventListener("click",e=>{const a=e.target.closest("a.svc.sp[data-t]");if(!a||!isPhone())return;
+  e.preventDefault();const web=a.href;const q=(a.dataset.a+" "+a.dataset.t.replace(/\(.*?\)/g," ")).replace(/\s+/g," ").trim();
+  let left=false;const onHide=()=>{if(document.hidden)left=true};document.addEventListener("visibilitychange",onHide);
+  location.href="spotify:search:"+encodeURIComponent(q);
+  setTimeout(()=>{document.removeEventListener("visibilitychange",onHide);if(!left&&!document.hidden)location.href=web},1600)});
 const QR_SHOW="Show QR code",QR_HIDE="Hide QR code";
 document.addEventListener("click",e=>{const b=e.target.closest(".qrtoggle");if(!b)return;const box=b.closest(".ns,.qrbox");const open=box.classList.toggle("qr-open");b.textContent=open?QR_HIDE:QR_SHOW;b.setAttribute("aria-expanded",open)});
 function drawQR(el,url,size){
