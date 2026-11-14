@@ -4,10 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Spin a random BTS ARIRANG tour surprise song, find the songs from the show you went to, or let your bias pick. Fan-made.">
-<meta property="og:title" content="DJ Spin That S**t!">
-<meta property="og:description" content="Every surprise song from BTS's ARIRANG World Tour, city by city. Updated after every show.">
-<meta property="og:image" content="stage.jpg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DJ Spin That">
+<meta property="og:url" content="https://djspinthat.net/">
+<meta property="og:title" content="DJ Spin That S**t! · Every ARIRANG surprise song">
+<meta property="og:description" content="Which surprise song did your city get? Every BTS ARIRANG tour surprise song, night by night. Updated after every show. Fan-made.">
+<meta property="og:image" content="https://djspinthat.net/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="DJ Spin That turntables with the question: Which surprise song did your city get?">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DJ Spin That S**t! · Every ARIRANG surprise song">
+<meta name="twitter:description" content="Which surprise song did your city get? Night by night, updated after every show. Fan-made.">
+<meta name="twitter:image" content="https://djspinthat.net/og-card.png">
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>DJ Spin That S**t!</title>
@@ -212,6 +221,20 @@ select option{background:#22123a;color:var(--ink)}
 .acard .ahandle{font-family:var(--f-mono);font-size:12px;color:var(--jade);overflow-wrap:anywhere}
 .acard .adesc{font-size:14px;color:var(--muted)}
 .acard .ago{margin-top:6px;font-size:13px;font-weight:600;color:var(--violet)}
+.gif-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(46%,180px),1fr));gap:10px}
+.gif-tile{margin:0;display:grid;gap:6px;border:1px solid var(--line);border-radius:14px;padding:8px;background:rgba(255,255,255,.03);min-width:0}
+.gif-tile img{width:100%;height:auto;border-radius:10px;background:#0b0714;aspect-ratio:9/16;object-fit:cover}
+.gif-tile.sq img{aspect-ratio:1}
+.gif-tile figcaption{font-size:13px;color:var(--ink);line-height:1.3}
+.gif-tile .gbtns{display:flex;gap:6px;flex-wrap:wrap}
+.gif-tile .gbtns a,.gif-tile .gbtns button{flex:1 1 auto;text-align:center;font:inherit;font-size:12px;font-weight:600;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;cursor:pointer}
+.gif-empty{grid-column:1/-1;color:var(--muted);font-size:14px;padding:12px 0}
+.gif-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.gif-act{border:1px dashed var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;min-width:0}
+.gif-act h3{margin:0;font-family:var(--f-display);font-size:20px}
+.gif-act input{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit}
+.gif-act a.btn{text-decoration:none}
+.gif-act a[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .watch form{display:grid;gap:14px}
 .watch .field{display:grid;gap:6px;min-width:0}
 .watch input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -483,6 +506,32 @@ footer a{color:var(--violet)}
     <div id="vaultResult" aria-live="polite"></div>
   </section>
 
+  <section class="station gifs" id="gifs">
+    <h2><small>GIF corner</small>GIFs to share</h2>
+    <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
+    <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
+      <button type="button" data-g="fav" aria-pressed="true">Favorites</button>
+      <button type="button" data-g="nights" aria-pressed="false">Every night</button>
+      <button type="button" data-g="army" aria-pressed="false">From ARMY</button>
+    </div>
+    <div class="field" id="gifCityWrap" hidden><label for="gifCity">City</label><select id="gifCity"></select></div>
+    <div class="gif-grid" id="gifGrid" aria-live="polite"></div>
+    <div class="gif-actions">
+      <div class="gif-act">
+        <h3>Share your GIF</h3>
+        <p class="v-note">Made a GIF from your own fancam or edit? Send it in. Once it's approved, it goes in "From ARMY" with your handle.</p>
+        <div class="row"><a class="btn" id="gifSubmit" href="#" target="_blank" rel="noopener">Share your GIF ↗</a></div>
+        <p class="v-note">Opens a GitHub form where you can drag your GIF in (a free account is needed). No account? DM it to <b>@djspinthat</b> on TikTok.</p>
+      </div>
+      <div class="gif-act">
+        <h3>Request a GIF</h3>
+        <div class="field"><label for="gifReq">What GIF would you love?</label><input id="gifReq" type="text" autocomplete="off" placeholder="e.g. Tokyo Night 1 Crystal Snow, Jimin's spin in Busan"></div>
+        <div class="row"><a class="btn ghost" id="gifReqSend" href="#" target="_blank" rel="noopener" aria-disabled="true">Send request ↗</a><button class="btn ghost" type="button" id="gifReqCopy">Copy as text</button><span class="fix-msg" id="gifReqMsg" aria-live="polite"></span></div>
+      </div>
+    </div>
+    <p class="v-note">Only share GIFs you made yourself. Fan-made only, and no sasaeng content, ever.</p>
+  </section>
+
   <section class="station watch" id="watch">
     <h2><small>Watch it again</small>BTS videos and concert footage</h2>
     <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
@@ -545,7 +594,7 @@ footer a{color:var(--violet)}
   </section>
 
   <footer>
-    <div>Setlists come from fan trackers and press coverage and are added automatically after each show. The ASIA leg starts Nov 19 in Kaohsiung. Nights marked "reports differ" have conflicting sources. Scan codes open a search for the song on Spotify or Apple Music. Fan-made page, not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
+    <div>Setlists come from fan trackers and press coverage and are added automatically after each show. The ASIA leg starts Nov 19 in Kaohsiung. Nights marked "reports differ" have conflicting sources. Play buttons and scan codes open a search for the song on Spotify or Apple Music. Songs that aren't on Spotify or Apple Music, like DDAENG, open SoundCloud or YouTube instead. Fan-made page, not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
     <div>Sources: <a href="https://www.billboard.com/lists/bts-surprise-songs-arirang-tour-every-track/" target="_blank" rel="noopener">Billboard</a> · <a href="https://www.forbes.com/sites/laurasirikul/2026/06/24/all-of-the-dj-spin-that-surprise-songs-from-btss-arirang-world-tour/" target="_blank" rel="noopener">Forbes</a> · <a href="https://thehoneypop.com/2026/04/13/bts-surprise-songs-arirang-world-tour/" target="_blank" rel="noopener">The Honey Pop</a> · <a href="https://btsboy.com/bts-arirang-tour-surprise-songs" target="_blank" rel="noopener">BTS surprise song tracker</a> · <a href="https://www.setlist.fm/search?query=BTS" target="_blank" rel="noopener">setlist.fm</a></div>
   </footer>
 </main>
@@ -759,6 +808,10 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("a.lyr")){const l=e.target.closest("a.lyr");track("lyrics/"+l.dataset.lang+"/"+$("#vaultSel").value)}
   else if(e.target.closest(".v-add"))track("theory-start/"+e.target.closest(".v-add").dataset.city+"/"+e.target.closest(".v-add").dataset.song);
   else if(e.target.closest("#vaultRandom"))track("vault-random");
+  else if(e.target.closest("[data-gif]"))track("gif/download/"+e.target.closest("[data-gif]").dataset.gif);
+  else if(e.target.closest("[data-copy]"))track("gif/copy-link");
+  else if(e.target.closest("#gifSubmit"))track("gif/submit");
+  else if(e.target.closest("#gifReqSend"))track("gif/request");
   else if(e.target.closest(".acard"))track("army/"+e.target.closest(".acard").dataset.acct);
   else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
   else if(e.target.closest("#disco .seg button"))track("checklist-filter/"+e.target.closest("button").dataset.f);
@@ -922,6 +975,28 @@ ytNight.addEventListener("change",updateYt);$("#ytQ").addEventListener("input",u
 document.querySelectorAll(".ytkind").forEach(b=>b.addEventListener("click",()=>{const on=b.getAttribute("aria-pressed")!=="true";document.querySelectorAll(".ytkind").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed",on?"true":"false");updateYt()}));
 $("#ytForm").addEventListener("submit",e=>{e.preventDefault();updateYt();$("#ytGo").click()});
 
+/* ---------- GIF corner ---------- */
+const ISSUES="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
+let GIFS={favorites:[],army:[]},gifMode="fav";
+fetch("gifs.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{GIFS=j;renderGifs()}).catch(()=>renderGifs());
+function gifTile(file,title,sq){const abs="https://djspinthat.net/"+file;const name=file.split("/").pop();
+  return `<figure class="gif-tile${sq?" sq":""}"><img src="${esc(file)}" alt="${esc(title)}" loading="lazy" decoding="async"><figcaption>${esc(title)}</figcaption><div class="gbtns"><a href="${esc(file)}" download="${esc(name)}" data-gif="${esc(name)}">Download</a><button type="button" data-copy="${esc(abs)}">Copy link</button></div></figure>`}
+function renderGifs(){const g=$("#gifGrid");if(!g)return;$("#gifCityWrap").hidden=gifMode!=="nights";
+  if(gifMode==="fav"){g.innerHTML=GIFS.favorites.length?GIFS.favorites.map(x=>gifTile(x.file,x.title,/square/.test(x.file))).join(""):`<p class="gif-empty">Favorites are coming soon.</p>`;return}
+  if(gifMode==="army"){g.innerHTML=GIFS.army.length?GIFS.army.map(x=>gifTile(x.file,x.title+(x.by?" · "+x.by:""),x.square)).join(""):`<p class="gif-empty">No ARMY GIFs yet. Be the first: share yours below.</p>`;return}
+  const city=$("#gifCity").value;const list=SHOWS.filter(s=>s.city===city);
+  g.innerHTML=list.map(s=>{const n=(s.night.match(/\d+/)||["1"])[0];return gifTile(`social/cities/dj-spin-that-${citySlug(s.city)}-night-${n}.gif`,`${s.city} ${s.night.replace(" (FESTA)","")} · ${s.songTitles.join(" × ")}`)}).join("")||`<p class="gif-empty">No GIFs for this city yet.</p>`}
+function fillGifCities(){const sel=$("#gifCity");if(!sel)return;const keep=sel.value;const cities=[...new Set(SHOWS.map(s=>s.city))];
+  sel.innerHTML=cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");sel.value=keep&&cities.includes(keep)?keep:cities[cities.length-1];if(gifMode==="nights")renderGifs()}
+document.querySelectorAll("#gifSeg button").forEach(b=>b.addEventListener("click",()=>{gifMode=b.dataset.g;document.querySelectorAll("#gifSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderGifs()}));
+$("#gifCity").addEventListener("change",renderGifs);
+$("#gifGrid").addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(!c)return;navigator.clipboard.writeText(c.dataset.copy).then(()=>{c.textContent="Copied!";setTimeout(()=>c.textContent="Copy link",1500)}).catch(()=>{c.textContent=c.dataset.copy})});
+$("#gifSubmit").href=ISSUES+"?title="+encodeURIComponent("GIF submission")+"&body="+encodeURIComponent("Drag your GIF into this box.\n\nYour name or handle (for credit):\nWhat it shows (city, night, song):\n\n- [ ] I made this GIF myself, and it has no sasaeng content.");
+function gifReqText(){const v=$("#gifReq").value.trim();return {ok:!!v,title:"GIF request: "+v.slice(0,80),body:"GIF request: "+v}}
+function updGifReq(){const t=gifReqText();const a=$("#gifReqSend");a.href=ISSUES+"?title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);a.setAttribute("aria-disabled",t.ok?"false":"true")}
+$("#gifReq").addEventListener("input",updGifReq);updGifReq();
+$("#gifReqCopy").addEventListener("click",()=>{const t=gifReqText();if(!t.ok){$("#gifReqMsg").textContent="Type your idea first.";return}navigator.clipboard.writeText(t.body).then(()=>$("#gifReqMsg").textContent="Copied. DM it to @djspinthat on TikTok.").catch(()=>$("#gifReqMsg").textContent=t.body)});
+
 /* ---------- Report a correction ---------- */
 const FIX_REPO="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
 const fixCity=$("#fixCity"),fixNight=$("#fixNight");
@@ -968,7 +1043,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","gifs","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
@@ -1066,7 +1141,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();renderDisco();fillFind();if(pendingShow){const sh=findBySlug(pendingShow);if(sh){pendingShow=null;deepOpened=sh}}
+    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();renderDisco();fillGifCities();fillFind();if(pendingShow){const sh=findBySlug(pendingShow);if(sh){pendingShow=null;deepOpened=sh}}
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
