@@ -228,7 +228,23 @@
   "collections": [
     {
       "meme": "Sorry for my fault",
+      "label": "Sorry for my fault",
       "url": "https://giphy.com/channel/DJSpinThat/sorry-for-my-fault"
+    },
+    {
+      "meme": "BTS on Hot Ones",
+      "label": "BTS on Hot Ones",
+      "url": "https://giphy.com/channel/DJSpinThat/bts-hot-ones"
+    },
+    {
+      "meme": "Jin is the spy",
+      "label": "Jin is the spy",
+      "url": "https://giphy.com/channel/DJSpinThat/jin-is-the-spy"
+    },
+    {
+      "meme": "Calm down my daughter",
+      "label": "Calm down my daughter",
+      "url": "https://giphy.com/channel/DJSpinThat/calm-down-my-daughter"
     }
   ]
 }
