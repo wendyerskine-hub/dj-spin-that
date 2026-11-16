@@ -351,6 +351,26 @@ details.urow .uw{grid-column:1/-1;font-size:13px;color:var(--muted)}
 details.urow .uw b{color:var(--gold);font-weight:600}
 details.urow .uplay{padding:0 14px 12px}
 details.urow .uplay .svc-btns{margin-top:0}
+/* station 5 credits */
+.cr-filter{display:flex;flex-wrap:wrap;gap:6px}
+.cr-filter button{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.cr-filter button[aria-pressed="true"]{background:var(--ink);color:var(--night);border-color:var(--ink)}
+.cr-filter button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+.cr-stat{font-size:14px;color:var(--muted);margin:0}
+.cr-stat b{color:var(--gold)}
+details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.badge{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 8px;background:color-mix(in srgb,var(--gold) 22%,transparent);color:var(--ink)}
+.badge.alt{background:rgba(255,255,255,.08);color:var(--muted)}
+.cr-body{padding:0 14px 12px;display:grid;gap:8px;font-size:14px}
+.cr-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px}
+.cr-body dt{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--jade);padding-top:3px}
+.cr-body dd{margin:0;color:var(--muted)}
+.cr-body dd b{color:var(--ink);font-weight:700}
+.cr-links{display:flex;flex-wrap:wrap;gap:6px}
+.cr-links a{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--ink);text-decoration:none;background:rgba(255,255,255,.04)}
+.cr-links a.film{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 16%,transparent)}
+.cr-links a:hover{border-color:var(--violet)}
+.bts-link{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -529,6 +549,14 @@ footer a{color:var(--violet)}
       <p class="help">Rap line is RM, SUGA and j-hope. Vocal line is Jin, Jimin, V and Jung Kook. Here's every subunit song BTS has pulled out so far, and the ones still waiting.</p>
       <div class="unit-grid" id="unitPlayed"></div>
       <div class="unit-left"><div class="eyebrow" style="color:var(--muted)">Not played yet</div><div class="unit-chips" id="unitLeft"></div></div>
+    </section>
+    <section class="station credits" id="credits">
+      <h2><small>Station 5 · Liner notes</small>Who wrote and produced it</h2>
+      <p class="help">The songwriters and producers behind every solo and subunit song on BTS albums. Member names are highlighted, so you can see who wrote their own song. Solo songs also link to their official short film or comeback trailer and to behind-the-scenes videos.</p>
+      <div class="cr-filter" id="crFilter" role="group" aria-label="Show credits for"></div>
+      <p class="cr-stat" id="crStat"></p>
+      <div class="unit-grid" id="crList"></div>
+      <p class="v-note">Main credits come from album liner notes as listed by Tidal, Deezer and fan wikis. Some songs have more writers than shown here, so tap Full credits to see every name.</p>
     </section>
   </div>
 
@@ -876,7 +904,9 @@ function renderBias(m,p){
     const artist=m.id==="suga"&&/Haegeum|Daechwita|People|Amygdala/.test(p.title)?"Agust D":m.en;
     card=songCard(p.title,artist,`${artist} · ${p.album} · ${p.year}`,`<span class="kind solo">${esc(m.en)} solo</span>`);
   }
-  $("#biasResult").innerHTML=card.html;drawQR(document.getElementById(card.id),card.url,96);
+  let extra="";
+  if(p.kind==="solo")extra=biasBehind(m,lastBiasPick.title);
+  $("#biasResult").innerHTML=card.html+extra;drawQR(document.getElementById(card.id),card.url,96);
   try{localStorage.setItem("arirang-bias",m.id)}catch(e){}
 }
 $("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const m=MEMBERS.find(x=>x.id===b.dataset.id);const pk=biasPick(m);renderBias(m,pk);track("bias-song/"+m.en+"/"+(lastBiasPick||pk).title)});
@@ -958,6 +988,7 @@ function renderDisco(){
   $("#discoPlayed").textContent=played;$("#discoTotal").textContent=total;$("#discoBar").style.width=(total?played/total*100:0)+"%";
   list.querySelectorAll(".alb").forEach(a=>a.classList.toggle("empty",discoFilter!=="all"&&![...a.querySelectorAll(".dsong")].some(b=>getComputedStyle(b).display!=="none")));
   renderUnits(P);
+  renderCredits();
 }
 document.querySelectorAll('#disco .seg button').forEach(b=>b.addEventListener("click",()=>{discoFilter=b.dataset.f;document.querySelectorAll('#disco .seg button').forEach(x=>x.setAttribute("aria-pressed",x===b));renderDisco()}));
 $("#discoOpen").addEventListener("click",()=>document.querySelectorAll("#discoList details.alb").forEach(d=>d.open=true));
@@ -976,6 +1007,113 @@ function renderUnits(P){
   $("#unitPlayed").innerHTML=rows.length?rows.join(""):`<p class="help">No subunit songs yet.</p>`;
   $("#unitLeft").innerHTML=left.map(x=>`<span>${esc(x.t)}<i>${esc(x.u==="Rap line"||x.u==="Vocal line"?x.u:x.u)}</i></span>`).join("");
 }
+
+
+/* ---------- Station 5: liner notes (credits + behind the scenes) ---------- */
+// w = songwriters, p = producers (main names from liner notes via Tidal/Deezer/fan wikis). null = not confirmed yet.
+const CREDITS={
+ "Intro: 2 Cool 4 Skool":{w:["Supreme Boi"],p:["Supreme Boi"],note:"feat. DJ Friz"},
+ "Intro: O!RUL8,2?":{w:["Pdogg","RM"],p:null},
+ "Intro: What Am I to You":{w:["Pdogg","RM"],p:["Pdogg"]},
+ "Intro: The Most Beautiful Moment in Life":{w:["SUGA"],p:["SUGA","Slow Rabbit"]},
+ "Intro: Never Mind":{w:["Slow Rabbit","SUGA","RM","j-hope"],p:["Slow Rabbit"]},
+ "Begin":{w:["RM","Tony Esterly","David Quiñones"],p:["Tony Esterly"]},
+ "Lie":{w:["Jimin","DOCSKIM","Pdogg","\"hitman\" bang","Sumin"],p:["DOCSKIM"]},
+ "Stigma":{w:["V","Philtre","Slow Rabbit","\"hitman\" bang","Sonnim"],p:["Philtre"]},
+ "First Love":{w:["SUGA","Miss Kay"],p:["SUGA","Miss Kay"]},
+ "Reflection":{w:["RM","Slow Rabbit"],p:["RM","Slow Rabbit"]},
+ "MAMA":{w:["j-hope","Primary","Pdogg"],p:["Primary","Pdogg"]},
+ "Awake":{w:["Jin","Slow Rabbit","j-hope","June","Pdogg","RM","\"hitman\" bang"],p:["Slow Rabbit"]},
+ "Intro: Serendipity":{w:["\"hitman\" bang","Slow Rabbit","RM","Ray Michael Djan Jr","Ashton Foster"],p:["Slow Rabbit"]},
+ "Intro: Singularity":{w:["Charlie J. Perry","RM"],p:["Charlie J. Perry"]},
+ "Euphoria":{w:["DJ Swivel","Candace Nicole Sosa","Melanie Fontana","\"hitman\" bang","ADORA","RM"],p:["DJ Swivel"]},
+ "Trivia 起: Just Dance":{w:["j-hope","Hiss noise"],p:["Hiss noise"]},
+ "Trivia 承: Love":{w:["RM","Slow Rabbit","Hiss noise"],p:["Slow Rabbit"]},
+ "Trivia 轉: Seesaw":{w:["SUGA","Slow Rabbit"],p:["SUGA","Slow Rabbit"]},
+ "Epiphany":{w:["\"hitman\" bang","Slow Rabbit","ADORA"],p:["Slow Rabbit"]},
+ "Intro: Persona":{w:["RM"],p:["Hiss noise"]},
+ "Interlude: Shadow":{w:["SUGA","El Capitxn","Ghstloop","Pdogg","RM"],p:["SUGA","El Capitxn","Ghstloop"]},
+ "Filter":{w:["Tom Wiklund","Hilda Stenmalm","\"hitman\" bang","Bobby Ahn"],p:["Tom Wiklund"]},
+ "My Time":{w:["Jung Kook","RM"],p:["Sleep Deez"]},
+ "Inner Child":{w:["V","RM","Pdogg","Arcades","KoolKid","Adien Lewis"],p:["Arcades","Pdogg"]},
+ "Moon":{w:["Jin","RM","Slow Rabbit","ADORA","Candace Sosa","DJ Swivel","Ludwig Lindell","Daniel Caesar"],p:["Slow Rabbit"]},
+ "Outro: Ego":{w:["j-hope","Hiss noise","Supreme Boi"],p:["Hiss noise"]},
+ "Cypher Pt.1":{w:["Supreme Boi","RM","SUGA","j-hope"],p:["Supreme Boi"]},
+ "Intro: Skool Luv Affair":{w:["Pdogg","Slow Rabbit","RM","SUGA","j-hope"],p:["Pdogg"]},
+ "Cypher Pt.2: Triptych":{w:["RM","SUGA","j-hope","Supreme Boi"],p:["Supreme Boi"]},
+ "Outro: Propose":{w:["Pdogg","Slow Rabbit"],p:["Slow Rabbit"]},
+ "Cypher Pt.3: Killer":{w:["Supreme Boi","RM","SUGA","j-hope"],p:["Supreme Boi"]},
+ "Outro: Does That Make Sense?":{w:null,p:null},
+ "Love Is Not Over":{w:["Jin","Jung Kook","Slow Rabbit","Pdogg"],p:["Jung Kook","Slow Rabbit"]},
+ "House of Cards":{w:null,p:["Slow Rabbit"]},
+ "Butterfly (Prologue Mix)":{w:null,p:["\"hitman\" bang","Slow Rabbit"]},
+ "Lost":{w:["Pdogg","RM","Supreme Boi","June","Peter Ibsen","Lee Paul Williams","Richard Rawson"],p:null},
+ "Cypher Pt.4":{w:["RM","SUGA","j-hope","Chris \"Tricky\" Stewart","Medor J. Pierre"],p:null},
+ "Dimple":{w:["Allison Kaplan","Matthew Tishler","RM"],p:["Matthew Tishler","Crash Cove"]},
+ "Outro: Her":{w:["SUGA","Slow Rabbit","RM","j-hope"],p:["SUGA","Slow Rabbit"]},
+ "The Truth Untold":{w:["Steve Aoki","Jake Torrey","Noah Conrad","Roland Spreckley","Slow Rabbit","Annika Wells","RM"],p:null,note:"feat. Steve Aoki"},
+ "Outro: Tear":{w:["RM","SUGA","j-hope","DOCSKIM"],p:["DOCSKIM"]},
+ "Jamais Vu":{w:["Arcades","Bad Milk","Marcus McCoan","James F. Reynolds","\"hitman\" bang","RM","j-hope"],p:["Arcades","Bad Milk","Marcus McCoan"]},
+ "UGH!":{w:["Supreme Boi","SUGA","RM","Hiss noise","j-hope","Icecream Drum"],p:["Supreme Boi"]},
+ "00:00 (Zero O'Clock)":{w:["Pdogg","RM","Jessie Lauryn Foutz","Antonina Armato"],p:["Pdogg"]},
+ "Friends":{w:["Jimin"],p:["Jimin"]},
+ "Respect":{w:null,p:["Hiss noise","SUGA","El Capitxn"]},
+ "DDAENG":{w:null,p:["SUGA"]}
+};
+// Official BANGTANTV films for solo songs (opens a YouTube search for the exact title)
+const SOLO_FILMS={
+ "Begin":"WINGS Short Film #1 BEGIN","Lie":"WINGS Short Film #2 LIE","Stigma":"WINGS Short Film #3 STIGMA","First Love":"WINGS Short Film #4 FIRST LOVE",
+ "Reflection":"WINGS Short Film #5 REFLECTION","MAMA":"WINGS Short Film #6 MAMA","Awake":"WINGS Short Film #7 AWAKE",
+ "Intro: Serendipity":"LOVE YOURSELF 承 Her Serendipity Comeback Trailer","Intro: Singularity":"LOVE YOURSELF 轉 Tear Singularity Comeback Trailer",
+ "Euphoria":"Euphoria Theme of LOVE YOURSELF 起 Wonder","Epiphany":"LOVE YOURSELF 結 Answer Epiphany Comeback Trailer",
+ "Intro: Persona":"MAP OF THE SOUL PERSONA Persona Comeback Trailer","Interlude: Shadow":"MAP OF THE SOUL 7 Interlude Shadow Comeback Trailer",
+ "Outro: Ego":"MAP OF THE SOUL 7 Outro Ego Comeback Trailer"};
+const FILM_KIND=t=>/Short Film/.test(SOLO_FILMS[t])?"WINGS short film":/Wonder/.test(SOLO_FILMS[t])?"Official film":"Comeback trailer";
+const MEMBER_NAMES=["RM","Jin","SUGA","j-hope","Jimin","V","Jung Kook"];
+const UNIT_MEMBERS={"Rap line":["RM","SUGA","j-hope"],"Vocal line":["Jin","Jimin","V","Jung Kook"],"Jin, j-hope & Jung Kook":["Jin","j-hope","Jung Kook"],"Jimin & V":["Jimin","V"],"RM & SUGA":["RM","SUGA"]};
+const ytS=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q);
+function behindQuery(title,artist){return `${artist} ${title.replace(/\s*\((feat|with|Prologue|Zero)[^)]*\)\s*/gi," ").replace(/^(Intro|Outro|Interlude|Trivia [^:]+):\s*/,"")} behind the scenes`.replace(/\s+/g," ").trim()}
+let crFilter="all";
+function creditSongs(){
+  const out=[];DISCO.forEach(([alb,yr,tr])=>tr.forEach(([t,u])=>{if(!u)return;
+    const solo=u.startsWith("Solo · ");const who=solo?[u.slice(7)]:(UNIT_MEMBERS[u]||[]);
+    out.push({t,u:solo?u.slice(7):u,solo,who,alb,yr,c:CREDITS[t]||{w:null,p:null}})}));
+  return out;
+}
+function nameList(arr,who){return arr.map(n=>MEMBER_NAMES.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(", ")}
+function renderCredits(){
+  const all=creditSongs();const P=playsByKey();
+  const opts=[["all","All"],...MEMBER_NAMES.map(m=>[m,m]),["units","Subunits"]];
+  $("#crFilter").innerHTML=opts.map(([k,l])=>`<button type="button" data-f="${esc(k)}" aria-pressed="${crFilter===k}">${esc(l)}</button>`).join("");
+  const list=all.filter(x=>crFilter==="all"||(crFilter==="units"?!x.solo:x.who.includes(crFilter)));
+  const wrote=list.filter(x=>x.c.w&&x.who.some(m=>x.c.w.includes(m))).length;
+  const prod=list.filter(x=>x.c.p&&x.who.some(m=>x.c.p.includes(m))).length;
+  const label=crFilter==="all"?"these songs":crFilter==="units"?"subunit songs":crFilter+"'s songs";
+  const known=list.filter(x=>x.c.w).length;
+  $("#crStat").innerHTML=`<b>${wrote}</b> of ${known} ${esc(label)} with confirmed credits list ${crFilter==="all"||crFilter==="units"?"a performing member":esc(crFilter)} as a songwriter, and <b>${prod}</b> as a producer.`;
+  $("#crList").innerHTML=list.map(x=>{
+    const w=x.c.w,p=x.c.p;
+    const wroteIt=w?x.who.filter(m=>w.includes(m)):[],prodIt=p?x.who.filter(m=>p.includes(m)):[];
+    const others=w?w.filter(n=>MEMBER_NAMES.includes(n)&&!x.who.includes(n)):[];
+    const badges=[...(prodIt.length?[`<span class="badge">${x.solo?"Produced it":"Produced by "+prodIt.join(" & ")}</span>`]:[]),
+      ...(wroteIt.length?[`<span class="badge">${x.solo?"Wrote it":"Written by "+wroteIt.join(", ")}</span>`]:[]),
+      ...(others.length?[`<span class="badge alt">With ${esc(others.join(", "))}</span>`]:[]),
+      ...(P[nk(x.t)]?[`<span class="badge alt">Played on tour</span>`]:[])].join("");
+    const artist=x.solo?x.u:"BTS";
+    const links=[];
+    if(x.solo&&SOLO_FILMS[x.t])links.push(`<a class="film" data-cr="film" href="${ytS("BTS "+SOLO_FILMS[x.t])}" target="_blank" rel="noopener">▶ ${FILM_KIND(x.t)} ↗</a>`);
+    if(x.solo)links.push(`<a data-cr="behind" href="${ytS(behindQuery(x.t,"BTS "+x.u))}" target="_blank" rel="noopener">Behind the scenes ↗</a>`);
+    links.push(`<a data-cr="full" href="https://genius.com/search?q=${encodeURIComponent("BTS "+x.t)}" target="_blank" rel="noopener">Full credits ↗</a>`);
+    return `<details class="urow cr" data-t="${esc(x.t)}"><summary><span class="ut">${esc(x.t)}</span><span class="uu">${esc(x.solo?x.u+" solo":x.u)}</span><span class="uw">${esc(x.alb)} ${x.yr}${x.c.note?" · "+esc(x.c.note):""}</span>${badges?`<span class="badges">${badges}</span>`:""}</summary>
+      <div class="cr-body"><dl><dt>Written by</dt><dd>${w?nameList(w):"Not confirmed yet. Tap Full credits."}</dd><dt>Produced by</dt><dd>${p?nameList(p):"Not confirmed yet. Tap Full credits."}</dd></dl>
+      <div class="cr-links">${links.join("")}</div></div></details>`}).join("");
+}
+const FILM_ALIAS={"Singularity":"Intro: Singularity","Serendipity":"Intro: Serendipity","Persona":"Intro: Persona","Seesaw":"Trivia 轉: Seesaw","Trivia 承: Love":"Trivia 承: Love"};
+function biasBehind(m,t){const a=m.id==="suga"&&/Haegeum|Daechwita|People|Amygdala/.test(t)?"Agust D":m.en;const ft=FILM_ALIAS[t]||t;const film=SOLO_FILMS[ft];
+  return `<div class="bts-link cr-links">${film?`<a class="film" data-cr="film" href="${ytS("BTS "+film)}" target="_blank" rel="noopener">▶ ${FILM_KIND(ft)} ↗</a>`:""}<a data-cr="behind" href="${ytS(behindQuery(t,a))}" target="_blank" rel="noopener">Behind the scenes ↗</a></div>`}
+$("#crFilter").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;crFilter=b.dataset.f;renderCredits();track("credits-filter/"+crFilter)});
+$("#crList").addEventListener("click",e=>{const a=e.target.closest("a[data-cr]");if(a)track("credits-"+a.dataset.cr+"/"+a.closest("details").dataset.t)});
+$("#crList").addEventListener("toggle",e=>{if(e.target.open&&e.target.dataset.t)track("credits-open/"+e.target.dataset.t)},true);
 
 /* ---------- Song vault ---------- */
 const JA_ORIG=new Set(["Crystal Snow","For You"]),EN_ORIG=new Set(["Permission to Dance"]);
@@ -1143,7 +1281,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units"],list:["disco"],more:["vault","gifs","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units","credits"],list:["disco"],more:["vault","gifs","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
