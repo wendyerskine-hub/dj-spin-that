@@ -98,6 +98,10 @@ const st=document.querySelector('.stage');st.style.width=W+'px';st.style.height=
 const wrap=document.querySelector('.wrap');
 if(H<=W){wrap.style.padding='34px 26px 34px';wrap.style.gap='14px';document.querySelector('.word').style.fontSize='60px';document.querySelector('svg.ctrl').style.width='470px';document.querySelector('svg.ctrl').style.margin='0';document.querySelector('.q').style.fontSize='28px'}
 if(P.get('bg')){['kick','q'].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()});document.querySelector('.word').remove();document.querySelector('.url').remove();document.querySelector('.fan').remove();wrap.style.padding='0';const c=document.querySelector('svg.ctrl');c.style.margin='0';c.style.width=(W>H?Math.round(W*0.86):Math.round(W*1.0))+'px';}
+if(P.get('lab')||P.get('deckA')){setTimeout(()=>{if(P.get('lab')){const l=document.querySelector('.lab');if(l)l.textContent=P.get('lab')}
+  const decks=[...document.querySelectorAll('svg.ctrl text')].filter(t=>/DECK [AB] \/\//.test(t.textContent));
+  [['deckA',0,'#FF5C76'],['deckB',1,'#C08BFF']].forEach(([k,i,c])=>{const t=decks[i];if(t&&P.get(k)){t.textContent=P.get(k).toUpperCase();t.setAttribute('font-size','17');t.setAttribute('font-weight','700');t.setAttribute('fill',c);t.setAttribute('letter-spacing','1.5')}});
+  const tempo=[...document.querySelectorAll('svg.ctrl text')].filter(t=>/TEMPO/.test(t.textContent));tempo.forEach(t=>t.remove());},0)}
 if(P.get('city')){
   document.getElementById('kick').textContent='ARIRANG Tour · '+P.get('city')+' · '+P.get('night');
   const list=P.get('songs').split('|');
