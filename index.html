@@ -371,6 +371,7 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
 .cr-links a.film{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 16%,transparent)}
 .cr-links a:hover{border-color:var(--violet)}
 .bts-link{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+@media (min-width:900px){#bias,#credits{align-self:start}#crList{max-height:560px;overflow:auto;padding-right:6px;grid-template-columns:1fr;overscroll-behavior:contain}}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -544,19 +545,19 @@ footer a{color:var(--violet)}
       <div class="night-songs" id="biasResult" aria-live="polite"></div>
     </section>
 
-    <section class="station units" id="units">
-      <h2><small>Station 4 · Subunits</small>Subunit songs played on the tour</h2>
-      <p class="help">Rap line is RM, SUGA and j-hope. Vocal line is Jin, Jimin, V and Jung Kook. Here's every subunit song BTS has pulled out so far, and the ones still waiting.</p>
-      <div class="unit-grid" id="unitPlayed"></div>
-      <div class="unit-left"><div class="eyebrow" style="color:var(--muted)">Not played yet</div><div class="unit-chips" id="unitLeft"></div></div>
-    </section>
     <section class="station credits" id="credits">
-      <h2><small>Station 5 · Liner notes</small>Who wrote and produced it</h2>
+      <h2><small>Station 4 · Liner notes</small>Who wrote and produced it</h2>
       <p class="help">The songwriters and producers behind every solo and subunit song on BTS albums. Member names are highlighted, so you can see who wrote their own song. Solo songs also link to their official short film or comeback trailer and to behind-the-scenes videos.</p>
       <div class="cr-filter" id="crFilter" role="group" aria-label="Show credits for"></div>
       <p class="cr-stat" id="crStat"></p>
       <div class="unit-grid" id="crList"></div>
       <p class="v-note">Main credits come from album liner notes as listed by Tidal, Deezer and fan wikis. Some songs have more writers than shown here, so tap Full credits to see every name.</p>
+    </section>
+    <section class="station units" id="units">
+      <h2><small>Station 5 · Subunits</small>Subunit songs played on the tour</h2>
+      <p class="help">Rap line is RM, SUGA and j-hope. Vocal line is Jin, Jimin, V and Jung Kook. Here's every subunit song BTS has pulled out so far, and the ones still waiting.</p>
+      <div class="unit-grid" id="unitPlayed"></div>
+      <div class="unit-left"><div class="eyebrow" style="color:var(--muted)">Not played yet</div><div class="unit-chips" id="unitLeft"></div></div>
     </section>
   </div>
 
@@ -998,7 +999,7 @@ $("#discoList").addEventListener("mouseover",e=>{const b=e.target.closest(".dson
 $("#discoList").addEventListener("click",e=>{const b=e.target.closest(".dsong");if(!b)return;setTimeout(()=>placeTip(b),0);const was=b.classList.contains("show");document.querySelectorAll(".dsong.show").forEach(x=>x.classList.remove("show"));if(!was)b.classList.add("show")});
 document.addEventListener("click",e=>{if(!e.target.closest(".dsong"))document.querySelectorAll(".dsong.show").forEach(x=>x.classList.remove("show"))});
 
-/* ---------- Station 4: subunits ---------- */
+/* ---------- Station 5: subunits ---------- */
 function renderUnits(P){
   const all=[];DISCO.forEach(([alb,yr,tr])=>tr.forEach(([t,u])=>{if(u&&SUBUNITS.has(u))all.push({t,u,alb,yr})}));
   const played=all.filter(x=>P[nk(x.t)]),left=all.filter(x=>!P[nk(x.t)]);
@@ -1009,7 +1010,7 @@ function renderUnits(P){
 }
 
 
-/* ---------- Station 5: liner notes (credits + behind the scenes) ---------- */
+/* ---------- Station 4: liner notes (credits + behind the scenes) ---------- */
 // w = songwriters, p = producers (main names from liner notes via Tidal/Deezer/fan wikis). null = not confirmed yet.
 const CREDITS={
  "Intro: 2 Cool 4 Skool":{w:["Supreme Boi"],p:["Supreme Boi"],note:"feat. DJ Friz"},
@@ -1281,7 +1282,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","units","credits"],list:["disco"],more:["vault","gifs","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],more:["vault","gifs","watch","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
