@@ -373,14 +373,34 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
 .bts-link{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 @media (min-width:900px){#bias,#credits{align-self:start}#crList{max-height:560px;overflow:auto;padding-right:6px;grid-template-columns:1fr;overscroll-behavior:contain}}
 /* kooky burrow */
-.burrow{display:grid;gap:22px;grid-column:1/-1}
+.burrow{display:grid;gap:22px}
+.burrow-wrap{display:grid;gap:28px;align-items:start;min-width:0}
+.burrow-wrap:not(:has(> section:not([hidden]))){display:none}
+@media (min-width:980px){.burrow-wrap{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}.burrow-wrap .watch{position:sticky;top:76px}}
 .bgroup{display:grid;gap:10px}
 .bhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
 .bhead h3{margin:0;font-family:var(--f-display);font-size:24px;font-weight:400}
 .bhead span{font-size:13px;color:var(--muted)}
 .bcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px}
 .dn-btns{display:flex;flex-wrap:wrap;gap:8px}
-.bgroup .field{max-width:420px}
+.bgroup .field{max-width:420px;display:grid;gap:6px;min-width:0}
+.bgroup input[type=search]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit}
+.bgroup input::placeholder{color:var(--muted);opacity:.7}
+.dn-btns a{text-decoration:none}
+/* responsive polish: tablets + touch */
+@media (min-width:761px) and (max-width:1100px){
+  .tabbar{gap:2px;padding-left:12px;padding-right:12px}
+  .tabbar button{flex:1;flex-direction:column;gap:4px;padding:8px 4px;font-size:12.5px;border-radius:14px;min-width:0;line-height:1.15;text-align:center}
+  .tabbar button span{white-space:nowrap}
+}
+@media (min-width:761px) and (max-width:860px){.tabbar button{font-size:11.5px}}
+@media (pointer:coarse){
+  .cr-filter button,.cr-links a,.seg button,.disco-tools button,.v-add,.ytkind,.gif-filters button,.qrtoggle{min-height:44px}
+  .cr-links a,.cr-filter button{display:inline-flex;align-items:center}
+  .dsong{min-height:40px}
+  .gif-cols a,.gbtns a,.gbtns button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  footer a{display:inline-block;padding:10px 2px}
+}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -611,40 +631,7 @@ footer a{color:var(--violet)}
     <p class="v-note">Only share GIFs you made yourself. Fan-made only, and no sasaeng content, ever.</p>
   </section>
 
-  <section class="station burrow" id="burrow">
-    <h2><small>The Kooky Burrow · aka the rabbit hole</small>Fall down the BTS rabbit hole</h2>
-    <p class="help">Dance practices, behind the scenes, BTS's own shows and the best reaction videos, all in one place. Concert footage from this tour is just below.</p>
-    <div class="bgroup"><div class="bhead"><h3>Dance &amp; choreo</h3><span>Learn it, or just watch them nail it</span></div>
-      <div class="field"><label for="dnSong">Song (optional)</label><input id="dnSong" type="search" autocomplete="off" placeholder="e.g. Butter, ON, Black Swan"></div>
-      <div class="dn-btns">
-        <a class="btn" data-dn="dance practice" href="https://www.youtube.com/results?search_query=BTS+dance+practice" target="_blank" rel="noopener">Dance practice ↗</a>
-        <a class="btn ghost" data-dn="choreography" href="https://www.youtube.com/results?search_query=BTS+choreography" target="_blank" rel="noopener">Choreography video ↗</a>
-        <a class="btn ghost" data-dn="dance tutorial mirrored" href="https://www.youtube.com/results?search_query=BTS+dance+tutorial+mirrored" target="_blank" rel="noopener">Learn it (mirrored tutorial) ↗</a>
-      </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Official channels</h3><span>Where BTS post first</span></div><div class="bcards">
-        <a class="acard" href="https://www.youtube.com/@BTS" target="_blank" rel="noopener" data-acct="burrow/bangtantv"><span class="aname">BANGTANTV</span><span class="ahandle">youtube.com/@BTS</span><span class="adesc">BTS's own channel: Bangtan Bombs, Episodes, dance practices, Suchwita and Run Jin.</span><span class="ago">Open on YouTube ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/@HYBELABELS" target="_blank" rel="noopener" data-acct="burrow/hybe-labels"><span class="aname">HYBE LABELS</span><span class="ahandle">youtube.com/@HYBELABELS</span><span class="adesc">The official music videos, teasers and MV making-ofs.</span><span class="ago">Open on YouTube ↗</span></a>
-        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse"><span class="aname">Weverse</span><span class="ahandle">weverse.io/bts</span><span class="adesc">BTS's official fan community: member posts, lives and Weverse-only shows.</span><span class="ago">Open Weverse ↗</span></a>
-      </div></div>
-      <div class="bgroup"><div class="bhead"><h3>BTS shows</h3><span>Variety, travel and talk shows</span></div><div class="bcards">
-        <a class="acard" href="https://www.youtube.com/results?search_query=Run+BTS+episode" target="_blank" rel="noopener" data-acct="burrow/run-bts"><span class="aname">Run BTS!</span><span class="ahandle">Weverse · YouTube</span><span class="adesc">BTS's own variety show, from 2015 to today. Newer episodes are on Weverse.</span><span class="ago">Find episodes ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/results?search_query=Run+Jin+episode+BANGTANTV" target="_blank" rel="noopener" data-acct="burrow/run-jin"><span class="aname">Run Jin</span><span class="ahandle">BANGTANTV</span><span class="adesc">Jin's solo variety show, picking up where Run BTS! left off.</span><span class="ago">Find episodes ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/results?search_query=Suchwita+SUGA+episode" target="_blank" rel="noopener" data-acct="burrow/suchwita"><span class="aname">Suchwita</span><span class="ahandle">BANGTANTV</span><span class="adesc">SUGA's talk-and-drinks show with guests from BTS and beyond.</span><span class="ago">Find episodes ↗</span></a>
-        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse-shows"><span class="aname">Bon Voyage · In the SOOP · BTS Memories</span><span class="ahandle">Weverse</span><span class="adesc">Travel trips, cabin downtime and year-by-year behind the scenes. Some need a Weverse purchase or membership.</span><span class="ago">Open Weverse ↗</span></a>
-      </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Behind the scenes</h3><span>The making-of rabbit hole</span></div><div class="bcards">
-        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+Bangtan+Bomb" target="_blank" rel="noopener" data-acct="burrow/bangtan-bomb"><span class="aname">Bangtan Bombs</span><span class="ahandle">BANGTANTV</span><span class="adesc">Short, silly backstage clips. Start with any year and keep clicking.</span><span class="ago">Search ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+BTS+Episode" target="_blank" rel="noopener" data-acct="burrow/episode"><span class="aname">BTS Episodes</span><span class="ahandle">BANGTANTV</span><span class="adesc">Longer behind-the-scenes from MV shoots, comebacks and tours.</span><span class="ago">Search ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/results?search_query=BTS+MV+making+film" target="_blank" rel="noopener" data-acct="burrow/mv-making"><span class="aname">MV making films</span><span class="ahandle">HYBE LABELS</span><span class="adesc">How each music video was made, from set to final cut.</span><span class="ago">Search ↗</span></a>
-        <a class="acard" href="#bias" target="_blank" rel="noopener" data-acct="burrow/solo-behind"><span class="aname">Solo behind the scenes</span><span class="ahandle">Bias & Subunit Spin, Station 4</span><span class="adesc">Short films, comeback trailers and solo behind-the-scenes, linked from each song.</span><span class="ago">Go to Station 4 →</span></a>
-      </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Reaction videos</h3><span>ARMY-approved reactors. Fan channels, not affiliated with BTS.</span></div><div class="bcards">
-        <a class="acard" href="https://www.youtube.com/@TripleTakeReact" target="_blank" rel="noopener" data-acct="burrow/triple-take"><span class="aname">Triple Take</span><span class="ahandle">@TripleTakeReact</span><span class="adesc">Friends reacting to BTS music videos, stages and variety clips.</span><span class="ago">Open the channel ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/@ralazreact" target="_blank" rel="noopener" data-acct="burrow/ralaz-reacts"><span class="aname">Ralaz Reacts</span><span class="ahandle">@ralazreact</span><span class="adesc">Thoughtful first reactions to BTS songs, lyrics and performances.</span><span class="ago">Open the channel ↗</span></a>
-        <a class="acard" href="https://www.youtube.com/@WhatchaGot2Say" target="_blank" rel="noopener" data-acct="burrow/whatchagot2say"><span class="aname">WhatchaGot2Say</span><span class="ahandle">@WhatchaGot2Say</span><span class="adesc">Fun reactions to BTS performances and music.</span><span class="ago">Open the channel ↗</span></a>
-      </div></div>
-  </section>
-
+  <div class="burrow-wrap">
   <section class="station watch" id="watch">
     <h2><small>Watch it again</small>ARIRANG tour footage</h2>
     <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
@@ -678,6 +665,40 @@ footer a{color:var(--violet)}
     </form>
     </details>
   </section>
+  <section class="station burrow" id="burrow">
+    <h2><small>The Kooky Burrow · aka the rabbit hole</small>Fall down the BTS rabbit hole</h2>
+    <p class="help">Dance practices, behind the scenes, BTS's own shows and the best reaction videos, all in one place. Concert footage from this tour is in Watch it again.</p>
+    <div class="bgroup"><div class="bhead"><h3>Dance &amp; choreo</h3><span>Learn it, or just watch them nail it</span></div>
+      <div class="field"><label for="dnSong">Song (optional)</label><input id="dnSong" type="search" autocomplete="off" placeholder="e.g. Butter, ON, Black Swan"></div>
+      <div class="dn-btns">
+        <a class="btn" data-dn="dance practice" href="https://www.youtube.com/results?search_query=BTS+dance+practice" target="_blank" rel="noopener">Dance practice ↗</a>
+        <a class="btn ghost" data-dn="choreography" href="https://www.youtube.com/results?search_query=BTS+choreography" target="_blank" rel="noopener">Choreography video ↗</a>
+        <a class="btn ghost" data-dn="dance tutorial mirrored" href="https://www.youtube.com/results?search_query=BTS+dance+tutorial+mirrored" target="_blank" rel="noopener">Learn it (mirrored tutorial) ↗</a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Official channels</h3><span>Where BTS post first</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/@BTS" target="_blank" rel="noopener" data-acct="burrow/bangtantv"><span class="aname">BANGTANTV</span><span class="ahandle">youtube.com/@BTS</span><span class="adesc">BTS's own channel: Bangtan Bombs, Episodes, dance practices, Suchwita and Run Jin.</span><span class="ago">Open on YouTube ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/@HYBELABELS" target="_blank" rel="noopener" data-acct="burrow/hybe-labels"><span class="aname">HYBE LABELS</span><span class="ahandle">youtube.com/@HYBELABELS</span><span class="adesc">The official music videos, teasers and MV making-ofs.</span><span class="ago">Open on YouTube ↗</span></a>
+        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse"><span class="aname">Weverse</span><span class="ahandle">weverse.io/bts</span><span class="adesc">BTS's official fan community: member posts, lives and Weverse-only shows.</span><span class="ago">Open Weverse ↗</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>BTS shows</h3><span>Variety, travel and talk shows</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/results?search_query=Run+BTS+episode" target="_blank" rel="noopener" data-acct="burrow/run-bts"><span class="aname">Run BTS!</span><span class="ahandle">Weverse · YouTube</span><span class="adesc">BTS's own variety show, from 2015 to today. Newer episodes are on Weverse.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=Run+Jin+episode+BANGTANTV" target="_blank" rel="noopener" data-acct="burrow/run-jin"><span class="aname">Run Jin</span><span class="ahandle">BANGTANTV</span><span class="adesc">Jin's solo variety show, picking up where Run BTS! left off.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=Suchwita+SUGA+episode" target="_blank" rel="noopener" data-acct="burrow/suchwita"><span class="aname">Suchwita</span><span class="ahandle">BANGTANTV</span><span class="adesc">SUGA's talk-and-drinks show with guests from BTS and beyond.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse-shows"><span class="aname">Bon Voyage · In the SOOP · BTS Memories</span><span class="ahandle">Weverse</span><span class="adesc">Travel trips, cabin downtime and year-by-year behind the scenes. Some need a Weverse purchase or membership.</span><span class="ago">Open Weverse ↗</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Behind the scenes</h3><span>The making-of rabbit hole</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+Bangtan+Bomb" target="_blank" rel="noopener" data-acct="burrow/bangtan-bomb"><span class="aname">Bangtan Bombs</span><span class="ahandle">BANGTANTV</span><span class="adesc">Short, silly backstage clips. Start with any year and keep clicking.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+BTS+Episode" target="_blank" rel="noopener" data-acct="burrow/episode"><span class="aname">BTS Episodes</span><span class="ahandle">BANGTANTV</span><span class="adesc">Longer behind-the-scenes from MV shoots, comebacks and tours.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BTS+MV+making+film" target="_blank" rel="noopener" data-acct="burrow/mv-making"><span class="aname">MV making films</span><span class="ahandle">HYBE LABELS</span><span class="adesc">How each music video was made, from set to final cut.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="#bias" target="_blank" rel="noopener" data-acct="burrow/solo-behind"><span class="aname">Solo behind the scenes</span><span class="ahandle">Bias & Subunit Spin, Station 4</span><span class="adesc">Short films, comeback trailers and solo behind-the-scenes, linked from each song.</span><span class="ago">Go to Station 4 →</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Reaction videos</h3><span>ARMY-approved reactors. Fan channels, not affiliated with BTS.</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/@TripleTakeReact" target="_blank" rel="noopener" data-acct="burrow/triple-take"><span class="aname">Triple Take</span><span class="ahandle">@TripleTakeReact</span><span class="adesc">Friends reacting to BTS music videos, stages and variety clips.</span><span class="ago">Open the channel ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/@ralazreact" target="_blank" rel="noopener" data-acct="burrow/ralaz-reacts"><span class="aname">Ralaz Reacts</span><span class="ahandle">@ralazreact</span><span class="adesc">Thoughtful first reactions to BTS songs, lyrics and performances.</span><span class="ago">Open the channel ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/@WhatchaGot2Say" target="_blank" rel="noopener" data-acct="burrow/whatchagot2say"><span class="aname">WhatchaGot2Say</span><span class="ahandle">@WhatchaGot2Say</span><span class="adesc">Fun reactions to BTS performances and music.</span><span class="ago">Open the channel ↗</span></a>
+      </div></div>
+  </section>
+  </div>
 
   <section class="station fix" id="fix">
     <details id="fixDetails"><summary class="fix-sum"><span><small>Spot a mistake? Got a theory?</small>Report a correction or share a theory</span><b>Open ▾</b></summary>
