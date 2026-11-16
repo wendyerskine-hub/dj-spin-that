@@ -372,6 +372,15 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
 .cr-links a:hover{border-color:var(--violet)}
 .bts-link{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 @media (min-width:900px){#bias,#credits{align-self:start}#crList{max-height:560px;overflow:auto;padding-right:6px;grid-template-columns:1fr;overscroll-behavior:contain}}
+/* kookie burrow */
+.burrow{display:grid;gap:22px;grid-column:1/-1}
+.bgroup{display:grid;gap:10px}
+.bhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.bhead h3{margin:0;font-family:var(--f-display);font-size:24px;font-weight:400}
+.bhead span{font-size:13px;color:var(--muted)}
+.bcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px}
+.dn-btns{display:flex;flex-wrap:wrap;gap:8px}
+.bgroup .field{max-width:420px}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -407,6 +416,7 @@ footer a{color:var(--violet)}
   <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>My Show</span></button>
   <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Bias &amp; Subunit Spin</span></button>
   <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span>All Surprise Songs</span></button>
+  <button type="button" data-tab="burrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10C7.5 7 7 3.5 8.5 3s3 3.5 3 7M15 10c1.5-3 2-6.5.5-7s-3 3.5-3 7"/><ellipse cx="12" cy="15" rx="6" ry="5.5"/><circle cx="10" cy="14.5" r=".6"/><circle cx="14" cy="14.5" r=".6"/></svg><span>Kookie Burrow</span></button>
   <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Look Up</span></button>
 </nav>
 <main>
@@ -601,8 +611,42 @@ footer a{color:var(--violet)}
     <p class="v-note">Only share GIFs you made yourself. Fan-made only, and no sasaeng content, ever.</p>
   </section>
 
+  <section class="station burrow" id="burrow">
+    <h2><small>The Kookie Burrow · aka the rabbit hole</small>Fall down the BTS rabbit hole</h2>
+    <p class="help">Dance practices, behind the scenes, BTS's own shows and the best reaction videos, all in one place. Concert footage from this tour is just below.</p>
+    <div class="bgroup"><div class="bhead"><h3>Dance &amp; choreo</h3><span>Learn it, or just watch them nail it</span></div>
+      <div class="field"><label for="dnSong">Song (optional)</label><input id="dnSong" type="search" autocomplete="off" placeholder="e.g. Butter, ON, Black Swan"></div>
+      <div class="dn-btns">
+        <a class="btn" data-dn="dance practice" href="https://www.youtube.com/results?search_query=BTS+dance+practice" target="_blank" rel="noopener">Dance practice ↗</a>
+        <a class="btn ghost" data-dn="choreography" href="https://www.youtube.com/results?search_query=BTS+choreography" target="_blank" rel="noopener">Choreography video ↗</a>
+        <a class="btn ghost" data-dn="dance tutorial mirrored" href="https://www.youtube.com/results?search_query=BTS+dance+tutorial+mirrored" target="_blank" rel="noopener">Learn it (mirrored tutorial) ↗</a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Official channels</h3><span>Where BTS post first</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/@BTS" target="_blank" rel="noopener" data-acct="burrow/bangtantv"><span class="aname">BANGTANTV</span><span class="ahandle">youtube.com/@BTS</span><span class="adesc">BTS's own channel: Bangtan Bombs, Episodes, dance practices, Suchwita and Run Jin.</span><span class="ago">Open on YouTube ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/@HYBELABELS" target="_blank" rel="noopener" data-acct="burrow/hybe-labels"><span class="aname">HYBE LABELS</span><span class="ahandle">youtube.com/@HYBELABELS</span><span class="adesc">The official music videos, teasers and MV making-ofs.</span><span class="ago">Open on YouTube ↗</span></a>
+        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse"><span class="aname">Weverse</span><span class="ahandle">weverse.io/bts</span><span class="adesc">BTS's official fan community: member posts, lives and Weverse-only shows.</span><span class="ago">Open Weverse ↗</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>BTS shows</h3><span>Variety, travel and talk shows</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/results?search_query=Run+BTS+episode" target="_blank" rel="noopener" data-acct="burrow/run-bts"><span class="aname">Run BTS!</span><span class="ahandle">Weverse · YouTube</span><span class="adesc">BTS's own variety show, from 2015 to today. Newer episodes are on Weverse.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=Run+Jin+episode+BANGTANTV" target="_blank" rel="noopener" data-acct="burrow/run-jin"><span class="aname">Run Jin</span><span class="ahandle">BANGTANTV</span><span class="adesc">Jin's solo variety show, picking up where Run BTS! left off.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=Suchwita+SUGA+episode" target="_blank" rel="noopener" data-acct="burrow/suchwita"><span class="aname">Suchwita</span><span class="ahandle">BANGTANTV</span><span class="adesc">SUGA's talk-and-drinks show with guests from BTS and beyond.</span><span class="ago">Find episodes ↗</span></a>
+        <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse-shows"><span class="aname">Bon Voyage · In the SOOP · BTS Memories</span><span class="ahandle">Weverse</span><span class="adesc">Travel trips, cabin downtime and year-by-year behind the scenes. Some need a Weverse purchase or membership.</span><span class="ago">Open Weverse ↗</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Behind the scenes</h3><span>The making-of rabbit hole</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+Bangtan+Bomb" target="_blank" rel="noopener" data-acct="burrow/bangtan-bomb"><span class="aname">Bangtan Bombs</span><span class="ahandle">BANGTANTV</span><span class="adesc">Short, silly backstage clips. Start with any year and keep clicking.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+BTS+Episode" target="_blank" rel="noopener" data-acct="burrow/episode"><span class="aname">BTS Episodes</span><span class="ahandle">BANGTANTV</span><span class="adesc">Longer behind-the-scenes from MV shoots, comebacks and tours.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BTS+MV+making+film" target="_blank" rel="noopener" data-acct="burrow/mv-making"><span class="aname">MV making films</span><span class="ahandle">HYBE LABELS</span><span class="adesc">How each music video was made, from set to final cut.</span><span class="ago">Search ↗</span></a>
+        <a class="acard" href="#bias" target="_blank" rel="noopener" data-acct="burrow/solo-behind"><span class="aname">Solo behind the scenes</span><span class="ahandle">Bias & Subunit Spin, Station 4</span><span class="adesc">Short films, comeback trailers and solo behind-the-scenes, linked from each song.</span><span class="ago">Go to Station 4 →</span></a>
+      </div></div>
+      <div class="bgroup"><div class="bhead"><h3>Reaction videos</h3><span>ARMY-approved reactors. Fan channels, not affiliated with BTS.</span></div><div class="bcards">
+        <a class="acard" href="https://www.youtube.com/results?search_query=Triple+Take+BTS+reaction" target="_blank" rel="noopener" data-acct="burrow/triple-take"><span class="aname">Triple Take</span><span class="ahandle">YouTube</span><span class="adesc">Friends reacting to BTS music videos, stages and variety clips.</span><span class="ago">Watch reactions ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=Ralaz+Reacts+BTS" target="_blank" rel="noopener" data-acct="burrow/ralaz-reacts"><span class="aname">Ralaz Reacts</span><span class="ahandle">YouTube</span><span class="adesc">Thoughtful first reactions to BTS songs, lyrics and performances.</span><span class="ago">Watch reactions ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=WhatchaGot2Say+BTS+reaction" target="_blank" rel="noopener" data-acct="burrow/whatchagot2say"><span class="aname">WhatchaGot2Say</span><span class="ahandle">@WhatchaGot2Say</span><span class="adesc">Fun reactions to BTS performances and music.</span><span class="ago">Watch reactions ↗</span></a>
+      </div></div>
+  </section>
+
   <section class="station watch" id="watch">
-    <h2><small>Watch it again</small>BTS videos and concert footage</h2>
+    <h2><small>Watch it again</small>ARIRANG tour footage</h2>
     <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
     <div class="watch-feat">
       <div class="eyebrow" style="color:var(--muted)">Watch with a fellow ARMY</div>
@@ -929,7 +973,8 @@ document.addEventListener("click",e=>{
   else if(e.target.closest(".giphy-follow"))track("gif/giphy-channel");
   else if(e.target.closest("[data-giphy]"))track("gif/giphy-open/"+e.target.closest("[data-giphy]").dataset.giphy);
   else if(e.target.closest("#gifReqSend"))track("gif/request");
-  else if(e.target.closest(".acard"))track("army/"+e.target.closest(".acard").dataset.acct);
+  else if(e.target.closest(".acard")){const d=e.target.closest(".acard").dataset.acct;track(d.startsWith("burrow/")?d:"army/"+d)}
+  else if(e.target.closest("[data-dn]"))track("burrow/dance/"+e.target.closest("[data-dn]").dataset.dn+"/"+($("#dnSong").value.trim()||"any"));
   else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
   else if(e.target.closest("#disco .seg button"))track("checklist-filter/"+e.target.closest("button").dataset.f);
   else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
@@ -1282,7 +1327,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],more:["vault","gifs","watch","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],burrow:["burrow","watch"],more:["vault","gifs","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
@@ -1309,10 +1354,14 @@ function shareShow(sh,btn){const url="https://djspinthat.net/#"+showSlug(sh);con
   const copy=()=>navigator.clipboard.writeText(url).then(()=>{msg.textContent="Link copied. Paste it anywhere."}).catch(()=>{msg.textContent=url});
   if(navigator.share){navigator.share({title:"DJ Spin That",text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()})}else copy();}
 function routeHash(){const h=(location.hash||"").slice(1);if(!h)return false;
+  if(h==="rabbit-hole"||h==="kookie-burrow"){setTab("burrow",{noScroll:true});return true}
   if(TAB_SECTIONS[h]){setTab(h,{noScroll:true});return true}
   const sh=findBySlug(h);if(sh){openShow(sh);return true}
   pendingShow=h;return false}
 addEventListener("hashchange",routeHash);
+function updDance(){const t=$("#dnSong").value.trim();document.querySelectorAll("[data-dn]").forEach(a=>{a.href="https://www.youtube.com/results?search_query="+encodeURIComponent(("BTS "+t+" "+a.dataset.dn).replace(/\s+/g," "))})}
+$("#dnSong").addEventListener("input",updDance);
+document.addEventListener("click",e=>{const a=e.target.closest('#burrow a[href="#bias"]');if(a){e.preventDefault();setTab("bias")}});
 setTab("spin",{keepHash:true,noScroll:true});routeHash();
 
 /* ---------- Next show + live status ---------- */
