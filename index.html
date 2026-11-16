@@ -1019,7 +1019,7 @@ const CREDITS={
  "Intro: Never Mind":{w:["Slow Rabbit","SUGA","RM","j-hope"],p:["Slow Rabbit"]},
  "Begin":{w:["RM","Tony Esterly","David Quiñones"],p:["Tony Esterly"]},
  "Lie":{w:["Jimin","DOCSKIM","Pdogg","\"hitman\" bang","Sumin"],p:["DOCSKIM"]},
- "Stigma":{w:["V","Philtre","Slow Rabbit","\"hitman\" bang","Sonnim"],p:["Philtre"]},
+ "Stigma":{w:["V","Philtre","Slow Rabbit","\"hitman\" bang"],p:["Philtre"],komca:true},
  "First Love":{w:["SUGA","Miss Kay"],p:["SUGA","Miss Kay"]},
  "Reflection":{w:["RM","Slow Rabbit"],p:["RM","Slow Rabbit"]},
  "MAMA":{w:["j-hope","Primary","Pdogg"],p:["Primary","Pdogg"]},
@@ -1105,7 +1105,7 @@ function renderCredits(){
     if(x.solo)links.push(`<a data-cr="behind" href="${ytS(behindQuery(x.t,"BTS "+x.u))}" target="_blank" rel="noopener">Behind the scenes ↗</a>`);
     links.push(`<a data-cr="full" href="https://genius.com/search?q=${encodeURIComponent("BTS "+x.t)}" target="_blank" rel="noopener">Full credits ↗</a>`);
     return `<details class="urow cr" data-t="${esc(x.t)}"><summary><span class="ut">${esc(x.t)}</span><span class="uu">${esc(x.solo?x.u+" solo":x.u)}</span><span class="uw">${esc(x.alb)} ${x.yr}${x.c.note?" · "+esc(x.c.note):""}</span>${badges?`<span class="badges">${badges}</span>`:""}</summary>
-      <div class="cr-body"><dl><dt>Written by</dt><dd>${w?nameList(w):"Not confirmed yet. Tap Full credits."}</dd><dt>Produced by</dt><dd>${p?nameList(p):"Not confirmed yet. Tap Full credits."}</dd></dl>
+      <div class="cr-body"><dl><dt>Written by</dt><dd>${w?nameList(w):"Not confirmed yet. Tap Full credits."}${x.c.komca?` <span class="badge alt">Checked on KOMCA</span>`:""}</dd><dt>Produced by</dt><dd>${p?nameList(p):"Not confirmed yet. Tap Full credits."}</dd></dl>
       <div class="cr-links">${links.join("")}</div></div></details>`}).join("");
 }
 const FILM_ALIAS={"Singularity":"Intro: Singularity","Serendipity":"Intro: Serendipity","Persona":"Intro: Persona","Seesaw":"Trivia 轉: Seesaw","Trivia 承: Love":"Trivia 承: Love"};
