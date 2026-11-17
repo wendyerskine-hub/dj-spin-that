@@ -422,6 +422,21 @@ button.btn{cursor:pointer;font:inherit}
 .pc-adjust label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink)}
 .pc-adjust input[type=range]{width:180px;accent-color:var(--gold)}
 #pcFront.has-photo{cursor:grab;touch-action:none}
+/* red -> purple journey: each tab shades from ARIRANG red (DJ Spin) to Borahae purple (Look Up) */
+:root{--tint:rgba(120,60,220,.55)}
+html[data-tab="spin"]{--gold:#ff5468;--violet:#ff8a98;--jade:#ffc2c9;--tint:rgba(225,30,60,.6);--glass:rgba(50,11,24,.64)}
+html[data-tab="show"]{--gold:#ff5c7f;--violet:#ff92aa;--jade:#ffc6d2;--tint:rgba(215,35,90,.58);--glass:rgba(47,11,30,.64)}
+html[data-tab="bias"]{--gold:#ff63a9;--violet:#ff96c6;--jade:#ffc8e0;--tint:rgba(205,40,125,.56);--glass:rgba(44,12,37,.63)}
+html[data-tab="list"]{--gold:#f26ad0;--violet:#f79ce1;--jade:#fac8ef;--tint:rgba(185,45,165,.56);--glass:rgba(39,12,43,.63)}
+html[data-tab="burrow"]{--gold:#dc74f0;--violet:#e6a2f6;--jade:#f0cafa;--tint:rgba(160,50,205,.56);--glass:rgba(34,13,47,.62)}
+html[data-tab="freebies"]{--gold:#cf7cff;--violet:#c69bff;--jade:#e2c8ff;--tint:rgba(140,55,215,.55);--glass:rgba(31,14,48,.62)}
+html[data-tab="more"]{--gold:#c77dff;--violet:#b48cff;--jade:#d9c2ff;--tint:rgba(120,60,220,.55);--glass:rgba(28,14,48,.62)}
+#stage::before{content:"";position:absolute;inset:0;z-index:2;background-color:var(--tint);mix-blend-mode:color;transition:background-color .9s ease;pointer-events:none}
+#stage::after{z-index:3}
+#stage .photo::after{display:none}
+section.station{transition:background-color .8s ease}
+.tabbar button,.btn,.chip,.seg button,.cr-filter button{transition:background-color .5s ease,border-color .5s ease,color .3s ease}
+@media (max-width:760px){.tabbar button[aria-current="page"]{background:color-mix(in srgb,var(--gold) 24%,transparent)}}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -1537,7 +1552,7 @@ const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
 let currentTab="spin",pendingShow=null,deepOpened=null;
-function setTab(t,opts){if(!TAB_SECTIONS[t])t="spin";currentTab=t;
+function setTab(t,opts){if(!TAB_SECTIONS[t])t="spin";currentTab=t;document.documentElement.dataset.tab=t;
   Object.entries(TAB_SECTIONS).forEach(([k,ids])=>ids.forEach(id=>{const el=document.getElementById(id);if(el)el.hidden=k!==t}));
   document.querySelector("header.hero").classList.toggle("slim",t!=="spin");
   document.querySelectorAll("#tabbar button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===t?"page":"false"));
