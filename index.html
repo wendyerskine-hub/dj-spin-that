@@ -437,6 +437,23 @@ html[data-tab="more"]{--gold:#c77dff;--violet:#b48cff;--jade:#d9c2ff;--tint:rgba
 section.station{transition:background-color .8s ease}
 .tabbar button,.btn,.chip,.seg button,.cr-filter button{transition:background-color .5s ease,border-color .5s ease,color .3s ease}
 @media (max-width:760px){.tabbar button[aria-current="page"]{background:color-mix(in srgb,var(--gold) 24%,transparent)}}
+/* page share button */
+header.hero{position:relative}
+.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
+.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
+.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1{padding-right:54px}}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);z-index:50;background:var(--ink);color:var(--night);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (min-width:761px){.toast{bottom:28px}}
+/* photocard preview: one big side at a time on phones */
+.pc-side{display:none}
+@media (max-width:600px){
+  .pc-side{display:inline-flex;align-self:start;justify-self:start}
+  .pc-preview{justify-content:center}
+  .pc-preview canvas{width:min(82%,330px)}
+  .pc-preview:not(.show-back) #pcBack,.pc-preview.show-back #pcFront{display:none}
+}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -480,6 +497,7 @@ footer a{color:var(--violet)}
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · Surprise Song Segment</div>
     <h1><span class="kicker">ARIRANG</span>DJ Spin That S**t!</h1>
+    <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading setlists…</span></div>
   </header>
 
@@ -757,6 +775,7 @@ footer a{color:var(--violet)}
           <button type="button" class="btn ghost" id="pcRemove">Remove photo</button>
         </div>
       </div>
+      <div class="seg pc-side" role="group" aria-label="Show side"><button type="button" data-side="front" aria-pressed="true">Front</button><button type="button" data-side="back" aria-pressed="false">Back</button></div>
       <div class="pc-preview"><canvas id="pcFront" width="650" height="1004" aria-label="Photocard front"></canvas><canvas id="pcBack" width="650" height="1004" aria-label="Photocard back"></canvas></div>
       <div class="dn-btns">
         <button class="btn" type="button" id="pcDlFront">Save front</button>
@@ -1612,6 +1631,28 @@ function updDance(){const t=$("#dnSong").value.trim();document.querySelectorAll(
 $("#dnSong").addEventListener("input",updDance);
 document.addEventListener("click",e=>{const a=e.target.closest('#burrow a[href="#bias"]');if(a){e.preventDefault();setTab("bias")}});
 setTab("spin",{keepHash:true,noScroll:true});routeHash();
+
+/* ---------- Share this page ---------- */
+const TAB_SHARE={spin:["DJ Spin That","Spin a random BTS surprise song from the ARIRANG tour 💜","spin"],
+ show:["Find your show","Look up the BTS surprise songs from your ARIRANG show 💜","show"],
+ bias:["Bias & Subunit Spin","Let your bias pick your BTS song, and see who wrote every solo and subunit song 💜","bias"],
+ list:["The surprise song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault? 💜","list"],
+ burrow:["The Kooky Burrow","Fall down the BTS rabbit hole: dance practices, behind the scenes, BTS shows and reactions 💜","kooky-burrow"],
+ freebies:["Freebies","Make a free photocard for your ARIRANG night, plus freebie ideas and trading tips 💜","freebies"],
+ more:["Look Up","Look up any ARIRANG surprise song: lyrics, fan translations and why each city got it 💜","more"]};
+function toast(msg){let t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
+  t.textContent=msg;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2200)}
+$("#pageShare").addEventListener("click",()=>{
+  const h=(location.hash||"").slice(1);const sh=currentTab==="show"&&findBySlug(h);
+  if(sh){const url="https://djspinthat.net/#"+showSlug(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
+    track("share-page/show/"+showSlug(sh));return doShare("DJ Spin That",text,url)}
+  const [title,text,slug]=TAB_SHARE[currentTab]||TAB_SHARE.spin;track("share-page/"+currentTab);
+  doShare(title+" · DJ Spin That",text,"https://djspinthat.net/#"+slug)});
+function doShare(title,text,url){
+  const copy=()=>{(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast("Link copied. Paste it anywhere 💜")).catch(()=>toast(url))};
+  if(navigator.share)navigator.share({title,text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()});else copy()}
+document.querySelectorAll(".pc-side button").forEach(b=>b.addEventListener("click",()=>{const back=b.dataset.side==="back";
+  document.querySelector(".pc-preview").classList.toggle("show-back",back);document.querySelectorAll(".pc-side button").forEach(x=>x.setAttribute("aria-pressed",x===b))}));
 
 /* ---------- Next show + live status ---------- */
 function renderNext(){
