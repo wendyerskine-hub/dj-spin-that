@@ -415,6 +415,13 @@ button.btn{cursor:pointer;font:inherit}
 .tabbar .tl,.tabbar .ts{font-weight:inherit}
 .tabbar .ts{display:none}
 @media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
+.pc-photo{display:grid;gap:8px;justify-items:start}
+.pc-pick,.pc-adjust label{cursor:pointer;font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:15px;font-weight:600}
+.pc-photo-note{font-size:13px;color:var(--muted)}
+.pc-adjust{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.pc-adjust label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink)}
+.pc-adjust input[type=range]{width:180px;accent-color:var(--gold)}
+#pcFront.has-photo{cursor:grab;touch-action:none}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -725,13 +732,22 @@ footer a{color:var(--violet)}
         <div class="field"><label for="pcShow">Show</label><select id="pcShow"><option>Loading shows…</option></select></div>
         <div class="field"><label for="pcTheme">Color</label><select id="pcTheme"><option value="">Borahae purple</option></select></div>
       </div>
+      <div class="pc-photo">
+        <label class="btn ghost pc-pick" for="pcFile">＋ Add your photo</label><input id="pcFile" type="file" accept="image/*" hidden>
+        <span class="pc-photo-note">Optional. Your photo stays on your device: it's never uploaded to this site.</span>
+        <div class="pc-adjust" id="pcAdjust" hidden>
+          <label>Zoom <input type="range" id="pcZoom" min="1" max="3" step="0.01" value="1"></label>
+          <span class="pc-photo-note">Drag the photo on the front to move it.</span>
+          <button type="button" class="btn ghost" id="pcRemove">Remove photo</button>
+        </div>
+      </div>
       <div class="pc-preview"><canvas id="pcFront" width="650" height="1004" aria-label="Photocard front"></canvas><canvas id="pcBack" width="650" height="1004" aria-label="Photocard back"></canvas></div>
       <div class="dn-btns">
         <button class="btn" type="button" id="pcDlFront">Save front</button>
         <button class="btn ghost" type="button" id="pcDlBack">Save back</button>
         <button class="btn ghost" type="button" id="pcDlSheet">Print sheets (9 per page) ↓</button>
       </div>
-      <p class="v-note">Print sheets are US Letter at 300 dpi: one page of fronts and one page of backs. Print both at 100% size ("Actual size"), not "Fit to page". Want your own photo on a card? See the Canva steps below.</p>
+      <p class="v-note">Use photos you took yourself or have permission to use, and keep cards free: never sell cards made with official photos. Print sheets are US Letter at 300 dpi: one page of fronts and one page of backs. Print both at 100% size ("Actual size"), not "Fit to page". Want your own photo on a card? See the Canva steps below.</p>
     </div>
 
     <div class="bgroup"><div class="bhead"><h3>From ARMY creators</h3><span>Freebies and photocard designs other ARMY made</span></div>
@@ -1272,7 +1288,27 @@ function fitText(ctx,t,max,size,font){let z=size;do{ctx.font=font.replace("{z}",
 function pcBg(ctx,c){const g=ctx.createLinearGradient(0,0,0,PC_H);g.addColorStop(0,"#241040");g.addColorStop(.55,"#150a28");g.addColorStop(1,"#0c0616");ctx.fillStyle=g;ctx.fillRect(0,0,PC_W,PC_H);
   const r=ctx.createRadialGradient(PC_W*.5,PC_H*.3,10,PC_W*.5,PC_H*.3,PC_W*.8);r.addColorStop(0,c+"66");r.addColorStop(1,c+"00");ctx.fillStyle=r;ctx.fillRect(0,0,PC_W,PC_H);
   ctx.strokeStyle=c+"55";ctx.lineWidth=3;rr(ctx,22,22,PC_W-44,PC_H-44,26);ctx.stroke()}
+let pcImg=null,pcPan={x:0,y:0},pcZoomV=1;
+const PH={x:44,y:104,w:PC_W-88,h:500};
+function drawPhoto(ctx){const iw=pcImg.naturalWidth||pcImg.width,ih=pcImg.naturalHeight||pcImg.height;const sc=Math.max(PH.w/iw,PH.h/ih)*pcZoomV;const dw=iw*sc,dh=ih*sc;
+  const maxX=(dw-PH.w)/2,maxY=(dh-PH.h)/2;pcPan.x=Math.max(-maxX,Math.min(maxX,pcPan.x));pcPan.y=Math.max(-maxY,Math.min(maxY,pcPan.y));
+  ctx.save();rr(ctx,PH.x,PH.y,PH.w,PH.h,26);ctx.clip();ctx.drawImage(pcImg,PH.x+(PH.w-dw)/2+pcPan.x,PH.y+(PH.h-dh)/2+pcPan.y,dw,dh);
+  const g=ctx.createLinearGradient(0,PH.y+PH.h-140,0,PH.y+PH.h);g.addColorStop(0,"rgba(12,6,22,0)");g.addColorStop(1,"rgba(12,6,22,.75)");ctx.fillStyle=g;ctx.fillRect(PH.x,PH.y+PH.h-140,PH.w,140);ctx.restore()}
+function drawFrontPhoto(ctx,sh,th){
+  pcBg(ctx,th.c);ctx.textAlign="center";ctx.fillStyle="#d9c2ff";
+  ctx.font="600 20px 'JetBrains Mono'";ctx.letterSpacing="6px";ctx.fillText("ARIRANG WORLD TOUR",PC_W/2,74);ctx.letterSpacing="0px";
+  drawPhoto(ctx);
+  ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font="800 30px Outfit";ctx.fillText("DJ SPIN THAT",PH.x+24,PH.y+PH.h-26);
+  if(th.bias){ctx.font="600 22px Outfit";const label="♡ "+th.bias;const w=ctx.measureText(label).width+36;ctx.fillStyle=th.c+"cc";rr(ctx,PH.x+PH.w-w-20,PH.y+PH.h-62,w,42,21);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(label,PH.x+PH.w-w-2,PH.y+PH.h-34)}
+  ctx.textAlign="center";
+  ctx.fillStyle="#f4efff";fitText(ctx,sh.city,PC_W-110,54,"700 {z}px 'Gowun Batang'");ctx.fillText(sh.city,PC_W/2,668);
+  ctx.fillStyle="#d9c2ff";ctx.font="500 22px 'JetBrains Mono'";ctx.fillText(`${sh.night.replace(" (FESTA)","").toUpperCase()} · ${fmtDate(sh.date,true).toUpperCase()}`,PC_W/2,706);
+  ctx.fillStyle=th.c;ctx.font="600 17px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,752);ctx.letterSpacing="0px";
+  const songs=sh.songTitles;const base=songs.length>2?30:36;let y=796;
+  songs.forEach(t=>{ctx.fillStyle="#fff";fitText(ctx,t,PC_W-120,base,"700 {z}px 'Gowun Batang'");ctx.fillText(t,PC_W/2,y);y+=base+12});
+  ctx.fillStyle="rgba(244,239,255,.6)";ctx.font="400 17px 'JetBrains Mono'";ctx.fillText("djspinthat.net · fan-made",PC_W/2,PC_H-50)}
 function drawFront(ctx,sh,th){
+  if(pcImg)return drawFrontPhoto(ctx,sh,th);
   pcBg(ctx,th.c);ctx.textAlign="center";ctx.fillStyle="#d9c2ff";
   ctx.font="600 20px 'JetBrains Mono'";ctx.letterSpacing="6px";ctx.fillText("ARIRANG WORLD TOUR",PC_W/2,82);ctx.letterSpacing="0px";
   // record
@@ -1314,6 +1350,15 @@ function sheet(src){const c=document.createElement("canvas");c.width=2550;c.heig
   x.strokeStyle="#999";x.lineWidth=2;for(let k=0;k<=3;k++){const X=ox+k*PC_W;x.beginPath();x.moveTo(X,oy-60);x.lineTo(X,oy-12);x.moveTo(X,oy+3*PC_H+12);x.lineTo(X,oy+3*PC_H+60);x.stroke()}
   for(let r=0;r<=3;r++){const Y=oy+r*PC_H;x.beginPath();x.moveTo(ox-60,Y);x.lineTo(ox-12,Y);x.moveTo(ox+3*PC_W+12,Y);x.lineTo(ox+3*PC_W+60,Y);x.stroke()}
   x.fillStyle="#666";x.font="400 28px Outfit";x.textAlign="center";x.fillText("DJ Spin That photocards · print at 100% (Actual size) on Letter paper · cut on the marks · djspinthat.net",c.width/2,c.height-50);return c}
+$("#pcFile").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);const im=new Image();
+  im.onload=()=>{pcImg=im;pcPan={x:0,y:0};pcZoomV=1;$("#pcZoom").value=1;$("#pcAdjust").hidden=false;$("#pcFront").classList.add("has-photo");$(".pc-pick").textContent="Change photo";drawPc();track("freebies/photocard-photo")};
+  im.onerror=()=>{URL.revokeObjectURL(url);alert("That photo couldn't be opened. Try a JPG or PNG.")};im.src=url;e.target.value=""});
+$("#pcZoom").addEventListener("input",e=>{pcZoomV=+e.target.value;drawPc()});
+$("#pcRemove").addEventListener("click",()=>{pcImg=null;$("#pcAdjust").hidden=true;$("#pcFront").classList.remove("has-photo");$(".pc-pick").textContent="＋ Add your photo";drawPc()});
+(()=>{const cv=$("#pcFront");let drag=null;
+  cv.addEventListener("pointerdown",e=>{if(!pcImg)return;const r=cv.getBoundingClientRect();drag={x:e.clientX,y:e.clientY,px:pcPan.x,py:pcPan.y,k:PC_W/r.width};cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener("pointermove",e=>{if(!drag)return;pcPan.x=drag.px+(e.clientX-drag.x)*drag.k;pcPan.y=drag.py+(e.clientY-drag.y)*drag.k;drawPc()});
+  ["pointerup","pointercancel"].forEach(t=>cv.addEventListener(t,()=>{drag=null}))})();
 $("#pcShow").addEventListener("change",drawPc);$("#pcTheme").addEventListener("change",drawPc);
 $("#pcDlFront").addEventListener("click",()=>{const sh=pcShow();if(!sh)return;saveCanvas(roundedCopy($("#pcFront")),pcName(sh,"front"));track("freebies/photocard-front/"+showSlug(sh))});
 $("#pcDlBack").addEventListener("click",()=>{const sh=pcShow();if(!sh)return;saveCanvas(roundedCopy($("#pcBack")),pcName(sh,"back"));track("freebies/photocard-back/"+showSlug(sh))});
