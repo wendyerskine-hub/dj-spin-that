@@ -401,6 +401,20 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
   .gif-cols a,.gbtns a,.gbtns button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
   footer a{display:inline-block;padding:10px 2px}
 }
+/* freebies */
+.freebies{display:grid;gap:26px}
+.pc-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;max-width:640px}
+.pc-controls .field{display:grid;gap:6px;min-width:0}
+.pc-preview{display:flex;gap:14px;flex-wrap:wrap}
+.pc-preview canvas{width:min(46%,240px);height:auto;aspect-ratio:650/1004;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.pc-empty{border:1px dashed var(--line);border-radius:14px;padding:16px;color:var(--muted);font-size:14px}
+.pc-empty a,.steps a{color:var(--violet)}
+.steps,.tips{margin:0;padding-left:22px;display:grid;gap:8px;color:var(--muted);font-size:14px;max-width:720px}
+.steps b,.tips b{color:var(--ink)}
+button.btn{cursor:pointer;font:inherit}
+.tabbar .tl,.tabbar .ts{font-weight:inherit}
+.tabbar .ts{display:none}
+@media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -432,12 +446,13 @@ footer a{color:var(--violet)}
 </div>
 
 <nav class="tabbar" id="tabbar" aria-label="Sections">
-  <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span>DJ Spin</span></button>
-  <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>My Show</span></button>
-  <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Bias &amp; Subunit Spin</span></button>
-  <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span>All Surprise Songs</span></button>
-  <button type="button" data-tab="burrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10C7.5 7 7 3.5 8.5 3s3 3.5 3 7M15 10c1.5-3 2-6.5.5-7s-3 3.5-3 7"/><ellipse cx="12" cy="15" rx="6" ry="5.5"/><circle cx="10" cy="14.5" r=".6"/><circle cx="14" cy="14.5" r=".6"/></svg><span>Kooky Burrow</span></button>
-  <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span>Look Up</span></button>
+  <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></button>
+  <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">My Show</b><b class="ts">My Show</b></span></button>
+  <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">Bias &amp; Subunit Spin</b><b class="ts">Bias</b></span></button>
+  <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">All Surprise Songs</b><b class="ts">Checklist</b></span></button>
+  <button type="button" data-tab="burrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10C7.5 7 7 3.5 8.5 3s3 3.5 3 7M15 10c1.5-3 2-6.5.5-7s-3 3.5-3 7"/><ellipse cx="12" cy="15" rx="6" ry="5.5"/><circle cx="10" cy="14.5" r=".6"/><circle cx="14" cy="14.5" r=".6"/></svg><span><b class="tl">Kooky Burrow</b><b class="ts">Burrow</b></span></button>
+  <button type="button" data-tab="freebies"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3 9h18M12 9v11M12 9c-1.5-3.5-5-4.5-5.5-2.5S9 9 12 9zM12 9c1.5-3.5 5-4.5 5.5-2.5S15 9 12 9z"/></svg><span><b class="tl">Freebies</b><b class="ts">Freebies</b></span></button>
+  <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span><b class="tl">Look Up</b><b class="ts">Look Up</b></span></button>
 </nav>
 <main>
   <header class="hero">
@@ -699,6 +714,65 @@ footer a{color:var(--violet)}
       </div></div>
   </section>
   </div>
+
+  <section class="station freebies" id="freebies">
+    <h2><small>Freebies · for ARMY, by ARMY</small>Photocards, freebies and trading</h2>
+    <p class="help">Make a photocard for your night, learn to design and print your own, and find freebie ideas and trading groups. Everything here is free and fan-made.</p>
+
+    <div class="bgroup" id="pcMaker"><div class="bhead"><h3>Digital photocards</h3><span>Your night, as a DJ Spin That photocard</span></div>
+      <p class="help">Pick a show and a color. You get a front and a back at standard photocard size (55 × 85 mm), ready to save, share or print.</p>
+      <div class="pc-controls">
+        <div class="field"><label for="pcShow">Show</label><select id="pcShow"><option>Loading shows…</option></select></div>
+        <div class="field"><label for="pcTheme">Color</label><select id="pcTheme"><option value="">Borahae purple</option></select></div>
+      </div>
+      <div class="pc-preview"><canvas id="pcFront" width="650" height="1004" aria-label="Photocard front"></canvas><canvas id="pcBack" width="650" height="1004" aria-label="Photocard back"></canvas></div>
+      <div class="dn-btns">
+        <button class="btn" type="button" id="pcDlFront">Save front</button>
+        <button class="btn ghost" type="button" id="pcDlBack">Save back</button>
+        <button class="btn ghost" type="button" id="pcDlSheet">Print sheets (9 per page) ↓</button>
+      </div>
+      <p class="v-note">Print sheets are US Letter at 300 dpi: one page of fronts and one page of backs. Print both at 100% size ("Actual size"), not "Fit to page". Want your own photo on a card? See the Canva steps below.</p>
+    </div>
+
+    <div class="bgroup"><div class="bhead"><h3>From ARMY creators</h3><span>Freebies and photocard designs other ARMY made</span></div>
+      <div class="pc-empty">Coming soon. We'll feature ARMY freebie makers here, with links to their own posts. Know a creator who should be here? <a href="#more" data-goto="more">Tell us in Look Up ↓</a></div>
+    </div>
+
+    <div class="bgroup"><div class="bhead"><h3>Make your own with Canva</h3><span>Design, print and cut photocards at home</span></div>
+      <ol class="steps">
+        <li><b>Start a design.</b> In <a href="https://www.canva.com/" target="_blank" rel="noopener">Canva</a>, tap Create a design, then Custom size, and enter <b>55 × 85 mm</b> (standard K-pop photocard size).</li>
+        <li><b>Turn on print bleed</b> (File, then Settings, then Show print bleed) so nothing important gets trimmed off the edges.</li>
+        <li><b>Add your photo and text.</b> Use your own concert photos, or upload the front you saved above. Keep names and words at least 3 mm from the edge.</li>
+        <li><b>Make the back.</b> Add a second page with your handle, the date and city, or a little message for whoever gets it.</li>
+        <li><b>Download for print:</b> Share, then Download, then <b>PDF Print</b>, with Crop marks and bleed ticked.</li>
+        <li><b>Print</b> on matte or glossy photo paper or 250–300 gsm cardstock, at 100% size. For double-sided cards, print the backs on the reverse side, or print separately and glue them back to back.</li>
+        <li><b>Cut and finish:</b> trim along the crop marks with a paper trimmer, round the corners with a 3–4 mm corner punch, and laminate or sleeve them if you want them to last.</li>
+      </ol>
+      <p class="v-note">Please don't sell cards made from official BTS photos or BT21 characters. Those belong to HYBE and LINE FRIENDS. Free sharing and trading between ARMY is the spirit here.</p>
+      <div class="dn-btns">
+        <a class="btn ghost" data-pc="tut-yt" href="https://www.youtube.com/results?search_query=how+to+make+kpop+photocards+canva+print" target="_blank" rel="noopener">Watch Canva tutorials on YouTube ↗</a>
+        <a class="btn ghost" data-pc="tut-tt" href="https://www.tiktok.com/search?q=how%20to%20make%20photocards%20canva" target="_blank" rel="noopener">Photocard tips on TikTok ↗</a>
+      </div>
+    </div>
+
+    <div class="bgroup"><div class="bhead"><h3>Trading groups</h3><span>Swap freebies and photocards with other ARMY</span></div>
+      <div class="pc-empty">Coming soon: trusted ARMY trading groups.</div>
+      <ul class="tips">
+        <li><b>Trade by mail?</b> Use tracked shipping, and send to a P.O. box or pickup point if you can.</li>
+        <li><b>Never post your home address,</b> phone number or full name in a public group.</li>
+        <li><b>Trading in person</b> works best at the venue or in a busy public place, with a friend.</li>
+        <li><b>Under 18?</b> Ask a parent or guardian before trading with someone you don't know.</li>
+        <li><b>Check reviews or proof</b> of past trades before sending first.</li>
+      </ul>
+    </div>
+
+    <div class="bgroup"><div class="bhead"><h3>Find freebies</h3><span>BTS and BT21 freebie ideas on TikTok and YouTube</span></div><div class="bcards">
+        <a class="acard" href="https://www.tiktok.com/search?q=BTS%20freebies%20concert" target="_blank" rel="noopener" data-acct="freebies/tt-bts"><span class="aname">BTS freebies</span><span class="ahandle">TikTok</span><span class="adesc">Ideas ARMY hand out at concerts: photocards, stickers, bracelets and more.</span><span class="ago">Search TikTok ↗</span></a>
+        <a class="acard" href="https://www.tiktok.com/search?q=BT21%20freebies" target="_blank" rel="noopener" data-acct="freebies/tt-bt21"><span class="aname">BT21 freebies</span><span class="ahandle">TikTok</span><span class="adesc">Cute BT21-themed freebie ideas and hauls.</span><span class="ago">Search TikTok ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BTS+freebies+DIY+tutorial" target="_blank" rel="noopener" data-acct="freebies/yt-diy"><span class="aname">DIY freebie tutorials</span><span class="ahandle">YouTube</span><span class="adesc">Step-by-step videos for making stickers, photocards, keychains and bracelets.</span><span class="ago">Search YouTube ↗</span></a>
+        <a class="acard" href="https://www.youtube.com/results?search_query=BTS+concert+freebies+haul" target="_blank" rel="noopener" data-acct="freebies/yt-haul"><span class="aname">Freebie hauls</span><span class="ahandle">YouTube</span><span class="adesc">See what ARMY traded and collected at shows, for inspiration.</span><span class="ago">Search YouTube ↗</span></a>
+    </div></div>
+  </section>
 
   <section class="station fix" id="fix">
     <details id="fixDetails"><summary class="fix-sum"><span><small>Spot a mistake? Got a theory?</small>Report a correction or share a theory</span><b>Open ▾</b></summary>
@@ -994,7 +1068,7 @@ document.addEventListener("click",e=>{
   else if(e.target.closest(".giphy-follow"))track("gif/giphy-channel");
   else if(e.target.closest("[data-giphy]"))track("gif/giphy-open/"+e.target.closest("[data-giphy]").dataset.giphy);
   else if(e.target.closest("#gifReqSend"))track("gif/request");
-  else if(e.target.closest(".acard")){const d=e.target.closest(".acard").dataset.acct;track(d.startsWith("burrow/")?d:"army/"+d)}
+  else if(e.target.closest(".acard")){const d=e.target.closest(".acard").dataset.acct;track(/^(burrow|freebies)\//.test(d)?d:"army/"+d)}
   else if(e.target.closest("[data-dn]"))track("burrow/dance/"+e.target.closest("[data-dn]").dataset.dn+"/"+($("#dnSong").value.trim()||"any"));
   else if(e.target.closest(".dsong"))track("checklist/"+e.target.closest(".dsong").getAttribute("aria-label").split(":")[0]);
   else if(e.target.closest("#disco .seg button"))track("checklist-filter/"+e.target.closest("button").dataset.f);
@@ -1056,6 +1130,7 @@ function renderDisco(){
   list.querySelectorAll(".alb").forEach(a=>a.classList.toggle("empty",discoFilter!=="all"&&![...a.querySelectorAll(".dsong")].some(b=>getComputedStyle(b).display!=="none")));
   renderUnits(P);
   renderCredits();
+  fillPc();
 }
 document.querySelectorAll('#disco .seg button').forEach(b=>b.addEventListener("click",()=>{discoFilter=b.dataset.f;document.querySelectorAll('#disco .seg button').forEach(x=>x.setAttribute("aria-pressed",x===b));renderDisco()}));
 $("#discoOpen").addEventListener("click",()=>document.querySelectorAll("#discoList details.alb").forEach(d=>d.open=true));
@@ -1181,6 +1256,70 @@ function biasBehind(m,t){const a=m.id==="suga"&&/Haegeum|Daechwita|People|Amygda
 $("#crFilter").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;crFilter=b.dataset.f;renderCredits();track("credits-filter/"+crFilter)});
 $("#crList").addEventListener("click",e=>{const a=e.target.closest("a[data-cr]");if(a)track("credits-"+a.dataset.cr+"/"+a.closest("details").dataset.t)});
 $("#crList").addEventListener("toggle",e=>{if(e.target.open&&e.target.dataset.t)track("credits-open/"+e.target.dataset.t)},true);
+
+/* ---------- Freebies: photocard maker ---------- */
+const PC_W=650,PC_H=1004;
+function pcTheme(){const id=$("#pcTheme").value;const m=MEMBERS.find(x=>x.id===id);return{c:m?m.c:"#b48cff",bias:m?m.en:""}}
+function pcShow(){return ALL.find(s=>s.id===$("#pcShow").value)}
+function fillPc(){const sel=$("#pcShow");if(!sel)return;const keep=sel.value;
+  const played=SHOWS.slice().reverse();
+  sel.innerHTML=played.map(s=>`<option value="${esc(s.id)}">${esc(s.city)} · ${esc(s.night.replace(" (FESTA)",""))}${s.date?" · "+esc(fmtDate(s.date)):""}</option>`).join("");
+  if(keep&&played.some(s=>s.id===keep))sel.value=keep;
+  const th=$("#pcTheme");if(th.options.length<2)th.innerHTML+=MEMBERS.map(m=>`<option value="${m.id}">${esc(m.en)} bias</option>`).join("");
+  drawPc()}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function fitText(ctx,t,max,size,font){let z=size;do{ctx.font=font.replace("{z}",z);if(ctx.measureText(t).width<=max)break;z-=2}while(z>18);return z}
+function pcBg(ctx,c){const g=ctx.createLinearGradient(0,0,0,PC_H);g.addColorStop(0,"#241040");g.addColorStop(.55,"#150a28");g.addColorStop(1,"#0c0616");ctx.fillStyle=g;ctx.fillRect(0,0,PC_W,PC_H);
+  const r=ctx.createRadialGradient(PC_W*.5,PC_H*.3,10,PC_W*.5,PC_H*.3,PC_W*.8);r.addColorStop(0,c+"66");r.addColorStop(1,c+"00");ctx.fillStyle=r;ctx.fillRect(0,0,PC_W,PC_H);
+  ctx.strokeStyle=c+"55";ctx.lineWidth=3;rr(ctx,22,22,PC_W-44,PC_H-44,26);ctx.stroke()}
+function drawFront(ctx,sh,th){
+  pcBg(ctx,th.c);ctx.textAlign="center";ctx.fillStyle="#d9c2ff";
+  ctx.font="600 20px 'JetBrains Mono'";ctx.letterSpacing="6px";ctx.fillText("ARIRANG WORLD TOUR",PC_W/2,82);ctx.letterSpacing="0px";
+  // record
+  const cx=PC_W/2,cy=285,R=165;ctx.fillStyle="#08040f";ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.07)";ctx.lineWidth=2;for(let k=R-12;k>62;k-=11){ctx.beginPath();ctx.arc(cx,cy,k,0,7);ctx.stroke()}
+  ctx.strokeStyle=th.c;ctx.lineWidth=4;ctx.beginPath();ctx.arc(cx,cy,R+10,-2.4,-.7);ctx.stroke();
+  ctx.fillStyle=th.c;ctx.beginPath();ctx.arc(cx,cy,58,0,7);ctx.fill();ctx.fillStyle="#08040f";ctx.beginPath();ctx.arc(cx,cy,8,0,7);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="800 50px Outfit";ctx.fillText("DJ SPIN THAT",PC_W/2,528);
+  ctx.fillStyle="#f4efff";const z=fitText(ctx,sh.city,PC_W-110,64,"700 {z}px 'Gowun Batang'");ctx.fillText(sh.city,PC_W/2,612);
+  ctx.fillStyle="#d9c2ff";ctx.font="500 24px 'JetBrains Mono'";ctx.fillText(`${sh.night.replace(" (FESTA)","").toUpperCase()} · ${fmtDate(sh.date,true).toUpperCase()}`,PC_W/2,656);
+  ctx.strokeStyle=th.c+"aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(150,690);ctx.lineTo(PC_W-150,690);ctx.stroke();
+  ctx.fillStyle=th.c;ctx.font="600 18px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,728);ctx.letterSpacing="0px";
+  const songs=sh.songTitles;const base=songs.length>2?36:42;let y=songs.length>2?778:790;
+  songs.forEach(t=>{ctx.fillStyle="#fff";fitText(ctx,t,PC_W-120,base,"700 {z}px 'Gowun Batang'");ctx.fillText(t,PC_W/2,y);y+=base+16});
+  if(th.bias){ctx.font="600 22px Outfit";const label="♡ "+th.bias+" bias";const w=ctx.measureText(label).width+40;ctx.fillStyle=th.c+"33";rr(ctx,(PC_W-w)/2,PC_H-128,w,44,22);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(label,PC_W/2,PC_H-98)}
+  ctx.fillStyle="rgba(244,239,255,.6)";ctx.font="400 17px 'JetBrains Mono'";ctx.fillText("djspinthat.net · fan-made",PC_W/2,PC_H-50)}
+let pcQR=null;
+function drawBack(ctx,sh,th){
+  pcBg(ctx,th.c);ctx.textAlign="center";
+  ctx.fillStyle="#fff";ctx.font="800 56px Outfit";ctx.fillText("DJ SPIN THAT",PC_W/2,190);
+  ctx.fillStyle="#d9c2ff";ctx.font="600 20px 'JetBrains Mono'";ctx.letterSpacing="6px";ctx.fillText("BTS SURPRISE SONGS",PC_W/2,236);ctx.letterSpacing="0px";
+  const q=300,qx=(PC_W-q)/2,qy=320;ctx.fillStyle="#fff";rr(ctx,qx-24,qy-24,q+48,q+48,24);ctx.fill();
+  if(pcQR)ctx.drawImage(pcQR,qx,qy,q,q);else{ctx.fillStyle="#1a0b2e";ctx.font="600 26px Outfit";ctx.fillText("djspinthat.net",PC_W/2,qy+q/2)}
+  ctx.fillStyle="#f4efff";ctx.font="400 28px Outfit";ctx.fillText("Scan to play this night's",PC_W/2,720);ctx.fillText("surprise songs",PC_W/2,758);
+  ctx.fillStyle=th.c;ctx.font="700 32px 'JetBrains Mono'";ctx.fillText("djspinthat.net",PC_W/2,830);
+  ctx.fillStyle="rgba(244,239,255,.55)";ctx.font="400 17px Outfit";ctx.fillText("Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC",PC_W/2,PC_H-60)}
+function pcQRFor(sh){return new Promise(res=>{if(!window.QRCode){pcQR=null;return res()}
+  const d=document.createElement("div");new QRCode(d,{text:"https://djspinthat.net/#"+showSlug(sh),width:300,height:300,colorDark:"#1a0b2e",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+  const c=d.querySelector("canvas");pcQR=c||null;res()})}
+let pcFontsReady=null;
+function pcFonts(){return pcFontsReady||(pcFontsReady=Promise.all(["700 40px 'Gowun Batang'","800 40px Outfit","400 20px Outfit","600 20px 'JetBrains Mono'","500 20px 'JetBrains Mono'"].map(f=>document.fonts.load(f).catch(()=>{}))))}
+async function drawPc(){const sh=pcShow();if(!sh)return;const th=pcTheme();await pcFonts();await pcQRFor(sh);
+  drawFront($("#pcFront").getContext("2d"),sh,th);drawBack($("#pcBack").getContext("2d"),sh,th)}
+function pcName(sh,side){return `djspinthat-photocard-${showSlug(sh)}-${side}.png`}
+function saveCanvas(c,name){c.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)},"image/png")}
+function roundedCopy(src){const c=document.createElement("canvas");c.width=PC_W;c.height=PC_H;const x=c.getContext("2d");rr(x,0,0,PC_W,PC_H,47);x.clip();x.drawImage(src,0,0);return c}
+function sheet(src){const c=document.createElement("canvas");c.width=2550;c.height=3300;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);
+  const ox=(c.width-3*PC_W)/2,oy=(c.height-3*PC_H)/2;for(let r=0;r<3;r++)for(let k=0;k<3;k++)x.drawImage(src,ox+k*PC_W,oy+r*PC_H);
+  x.strokeStyle="#999";x.lineWidth=2;for(let k=0;k<=3;k++){const X=ox+k*PC_W;x.beginPath();x.moveTo(X,oy-60);x.lineTo(X,oy-12);x.moveTo(X,oy+3*PC_H+12);x.lineTo(X,oy+3*PC_H+60);x.stroke()}
+  for(let r=0;r<=3;r++){const Y=oy+r*PC_H;x.beginPath();x.moveTo(ox-60,Y);x.lineTo(ox-12,Y);x.moveTo(ox+3*PC_W+12,Y);x.lineTo(ox+3*PC_W+60,Y);x.stroke()}
+  x.fillStyle="#666";x.font="400 28px Outfit";x.textAlign="center";x.fillText("DJ Spin That photocards · print at 100% (Actual size) on Letter paper · cut on the marks · djspinthat.net",c.width/2,c.height-50);return c}
+$("#pcShow").addEventListener("change",drawPc);$("#pcTheme").addEventListener("change",drawPc);
+$("#pcDlFront").addEventListener("click",()=>{const sh=pcShow();if(!sh)return;saveCanvas(roundedCopy($("#pcFront")),pcName(sh,"front"));track("freebies/photocard-front/"+showSlug(sh))});
+$("#pcDlBack").addEventListener("click",()=>{const sh=pcShow();if(!sh)return;saveCanvas(roundedCopy($("#pcBack")),pcName(sh,"back"));track("freebies/photocard-back/"+showSlug(sh))});
+$("#pcDlSheet").addEventListener("click",()=>{const sh=pcShow();if(!sh)return;saveCanvas(sheet($("#pcFront")),pcName(sh,"print-fronts"));setTimeout(()=>saveCanvas(sheet($("#pcBack")),pcName(sh,"print-backs")),700);track("freebies/photocard-sheet/"+showSlug(sh))});
+document.addEventListener("click",e=>{const a=e.target.closest("#freebies a[data-goto]");if(a){e.preventDefault();setTab(a.dataset.goto);setTimeout(()=>{const f=$("#fixDetails");if(f)f.open=true;const x=$("#fix");if(x)x.scrollIntoView()},50)}
+  const b=e.target.closest("[data-pc]");if(b)track("freebies/"+b.dataset.pc)});
 
 /* ---------- Song vault ---------- */
 const JA_ORIG=new Set(["Crystal Snow","For You"]),EN_ORIG=new Set(["Permission to Dance"]);
@@ -1348,7 +1487,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],burrow:["burrow","watch"],more:["vault","gifs","fix"]};
+const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],burrow:["burrow","watch"],freebies:["freebies"],more:["vault","gifs","fix"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
