@@ -1291,20 +1291,29 @@ $("#crList").addEventListener("toggle",e=>{if(e.target.open&&e.target.dataset.t)
 
 /* ---------- Freebies: photocard maker ---------- */
 const PC_W=650,PC_H=1004;
-function pcTheme(){const id=$("#pcTheme").value;const m=MEMBERS.find(x=>x.id===id);return{c:m?m.c:"#b48cff",bias:m?m.en:""}}
+// ARIRANG tour mic colors (from Wendy). [label, fill color, readable text color, glitter]
+const PC_MIC={rm:[["Silver","#c9ced8"]],jin:[["Pink","#ff8fc8"],["Baby blue glitter","#9fd4ff","#9fd4ff",1]],suga:[["Silver","#c9ced8"]],jhope:[["White","#f4f4f8"]],jimin:[["Black","#2a2a33","#c9ced8"]],v:[["Red","#ff4d5e"],["Green","#3ddc84"]],jk:[["Gold","#e8c46a"]]};
+const PC_PURPLE="#b48cff";
+const pcLight=hex=>{const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))>170};
+function pcTheme(){const [id,opt]=($("#pcTheme").value||"").split("|");const m=MEMBERS.find(x=>x.id===id);
+  if(!m)return{c:PC_PURPLE,t:PC_PURPLE,bias:"",g:0};
+  if(opt==="purple")return{c:PC_PURPLE,t:PC_PURPLE,bias:m.en,g:0};
+  const k=PC_MIC[id]&&PC_MIC[id][+opt];if(!k)return{c:PC_PURPLE,t:PC_PURPLE,bias:m.en,g:0};
+  return{c:k[1],t:k[2]||k[1],bias:m.en,g:k[3]||0}}
 const pcPlain=()=>$("#pcStyle")&&$("#pcStyle").value==="plain";
 function pcShow(){return ALL.find(s=>s.id===$("#pcShow").value)}
 function fillPc(){const sel=$("#pcShow");if(!sel)return;const keep=sel.value;
   const played=SHOWS.slice().reverse();
   sel.innerHTML=played.map(s=>`<option value="${esc(s.id)}">${esc(s.city)} · ${esc(s.night.replace(" (FESTA)",""))}${s.date?" · "+esc(fmtDate(s.date)):""}</option>`).join("");
   if(keep&&played.some(s=>s.id===keep))sel.value=keep;
-  const th=$("#pcTheme");if(th.options.length<2)th.innerHTML+=MEMBERS.map(m=>`<option value="${m.id}">${esc(m.en)} bias</option>`).join("");
+  const th=$("#pcTheme");if(th.options.length<2)th.innerHTML+=MEMBERS.map(m=>`<optgroup label="${esc(m.en)} bias"><option value="${m.id}|purple">${esc(m.en)} · ARMY purple</option>${(PC_MIC[m.id]||[]).map((k,i)=>`<option value="${m.id}|${i}">${esc(m.en)} · ${esc(k[0])} mic</option>`).join("")}</optgroup>`).join("");
   drawPc()}
 function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 function fitText(ctx,t,max,size,font){let z=size;do{ctx.font=font.replace("{z}",z);if(ctx.measureText(t).width<=max)break;z-=2}while(z>18);return z}
 function pcBg(ctx,c){const g=ctx.createLinearGradient(0,0,0,PC_H);g.addColorStop(0,"#241040");g.addColorStop(.55,"#150a28");g.addColorStop(1,"#0c0616");ctx.fillStyle=g;ctx.fillRect(0,0,PC_W,PC_H);
   const r=ctx.createRadialGradient(PC_W*.5,PC_H*.3,10,PC_W*.5,PC_H*.3,PC_W*.8);r.addColorStop(0,c+"66");r.addColorStop(1,c+"00");ctx.fillStyle=r;ctx.fillRect(0,0,PC_W,PC_H);
-  ctx.strokeStyle=c+"55";ctx.lineWidth=3;rr(ctx,22,22,PC_W-44,PC_H-44,26);ctx.stroke()}
+  ctx.strokeStyle=c+"55";ctx.lineWidth=3;rr(ctx,22,22,PC_W-44,PC_H-44,26);ctx.stroke();
+  if(pcTheme().g){let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;for(let k=0;k<170;k++){const x=rnd()*PC_W,y=rnd()*PC_H,r=rnd()*2.6+.6;ctx.fillStyle=rnd()>.5?"rgba(255,255,255,"+(.25+rnd()*.5)+")":c+"aa";ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();if(r>2.6){ctx.fillRect(x-r*2.2,y-.5,r*4.4,1);ctx.fillRect(x-.5,y-r*2.2,1,r*4.4)}}}}
 let pcImg=null,pcPan={x:0,y:0},pcZoomV=1;
 const PH={x:44,y:104,w:PC_W-88,h:500};
 function drawPhoto(ctx){const iw=pcImg.naturalWidth||pcImg.width,ih=pcImg.naturalHeight||pcImg.height;const sc=Math.max(PH.w/iw,PH.h/ih)*pcZoomV;const dw=iw*sc,dh=ih*sc;
@@ -1316,12 +1325,12 @@ function drawFrontPhoto(ctx,sh,th){
   ctx.font="600 20px 'JetBrains Mono'";ctx.letterSpacing="6px";ctx.fillText("ARIRANG WORLD TOUR",PC_W/2,74);ctx.letterSpacing="0px";
   drawPhoto(ctx);
   if(!pcPlain()){ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font="800 30px Outfit";ctx.fillText("DJ SPIN THAT",PH.x+24,PH.y+PH.h-26)}
-  if(th.bias){ctx.textAlign="left";ctx.font="600 22px Outfit";const label="♡ "+th.bias;const w=ctx.measureText(label).width+36;ctx.fillStyle=th.c+"cc";rr(ctx,PH.x+PH.w-w-20,PH.y+PH.h-62,w,42,21);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(label,PH.x+PH.w-w-2,PH.y+PH.h-34)}
+  if(th.bias){ctx.textAlign="left";ctx.font="600 22px Outfit";const label="♡ "+th.bias;const w=ctx.measureText(label).width+36;ctx.fillStyle=th.c+"cc";rr(ctx,PH.x+PH.w-w-20,PH.y+PH.h-62,w,42,21);ctx.fill();ctx.fillStyle=pcLight(th.c)?"#1a0b2e":"#fff";ctx.fillText(label,PH.x+PH.w-w-2,PH.y+PH.h-34)}
   ctx.textAlign="center";
   ctx.textAlign="center";
   ctx.fillStyle="#f4efff";fitText(ctx,sh.city,PC_W-110,54,"700 {z}px 'Gowun Batang'");ctx.fillText(sh.city,PC_W/2,668);
   ctx.fillStyle="#d9c2ff";ctx.font="500 22px 'JetBrains Mono'";ctx.fillText(`${sh.night.replace(" (FESTA)","").toUpperCase()} · ${fmtDate(sh.date,true).toUpperCase()}`,PC_W/2,706);
-  ctx.fillStyle=th.c;ctx.font="600 17px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,752);ctx.letterSpacing="0px";
+  ctx.fillStyle=th.t;ctx.font="600 17px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,752);ctx.letterSpacing="0px";
   const songs=sh.songTitles;const base=songs.length>2?30:36;let y=796;
   songs.forEach(t=>{ctx.fillStyle="#fff";fitText(ctx,t,PC_W-120,base,"700 {z}px 'Gowun Batang'");ctx.fillText(t,PC_W/2,y);y+=base+12});
   if(!pcPlain()){ctx.fillStyle="rgba(244,239,255,.6)";ctx.font="400 17px 'JetBrains Mono'";ctx.fillText("djspinthat.net · fan-made",PC_W/2,PC_H-50)}}
@@ -1332,13 +1341,13 @@ function drawFront(ctx,sh,th){
   // record
   const cx=PC_W/2,cy=285,R=165;ctx.fillStyle="#08040f";ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fill();
   ctx.strokeStyle="rgba(255,255,255,.07)";ctx.lineWidth=2;for(let k=R-12;k>62;k-=11){ctx.beginPath();ctx.arc(cx,cy,k,0,7);ctx.stroke()}
-  ctx.strokeStyle=th.c;ctx.lineWidth=4;ctx.beginPath();ctx.arc(cx,cy,R+10,-2.4,-.7);ctx.stroke();
-  ctx.fillStyle=th.c;ctx.beginPath();ctx.arc(cx,cy,58,0,7);ctx.fill();ctx.fillStyle="#08040f";ctx.beginPath();ctx.arc(cx,cy,8,0,7);ctx.fill();
+  ctx.strokeStyle=th.t;ctx.lineWidth=4;ctx.beginPath();ctx.arc(cx,cy,R+10,-2.4,-.7);ctx.stroke();
+  ctx.fillStyle=th.c;ctx.beginPath();ctx.arc(cx,cy,58,0,7);ctx.fill();if(!pcLight(th.c)&&th.t!==th.c){ctx.strokeStyle=th.t;ctx.lineWidth=3;ctx.stroke()}ctx.fillStyle="#08040f";ctx.beginPath();ctx.arc(cx,cy,8,0,7);ctx.fill();
   if(!pcPlain()){ctx.fillStyle="#fff";ctx.font="800 50px Outfit";ctx.fillText("DJ SPIN THAT",PC_W/2,528)}
   ctx.fillStyle="#f4efff";const z=fitText(ctx,sh.city,PC_W-110,64,"700 {z}px 'Gowun Batang'");ctx.fillText(sh.city,PC_W/2,612);
   ctx.fillStyle="#d9c2ff";ctx.font="500 24px 'JetBrains Mono'";ctx.fillText(`${sh.night.replace(" (FESTA)","").toUpperCase()} · ${fmtDate(sh.date,true).toUpperCase()}`,PC_W/2,656);
-  ctx.strokeStyle=th.c+"aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(150,690);ctx.lineTo(PC_W-150,690);ctx.stroke();
-  ctx.fillStyle=th.c;ctx.font="600 18px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,728);ctx.letterSpacing="0px";
+  ctx.strokeStyle=th.t+"aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(150,690);ctx.lineTo(PC_W-150,690);ctx.stroke();
+  ctx.fillStyle=th.t;ctx.font="600 18px 'JetBrains Mono'";ctx.letterSpacing="5px";ctx.fillText("SURPRISE SONGS",PC_W/2,728);ctx.letterSpacing="0px";
   const songs=sh.songTitles;const base=songs.length>2?36:42;let y=songs.length>2?778:790;
   songs.forEach(t=>{ctx.fillStyle="#fff";fitText(ctx,t,PC_W-120,base,"700 {z}px 'Gowun Batang'");ctx.fillText(t,PC_W/2,y);y+=base+16});
   if(th.bias){ctx.font="600 22px Outfit";const label="♡ "+th.bias+" bias";const w=ctx.measureText(label).width+40;ctx.fillStyle=th.c+"33";rr(ctx,(PC_W-w)/2,PC_H-128,w,44,22);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(label,PC_W/2,PC_H-98)}
@@ -1348,7 +1357,10 @@ function pcStar(ctx,x,y,r){ctx.beginPath();for(let k=0;k<10;k++){const a=-Math.P
 function pcHeart(ctx,x,y,s){ctx.beginPath();ctx.moveTo(x,y+s*.3);ctx.bezierCurveTo(x,y,x-s*.5,y,x-s*.5,y+s*.3);ctx.bezierCurveTo(x-s*.5,y+s*.6,x,y+s*.75,x,y+s);ctx.bezierCurveTo(x,y+s*.75,x+s*.5,y+s*.6,x+s*.5,y+s*.3);ctx.bezierCurveTo(x+s*.5,y,x,y,x,y+s*.3);ctx.fill()}
 function drawBackPlain(ctx,sh,th){
   pcBg(ctx,th.c);ctx.textAlign="center";const cx=PC_W/2;
-  ctx.fillStyle="#f4efff";for(let k=0;k<7;k++){const a=(-18+k*6)*Math.PI/180;pcStar(ctx,cx+Math.sin(a)*420,590-Math.cos(a)*420,k===3?21:17)}
+  // The seven stars as Ursa Major's Big Dipper: Alkaid, Mizar, Alioth, Megrez, Phecda, Merak, Dubhe
+  const UM=[[0,1.0,17],[1.6,.6,15],[2.9,.9,17],[4.2,1.4,11],[4.5,2.9,14],[6.4,3.0,15],[6.6,1.2,18]],ux=x=>130+x*58,uy=y=>84+y*38;
+  ctx.strokeStyle="rgba(244,239,255,.35)";ctx.lineWidth=2;ctx.beginPath();[0,1,2,3,6,5,4,3].forEach((k,n)=>{const X=ux(UM[k][0]),Y=uy(UM[k][1]);n?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();
+  UM.forEach(([x,y,r])=>{ctx.fillStyle="rgba(244,239,255,.18)";ctx.beginPath();ctx.arc(ux(x),uy(y),r*.9,0,7);ctx.fill();ctx.fillStyle="#f4efff";pcStar(ctx,ux(x),uy(y),r)});
   ctx.fillStyle="#fff";ctx.font="700 128px 'Gowun Batang'";ctx.letterSpacing="12px";ctx.fillText("ARMY",cx+6,330);ctx.letterSpacing="0px";
   ctx.font="600 34px Outfit";const bt="Borahae";const bw=ctx.measureText(bt).width;const hx=cx+bw/2+12;
   ctx.fillStyle="#e2c8ff";ctx.fillText(bt,cx-22,384);ctx.fillStyle="#a259ff";pcHeart(ctx,hx,356,34);
@@ -1356,7 +1368,7 @@ function drawBackPlain(ctx,sh,th){
   ctx.fillStyle="#d9c2ff";ctx.font="500 22px 'JetBrains Mono'";ctx.fillText(`${sh.night.replace(" (FESTA)","").toUpperCase()} · ${fmtDate(sh.date,true).toUpperCase()}`,cx,524);
   ctx.textAlign="left";ctx.fillStyle="#f4efff";ctx.font="600 28px Outfit";
   [["From",640],["@",740],["",840]].forEach(([l,y])=>{if(l)ctx.fillText(l,90,y-12);ctx.strokeStyle="rgba(244,239,255,.45)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(l?(l==="@"?120:180):90,y);ctx.lineTo(PC_W-90,y);ctx.stroke()});
-  if(th.bias){ctx.textAlign="center";ctx.fillStyle=th.c;ctx.font="600 24px Outfit";ctx.fillText("♡ "+th.bias,cx,PC_H-70)}}
+  if(th.bias){ctx.textAlign="center";ctx.fillStyle=th.t;ctx.font="600 24px Outfit";ctx.fillText("♡ "+th.bias,cx,PC_H-70)}}
 function drawBack(ctx,sh,th){
   if(pcPlain())return drawBackPlain(ctx,sh,th);
   pcBg(ctx,th.c);ctx.textAlign="center";
@@ -1365,7 +1377,7 @@ function drawBack(ctx,sh,th){
   const q=300,qx=(PC_W-q)/2,qy=320;ctx.fillStyle="#fff";rr(ctx,qx-24,qy-24,q+48,q+48,24);ctx.fill();
   if(pcQR)ctx.drawImage(pcQR,qx,qy,q,q);else{ctx.fillStyle="#1a0b2e";ctx.font="600 26px Outfit";ctx.fillText("djspinthat.net",PC_W/2,qy+q/2)}
   ctx.fillStyle="#f4efff";ctx.font="400 28px Outfit";ctx.fillText("Scan to play this night's",PC_W/2,720);ctx.fillText("surprise songs",PC_W/2,758);
-  ctx.fillStyle=th.c;ctx.font="700 32px 'JetBrains Mono'";ctx.fillText("djspinthat.net",PC_W/2,830);
+  ctx.fillStyle=th.t;ctx.font="700 32px 'JetBrains Mono'";ctx.fillText("djspinthat.net",PC_W/2,830);
   ctx.fillStyle="rgba(244,239,255,.55)";ctx.font="400 17px Outfit";ctx.fillText("Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC",PC_W/2,PC_H-60)}
 function pcQRFor(sh){return new Promise(res=>{if(!window.QRCode){pcQR=null;return res()}
   const d=document.createElement("div");new QRCode(d,{text:"https://djspinthat.net/#"+showSlug(sh),width:300,height:300,colorDark:"#1a0b2e",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
