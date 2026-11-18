@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=540">
+<title>Silver Spoon · Tampa Night 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--ink:#f4efff;--muted:#cdbfe8;--silver:#d6dae3;--red:#ff4d5e;--purple:#b48cff}
+*{box-sizing:border-box;margin:0}
+html,body{width:540px;height:960px;overflow:hidden;background:#0d0718}
+#v{position:relative;width:540px;height:960px;overflow:hidden;font-family:Outfit,sans-serif;color:var(--ink);
+  background:radial-gradient(120% 70% at 50% 0%,#3d1024 0%,#1a0b2e 55%,#0b0614 100%)}
+#spark{position:absolute;inset:0;z-index:5;pointer-events:none}
+.scene{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;text-align:center;padding:0 40px;opacity:0;z-index:3}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--silver)}
+h1{font-family:"Gowun Batang",serif;font-weight:700;font-size:50px;line-height:1.06;margin-top:14px}
+h2{font-family:"Gowun Batang",serif;font-weight:700;font-size:38px;line-height:1.12}
+p.sub{font-size:21px;line-height:1.42;color:var(--muted);margin-top:16px;max-width:450px}
+p.sub b{color:var(--ink)}
+.fan{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(244,239,255,.55);z-index:6}
+.decks{display:flex;gap:18px;margin-top:30px}
+.deck{display:grid;justify-items:center;align-content:start;gap:12px;width:220px}
+.rec{position:relative;width:200px;height:200px;border-radius:50%;background:repeating-radial-gradient(circle,#0a0510 0 4px,#17101f 5px 6px);box-shadow:0 0 0 5px #2a1530,0 16px 40px rgba(0,0,0,.6)}
+.rec i{position:absolute;inset:31%;border-radius:50%}
+.rec i::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#0a0510}
+.dl{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--muted)}
+.dt{font-family:"Gowun Batang",serif;font-weight:700;font-size:22px;line-height:1.15}
+.bird{font-size:96px;margin:20px 0 6px}
+.cities{display:grid;gap:12px;margin-top:24px;width:440px}
+.city{display:flex;justify-content:space-between;align-items:baseline;padding:14px 20px;border-radius:16px;background:rgba(214,218,227,.08);border:1.5px solid rgba(214,218,227,.3);font-size:24px;font-weight:600}
+.city span{font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--muted);font-weight:400}
+.city.first{border-color:var(--red);background:rgba(255,77,94,.14)}
+.badge{display:inline-block;margin-top:18px;background:var(--silver);color:#1a0b2e;font-weight:800;font-size:22px;padding:8px 20px;border-radius:999px}
+.url{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;color:var(--silver);margin-top:22px}
+.big{font-size:84px;margin-bottom:6px}
+</style></head>
+<body><div id="v">
+
+<section class="scene" id="s1">
+  <div class="eyebrow">Tampa · Night 3 · Apr 28</div>
+  <h1>DJ, spin that… 🎧</h1>
+  <div class="decks">
+    <div class="deck"><div class="rec" id="r1"><i style="background:var(--silver)"></i></div><div class="dl">DECK A</div><div class="dt">Baepsae<br>(Silver Spoon)</div></div>
+    <div class="deck"><div class="rec" id="r2"><i style="background:var(--purple)"></i></div><div class="dl">DECK B</div><div class="dt">Life Goes On</div></div>
+  </div>
+</section>
+
+<section class="scene" id="s2">
+  <div class="eyebrow">Wait, what's a baepsae?</div>
+  <div class="bird">🐦</div>
+  <h2>A crow-tit: a tiny bird</h2>
+  <p class="sub">Korean saying: if a crow-tit tries to keep up with a stork, it'll tear its legs.</p>
+</section>
+
+<section class="scene" id="s3">
+  <div class="eyebrow">2015 · The Most Beautiful Moment in Life Pt.2</div>
+  <h2 style="margin-top:16px">BTS's anthem for a generation told to just "try harder"</h2>
+  <p class="sub">…when the race was never fair. <b>Eleven years later, stadiums still scream every word.</b> 🥄</p>
+</section>
+
+<section class="scene" id="s4">
+  <div class="eyebrow">On the ARIRANG tour</div>
+  <h2 style="margin-top:12px">Played 4 times 🥄</h2>
+  <div class="cities">
+    <div class="city first">Tampa N3 <span>Apr 28</span></div>
+    <div class="city">Munich N1 <span>Jul 11</span></div>
+    <div class="city">Los Angeles N2 <span>Sep 2</span></div>
+    <div class="city">São Paulo N1 <span>Oct 28</span></div>
+  </div>
+  <div class="badge">One of the most-played surprise songs</div>
+</section>
+
+<section class="scene" id="s5">
+  <div class="big">🥄</div>
+  <h1>Which city did it best?</h1>
+  <p class="sub">Tell me in the comments 👇</p>
+</section>
+
+<section class="scene" id="s6">
+  <div class="eyebrow">Every surprise song from the tour</div>
+  <h2 style="margin-top:14px">Spin yours</h2>
+  <div class="url">djspinthat.net</div>
+</section>
+
+<canvas id="spark" width="1080" height="1920"></canvas>
+<div class="fan">fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC</div>
+</div>
+<script>
+const S=[["s1",0,3.8],["s2",3.5,7.4],["s3",7.1,11],["s4",10.7,15.2],["s5",14.9,17.2],["s6",16.9,19.6]];
+window.DUR=19.5;
+const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
+const cv=document.getElementById("spark"),ctx=cv.getContext("2d");let seed=5;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const P=Array.from({length:110},()=>({x:rnd()*1080,y:rnd()*1920,r:1+rnd()*3.2,s:20+rnd()*60,ph:rnd()*6.28,tw:1.5+rnd()*3}));
+function setFrame(t){
+  for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=`translateY(${(1-o)*18}px)`}
+  document.getElementById("r1").style.transform=`rotate(${t*210}deg)`;document.getElementById("r2").style.transform=`rotate(${t*190}deg)`;
+  ctx.clearRect(0,0,1080,1920);
+  for(const p of P){const y=(p.y-t*p.s+1960)%1960-20,a=.25+.6*((Math.sin(t*p.tw+p.ph)+1)/2);ctx.globalAlpha=a;ctx.fillStyle="#e9ecf2";ctx.beginPath();ctx.arc(p.x,y,p.r,0,7);ctx.fill();
+    if(p.r>3){ctx.fillRect(p.x-p.r*2.4,y-.6,p.r*4.8,1.2);ctx.fillRect(p.x-.6,y-p.r*2.4,1.2,p.r*4.8)}}
+  ctx.globalAlpha=1}
+setFrame(0);
+</script></body></html>
