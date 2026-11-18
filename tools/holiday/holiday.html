@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=540">
+<title>Holiday Dynamite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--ink:#f4efff;--muted:#cdbfe8;--gold:#e8c46a;--red:#ff4d5e;--purple:#b48cff;--pink:#ff8fc8;--silver:#c9ced8}
+*{box-sizing:border-box;margin:0}
+html,body{width:540px;height:960px;overflow:hidden;background:#0d0718}
+#v{position:relative;width:540px;height:960px;overflow:hidden;font-family:Outfit,sans-serif;color:var(--ink);
+  background:radial-gradient(120% 70% at 50% 0%,#3a1030 0%,#1a0b2e 55%,#0b0614 100%)}
+#snow{position:absolute;inset:0;z-index:5;pointer-events:none}
+.scene{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;text-align:center;padding:0 40px;opacity:0;z-index:3}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:"Gowun Batang",serif;font-weight:700;font-size:54px;line-height:1.05;margin-top:14px}
+h2{font-family:"Gowun Batang",serif;font-weight:700;font-size:40px;line-height:1.1}
+p.sub{font-size:20px;line-height:1.4;color:var(--muted);margin-top:16px;max-width:440px}
+.fan{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(244,239,255,.55);z-index:6}
+/* record */
+.deck{position:relative;width:330px;height:330px;margin-top:34px}
+.rec{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,#0a0510 0 5px,#16101f 6px 7px);box-shadow:0 0 0 6px #2a1530,0 20px 60px rgba(0,0,0,.6)}
+.lab{position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle,#fff 0 6%,var(--red) 7% 100%);display:grid;place-items:center}
+.lab::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:3px dashed #2ea86a}
+.arm{position:absolute;right:-26px;top:-14px;width:16px;height:190px;border-radius:8px;background:linear-gradient(#d9d9e3,#8d8da0);transform-origin:8px 8px}
+.track{margin-top:30px;font-family:"Gowun Batang",serif;font-size:34px;font-weight:700}
+.track small{display:block;font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.2em;color:var(--gold);margin-bottom:6px}
+/* snowman */
+.snowman{position:relative;width:300px;height:500px;margin:-30px 0 -40px;transform-origin:50% 100%}
+.smwrap{transform:scale(.8);transform-origin:50% 0;height:410px;margin-top:46px}
+.ball{position:absolute;left:50%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffffff,#dfe6f5 70%,#b9c3dc);box-shadow:inset -10px -14px 30px rgba(120,130,170,.35)}
+.b1{width:250px;height:230px;bottom:0}.b2{width:190px;height:175px;bottom:190px}.b3{width:150px;height:140px;bottom:335px}
+.hat{position:absolute;left:50%;transform:translateX(-50%);bottom:440px;width:150px;height:62px;border-radius:70px 70px 10px 10px;background:#2b2b36}
+.hat::after{content:"";position:absolute;left:50%;top:-22px;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:#f4f4f8}
+.hatband{position:absolute;left:50%;transform:translateX(-50%);bottom:430px;width:166px;height:22px;border-radius:12px;background:#fff}
+.eye{position:absolute;bottom:415px;width:14px;height:14px;border-radius:50%;background:#1b1b22}
+.eye.l{left:118px}.eye.r{right:118px}
+.nose{position:absolute;bottom:388px;left:50%;width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:44px solid #ff8a3d;transform:translateX(-4px)}
+.smile{position:absolute;bottom:360px;left:50%;transform:translateX(-50%);width:54px;height:20px;border-bottom:5px dotted #1b1b22;border-radius:0 0 40px 40px}
+.scarf{position:absolute;left:50%;transform:translateX(-50%);bottom:318px;width:176px;height:34px;border-radius:18px;background:repeating-linear-gradient(90deg,var(--silver) 0 22px,#8f95a3 22px 30px)}
+.scarf::after{content:"";position:absolute;right:20px;top:24px;width:34px;height:84px;border-radius:10px;background:repeating-linear-gradient(0deg,var(--silver) 0 18px,#8f95a3 18px 24px)}
+.mic{position:absolute;bottom:250px;right:6px;width:16px;height:90px;border-radius:8px;background:linear-gradient(90deg,#9aa0ad,#e7eaf0,#9aa0ad);transform:rotate(-24deg)}
+.mic::before{content:"";position:absolute;left:-10px;top:-30px;width:36px;height:40px;border-radius:50%;background:repeating-linear-gradient(45deg,#c9ced8 0 3px,#8f95a3 3px 6px)}
+.btn1,.btn2{position:absolute;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#1b1b22}
+.btn1{bottom:250px}.btn2{bottom:215px}
+.tag{position:absolute;left:50%;transform:translateX(-50%) rotate(-4deg);bottom:96px;background:var(--silver);color:#1a0b2e;font-weight:800;font-size:28px;padding:8px 20px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.35);white-space:nowrap}
+.mouth-open .smile{height:30px;border-bottom-style:solid;border-bottom-width:6px}
+/* mixer */
+.mixer{width:400px;height:300px;margin:30px 0 10px;border-radius:24px;background:linear-gradient(#241634,#170d24);border:2px solid rgba(255,143,200,.35);display:grid;grid-template-columns:repeat(6,1fr);align-items:end;padding:26px 26px 30px;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.ch{position:relative;height:210px;border-radius:6px;background:#0c0714;justify-self:center;width:10px}
+.fader{position:absolute;left:50%;transform:translateX(-50%);width:42px;height:22px;border-radius:5px;background:linear-gradient(#ffd0e6,var(--pink))}
+.meter{position:absolute;left:-14px;bottom:0;width:6px;border-radius:3px;background:linear-gradient(0deg,#3ddc84,#e8c46a 70%,#ff4d5e)}
+.nameplate{display:inline-block;margin-top:18px;background:var(--pink);color:#1a0b2e;font-weight:800;font-size:28px;padding:8px 22px;border-radius:999px}
+.stars{font-size:40px;letter-spacing:10px;color:var(--gold)}
+.url{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;color:var(--gold);margin-top:22px}
+.quote{font-family:"Gowun Batang",serif;font-weight:700;font-size:44px;line-height:1.18;margin-top:22px;padding:30px 30px;border-radius:26px;background:rgba(201,206,216,.10);border:2px solid rgba(201,206,216,.45)}
+.qby{margin-top:18px;font-size:24px;font-weight:600;color:var(--silver)}
+.lights{position:absolute;left:-10px;right:-10px;top:0;height:60px;z-index:4}
+</style></head>
+<body><div id="v">
+<svg class="lights" id="lights" viewBox="0 0 560 60"></svg>
+
+<section class="scene" id="s1">
+  <div class="eyebrow">DJ Spin That · Holiday edition</div>
+  <h1>DJ, spin that 🎄</h1>
+  <div class="deck"><div class="rec" id="rec"></div><div class="lab"></div><div class="arm" id="arm"></div></div>
+  <div class="track"><small>Now spinning</small>Dynamite (Holiday Remix)</div>
+</section>
+
+<section class="scene" id="s2">
+  <div class="eyebrow">Remember this? ⛄</div>
+  <h2 style="margin:10px 0 18px">Snowman SUGA</h2>
+  <div class="smwrap"><div class="snowman" id="sm"><div class="ball b1"></div><div class="ball b2"></div><div class="ball b3"></div>
+    <div class="hatband"></div><div class="hat"></div><div class="eye l"></div><div class="eye r"></div><div class="nose"></div><div class="smile"></div>
+    <div class="scarf"></div><div class="btn1"></div><div class="btn2"></div><div class="mic"></div><div class="tag">Yoongi ⛄</div></div></div>
+</section>
+
+<section class="scene" id="s3">
+  <div class="eyebrow">Dec 2020 · SBS Gayo Daejeon</div>
+  <h2 style="margin-top:14px">Yoongi was healing from shoulder surgery…</h2>
+  <p class="sub">…so BTS brought a snowman to sing his Dynamite verses. ARMY never recovered. 🥹⛄💜</p>
+</section>
+
+<section class="scene" id="sq">
+  <div class="eyebrow">Weverse · Dec 28, 2020</div>
+  <div class="quote">“I can't believe they made me a snowman”</div>
+  <div class="qby">— SUGA ⛄</div>
+</section>
+
+<section class="scene" id="s4">
+  <div class="eyebrow">And on the mixing desk 🎛️</div>
+  <div class="mixer" id="mixer"></div>
+  <div class="nameplate">Jin · mixing producer</div>
+  <p class="sub" id="jinNote">Credit added Nov 17 💗</p>
+</section>
+
+<section class="scene" id="s5">
+  <div class="stars">✦ ✦ ✦ ✦ ✦ ✦ ✦</div>
+  <h1 style="margin-top:18px">Merry Christmas, ARMY</h1>
+  <p class="sub">Borahae 💜 from our DJ booth to yours</p>
+</section>
+
+<section class="scene" id="s6">
+  <div class="eyebrow">Spin a surprise song</div>
+  <h2 style="margin-top:14px">Every BTS surprise song from the ARIRANG tour</h2>
+  <div class="url">djspinthat.net</div>
+</section>
+
+<canvas id="snow" width="1080" height="1920"></canvas>
+<div class="fan">fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC</div>
+</div>
+<script>
+const DUR=21;
+// scene windows [start,end] in seconds
+const S=[["s1",0,3.6],["s2",3.3,7.2],["s3",6.9,10.2],["sq",9.9,13.2],["s4",12.9,16.2],["s5",15.9,18.2],["s6",17.9,21.2]];
+const q=new URLSearchParams(location.search);if(q.get("nojin")){S.splice(4,1);S[4][1]=12.9;S[4][2]=15.6;S[5][1]=15.3;S[5][2]=18.2;window.NOJIN=1}
+if(q.get("jinnote")!==null)document.getElementById("jinNote").textContent=q.get("jinnote");
+const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
+// fairy lights
+const L=document.getElementById("lights");const cols=["#ff4d5e","#3ddc84","#e8c46a","#b48cff","#ff8fc8"];
+let svg='<path d="M0 10 Q 70 40 140 12 T 280 12 T 420 12 T 560 12" stroke="#2c5d3c" stroke-width="3" fill="none"/>';
+for(let i=0;i<14;i++){const x=20+i*38,y=12+Math.sin(i*1.1)*10+14;svg+=`<circle class="bulb" data-i="${i}" cx="${x}" cy="${y}" r="7" fill="${cols[i%5]}"/>`}
+L.innerHTML=svg;const bulbs=[...L.querySelectorAll(".bulb")];
+// mixer channels
+const MX=document.getElementById("mixer");MX.innerHTML=Array.from({length:6},(_,i)=>`<div class="ch"><div class="meter" id="m${i}"></div><div class="fader" id="f${i}"></div></div>`).join("");
+// snow (deterministic)
+const cv=document.getElementById("snow"),ctx=cv.getContext("2d");let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const flakes=Array.from({length:150},()=>({x:rnd()*1080,y:rnd()*1920,r:1.5+rnd()*5,s:60+rnd()*160,w:rnd()*6.28,a:.35+rnd()*.6}));
+function setFrame(t){
+  for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=`translateY(${(1-o)*18}px)`}
+  document.getElementById("rec").style.transform=`rotate(${t*200}deg)`;document.querySelector(".lab").style.transform=`rotate(${t*200}deg)`;
+  document.getElementById("arm").style.transform=`rotate(${ease((t-.4)/.8)*24}deg)`;
+  const sm=document.getElementById("sm");sm.style.transform=`rotate(${Math.sin(t*5)*3}deg) translateY(${Math.abs(Math.sin(t*5))*-6}px)`;sm.classList.toggle("mouth-open",Math.floor(t*6)%2===0);
+  for(let i=0;i<6;i++){const v=.5+.4*Math.sin(t*2.2+i*1.3);document.getElementById("f"+i).style.bottom=(v*170)+"px";document.getElementById("m"+i).style.height=((.3+.7*Math.abs(Math.sin(t*7+i)))*200)+"px"}
+  bulbs.forEach((b,i)=>b.setAttribute("opacity",.45+.55*((Math.sin(t*4+i*1.7)+1)/2)));
+  ctx.clearRect(0,0,1080,1920);for(const f of flakes){const y=(f.y+t*f.s)%1960-20,x=f.x+Math.sin(t*1.3+f.w)*30;ctx.globalAlpha=f.a;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(x,y,f.r,0,7);ctx.fill()}ctx.globalAlpha=1;
+}
+window.DUR=window.NOJIN?18:DUR;setFrame(0);
+</script></body></html>
