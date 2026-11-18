@@ -464,6 +464,18 @@ header.hero{position:relative}
   .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 }
 @media (max-width:389px){.tabbar button span{font-size:11.5px}.tabbar svg{width:24px;height:24px}}
+/* holiday theme (draft): open the site with ?holiday=1 to preview. Snow + fairy lights from the holiday TikToks. */
+#xmasSnow,#xmasLights{display:none}
+html.holiday #xmasSnow{display:block;position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+html.holiday #xmasLights{display:block;position:fixed;left:0;right:0;top:0;height:46px;z-index:19;pointer-events:none}
+@media (min-width:761px){html.holiday .tabbar{top:34px}}
+@media (max-width:760px){html.holiday #xmasLights{top:env(safe-area-inset-top,0px)}html.holiday header.hero{padding-top:30px}}
+#xmasLights .bulb{animation:twinkle 1.8s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:1;filter:drop-shadow(0 0 6px currentColor)}50%{opacity:.4;filter:none}}
+@media (prefers-reduced-motion:reduce){#xmasLights .bulb{animation:none}}
+.xmas-chip{display:none}
+html.holiday .xmas-chip{display:inline-flex;align-items:center;gap:6px;justify-self:start;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1a0b2e;background:linear-gradient(90deg,#ff4d5e,#e8c46a,#3ddc84);padding:5px 12px;border-radius:999px;margin-bottom:6px}
+html.holiday main{position:relative;z-index:2}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -494,6 +506,7 @@ footer a{color:var(--violet)}
   <canvas id="ambient"></canvas>
 </div>
 
+<canvas id="xmasSnow" aria-hidden="true"></canvas><svg id="xmasLights" aria-hidden="true" preserveAspectRatio="none"></svg>
 <nav class="tabbar" id="tabbar" aria-label="Sections">
   <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></button>
   <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">My Show</b><b class="ts">My Show</b></span></button>
@@ -506,6 +519,7 @@ footer a{color:var(--violet)}
 <main>
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · Surprise Song Segment</div>
+    <span class="xmas-chip">🎄 Holiday edition</span>
     <h1><span class="kicker">ARIRANG</span>DJ Spin That S**t!</h1>
     <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading setlists…</span></div>
@@ -1663,6 +1677,28 @@ function doShare(title,text,url){
   if(navigator.share)navigator.share({title,text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()});else copy()}
 document.querySelectorAll(".pc-side button").forEach(b=>b.addEventListener("click",()=>{const back=b.dataset.side==="back";
   document.querySelector(".pc-preview").classList.toggle("show-back",back);document.querySelectorAll(".pc-side button").forEach(x=>x.setAttribute("aria-pressed",x===b))}));
+
+/* ---------- Holiday theme (draft): ?holiday=1 turns it on; set HOLIDAY_AUTO to switch it on automatically in December ---------- */
+(function(){const HOLIDAY_AUTO=false;const q=new URLSearchParams(location.search).get("holiday");
+  const now=new Date();const inSeason=HOLIDAY_AUTO&&now.getMonth()===11;
+  if(!(q==="1"||inSeason)||q==="0")return;
+  document.documentElement.classList.add("holiday");
+  const L=document.getElementById("xmasLights"),cols=["#ff4d5e","#3ddc84","#e8c46a","#b48cff","#ff8fc8"];
+  function lights(){const w=innerWidth,n=Math.max(8,Math.round(w/44));L.setAttribute("viewBox",`0 0 ${w} 46`);
+    let d=`M0 8`;for(let i=0;i<n;i++){const x0=i*w/n,x1=(i+1)*w/n;d+=` Q ${(x0+x1)/2} 30 ${x1} 8`}
+    let h=`<path d="${d}" stroke="#2c5d3c" stroke-width="2.5" fill="none"/>`;
+    for(let i=0;i<n;i++){const x=(i+.5)*w/n,y=20,c=cols[i%5];h+=`<g class="bulb" style="color:${c};animation-delay:${(i%7)*.26}s"><rect x="${x-3}" y="${y-5}" width="6" height="5" rx="1" fill="#3b3b44"/><ellipse cx="${x}" cy="${y+6}" rx="5.5" ry="7.5" fill="${c}"/></g>`}
+    L.innerHTML=h}
+  lights();addEventListener("resize",lights);
+  const cv=document.getElementById("xmasSnow"),ctx=cv.getContext("2d");const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W,H,flakes=[];function size(){const r=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*r;cv.height=H*r;ctx.setTransform(r,0,0,r,0,0);
+    const n=Math.round(Math.min(110,W*H/9000));flakes=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:.8+Math.random()*2.6,s:18+Math.random()*48,w:Math.random()*6.28,a:.25+Math.random()*.55}))}
+  size();addEventListener("resize",size);
+  let last=performance.now();function draw(t){const dt=Math.min(.05,(t-last)/1000);last=t;ctx.clearRect(0,0,W,H);
+    for(const f of flakes){if(!reduce){f.y+=f.s*dt;f.x+=Math.sin(t/1300+f.w)*.25;if(f.y>H+6){f.y=-6;f.x=Math.random()*W}}ctx.globalAlpha=f.a;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,7);ctx.fill()}
+    ctx.globalAlpha=1;if(!reduce&&!document.hidden)requestAnimationFrame(draw)}
+  requestAnimationFrame(draw);document.addEventListener("visibilitychange",()=>{if(!document.hidden&&!reduce){last=performance.now();requestAnimationFrame(draw)}});
+})();
 
 /* ---------- Next show + live status ---------- */
 function renderNext(){

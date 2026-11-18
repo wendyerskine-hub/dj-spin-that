@@ -147,6 +147,8 @@ const q=new URLSearchParams(location.search);if(q.get("nojin")){S.splice(4,1);S[
 if(q.get("only")==="jin"){S.length=0;S.push(["s1",0,3.4],["s4",3.1,8.6],["s5",8.3,10.4],["s6",10.1,12.2]);window.ONLYJIN=1}
 // Snowman SUGA with real footage: c1 = GIF window (overlay 3.2s-9.1s), wv = Weverse screenshot window (overlay 12.4s-15.9s)
 if(q.get("only")==="suga"){S.length=0;S.push(["s1",0,3.2],["c1",2.9,9.4],["s3",9.1,12.4],["wv",12.1,16.2],["s5",15.9,18.2],["s6",17.9,20.6]);window.ONLYSUGA=1}
+// Background only (snow + fairy lights, no text): ?only=bg
+if(q.get("only")==="bg"){S.length=0;window.ONLYBG=1;document.querySelector(".fan").style.display="none"}
 if(q.get("jinnote")!==null)document.getElementById("jinNote").textContent=q.get("jinnote");
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 // fairy lights
@@ -160,6 +162,7 @@ const MX=document.getElementById("mixer");MX.innerHTML=Array.from({length:6},(_,
 const cv=document.getElementById("snow"),ctx=cv.getContext("2d");let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
 const flakes=Array.from({length:150},()=>({x:rnd()*1080,y:rnd()*1920,r:1.5+rnd()*5,s:60+rnd()*160,w:rnd()*6.28,a:.35+rnd()*.6}));
 function setFrame(t){
+  document.querySelectorAll(".scene").forEach(e=>{if(!S.some(x=>x[0]===e.id))e.style.opacity=0});
   for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=el.classList.contains("fixed")?"none":`translateY(${(1-o)*18}px)`}
   document.getElementById("rec").style.transform=`rotate(${t*200}deg)`;document.querySelector(".lab").style.transform=`rotate(${t*200}deg)`;
   document.getElementById("arm").style.transform=`rotate(${ease((t-.4)/.8)*24}deg)`;
@@ -169,5 +172,5 @@ function setFrame(t){
   bulbs.forEach((b,i)=>b.setAttribute("opacity",.45+.55*((Math.sin(t*4+i*1.7)+1)/2)));
   ctx.clearRect(0,0,1080,1920);for(const f of flakes){const y=(f.y+t*f.s)%1960-20,x=f.x+Math.sin(t*1.3+f.w)*30;ctx.globalAlpha=f.a;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(x,y,f.r,0,7);ctx.fill()}ctx.globalAlpha=1;
 }
-window.DUR=window.ONLYSUGA?20.5:window.ONLYJIN?12:window.NOJIN?18:DUR;setFrame(0);
+window.DUR=window.ONLYBG?10:window.ONLYSUGA?20.5:window.ONLYJIN?12:window.NOJIN?18:DUR;setFrame(0);
 </script></body></html>
