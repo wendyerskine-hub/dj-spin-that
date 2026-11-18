@@ -6,6 +6,7 @@ const FPS=30;
 (async()=>{const frames=fs.mkdtempSync(path.join(os.tmpdir(),'post-'));const b=await chromium.launch();
  const p=await b.newPage({viewport:{width:540,height:960},deviceScaleFactor:2});
  await p.goto('file://'+path.resolve(tpl)+(qs?'?'+qs:''));await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(500);
+ const vh=await p.evaluate(()=>window.VH||960);if(vh!==960)await p.setViewportSize({width:540,height:vh});
  const N=Math.round(await p.evaluate(()=>window.DUR)*FPS);
  for(let f=0;f<N;f++){await p.evaluate(t=>setFrame(t),f/FPS);await p.screenshot({path:`${frames}/f${String(f).padStart(4,'0')}.png`})}
  await b.close();

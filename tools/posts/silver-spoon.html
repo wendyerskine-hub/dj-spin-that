@@ -31,8 +31,44 @@ p.sub b{color:var(--ink)}
 .badge{display:inline-block;margin-top:18px;background:var(--silver);color:#1a0b2e;font-weight:800;font-size:22px;padding:8px 20px;border-radius:999px}
 .url{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;color:var(--silver);margin-top:22px}
 .big{font-size:84px;margin-bottom:6px}
+.hint{display:inline-block;margin-top:20px;padding:10px 18px;border-radius:999px;border:1.5px solid rgba(214,218,227,.45);font-size:19px;color:var(--ink)}
+.polas{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin-top:22px}
+.pola{width:200px;padding:10px 10px 12px;background:#f4f1ea;border-radius:6px;box-shadow:0 14px 30px rgba(0,0,0,.55);color:#1a0b2e;text-align:center}
+.pola .ph{height:150px;border-radius:3px;background:linear-gradient(160deg,#2a1530,#120a1f);display:grid;place-items:center;font-size:40px}
+.pola b{display:block;margin-top:8px;font-family:"Gowun Batang",serif;font-size:22px}
+.pola span{font-family:"JetBrains Mono",monospace;font-size:12px;color:#5b4a75}
+html.r45 .polas{gap:12px}html.r45 .pola .ph{height:96px}html.r45 .pola{width:180px}
 </style></head>
 <body><div id="v">
+
+<section class="scene" id="s0">
+  <div class="eyebrow">ARMY · quick question</div>
+  <h1>Drop your favorite<br>Baepsae dance move 👇</h1>
+  <div class="big" style="margin-top:22px">🕺🥄</div>
+  <div class="hint">GIF, sticker, or describe it</div>
+</section>
+
+<section class="scene" id="p0">
+  <div class="eyebrow">Were you there? 📸</div>
+  <h1>Drop your favorite Baepsae photo</h1>
+  <p class="sub">From any of the 4 nights BTS played it on the ARIRANG tour 🥄</p>
+</section>
+
+<section class="scene" id="p1">
+  <div class="eyebrow">The 4 Baepsae nights</div>
+  <div class="polas">
+    <div class="pola" id="q1"><div class="ph">📸</div><b>Tampa</b><span>N3 · Apr 28</span></div>
+    <div class="pola" id="q2"><div class="ph">📸</div><b>Munich</b><span>N1 · Jul 11</span></div>
+    <div class="pola" id="q3"><div class="ph">📸</div><b>Los Angeles</b><span>N2 · Sep 2</span></div>
+    <div class="pola" id="q4"><div class="ph">📸</div><b>São Paulo</b><span>N1 · Oct 28</span></div>
+  </div>
+</section>
+
+<section class="scene" id="p2">
+  <div class="big">👇</div>
+  <h1>Reply with your photo + your city</h1>
+  <p class="sub">Best ones get featured on djspinthat.net 💜</p>
+</section>
 
 <section class="scene" id="s1">
   <div class="eyebrow">Tampa · Night 3 · Apr 28</div>
@@ -53,7 +89,7 @@ p.sub b{color:var(--ink)}
 <section class="scene" id="s3">
   <div class="eyebrow">2015 · The Most Beautiful Moment in Life Pt.2</div>
   <h2 style="margin-top:16px">BTS's anthem for a generation told to just "try harder"</h2>
-  <p class="sub">…when the race was never fair. <b>Eleven years later, stadiums still scream every word.</b> 🥄</p>
+  <p class="sub">Released <b>Nov 30, 2015</b>, taking on Korea's "spoon class" talk: <b>gold spoons vs. dirt spoons</b>. Eleven years later, stadiums still scream every word 🥄</p>
 </section>
 
 <section class="scene" id="s4">
@@ -84,16 +120,21 @@ p.sub b{color:var(--ink)}
 <div class="fan">fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC</div>
 </div>
 <script>
-const S=[["s1",0,3.8],["s2",3.5,7.4],["s3",7.1,11],["s4",10.7,15.2],["s5",14.9,17.2],["s6",16.9,19.6]];
-window.DUR=19.5;
+const q=new URLSearchParams(location.search);
+if(q.get("ratio")==="45"){document.documentElement.classList.add("r45");document.documentElement.style.height=document.body.style.height=document.getElementById("v").style.height="675px";window.VH=675}
+let S;
+if(q.get("post")==="photo"){S=[["p0",0,3.6],["p1",3.3,8.8],["p2",8.5,11.2],["s6",10.9,13.6]];window.DUR=13.5}
+else{S=[["s0",0,3.4],["s1",3.1,6.8],["s2",6.5,10.3],["s3",10,14.4],["s4",14.1,18.4],["s5",18.1,20.4],["s6",20.1,22.8]];window.DUR=22.7}
+document.querySelectorAll(".scene").forEach(e=>{if(!S.some(x=>x[0]===e.id))e.style.display="none"});
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
-const cv=document.getElementById("spark"),ctx=cv.getContext("2d");let seed=5;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const cv=document.getElementById("spark"),ctx=cv.getContext("2d");if(window.VH)cv.height=1350;let seed=5;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
 const P=Array.from({length:110},()=>({x:rnd()*1080,y:rnd()*1920,r:1+rnd()*3.2,s:20+rnd()*60,ph:rnd()*6.28,tw:1.5+rnd()*3}));
 function setFrame(t){
+  for(let i=1;i<=4;i++){const el=document.getElementById("q"+i);const k=ease((t-3.5-i*.35)/.35);el.style.opacity=k;el.style.transform=`rotate(${[-4,3,-2,4][i-1]}deg) translateY(${(1-k)*-40}px) scale(${.9+.1*k})`}
   for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=`translateY(${(1-o)*18}px)`}
   document.getElementById("r1").style.transform=`rotate(${t*210}deg)`;document.getElementById("r2").style.transform=`rotate(${t*190}deg)`;
   ctx.clearRect(0,0,1080,1920);
-  for(const p of P){const y=(p.y-t*p.s+1960)%1960-20,a=.25+.6*((Math.sin(t*p.tw+p.ph)+1)/2);ctx.globalAlpha=a;ctx.fillStyle="#e9ecf2";ctx.beginPath();ctx.arc(p.x,y,p.r,0,7);ctx.fill();
+  for(const p of P){const y=(p.y-t*p.s+1960)%1960-20-(window.VH?300:0),a=.25+.6*((Math.sin(t*p.tw+p.ph)+1)/2);ctx.globalAlpha=a;ctx.fillStyle="#e9ecf2";ctx.beginPath();ctx.arc(p.x,y,p.r,0,7);ctx.fill();
     if(p.r>3){ctx.fillRect(p.x-p.r*2.4,y-.6,p.r*4.8,1.2);ctx.fillRect(p.x-.6,y-p.r*2.4,1.2,p.r*4.8)}}
   ctx.globalAlpha=1}
 setFrame(0);
