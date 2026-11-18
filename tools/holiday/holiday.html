@@ -61,6 +61,8 @@ p.sub{font-size:20px;line-height:1.4;color:var(--muted);margin-top:16px;max-widt
 .crow.jin{border-color:var(--pink);background:rgba(255,143,200,.16)}
 .crow.jin span{color:#ffd0e6;font-weight:600}
 .src{margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:13px;color:rgba(244,239,255,.6)}
+.scene.fixed{display:block}
+.hole{position:absolute;border:4px solid;border-radius:6px;background:#0b0614;box-shadow:0 0 30px rgba(201,206,216,.35)}
 .lights{position:absolute;left:-10px;right:-10px;top:0;height:60px;z-index:4}
 </style></head>
 <body><div id="v">
@@ -120,6 +122,20 @@ p.sub{font-size:20px;line-height:1.4;color:var(--muted);margin-top:16px;max-widt
   <div class="url">djspinthat.net</div>
 </section>
 
+<!-- Frames for real footage, composited later with ffmpeg (positions are fixed: see tools/holiday/README) -->
+<section class="scene fixed" id="c1">
+  <div class="eyebrow" style="position:absolute;top:150px;left:0;right:0">Remember this? ⛄</div>
+  <h2 style="position:absolute;top:178px;left:0;right:0">Snowman SUGA</h2>
+  <div class="hole" style="left:30px;top:260px;width:480px;height:480px;border-color:var(--silver)"></div>
+  <p class="src" style="position:absolute;top:756px;left:0;right:0">SBS Gayo Daejeon · Dec 25, 2020</p>
+</section>
+<section class="scene fixed" id="wv">
+  <div class="eyebrow" style="position:absolute;top:300px;left:0;right:0">Then on Weverse 👀</div>
+  <div class="hole" style="left:20px;top:380px;width:500px;height:179px;border-color:var(--silver)"></div>
+  <div class="qby" style="position:absolute;top:590px;left:0;right:0">— SUGA 🥹⛄</div>
+  <p class="src" style="position:absolute;top:636px;left:0;right:0">Weverse · Dec 28, 2020</p>
+</section>
+
 <canvas id="snow" width="1080" height="1920"></canvas>
 <div class="fan">fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC</div>
 </div>
@@ -129,6 +145,8 @@ const DUR=21;
 const S=[["s1",0,3.6],["s2",3.3,7.2],["s3",6.9,10.2],["sq",9.9,13.2],["s4",12.9,16.2],["s5",15.9,18.2],["s6",17.9,21.2]];
 const q=new URLSearchParams(location.search);if(q.get("nojin")){S.splice(4,1);S[4][1]=12.9;S[4][2]=15.6;S[5][1]=15.3;S[5][2]=18.2;window.NOJIN=1}
 if(q.get("only")==="jin"){S.length=0;S.push(["s1",0,3.4],["s4",3.1,8.6],["s5",8.3,10.4],["s6",10.1,12.2]);window.ONLYJIN=1}
+// Snowman SUGA with real footage: c1 = GIF window (overlay 3.2s-9.1s), wv = Weverse screenshot window (overlay 12.4s-15.9s)
+if(q.get("only")==="suga"){S.length=0;S.push(["s1",0,3.2],["c1",2.9,9.4],["s3",9.1,12.4],["wv",12.1,16.2],["s5",15.9,18.2],["s6",17.9,20.6]);window.ONLYSUGA=1}
 if(q.get("jinnote")!==null)document.getElementById("jinNote").textContent=q.get("jinnote");
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 // fairy lights
@@ -142,7 +160,7 @@ const MX=document.getElementById("mixer");MX.innerHTML=Array.from({length:6},(_,
 const cv=document.getElementById("snow"),ctx=cv.getContext("2d");let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
 const flakes=Array.from({length:150},()=>({x:rnd()*1080,y:rnd()*1920,r:1.5+rnd()*5,s:60+rnd()*160,w:rnd()*6.28,a:.35+rnd()*.6}));
 function setFrame(t){
-  for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=`translateY(${(1-o)*18}px)`}
+  for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=el.classList.contains("fixed")?"none":`translateY(${(1-o)*18}px)`}
   document.getElementById("rec").style.transform=`rotate(${t*200}deg)`;document.querySelector(".lab").style.transform=`rotate(${t*200}deg)`;
   document.getElementById("arm").style.transform=`rotate(${ease((t-.4)/.8)*24}deg)`;
   const sm=document.getElementById("sm");sm.style.transform=`rotate(${Math.sin(t*5)*3}deg) translateY(${Math.abs(Math.sin(t*5))*-6}px)`;sm.classList.toggle("mouth-open",Math.floor(t*6)%2===0);
@@ -151,5 +169,5 @@ function setFrame(t){
   bulbs.forEach((b,i)=>b.setAttribute("opacity",.45+.55*((Math.sin(t*4+i*1.7)+1)/2)));
   ctx.clearRect(0,0,1080,1920);for(const f of flakes){const y=(f.y+t*f.s)%1960-20,x=f.x+Math.sin(t*1.3+f.w)*30;ctx.globalAlpha=f.a;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(x,y,f.r,0,7);ctx.fill()}ctx.globalAlpha=1;
 }
-window.DUR=window.ONLYJIN?12:window.NOJIN?18:DUR;setFrame(0);
+window.DUR=window.ONLYSUGA?20.5:window.ONLYJIN?12:window.NOJIN?18:DUR;setFrame(0);
 </script></body></html>
