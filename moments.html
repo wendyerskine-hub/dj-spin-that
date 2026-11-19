@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="The ARIRANG tour moments board: the moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://djspinthat.net/moments.html">
+<meta property="og:title" content="ARIRANG Moments Board · DJ Spin That">
+<meta property="og:description" content="The moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
+<meta property="og:image" content="https://djspinthat.net/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
 <title>Moments Board · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -199,6 +205,7 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
   .mon-list{grid-template-columns:1fr 1fr}.mi{padding:6px 8px;gap:6px}.mi .nm{font-size:14px}.mi .sub{font-size:12px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div id="stage" aria-hidden="true"><div class="photo"></div></div>
@@ -376,6 +383,24 @@ $("#sCopy").addEventListener("click",()=>{const t=sendText();const text=t.title+
   (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#sMsg").textContent="Copied. Send it to DJ Spin That by DM."}).catch(()=>{$("#sMsg").textContent="Copy didn't work here. Select the text in the box and copy it.";let p=$("#sPre");if(!p){p=document.createElement("textarea");p.id="sPre";p.rows=6;p.readOnly=true;p.style.cssText="width:100%;margin-top:10px;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:13px";$("#sendForm").appendChild(p)}p.value=text;p.select()})});
 load();
 })();
+</script>
+<script>
+/* GoatCounter events (same account as the home page) */
+(()=>{const tr=(p)=>{try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(p).slice(0,200),title:String(p),event:true})}catch(e){}};
+document.addEventListener("click",e=>{const a=e.target.closest("a,button");if(!a)return;const h=a.getAttribute("href")||"";
+if(a.id==="sSend")tr("moments/send-fancam");
+ else if(a.id==="sCopy")tr("moments/copy-as-text");
+ else if(a.dataset.sel)tr("moments/show/"+a.dataset.sel);
+ else if(a.dataset.solo!==undefined)tr("moments/solo/"+a.dataset.solo);
+ else if(a.dataset.show)tr("moments/light/"+a.dataset.show);
+ else if(a.id==="pgPrev"||a.id==="pgNext")tr("moments/page");
+ else if(/open\.spotify\.com/.test(h))tr("moments/play/spotify");
+ else if(/music\.apple\.com/.test(h))tr("moments/play/apple-music");
+ else if(/soundcloud\.com/.test(h))tr("moments/play/soundcloud");
+ else if(/youtube\.com|youtu\.be|tiktok\.com|instagram\.com/.test(h))tr("moments/watch/"+(h.match(/\/\/(?:www\.)?([^/]+)/)||[,""])[1]);
+ else if(a.closest(".tabbar"))tr("moments/tab/"+(a.dataset.tab||""));
+ else if(/ko-fi\.com/.test(h))tr("kofi/moments");
+},true);})();
 </script>
 </body>
 </html>

@@ -3,8 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
 <meta name="description" content="Remix the ARIRANG setlist: the whole show stays, you drop in one BTS song. Fan-made.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://djspinthat.net/remix.html">
+<meta property="og:title" content="Remix the ARIRANG setlist · DJ Spin That">
+<meta property="og:description" content="The whole show stays. You drop in one BTS song, wherever you want it. Fan-made.">
+<meta property="og:image" content="https://djspinthat.net/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
 <title>Remix the Setlist · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&family=Permanent+Marker&display=swap">
@@ -212,6 +217,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 a.btn{text-decoration:none;display:inline-block}
 @media (prefers-reduced-motion:reduce){.tt .vinyl,.drop{animation:none}}
 </style>
+<script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div id="stage" aria-hidden="true"><div class="photo"></div></div>
@@ -399,6 +405,24 @@ $("#copyShare").addEventListener("click",()=>copy(shareLine(),"Copied! Paste it 
 $("#copyText").addEventListener("click",()=>{const t=remixText();$("#after").hidden=false;copy(t.title+"\n"+t.body,"Copied. Send it to DJ Spin That by DM.")});
 load();
 })();
+</script>
+<script>
+/* GoatCounter events (same account as the home page) */
+(()=>{const tr=(p)=>{try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(p).slice(0,200),title:String(p),event:true})}catch(e){}};
+document.addEventListener("click",e=>{const a=e.target.closest("a,button");if(!a)return;const h=a.getAttribute("href")||"";
+if(a.id==="drop")tr("remix/send/"+(document.querySelector('[data-pick][aria-pressed="true"]')||{dataset:{}}).dataset.pick);
+ else if(a.id==="copyList")tr("remix/copy-tracklist");
+ else if(a.id==="copyShare")tr("remix/copy-share");
+ else if(a.id==="copyText")tr("remix/copy-as-text");
+ else if(a.id==="moreBtn")tr("remix/dig-deeper");
+ else if(a.dataset.pick)tr("remix/pick/"+a.dataset.pick);
+ else if(/open\.spotify\.com/.test(h))tr("remix/play/spotify");
+ else if(/music\.apple\.com/.test(h))tr("remix/play/apple-music");
+ else if(/soundcloud\.com/.test(h))tr("remix/play/soundcloud");
+ else if(/youtube\.com|youtu\.be|tiktok\.com|instagram\.com/.test(h))tr("remix/watch/"+(h.match(/\/\/(?:www\.)?([^/]+)/)||[,""])[1]);
+ else if(a.closest(".tabbar"))tr("remix/tab/"+(a.dataset.tab||""));
+ else if(/ko-fi\.com/.test(h))tr("kofi/remix");
+},true);})();
 </script>
 </body>
 </html>
