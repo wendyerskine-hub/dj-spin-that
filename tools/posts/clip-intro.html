@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:540px;height:960px;overflow:hidden}
+#v{position:relative;width:540px;height:960px;overflow:hidden;color:#f4efff;font-family:Outfit,sans-serif;background:radial-gradient(120% 70% at 50% 0%,#3d1024 0%,#1a0b2e 55%,#0b0614 100%)}
+canvas{position:absolute;inset:0}
+.top{position:absolute;left:0;right:0;text-align:center}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:#d6dae3}
+h1{font-family:"Gowun Batang",serif;font-weight:700;font-size:40px;line-height:1.1;margin-top:10px}
+.credit{position:absolute;left:0;right:0;text-align:center;font-size:17px;color:#cdbfe8}
+.credit b{color:#fff}
+.fan{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(244,239,255,.55)}
+</style></head><body><div id="v">
+<canvas id="c" width="1080" height="1920"></canvas>
+<div class="top" id="top"><div class="eyebrow">Tampa · Night 3 · Apr 28</div><h1>Baepsae (Silver Spoon) 🥄</h1></div>
+<div class="credit" id="cr">Live mashup: <b>B13613 on YouTube</b><br>used with permission 💜</div>
+<div class="fan">fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC</div>
+</div>
+<script>
+// Static background for the mashup intro. The clip is laid on top with ffmpeg, centered, never cropped (keeps the creator's watermark).
+const q=new URLSearchParams(location.search);const H=q.get("ratio")==="45"?675:960;
+document.documentElement.style.height=document.body.style.height=document.getElementById("v").style.height=H+"px";window.VH=H;
+// clip box (16:9 at 500px wide in page px) sits centered; text goes above and below it
+const clipH=500*9/16,boxTop=(H-clipH)/2;
+document.getElementById("top").style.top=(boxTop-112)+"px";document.getElementById("cr").style.top=(boxTop+clipH+22)+"px";
+const c=document.getElementById("c");c.height=H*2;const x=c.getContext("2d");let s=5;const r=()=>(s=s*16807%2147483647)/2147483647;
+for(let i=0;i<90;i++){const px=r()*1080,py=r()*H*2,rad=1+r()*3;x.globalAlpha=.25+r()*.5;x.fillStyle="#e9ecf2";x.beginPath();x.arc(px,py,rad,0,7);x.fill();if(rad>3){x.fillRect(px-rad*2.4,py-.6,rad*4.8,1.2);x.fillRect(px-.6,py-rad*2.4,1.2,rad*4.8)}}
+</script></body></html>
