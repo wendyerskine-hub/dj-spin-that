@@ -38,6 +38,7 @@ button,.btn{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:9
   <datalist id="titles"></datalist>
 </section>
 
+<section class="card"><h2>Local touch</h2><p id="lineOut"></p><div class="note">Hashtags for this stop (copy into any post):</div><p id="tagsOut" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink)"></p></section>
 <section class="card"><h2>TikTok <button data-copy="tt">Copy</button></h2><textarea id="tt" readonly></textarea></section>
 <section class="card"><h2>Instagram <button data-copy="ig">Copy</button></h2><textarea id="ig" readonly></textarea></section>
 <section class="card"><h2>Threads <button data-copy="th">Copy</button></h2><textarea id="th" readonly></textarea></section>
@@ -55,12 +56,12 @@ const $=id=>document.getElementById(id);
 const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const nk=t=>String(t).toLowerCase().replace(/[^a-z0-9]/g,"");
 const FLAG={Taiwan:"🇹🇼",Thailand:"🇹🇭",Malaysia:"🇲🇾",Singapore:"🇸🇬",Indonesia:"🇮🇩",Australia:"🇦🇺","Hong Kong":"🇭🇰",Philippines:"🇵🇭",Japan:"🇯🇵","South Korea":"🇰🇷",Korea:"🇰🇷",USA:"🇺🇸","United States":"🇺🇸",Brazil:"🇧🇷",Mexico:"🇲🇽",Germany:"🇩🇪",UK:"🇬🇧",Canada:"🇨🇦"};
-let SH=[];
+let SH=[],LOCAL={};
 const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}):"";
-fetch("shows.json?"+Date.now()).then(r=>r.json()).then(d=>{
+Promise.all([fetch("shows.json?"+Date.now()).then(r=>r.json()),fetch("tools/posts/local.json?"+Date.now()).then(r=>r.json()).catch(()=>({}))]).then(([d,loc])=>{LOCAL=loc;
   SH=(d.shows||[]).filter(s=>s.status!=="cancelled").sort((a,b)=>(a.order||0)-(b.order||0));
   const up=SH.filter(s=>s.status==="upcoming"),recent=SH.filter(s=>s.status==="played").slice(-6).reverse();
-  $("show").innerHTML=`<optgroup label="Coming up">${up.slice(0,10).map(o).join("")}</optgroup><optgroup label="Recent">${recent.map(o).join("")}</optgroup>`;
+  $("show").innerHTML=`<optgroup label="Coming up">${up.map(o).join("")}</optgroup><optgroup label="Recent">${recent.map(o).join("")}</optgroup>`;
   const titles=[...new Set(SH.flatMap(s=>(s.songs||[]).map(x=>x.title)))].sort();
   $("titles").innerHTML=titles.map(t=>`<option value="${t.replace(/"/g,"&quot;")}">`).join("");
   try{const k=JSON.parse(localStorage.getItem("postkit")||"{}");if(k.show&&SH.some(s=>s.id===k.show))$("show").value=k.show;["s1","s2","s3"].forEach(i=>{if(k[i])$(i).value=k[i]})}catch(e){}
@@ -77,18 +78,26 @@ function build(){
   ["t1","t2","t3"].forEach((id,i)=>{const s=$("s"+(i+1)).value.trim();const m=notes.find(x=>x.t===s);$(id).textContent=m?m.txt:"";$(id).className="tag"+(m&&m.first?" new":"")});
   const debut=notes.filter(x=>x.first).map(x=>x.t);
   const list=songs.join(" × ");
+  // local language + hashtags (tools/posts/local.json)
+  const L=LOCAL[sh.country]||{},lc=(L.local||{})[city]||city,fill=t=>(t||"").replace(/\{local\}/g,lc).replace(/\{localNoSpace\}/g,lc.replace(/\s+/g,"")).replace(/\{city\}/g,city).replace(/\{cityNoSpace\}/g,city.replace(/[^A-Za-z0-9]/g,""));
+  const ready=fill(L.ready),ask=fill(L.ask),fl=L.flag||flag;
+  const trend="#BTS_WORLDTOUR_ARIRANG_"+city.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  const localTags=(L.tags||[]).map(fill);
+  const tags5=[...new Set([trend,...localTags,tagCity])].slice(0,5).join(" ");
+  $("tagsOut").textContent=[...new Set([trend,...localTags,tagCity])].join("  ");
+  $("lineOut").textContent=ready?`${ready}  ·  ${ask}`:"(English-speaking stop: no extra language line)";
   let tt,ig,th,x;
   if(!songs.length){
-    tt=`${city} ${sh.night} tonight ${flag}🎧 Which surprise songs is BTS pulling from the vault? Drop your guess 👇 Results on djspinthat.net after the show #BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
-    ig=`${city} ${sh.night} tonight ${flag}🎧\n\nWhich surprise songs is BTS pulling from the vault? Drop your guess 👇\n\nResults after the show: link in bio 💜\n.\n#BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
-    th=`${city} ${sh.night} tonight ${flag} What are your surprise song guesses? 🎧👇`;
-    x=`${city} ${sh.night} tonight ${flag}🎧 Surprise song guesses? 👇 Results on ${url} after the show #BTS #ARIRANG ${tagCity}`;
+    tt=`${ready?ready+" ":""}${fl} ${city}, tonight the DJ spins for YOU 🎧 Which song do you want?${ask?" "+ask:""}👇 Drop it + your bias or OT7 sticker. I'll post ${city}'s most-requested song after the show 💜 ${tags5} #BTS #DJSpinThat #fanmade`;
+    ig=`${ready?ready+" ":""}${fl}\n${city}, tonight the DJ spins for YOU 🎧\n\n👇 Which song do you want?${ask?" "+ask:""}\n👇 Drop your bias or OT7 sticker\n\nResults the second they drop: link in bio 💜\n.\n${tags5} #BTS #DJSpinThat #fanmade`;
+    th=`${ready?ready+" ":""}${fl}🎧\n${city} ${sh.night} tonight. Which song do you want the DJ to spin?${ask?" "+ask:""} 👇`;
+    x=`${ready?ready+" ":""}${fl} ${city} ${sh.night} tonight: who's ready for the DJ to spin that s**t? 🎧 Surprise song guesses 👇 ${url} ${trend}`;
   }else{
     const extra=debut.length?` ${debut.join(" and ")} ${debut.length>1?"are tour debuts":"is a tour debut"} 🚨`:"";
-    tt=`DJ, spin that 🎧 ${city} ${sh.night} ${flag} got ${list}!${extra} Were you there? Tell me your reaction 👇 Play them at ${url} #BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
-    ig=`DJ, spin that 🎧 ${city} ${sh.night} ${flag}\n\n🥁 ${songs.join("\n🥁 ")}\n${extra?"\n"+extra.trim()+"\n":""}\nWere you there? Tell me your reaction 👇\nPlay every surprise song: link in bio 💜\n.\n#BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
-    th=`${city} ${sh.night} surprise songs ${flag}🎧\n${list}${extra?"\n"+extra.trim():""}\nWere you there?? 👇`;
-    x=`🎧 ${city} ${sh.night} surprise songs ${flag}: ${list}${extra?" ·"+extra:""}\nPlay them: ${url}\n#BTS #ARIRANG ${tagCity}`;
+    tt=`DJ, spin that 🎧 ${city} ${sh.night} ${fl} got ${list}!${extra} Were you there? Tell me your reaction 👇 Play them at ${url} ${tags5} #BTS #DJSpinThat #fanmade`;
+    ig=`DJ, spin that 🎧 ${city} ${sh.night} ${fl}\n\n🥁 ${songs.join("\n🥁 ")}\n${extra?"\n"+extra.trim()+"\n":""}\nWere you there? Tell me your reaction 👇\nPlay every surprise song: link in bio 💜\n.\n${tags5} #BTS #DJSpinThat #fanmade`;
+    th=`${city} ${sh.night} surprise songs ${fl}🎧\n${list}${extra?"\n"+extra.trim():""}\nWere you there?? 👇`;
+    x=`🎧 ${city} ${sh.night} surprise songs ${fl}: ${list}${extra?" ·"+extra:""}\nPlay them: ${url}\n${trend} #BTS`;
   }
   $("tt").value=tt;$("ig").value=ig;$("th").value=th;$("x").value=x;
   $("xlen").textContent=`${x.length} / 280 characters`+(x.length>280?" (too long: trim it)":"");

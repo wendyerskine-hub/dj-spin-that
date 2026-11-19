@@ -15,7 +15,7 @@ async function page(b,W,H){const p=await b.newPage({viewport:{width:W/2,height:H
  await p.waitForTimeout(300);return p}
 (async()=>{const b=await chromium.launch();
  for(const [W,H,tag] of [[1080,1920,'9x16'],[1080,1350,'4x5'],[1080,1080,'1x1']]){const p=await page(b,W,H);await p.evaluate(()=>setFrame(0.12));await p.screenshot({path:path.join(out,`${base}-cover-${tag}.png`)});
-  if(tag!=='1x1'){const d=fs.mkdtempSync(path.join(os.tmpdir(),'cov-'));const N=252;for(let f=0;f<N;f++){await p.evaluate(t=>setFrame(t),f/N);await p.screenshot({path:`${d}/f${String(f).padStart(4,'0')}.png`})}
+  if(tag!=='1x1'&&!process.env.NOVIDEO){const d=fs.mkdtempSync(path.join(os.tmpdir(),'cov-'));const N=252;for(let f=0;f<N;f++){await p.evaluate(t=>setFrame(t),f/N);await p.screenshot({path:`${d}/f${String(f).padStart(4,'0')}.png`})}
    execFileSync('ffmpeg',['-y','-loglevel','error','-framerate','30','-i',`${d}/f%04d.png`,'-c:v','libx264','-pix_fmt','yuv420p','-crf','19','-preset','medium','-movflags','+faststart',path.join(out,`${base}-${tag}.mp4`)]);fs.rmSync(d,{recursive:true,force:true})}
   await p.close()}
  await b.close();console.log('made',base)})();

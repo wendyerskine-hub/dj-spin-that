@@ -1,0 +1,50 @@
+{
+  "_about": "Local-language lines and hashtags per country, used by post-kit.html and cover-for-show.js. {city} = English city name, {local} = local city name.",
+  "Taiwan": {
+    "flag": "🇹🇼", "lang": "zh-TW", "local": {"Kaohsiung": "高雄", "Taipei": "台北"},
+    "ready": "{local} ARMY，準備好了嗎？",
+    "ask": "你最想聽DJ放哪首？",
+    "tags": ["#防彈少年團", "#BTS{localNoSpace}", "#{localNoSpace}演唱會", "#台灣ARMY"]
+  },
+  "Thailand": {
+    "flag": "🇹🇭", "lang": "th", "local": {"Bangkok": "กรุงเทพฯ"},
+    "ready": "ARMY {local} พร้อมหรือยัง?",
+    "ask": "อยากให้ DJ เปิดเพลงไหน?",
+    "tags": ["#BTSinBangkok", "#ARMYThailand", "#คอนเสิร์ตBTS", "#บังทัน"]
+  },
+  "Malaysia": {
+    "flag": "🇲🇾", "lang": "ms", "local": {"Kuala Lumpur": "Kuala Lumpur"},
+    "ready": "ARMY {local}, dah sedia?",
+    "ask": "Lagu apa korang nak DJ mainkan?",
+    "tags": ["#BTSinKL", "#ARMYMalaysia", "#KonsertBTS", "#BukitJalil"]
+  },
+  "Singapore": {
+    "flag": "🇸🇬", "lang": "zh-CN", "local": {"Singapore": "新加坡"},
+    "ready": "{local} ARMY，准备好了吗？",
+    "ask": "你最想听DJ放哪首？",
+    "tags": ["#BTSinSingapore", "#ARMYSingapore", "#SGARMY", "#防弹少年团"]
+  },
+  "Indonesia": {
+    "flag": "🇮🇩", "lang": "id", "local": {"Jakarta": "Jakarta"},
+    "ready": "ARMY {local}, udah siap?",
+    "ask": "Mau DJ puterin lagu apa?",
+    "tags": ["#BTSinJakarta", "#ARMYIndonesia", "#KonserBTS", "#GBK"]
+  },
+  "Australia": {
+    "flag": "🇦🇺", "lang": "en", "local": {},
+    "ready": "", "ask": "",
+    "tags": ["#BTSinAustralia", "#ARMYAustralia", "#BTSin{cityNoSpace}"]
+  },
+  "Hong Kong": {
+    "flag": "🇭🇰", "lang": "zh-HK", "local": {"Hong Kong": "香港"},
+    "ready": "{local} ARMY，準備好未？",
+    "ask": "你最想DJ播邊首？",
+    "tags": ["#防彈少年團", "#BTS香港", "#香港ARMY"]
+  },
+  "Philippines": {
+    "flag": "🇵🇭", "lang": "fil", "local": {"Manila": "Manila"},
+    "ready": "ARMY {local}, ready na ba kayo?",
+    "ask": "Anong kanta gusto n'yong i-spin ng DJ?",
+    "tags": ["#BTSinManila", "#ARMYPhilippines", "#PHARMY"]
+  }
+}

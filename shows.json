@@ -1782,7 +1782,7 @@
    "order": 600,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "Bukit Jalil National Stadium",
    "id": "2026-0600-kuala-lumpur-n2"
   },
@@ -1795,7 +1795,7 @@
    "order": 610,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "National Stadium",
    "id": "2026-0610-singapore-n1"
   },
@@ -1808,7 +1808,7 @@
    "order": 620,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "National Stadium",
    "id": "2026-0620-singapore-n2"
   },
@@ -1821,7 +1821,7 @@
    "order": 630,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "National Stadium",
    "id": "2026-0630-singapore-n3"
   },
@@ -1834,7 +1834,7 @@
    "order": 640,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "National Stadium",
    "id": "2026-0640-singapore-n4"
   },
@@ -1847,7 +1847,7 @@
    "order": 650,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "Gelora Bung Karno Main Stadium",
    "id": "2026-0650-jakarta-n1"
   },
@@ -1860,7 +1860,7 @@
    "order": 660,
    "songs": [],
    "status": "upcoming",
-   "tentative": true,
+   "tentative": false,
    "venue": "Gelora Bung Karno Main Stadium",
    "id": "2026-0660-jakarta-n2"
   },
