@@ -1,0 +1,24 @@
+{
+  "updated": "2026-11-19",
+  "about": "Moments to watch for at every ARIRANG show, in show order. Add a clip to clips: show = the show id from shows.json, moment = a moment id below, url = link to the fan's own post, credit = their handle, first = true if it happened for the first time at that show.",
+  "moments": [
+    {"id": "hooligan-outfits", "label": "Hooligan outfits", "song": "Hooligan", "note": "Their new outfits for the city"},
+    {"id": "jimin-hip-rolls", "label": "Jimin's hip rolls", "song": "2.0"},
+    {"id": "hobi-mic-drop-intro", "label": "Hobi's intro", "song": "MIC Drop"},
+    {"id": "rm-born-in-seoul", "label": "RM: “Born in Seoul”", "song": "MIC Drop, right before Jin sings"},
+    {"id": "ot7-camera-fya", "label": "OT7 camera look", "song": "Start of FYA"},
+    {"id": "jk-rm-fya-dance", "label": "JK & RM dance", "song": "FYA"},
+    {"id": "fire-monitor-spin", "label": "The monitor spin", "song": "Start of Fire"},
+    {"id": "jk-sings-arirang", "label": "JK sings Arirang", "song": "End of Body to Body"},
+    {"id": "idol-walk", "label": "The Idol walk", "song": "IDOL"},
+    {"id": "yoongi-jk-come-over", "label": "Yoongi & JK enter", "song": "Come Over"},
+    {"id": "butter-trio", "label": "Butter trio", "song": "Butter · V, JK & Jin"},
+    {"id": "dynamite-dance-break", "label": "Dynamite dance break", "song": "Dynamite · Jimin, JK, Jin & V"},
+    {"id": "who-says-dj-spin-that", "label": "Who says “DJ Spin That”", "song": "Each surprise song"},
+    {"id": "into-the-sun-adlibs", "label": "Ad libs + fireworks", "song": "End of Into the Sun · Jin & vocal line"},
+    {"id": "yoongi-mianhae-eomma", "label": "Yoongi: Mianhae Eomma", "song": "Live moment"},
+    {"id": "jk-modeo-ttweo", "label": "JK: “Modeo Ttweo”", "song": "Live moment"},
+    {"id": "fan-chants", "label": "Fan chants", "song": "All night"}
+  ],
+  "clips": []
+}

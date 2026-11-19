@@ -68,7 +68,7 @@ h1 .kicker{display:block;font-family:var(--f-mono);font-size:.22em;font-weight:6
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
 section.station{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
-section.spin,section.disco,section.units{grid-column:1/-1}
+section.spin,section.disco,section.units,section.credits,section#bias,section#city{grid-column:1/-1}
 .station h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.1;text-wrap:balance}
 .station h2 small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
 .station p.help{margin:0;color:var(--muted);font-size:14px}
@@ -376,7 +376,8 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
 .burrow{display:grid;gap:22px}
 .burrow-wrap{display:grid;gap:28px;align-items:start;min-width:0}
 .burrow-wrap:not(:has(> section:not([hidden]))){display:none}
-@media (min-width:980px){.burrow-wrap{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}.burrow-wrap .watch{position:sticky;top:76px}}
+.bcards:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}@media (max-width:560px){.bcards:has(> :nth-child(4):last-child){grid-template-columns:minmax(0,1fr)}}@media (min-width:1100px){.bcards:has(> :nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:980px){section.watch{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);column-gap:28px;align-items:start}section.watch>h2,section.watch>.help{grid-column:1/-1}}
 .bgroup{display:grid;gap:10px}
 .bhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
 .bhead h3{margin:0;font-family:var(--f-display);font-size:24px;font-weight:400}
@@ -422,7 +423,7 @@ button.btn{cursor:pointer;font:inherit}
 .pc-adjust label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink)}
 .pc-adjust input[type=range]{width:180px;accent-color:var(--gold)}
 #pcFront.has-photo{cursor:grab;touch-action:none}
-/* red -> purple journey: each tab shades from ARIRANG red (DJ Spin) to Borahae purple (Look Up) */
+/* red -> purple journey: each tab shades from ARIRANG red (DJ Spin) to Borahae purple (DJ Spin TV) */
 :root{--tint:rgba(120,60,220,.55)}
 html[data-tab="spin"]{--gold:#ff5468;--violet:#ff8a98;--jade:#ffc2c9;--tint:rgba(225,30,60,.6);--glass:rgba(50,11,24,.64)}
 html[data-tab="show"]{--gold:#ff5c7f;--violet:#ff92aa;--jade:#ffc6d2;--tint:rgba(215,35,90,.58);--glass:rgba(47,11,30,.64)}
@@ -430,7 +431,10 @@ html[data-tab="bias"]{--gold:#ff63a9;--violet:#ff96c6;--jade:#ffc8e0;--tint:rgba
 html[data-tab="list"]{--gold:#f26ad0;--violet:#f79ce1;--jade:#fac8ef;--tint:rgba(185,45,165,.56);--glass:rgba(39,12,43,.63)}
 html[data-tab="burrow"]{--gold:#dc74f0;--violet:#e6a2f6;--jade:#f0cafa;--tint:rgba(160,50,205,.56);--glass:rgba(34,13,47,.62)}
 html[data-tab="freebies"]{--gold:#cf7cff;--violet:#c69bff;--jade:#e2c8ff;--tint:rgba(140,55,215,.55);--glass:rgba(31,14,48,.62)}
-html[data-tab="more"]{--gold:#c77dff;--violet:#b48cff;--jade:#d9c2ff;--tint:rgba(120,60,220,.55);--glass:rgba(28,14,48,.62)}
+html[data-tab="tour"]{--gold:#ff5c7f;--violet:#ff92aa;--jade:#ffc6d2;--tint:rgba(215,35,90,.58);--glass:rgba(47,11,30,.64)}
+html[data-tab="music"]{--gold:#f26ad0;--violet:#f79ce1;--jade:#fac8ef;--tint:rgba(185,45,165,.56);--glass:rgba(39,12,43,.63)}
+html[data-tab="army"]{--gold:#cf7cff;--violet:#c69bff;--jade:#e2c8ff;--tint:rgba(140,55,215,.55);--glass:rgba(31,14,48,.62)}
+html[data-tab="tv"]{--gold:#c77dff;--violet:#b48cff;--jade:#d9c2ff;--tint:rgba(120,60,220,.55);--glass:rgba(28,14,48,.62)}
 #stage::before{content:"";position:absolute;inset:0;z-index:2;background-color:var(--tint);mix-blend-mode:color;transition:background-color .9s ease;pointer-events:none}
 #stage::after{z-index:3}
 #stage .photo::after{display:none}
@@ -501,6 +505,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .fix-sum small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
 .fix-sum b{flex:none;font-size:13px;color:var(--violet);font-weight:600}
 .fix details[open] .fix-sum b{visibility:hidden}
+.credits details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}.credits details>summary::-webkit-details-marker{display:none}.credits details[open] .fix-sum b{visibility:hidden}#crDetails>*+*{margin-top:16px}#crDetails[open]>summary{margin-bottom:4px}
 .fix details[open]>summary{margin-bottom:14px}
 footer{color:var(--muted);font-size:12px;max-width:80ch;display:grid;gap:6px}
 footer a{color:var(--violet)}
@@ -514,6 +519,141 @@ footer a{color:var(--violet)}
   .spin-row .btn{padding:11px 26px}
   section.intro .next{font-size:15px;gap:4px 14px}
 }
+/* ---------- The controller (home navigation): Deck A = Tour, mixer = Music, Deck B = ARMY ---------- */
+section.deck-nav{grid-column:1/-1}
+.dk{display:flex;align-items:center;gap:16px}
+.dk-body{flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr) minmax(0,1fr);gap:12px;border-radius:22px;padding:clamp(10px,1.6vw,16px);background:linear-gradient(180deg,#232938 0%,#141824 3%,#0E111A 97%,#05060A 100%);border:1px solid #273145;box-shadow:0 18px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
+.dk-deck{border-radius:16px;background:linear-gradient(#1C2130,#10131E);border:1px solid #1e2533;padding:12px;display:flex;flex-direction:column;align-items:stretch;min-width:0}
+.dk-top{display:grid;gap:6px}
+.dk-bar{display:block;height:7px;border-radius:4px;background:#0A0D13;overflow:hidden}
+.dk-bar i{display:block;height:100%;width:56%;background:#FF2A4B;box-shadow:0 0 10px #FF2A4B}
+.dk-b .dk-bar i{background:#A855F7;box-shadow:0 0 10px #A855F7;margin-left:auto;width:50%}
+.dk-tag{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:#9aa3b8}
+.dk-plat{position:relative;align-self:center;width:clamp(150px,21vw,210px);aspect-ratio:1;margin:12px 0 6px;border-radius:50%;border:0;padding:0;cursor:pointer;background:#090B10;box-shadow:0 0 0 2px rgba(255,42,75,.35),0 0 0 8px #121620,0 0 26px rgba(255,42,75,.25)}
+.dk-b .dk-plat{box-shadow:0 0 0 2px rgba(168,85,247,.4),0 0 0 8px #121620,0 0 26px rgba(168,85,247,.25)}
+.dk-vinyl{position:absolute;inset:7%;border-radius:50%;background:repeating-radial-gradient(circle,#141018 0 2px,#0c0a10 2px 4px);animation:dkspin 4s linear infinite}
+.dk-lbl{position:absolute;left:28%;top:28%;width:44%;height:44%;border-radius:50%;background:conic-gradient(from 20deg,#FF2A4B 0 300deg,rgba(255,255,255,.45) 300deg 340deg,#FF2A4B 340deg)}
+.dk-b .dk-lbl{background:conic-gradient(from 20deg,#A855F7 0 300deg,rgba(255,255,255,.45) 300deg 340deg,#A855F7 340deg)}
+.dk-hole{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#f4efff;box-shadow:0 0 0 4px #0c0a10}
+.dk-plat:hover .dk-lbl,.dk-plat:focus-visible .dk-lbl{filter:brightness(1.15)}
+@keyframes dkspin{to{transform:rotate(360deg)}}
+.dk-cap{text-align:center;font-family:var(--f-mono);font-size:13px;letter-spacing:.04em;color:var(--ink);margin-bottom:10px}
+.dk-pads{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.dk-pad{min-height:60px;padding:4px 2px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;text-decoration:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;line-height:1.1;color:#FF5468;background:#2A141A;border:1.5px solid #FF2A4B}
+.dk-pad small{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;font-weight:400;opacity:.8}
+.dk-b .dk-pad{color:#c99bff;background:#1C142A;border-color:#A855F7}
+.dk-pad:hover,.dk-pad:focus-visible{color:#0b0710;background:#FF2A4B;box-shadow:0 0 14px #FF2A4B}
+.dk-b .dk-pad:hover,.dk-b .dk-pad:focus-visible{background:#A855F7;box-shadow:0 0 14px #A855F7}
+.dk-mix{border-radius:16px;background:linear-gradient(#181D29,#0D1017);border:1px solid #1e2533;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.dk-screen{border-radius:10px;background:#06070b;border:1px solid #273145;padding:8px 10px;display:grid;gap:4px}
+.dk-screen svg{width:100%;height:26px}
+.dk-now{font-family:var(--f-mono);font-size:13px;line-height:1.35;color:#d9e0ee;min-height:2.7em}
+.dk-knobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.dk-knob{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:62px;padding:6px 2px;border-radius:10px;border:1px solid transparent;background:transparent;color:#cfd6e4;cursor:pointer;font-family:var(--f-mono);font-size:12px;line-height:1.1;text-align:center}
+.dk-knob i{display:block;width:28px;height:28px;border-radius:50%;background:#221a2c;border:2px solid #FF2A4B;position:relative}
+.dk-knob i::after{content:"";position:absolute;left:50%;top:3px;width:2px;height:9px;margin-left:-1px;border-radius:1px;background:#FF2A4B;transform-origin:50% 9px;transform:rotate(-40deg)}
+.dk-knob i.p{border-color:#A855F7}.dk-knob i.p::after{background:#A855F7;transform:rotate(30deg)}
+.dk-knob:hover,.dk-knob:focus-visible{border-color:#273145;background:rgba(255,255,255,.05);color:#fff}
+.dk-knob:hover i::after,.dk-knob:focus-visible i::after{transform:rotate(120deg)}
+.dk-brand{border-radius:10px;background:#06070b;border:1px solid #273145;padding:6px;text-align:center}
+.dk-brand b{display:block;font-family:var(--f-body);font-weight:800;font-size:20px;letter-spacing:.04em}
+.dk-brand b span:first-child{color:#FF2A4B;text-shadow:0 0 12px rgba(255,42,75,.55)}.dk-brand b span:last-child{color:#A855F7;text-shadow:0 0 12px rgba(168,85,247,.55)}
+.dk-brand small{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;color:#7f8aa3}
+.dk-x{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;color:#9aa3b8}
+.dk-x span:first-child{color:#FF5468}.dk-x span:last-child{color:#c99bff}
+.dk-x i{position:relative;flex:1;height:8px;border-radius:4px;background:#0A0D13;border:1px solid #273145}
+.dk-x b{position:absolute;top:-7px;left:calc(50% - 12px);width:24px;height:20px;border-radius:4px;background:#E2E8F0;border:1px solid #000}
+.dk-pad:focus-visible,.dk-knob:focus-visible,.dk-plat:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+/* speakers */
+.spk{display:none;flex:0 0 110px;height:390px;border-radius:20px;background:linear-gradient(#1d1229,#120a1b);border:1px solid rgba(243,237,226,.12);flex-direction:column;align-items:center;justify-content:space-evenly}
+.spk-l{box-shadow:0 0 50px rgba(255,42,75,.22)}.spk-r{box-shadow:0 0 50px rgba(168,85,247,.22)}
+.spk .tw{display:block;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,#3a2a4a 0 30%,#120a1b 32% 60%,#2a1e36 62% 100%);box-shadow:0 0 0 4px #0c0612}
+.spk .wf{position:relative;display:block;width:90px;height:90px}
+.spk .wf b{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#FF2A4B 0 10%,#1a0f22 12% 22%,#2c1f38 24% 52%,#120a1b 54% 62%,#3a2a4a 64% 100%);box-shadow:0 0 0 5px #0c0612,0 0 24px rgba(255,42,75,.4);animation:thump .47s ease-in-out infinite alternate}
+.spk-r .wf b{background:radial-gradient(circle,#A855F7 0 10%,#1a0f22 12% 22%,#2c1f38 24% 52%,#120a1b 54% 62%,#3a2a4a 64% 100%);box-shadow:0 0 0 5px #0c0612,0 0 24px rgba(168,85,247,.4)}
+@keyframes thump{from{transform:scale(1)}to{transform:scale(1.045)}}
+@media (min-width:1180px){.spk{display:flex}}
+/* tablets: two decks side by side, mixer full width underneath */
+@media (max-width:980px){
+  .dk-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .dk-a{order:1}.dk-b{order:2}.dk-mix{order:3;grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr);align-items:center}
+  .dk-mix .dk-brand,.dk-mix .dk-x{display:none}
+}
+/* phones: stack Deck A, mixer, Deck B */
+@media (max-width:620px){
+  .dk-body{grid-template-columns:1fr}
+  .dk-a{order:1}.dk-mix{order:2;display:flex}.dk-b{order:3}
+  .dk-mix .dk-brand{display:block}
+  .dk-plat{width:min(62vw,220px)}
+  .dk-pad{min-height:64px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.dk-vinyl,.spk .wf b{animation:none}}
+/* link cards to the new pages */
+section.golinks{grid-column:1/-1}
+.golinks .gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.golinks a.glc{display:grid;gap:4px;padding:16px 18px;border-radius:16px;text-decoration:none;color:var(--ink);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.golinks a.glc:hover{border-color:var(--gold);background:rgba(255,255,255,.07)}
+.golinks .glc small{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--jade)}
+.golinks .glc b{font-family:var(--f-display);font-size:24px;font-weight:700}
+.golinks .glc span{color:var(--muted);font-size:15px}
+/* DJ Spin TV: DJ Spin That video booth */
+#burrow .bgroup[id]{scroll-margin-top:84px}
+.vj{background:linear-gradient(180deg,#232938 0%,#141824 3%,#0E111A 100%);border:1px solid #2D374D;border-radius:18px;padding:14px;display:grid;gap:12px;box-shadow:0 18px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+.vj-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vj-rec{white-space:nowrap;font:600 11px/1 "JetBrains Mono",monospace;letter-spacing:.14em;color:#ff8a98;display:flex;align-items:center;gap:7px;border:1px solid rgba(255,42,75,.45);border-radius:999px;padding:6px 10px;background:rgba(255,42,75,.08)}
+.vj-rec i{width:8px;height:8px;border-radius:50%;background:#FF2A4B;box-shadow:0 0 10px #FF2A4B;animation:vjBlink 1.2s steps(1) infinite}
+.vj-brand{font:800 clamp(15px,2.2vw,20px)/1 Outfit,system-ui;letter-spacing:.02em;white-space:nowrap}
+.vj-brand span:first-child{color:#FF2A4B}.vj-brand span:nth-child(2){color:#A855F7}
+.vj-brand em{font-style:normal;font:600 10px/1 "JetBrains Mono",monospace;margin-left:7px;padding:3px 6px;border-radius:5px;background:#A855F7;color:#0E111A;vertical-align:3px;letter-spacing:.1em}
+.vj-tc{font:600 13px/1 "JetBrains Mono",monospace;color:#d9c2ff;background:#07080D;border:1px solid #2D374D;border-radius:8px;padding:7px 9px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.vj-mons{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.vj-mon{all:unset;cursor:pointer;display:grid;gap:7px;text-align:center;min-width:0;-webkit-tap-highlight-color:transparent}
+.vj-mon b{font:600 13px/1.1 Outfit,system-ui;color:#b8a9d6;letter-spacing:.02em;transition:color .2s}
+.vj-scr{position:relative;display:block;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#07080D;border:2px solid #2D374D;box-shadow:inset 0 0 18px rgba(0,0,0,.8);transition:border-color .2s,box-shadow .2s,transform .2s}
+.vj-scr::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.55));pointer-events:none;animation:vjFlick 4s steps(2) infinite}
+.vj-ch{position:absolute;left:6px;top:5px;font:600 9px/1 "JetBrains Mono",monospace;color:rgba(255,255,255,.75);letter-spacing:.08em;z-index:1}
+.vj-mon:hover .vj-scr,.vj-mon:focus-visible .vj-scr{border-color:var(--c);transform:translateY(-2px)}
+.vj-mon:focus-visible .vj-scr{outline:2px solid #fff;outline-offset:2px}
+.vj-mon[aria-pressed="true"] .vj-scr{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 0 22px color-mix(in srgb,var(--c) 55%,transparent),inset 0 0 18px rgba(0,0,0,.6)}
+.vj-mon[aria-pressed="true"] .vj-scr::before{content:"ON AIR";position:absolute;right:5px;top:4px;z-index:2;font:700 8px/1 "JetBrains Mono",monospace;letter-spacing:.08em;color:#0E111A;background:#FF2A4B;padding:3px 4px;border-radius:3px}
+.vj-mon[aria-pressed="true"] b{color:#fff}
+.vj-art{position:absolute;inset:0;display:block}
+/* CH1 dance: level meters */
+.a1{display:flex;align-items:flex-end;justify-content:center;gap:7%;padding:22% 16% 14%;background:radial-gradient(80% 70% at 50% 100%,rgba(255,42,75,.35),transparent 70%)}
+.a1 i{flex:1;height:30%;border-radius:2px;background:linear-gradient(0deg,#FF2A4B,#ff8a98);animation:vjEq 1.1s ease-in-out infinite alternate}
+.a1 i:nth-child(2){animation-delay:-.3s}.a1 i:nth-child(3){animation-delay:-.7s}.a1 i:nth-child(4){animation-delay:-.15s}.a1 i:nth-child(5){animation-delay:-.5s}
+/* CH2 official: broadcast rings */
+.a2{background:radial-gradient(circle at 50% 55%,#ff5fa2 0 7%,transparent 8%),#120a16}
+.a2 i{position:absolute;left:50%;top:55%;width:18%;aspect-ratio:1;border:2px solid #ff5fa2;border-radius:50%;transform:translate(-50%,-50%) scale(1);opacity:0;animation:vjRing 2.4s ease-out infinite}
+.a2 i:nth-child(2){animation-delay:.8s}.a2 i:nth-child(3){animation-delay:1.6s}
+/* CH3 shows: color bars + play */
+.a3{background:linear-gradient(90deg,#FF2A4B 0 14.3%,#ff5fa2 0 28.6%,#f7a8d0 0 42.9%,#d9c2ff 0 57.2%,#d36bff 0 71.5%,#A855F7 0 85.8%,#5b3fbf 0);opacity:.9}
+.a3::after{content:"";position:absolute;left:50%;top:52%;width:26%;aspect-ratio:1;transform:translate(-40%,-50%);background:#0E111A;clip-path:polygon(0 0,100% 50%,0 100%);filter:drop-shadow(0 0 2px #fff)}
+/* CH4 behind: camera frame + REC */
+.a4{background:linear-gradient(135deg,#1a1230,#0b0d14)}
+.a4::before{content:"";position:absolute;inset:20% 16% 16%;background:linear-gradient(#A855F7,#A855F7) left top/14% 2px,linear-gradient(#A855F7,#A855F7) left top/2px 18%,linear-gradient(#A855F7,#A855F7) right top/14% 2px,linear-gradient(#A855F7,#A855F7) right top/2px 18%,linear-gradient(#A855F7,#A855F7) left bottom/14% 2px,linear-gradient(#A855F7,#A855F7) left bottom/2px 18%,linear-gradient(#A855F7,#A855F7) right bottom/14% 2px,linear-gradient(#A855F7,#A855F7) right bottom/2px 18%;background-repeat:no-repeat}
+.a4 i{position:absolute;right:20%;bottom:22%;width:9%;aspect-ratio:1;border-radius:50%;background:#FF2A4B;box-shadow:0 0 8px #FF2A4B;animation:vjBlink 1s steps(1) infinite}
+/* CH5 reactions: heartbeat */
+.a5{background:#0d0b1c}
+.a5::after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(18px,3.4vw,34px);color:#8b7bff;text-shadow:0 0 12px #8b7bff;animation:vjBeat 1.1s ease-in-out infinite}
+/* timeline */
+.vj-tl{position:relative;display:grid;gap:5px;background:#07080D;border:1px solid #2D374D;border-radius:10px;padding:8px 10px}
+.vj-lane{display:grid;grid-template-columns:22px 1fr;align-items:center;gap:6px}
+.vj-lane span{font:600 9px/1 "JetBrains Mono",monospace;color:#6f7896}
+.vj-lane div{position:relative;height:14px;border-radius:4px;background:#121622}
+.vj-lane i{position:absolute;top:2px;bottom:2px;border-radius:3px;background:color-mix(in srgb,var(--c) 70%,#0E111A);border:1px solid var(--c)}
+.vj-lane.au i{background:repeating-linear-gradient(90deg,rgba(168,85,247,.55) 0 2px,transparent 2px 4px);border-color:rgba(168,85,247,.5)}
+.vj-ph{position:absolute;top:4px;bottom:4px;left:calc(10px + 28px);width:2px;background:#fff;box-shadow:0 0 8px #fff;animation:vjPlay 14s linear infinite}
+.vj-ph::before{content:"";position:absolute;top:-3px;left:-4px;border:5px solid transparent;border-top-color:#fff}
+@keyframes vjBlink{50%{opacity:.2}}
+@keyframes vjFlick{50%{opacity:.85}}
+@keyframes vjEq{0%{height:18%}100%{height:92%}}
+@keyframes vjRing{0%{opacity:.9;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(4.2)}}
+@keyframes vjBeat{0%,60%,100%{transform:scale(1)}20%{transform:scale(1.22)}40%{transform:scale(1.08)}}
+@keyframes vjPlay{from{left:38px}to{left:calc(100% - 12px)}}
+@media (max-width:620px){.vj{padding:10px;gap:10px}.vj-mons{gap:6px}.vj-mon b{font-size:11px}.vj-ch{font-size:7px;left:4px;top:4px}.vj-tc{font-size:11px;padding:6px 7px}.vj-rec{padding:5px 8px;font-size:10px}.vj-brand em{display:none}.vj-mon[aria-pressed="true"] .vj-scr::before{display:none}}
+@media (max-width:380px){.vj-tc{display:none}}
+@media (prefers-reduced-motion:reduce){.vj *,.vj *::before,.vj *::after{animation:none!important}}
 </style>
 
 </head>
@@ -527,12 +667,10 @@ footer a{color:var(--violet)}
 <canvas id="xmasSnow" aria-hidden="true"></canvas><svg id="xmasLights" aria-hidden="true" preserveAspectRatio="none"></svg>
 <nav class="tabbar" id="tabbar" aria-label="Sections">
   <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></button>
-  <button type="button" data-tab="show"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">My Show</b><b class="ts">My Show</b></span></button>
-  <button type="button" data-tab="bias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">Bias &amp; Subunit Spin</b><b class="ts">Bias</b></span></button>
-  <button type="button" data-tab="list"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">All Surprise Songs</b><b class="ts">Checklist</b></span></button>
-  <button type="button" data-tab="burrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10C7.5 7 7 3.5 8.5 3s3 3.5 3 7M15 10c1.5-3 2-6.5.5-7s-3 3.5-3 7"/><ellipse cx="12" cy="15" rx="6" ry="5.5"/><circle cx="10" cy="14.5" r=".6"/><circle cx="14" cy="14.5" r=".6"/></svg><span><b class="tl">Kooky Burrow</b><b class="ts">Burrow</b></span></button>
-  <button type="button" data-tab="freebies"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3 9h18M12 9v11M12 9c-1.5-3.5-5-4.5-5.5-2.5S9 9 12 9zM12 9c1.5-3.5 5-4.5 5.5-2.5S15 9 12 9z"/></svg><span><b class="tl">Freebies</b><b class="ts">Freebies</b></span></button>
-  <button type="button" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg><span><b class="tl">Look Up</b><b class="ts">Look Up</b></span></button>
+  <button type="button" data-tab="tour"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">Tour &amp; My Show</b><b class="ts">Tour</b></span></button>
+  <button type="button" data-tab="music"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">Music &amp; Checklist</b><b class="ts">Music</b></span></button>
+  <button type="button" data-tab="army"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></button>
+  <button type="button" data-tab="tv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 3l4 4 4-4"/></svg><span><b class="tl">DJ Spin TV</b><b class="ts">DJ Spin TV</b></span></button>
 </nav>
 <main>
   <header class="hero">
@@ -547,6 +685,51 @@ footer a{color:var(--violet)}
     <section class="station intro" id="intro">
   <div class="next" id="nextShow" hidden></div>
   <p class="lede">The vault opens after “Dynamite.” Find out what BTS pulled out for your night, spin the whole tour, or let your bias decide. Borahae 💜</p>
+    </section>
+
+    <section class="station deck-nav" id="deck" aria-labelledby="deckH">
+      <h2 id="deckH"><small>The controller · every part of the site</small>Pick a deck</h2>
+      <div class="dk">
+        <div class="spk spk-l" aria-hidden="true"><i class="tw"></i><i class="wf"><b></b></i><i class="wf"><b></b></i></div>
+        <div class="dk-body">
+          <div class="dk-deck dk-a">
+            <div class="dk-top"><span class="dk-bar"><i></i></span><span class="dk-tag">DECK A // TOUR</span></div>
+            <button type="button" class="dk-plat" data-go="tour:city" aria-label="Tour: find your show"><span class="dk-vinyl"><span class="dk-lbl"></span><span class="dk-hole"></span></span></button>
+            <div class="dk-cap">TAP THE RECORD · MY SHOW</div>
+            <div class="dk-pads">
+              <a class="dk-pad" href="moments.html"><small>HOT 1</small>Moments</a>
+              <button type="button" class="dk-pad" data-go="tour:watch"><small>HOT 2</small>Watch</button>
+              <button type="button" class="dk-pad" data-go="show:next"><small>LOOP</small>Next show</button>
+              <button type="button" class="dk-pad" data-go="music:vault"><small>ROLL</small>Song vault</button>
+            </div>
+          </div>
+          <div class="dk-mix">
+            <div class="dk-screen" aria-live="polite"><svg viewBox="0 0 200 30" aria-hidden="true"><path d="M0 15 Q 12.5 2 25 15 T 50 15 T 75 15 T 100 15 T 125 15 T 150 15 T 175 15 T 200 15" fill="none" stroke="#FF2A4B" stroke-width="2"/><path d="M0 15 Q 12.5 28 25 15 T 50 15 T 75 15 T 100 15 T 125 15 T 150 15 T 175 15 T 200 15" fill="none" stroke="#A855F7" stroke-width="2"/><line x1="100" y1="0" x2="100" y2="30" stroke="#f4efff" stroke-dasharray="2 2"/></svg><span class="dk-now" id="dkNow">Tap any pad, knob or record</span></div>
+            <div class="dk-knobs">
+              <button type="button" class="dk-knob" data-go="music:disco"><i class="r"></i>Checklist</button>
+              <button type="button" class="dk-knob" data-go="music:credits"><i class="r"></i>Credits</button>
+              <button type="button" class="dk-knob" data-go="music:units"><i class="r"></i>Subunits</button>
+              <button type="button" class="dk-knob" data-go="action:spin"><i class="p"></i>Spin a song</button>
+              <button type="button" class="dk-knob" data-go="music:fix"><i class="p"></i>Fix a song</button>
+              <button type="button" class="dk-knob" data-go="tv:burrow"><i class="p"></i>DJ Spin TV</button>
+            </div>
+            <div class="dk-brand"><b><span>DJ SPIN </span><span>THAT</span></b><small>DJSPINTHAT.NET</small></div>
+            <div class="dk-x" aria-hidden="true"><span>A · TOUR</span><i><b></b></i><span>ARMY · B</span></div>
+          </div>
+          <div class="dk-deck dk-b">
+            <div class="dk-top"><span class="dk-bar"><i></i></span><span class="dk-tag">DECK B // ARMY</span></div>
+            <button type="button" class="dk-plat" data-go="spin:bias" aria-label="Pick your bias"><span class="dk-vinyl"><span class="dk-lbl"></span><span class="dk-hole"></span></span></button>
+            <div class="dk-cap">TAP THE RECORD · PICK YOUR BIAS</div>
+            <div class="dk-pads">
+              <a class="dk-pad" href="remix.html"><small>HOT 1</small>Remix</a>
+              <button type="button" class="dk-pad" data-go="army:gifs"><small>HOT 2</small>GIFs</button>
+              <a class="dk-pad" href="moments.html#send"><small>LOOP</small>Fancams</a>
+              <button type="button" class="dk-pad" data-go="army:freebies"><small>SLICER</small>Freebies</button>
+            </div>
+          </div>
+        </div>
+        <div class="spk spk-r" aria-hidden="true"><i class="tw"></i><i class="wf"><b></b></i><i class="wf"><b></b></i></div>
+      </div>
     </section>
 
     <section class="station spin" id="spin">
@@ -636,7 +819,7 @@ footer a{color:var(--violet)}
     </section>
 
     <section class="station disco" id="disco">
-      <h2><small>The checklist</small>BTS discography: played and still in the vault</h2>
+      <h2><small>Station 6 · The checklist</small>BTS discography: played and still in the vault</h2>
       <p class="help">Every BTS song from 2013 to 2023, including Japanese originals and solo tracks on group albums, checked against the BTS Wiki. The ARIRANG album isn't included, since surprise songs are throwbacks. Hover over a song, or tap it on a phone, to see where it was played.</p>
       <div class="disco-top">
         <div class="disco-count"><b id="discoPlayed">0</b> of <span id="discoTotal">0</span> played <span class="bar" aria-hidden="true"><i id="discoBar"></i></span></div>
@@ -651,7 +834,7 @@ footer a{color:var(--violet)}
     </section>
 
     <section class="station" id="city">
-      <h2><small>Station 2 · I was there</small>Find your show</h2>
+      <h2><small>Station 3 · I was there</small>Find your show</h2>
       <p class="help">Pick the city and night you went to, including upcoming Asia and Australia dates, to play that night's surprise songs or share them.</p>
     <div class="find" id="find">
       <label for="findSel">City and night</label>
@@ -665,7 +848,7 @@ footer a{color:var(--violet)}
     </section>
 
     <section class="station" id="bias">
-      <h2><small>Station 3 · Bias wrecker</small>Pick your bias</h2>
+      <h2><small>Station 2 · Bias wrecker</small>Pick your bias</h2>
       <p class="help">You get either an OT7 song they've performed on this tour or one of their solo tracks. It's a coin flip.</p>
       <div class="chips" id="chips" role="group" aria-label="Choose your bias"></div>
       <div class="row"><button class="btn ghost" id="biasBtn" type="button">Surprise me again</button></div>
@@ -673,15 +856,16 @@ footer a{color:var(--violet)}
     </section>
 
     <section class="station credits" id="credits">
-      <h2><small>Station 4 · Liner notes</small>Who wrote and produced it</h2>
+      <details id="crDetails"><summary class="fix-sum"><span><small>Station 7 · Liner notes</small>Who wrote and produced it</span><b>Open ▾</b></summary>
       <p class="help">The songwriters and producers behind every solo and subunit song on BTS albums. Member names are highlighted, so you can see who wrote their own song. Solo songs also link to their official short film or comeback trailer and to behind-the-scenes videos.</p>
       <div class="cr-filter" id="crFilter" role="group" aria-label="Show credits for"></div>
       <p class="cr-stat" id="crStat"></p>
       <div class="unit-grid" id="crList"></div>
       <p class="v-note">Main credits come from album liner notes as listed by Tidal, Deezer and fan wikis. Some songs have more writers than shown here, so tap Full credits to see every name.</p>
+      </details>
     </section>
     <section class="station units" id="units">
-      <h2><small>Station 5 · Subunits</small>Subunit songs played on the tour</h2>
+      <h2><small>Station 8 · Subunits</small>Subunit songs played on the tour</h2>
       <p class="help">Rap line is RM, SUGA and j-hope. Vocal line is Jin, Jimin, V and Jung Kook. Here's every subunit song BTS has pulled out so far, and the ones still waiting.</p>
       <div class="unit-grid" id="unitPlayed"></div>
       <div class="unit-left"><div class="eyebrow" style="color:var(--muted)">Not played yet</div><div class="unit-chips" id="unitLeft"></div></div>
@@ -690,7 +874,7 @@ footer a{color:var(--violet)}
 
 
   <section class="station vault" id="vault">
-    <h2><small>The song vault</small>Look up a surprise song</h2>
+    <h2><small>Station 9 · The song vault</small>Look up a surprise song</h2>
     <p class="help">Pick any song from the tour to see where it was played, why that city might have gotten it, and where to read the lyrics in Korean, English and Japanese.</p>
     <div class="row">
       <div class="field"><label for="vaultSel">Surprise song</label><select id="vaultSel"></select></div>
@@ -699,38 +883,25 @@ footer a{color:var(--violet)}
     <div id="vaultResult" aria-live="polite"></div>
   </section>
 
-  <section class="station gifs" id="gifs">
-    <h2><small>GIF corner</small>GIFs to share</h2>
-    <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
-    <div class="row"><a class="btn ghost giphy-follow" href="https://giphy.com/channel/djspinthat" target="_blank" rel="noopener"><span class="gdot" aria-hidden="true"></span>Follow @djspinthat on GIPHY ↗</a></div>
-    <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
-      <button type="button" data-g="bts" aria-pressed="true">BTS GIFs</button>
-      <button type="button" data-g="fav" aria-pressed="false">Favorites</button>
-      <button type="button" data-g="nights" aria-pressed="false">Every night</button>
-      <button type="button" data-g="army" aria-pressed="false">From ARMY</button>
+  <section class="station golinks" id="armyLinks" aria-labelledby="armyLinksH">
+    <h2 id="armyLinksH"><small>Station 11 · Your turn on the decks</small>Be the DJ</h2>
+    <div class="gl">
+      <a class="glc" href="remix.html"><small>Remix the setlist</small><b>Drop one track into the set</b><span>The whole ARIRANG show stays. You add one BTS song, wherever you want it.</span></a>
+      <a class="glc" href="moments.html#send"><small>Fancams</small><b>Add your clip to the board</b><span>Send a link to your fancam of a moment and light it up.</span></a>
     </div>
-    <div class="gif-filters" id="gifFilters"></div>
-    <div class="field" id="gifCityWrap" hidden><label for="gifCity">City</label><select id="gifCity"></select></div>
-    <div class="gif-grid" id="gifGrid" aria-live="polite"></div>
-    <div class="gif-actions">
-      <div class="gif-act">
-        <h3>Share your GIF</h3>
-        <p class="v-note">Made a GIF from your own fancam or edit? Send it in. Once it's approved, it goes in "From ARMY" with your handle.</p>
-        <div class="row"><a class="btn" id="gifSubmit" href="#" target="_blank" rel="noopener">Share your GIF ↗</a></div>
-        <p class="v-note">Opens a GitHub form where you can drag your GIF in (a free account is needed). No account? DM it to <b>@djspinthat</b> on TikTok.</p>
-      </div>
-      <div class="gif-act">
-        <h3>Request a GIF</h3>
-        <div class="field"><label for="gifReq">What GIF would you love?</label><input id="gifReq" type="text" autocomplete="off" placeholder="e.g. Tokyo Night 1 Crystal Snow, Jimin's spin in Busan"></div>
-        <div class="row"><a class="btn ghost" id="gifReqSend" href="#" target="_blank" rel="noopener" aria-disabled="true">Send request ↗</a><button class="btn ghost" type="button" id="gifReqCopy">Copy as text</button><span class="fix-msg" id="gifReqMsg" aria-live="polite"></span></div>
-      </div>
-    </div>
-    <p class="v-note">Only share GIFs you made yourself. Fan-made only, and no sasaeng content, ever.</p>
   </section>
 
   <div class="burrow-wrap">
+  <section class="station golinks" id="tourLinks" aria-labelledby="tourLinksH">
+    <h2 id="tourLinksH"><small>Station 4 · The moments board</small>Every show, every moment</h2>
+    <div class="gl">
+      <a class="glc" href="moments.html"><small>Moments board</small><b>Hooligan outfits to fireworks</b><span>The moments ARMY watches for at every show, city by city, with fancams.</span></a>
+      <a class="glc" href="moments.html#send"><small>Send a fancam</small><b>Light up a moment</b><span>Filmed a moment? Send the link to your post and get credited.</span></a>
+    </div>
+  </section>
+
   <section class="station watch" id="watch">
-    <h2><small>Watch it again</small>ARIRANG tour footage</h2>
+    <h2><small>Station 5 · Watch it again</small>ARIRANG tour footage</h2>
     <p class="help">Search YouTube for fancams, full concerts and surprise-song moments. Pick a show, choose what you want to watch, and add anything else you're looking for.</p>
     <div class="watch-feat">
       <div class="eyebrow" style="color:var(--muted)">Watch with a fellow ARMY</div>
@@ -763,33 +934,52 @@ footer a{color:var(--violet)}
     </details>
   </section>
   <section class="station burrow" id="burrow">
-    <h2><small>The Kooky Burrow · aka the rabbit hole</small>Fall down the BTS rabbit hole</h2>
-    <p class="help">Dance practices, behind the scenes, BTS's own shows and the best reaction videos, all in one place. Concert footage from this tour is in Watch it again.</p>
-    <div class="bgroup"><div class="bhead"><h3>Dance &amp; choreo</h3><span>Learn it, or just watch them nail it</span></div>
+    <h2><small>Station 14 · DJ Spin TV</small>Dance, shows and behind the scenes</h2>
+    <p class="help">Learn the dances, then keep watching: official channels, BTS's own shows, behind the scenes and reaction videos. Concert footage from this tour is in Watch it again.</p>
+    <div class="vj" id="vj">
+      <div class="vj-top">
+        <span class="vj-rec"><i></i>ON AIR</span>
+        <b class="vj-brand"><span>DJ SPIN </span><span>THAT</span><em>TV</em></b>
+        <span class="vj-tc" id="vjTc" aria-hidden="true">00:00:00:00</span>
+      </div>
+      <div class="vj-mons" role="group" aria-label="Pick a channel">
+        <button type="button" class="vj-mon" data-vj="tvDance" style="--c:#FF2A4B"><span class="vj-scr"><span class="vj-art a1"><i></i><i></i><i></i><i></i><i></i></span><span class="vj-ch">CH 1</span></span><b>Dance</b></button>
+        <button type="button" class="vj-mon" data-vj="tvOfficial" style="--c:#ff5fa2"><span class="vj-scr"><span class="vj-art a2"><i></i><i></i><i></i></span><span class="vj-ch">CH 2</span></span><b>Official</b></button>
+        <button type="button" class="vj-mon" data-vj="tvShows" style="--c:#d36bff"><span class="vj-scr"><span class="vj-art a3"></span><span class="vj-ch">CH 3</span></span><b>Shows</b></button>
+        <button type="button" class="vj-mon" data-vj="tvBehind" style="--c:#A855F7"><span class="vj-scr"><span class="vj-art a4"><i></i></span><span class="vj-ch">CH 4</span></span><b>Behind</b></button>
+        <button type="button" class="vj-mon" data-vj="tvReact" style="--c:#8b7bff"><span class="vj-scr"><span class="vj-art a5"></span><span class="vj-ch">CH 5</span></span><b>Reactions</b></button>
+      </div>
+      <div class="vj-tl" aria-hidden="true">
+        <div class="vj-lane"><span>V1</span><div><i style="left:2%;width:17%;--c:#FF2A4B"></i><i style="left:21%;width:16%;--c:#ff5fa2"></i><i style="left:39%;width:20%;--c:#d36bff"></i><i style="left:61%;width:17%;--c:#A855F7"></i><i style="left:80%;width:18%;--c:#8b7bff"></i></div></div>
+        <div class="vj-lane au"><span>A1</span><div><i style="left:2%;width:96%"></i></div></div>
+        <b class="vj-ph"></b>
+      </div>
+    </div>
+    <div class="bgroup" id="tvDance"><div class="bhead"><h3>Dance &amp; choreo</h3><span>Learn it, or just watch them nail it</span></div>
       <div class="field"><label for="dnSong">Song (optional)</label><input id="dnSong" type="search" autocomplete="off" placeholder="e.g. Butter, ON, Black Swan"></div>
       <div class="dn-btns">
         <a class="btn" data-dn="dance practice" href="https://www.youtube.com/results?search_query=BTS+dance+practice" target="_blank" rel="noopener">Dance practice ↗</a>
         <a class="btn ghost" data-dn="choreography" href="https://www.youtube.com/results?search_query=BTS+choreography" target="_blank" rel="noopener">Choreography video ↗</a>
         <a class="btn ghost" data-dn="dance tutorial mirrored" href="https://www.youtube.com/results?search_query=BTS+dance+tutorial+mirrored" target="_blank" rel="noopener">Learn it (mirrored tutorial) ↗</a>
       </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Official channels</h3><span>Straight from BTS: their official accounts</span></div><div class="bcards">
+      <div class="bgroup" id="tvOfficial"><div class="bhead"><h3>Official channels</h3><span>Straight from BTS: their official accounts</span></div><div class="bcards">
         <a class="acard" href="https://www.youtube.com/@BTS" target="_blank" rel="noopener" data-acct="burrow/bangtantv"><span class="aname">BANGTANTV</span><span class="ahandle">youtube.com/@BTS</span><span class="adesc">BTS's own channel: Bangtan Bombs, Episodes, dance practices, Suchwita and Run Jin.</span><span class="ago">Open on YouTube ↗</span></a>
         <a class="acard" href="https://www.youtube.com/@HYBELABELS" target="_blank" rel="noopener" data-acct="burrow/hybe-labels"><span class="aname">HYBE LABELS</span><span class="ahandle">youtube.com/@HYBELABELS</span><span class="adesc">The official music videos, teasers and MV making-ofs.</span><span class="ago">Open on YouTube ↗</span></a>
         <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse"><span class="aname">Weverse</span><span class="ahandle">weverse.io/bts</span><span class="adesc">BTS's official fan community: member posts, lives and Weverse-only shows.</span><span class="ago">Open Weverse ↗</span></a>
       </div></div>
-      <div class="bgroup"><div class="bhead"><h3>BTS shows</h3><span>Variety, travel and talk shows</span></div><div class="bcards">
+      <div class="bgroup" id="tvShows"><div class="bhead"><h3>BTS shows</h3><span>Variety, travel and talk shows</span></div><div class="bcards">
         <a class="acard" href="https://www.youtube.com/results?search_query=Run+BTS+episode" target="_blank" rel="noopener" data-acct="burrow/run-bts"><span class="aname">Run BTS!</span><span class="ahandle">Weverse · YouTube</span><span class="adesc">BTS's own variety show, from 2015 to today. Newer episodes are on Weverse.</span><span class="ago">Find episodes ↗</span></a>
         <a class="acard" href="https://www.youtube.com/results?search_query=Run+Jin+episode+BANGTANTV" target="_blank" rel="noopener" data-acct="burrow/run-jin"><span class="aname">Run Jin</span><span class="ahandle">BANGTANTV</span><span class="adesc">Jin's solo variety show, picking up where Run BTS! left off.</span><span class="ago">Find episodes ↗</span></a>
         <a class="acard" href="https://www.youtube.com/results?search_query=Suchwita+SUGA+episode" target="_blank" rel="noopener" data-acct="burrow/suchwita"><span class="aname">Suchwita</span><span class="ahandle">BANGTANTV</span><span class="adesc">SUGA's talk-and-drinks show with guests from BTS and beyond.</span><span class="ago">Find episodes ↗</span></a>
         <a class="acard" href="https://weverse.io/bts" target="_blank" rel="noopener" data-acct="burrow/weverse-shows"><span class="aname">Bon Voyage · In the SOOP · BTS Memories</span><span class="ahandle">Weverse</span><span class="adesc">Travel trips, cabin downtime and year-by-year behind the scenes. Some need a Weverse purchase or membership.</span><span class="ago">Open Weverse ↗</span></a>
       </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Behind the scenes</h3><span>The making-of rabbit hole</span></div><div class="bcards">
+      <div class="bgroup" id="tvBehind"><div class="bhead"><h3>Behind the scenes</h3><span>The making-of rabbit hole</span></div><div class="bcards">
         <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+Bangtan+Bomb" target="_blank" rel="noopener" data-acct="burrow/bangtan-bomb"><span class="aname">Bangtan Bombs</span><span class="ahandle">BANGTANTV</span><span class="adesc">Short, silly backstage clips. Start with any year and keep clicking.</span><span class="ago">Search ↗</span></a>
         <a class="acard" href="https://www.youtube.com/results?search_query=BANGTANTV+BTS+Episode" target="_blank" rel="noopener" data-acct="burrow/episode"><span class="aname">BTS Episodes</span><span class="ahandle">BANGTANTV</span><span class="adesc">Longer behind-the-scenes from MV shoots, comebacks and tours.</span><span class="ago">Search ↗</span></a>
         <a class="acard" href="https://www.youtube.com/results?search_query=BTS+MV+making+film" target="_blank" rel="noopener" data-acct="burrow/mv-making"><span class="aname">MV making films</span><span class="ahandle">HYBE LABELS</span><span class="adesc">How each music video was made, from set to final cut.</span><span class="ago">Search ↗</span></a>
-        <a class="acard" href="#bias" target="_blank" rel="noopener" data-acct="burrow/solo-behind"><span class="aname">Solo behind the scenes</span><span class="ahandle">Bias & Subunit Spin, Station 4</span><span class="adesc">Short films, comeback trailers and solo behind-the-scenes, linked from each song.</span><span class="ago">Go to Station 4 →</span></a>
+        <a class="acard" href="#bias" target="_blank" rel="noopener" data-acct="burrow/solo-behind"><span class="aname">Solo behind the scenes</span><span class="ahandle">DJ Spin · Pick your bias</span><span class="adesc">Short films, comeback trailers and solo behind-the-scenes, linked from each song.</span><span class="ago">Pick your bias →</span></a>
       </div></div>
-      <div class="bgroup"><div class="bhead"><h3>Reaction videos</h3><span>ARMY-approved reactors. Fan channels, not affiliated with BTS.</span></div><div class="bcards">
+      <div class="bgroup" id="tvReact"><div class="bhead"><h3>Reaction videos</h3><span>ARMY-approved reactors. Fan channels, not affiliated with BTS.</span></div><div class="bcards">
         <a class="acard" href="https://www.youtube.com/@TripleTakeReact" target="_blank" rel="noopener" data-acct="burrow/triple-take"><span class="aname">Triple Take</span><span class="ahandle">@TripleTakeReact</span><span class="adesc">Friends reacting to BTS music videos, stages and variety clips.</span><span class="ago">Open the channel ↗</span></a>
         <a class="acard" href="https://www.youtube.com/@ralazreact" target="_blank" rel="noopener" data-acct="burrow/ralaz-reacts"><span class="aname">Ralaz Reacts</span><span class="ahandle">@ralazreact</span><span class="adesc">Thoughtful first reactions to BTS songs, lyrics and performances.</span><span class="ago">Open the channel ↗</span></a>
         <a class="acard" href="https://www.youtube.com/@WhatchaGot2Say" target="_blank" rel="noopener" data-acct="burrow/whatchagot2say"><span class="aname">WhatchaGot2Say</span><span class="ahandle">@WhatchaGot2Say</span><span class="adesc">Fun reactions to BTS performances and music.</span><span class="ago">Open the channel ↗</span></a>
@@ -798,7 +988,7 @@ footer a{color:var(--violet)}
   </div>
 
   <section class="station freebies" id="freebies">
-    <h2><small>Freebies · for ARMY, by ARMY</small>Photocards, freebies and trading</h2>
+    <h2><small>Station 12 · Freebies, for ARMY by ARMY</small>Photocards, freebies and trading</h2>
     <p class="help">Make a photocard for your night, learn to design and print your own, and find freebie ideas and trading groups. Everything here is free and fan-made.</p>
 
     <div class="bgroup" id="pcMaker"><div class="bhead"><h3>Digital photocards</h3><span>Your night, as a DJ Spin That photocard</span></div>
@@ -828,7 +1018,7 @@ footer a{color:var(--violet)}
     </div>
 
     <div class="bgroup"><div class="bhead"><h3>From ARMY creators</h3><span>Freebies and photocard designs other ARMY made</span></div>
-      <div class="pc-empty">Coming soon. We'll feature ARMY freebie makers here, with links to their own posts. Know a creator who should be here? <a href="#more" data-goto="more">Tell us in Look Up ↓</a></div>
+      <div class="pc-empty">Coming soon. We'll feature ARMY freebie makers here, with links to their own posts. Know a creator who should be here? <a href="#fix" data-goto="music">Tell us in Music ↓</a></div>
     </div>
 
     <div class="bgroup"><div class="bhead"><h3>Make your own with Canva</h3><span>Design, print and cut photocards at home</span></div>
@@ -861,7 +1051,7 @@ footer a{color:var(--violet)}
 
     <div class="bgroup kofi-card"><div class="bhead"><h3>Keep the freebies free</h3><span>Totally optional 💜</span></div>
       <p class="help">The photocards, GIFs, loops and setlists here are free for every ARMY, with no ads. If DJ Spin That made your tour a little more fun, you can help cover hosting and design costs with a Ko-fi tip.</p>
-      <div class="dn-btns"><a class="btn kofi-btn" data-kofi="freebies" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener">☕ Buy us a coffee on Ko-fi ↗</a></div>
+      <div class="dn-btns"><a class="btn kofi-btn" data-kofi="freebies" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener">☕ Support DJSpinThat ↗</a></div>
       <p class="v-note">Tips go to running this fan site. They don't go to BTS, HYBE or BIGHIT MUSIC.</p>
     </div>
 
@@ -873,8 +1063,37 @@ footer a{color:var(--violet)}
     </div></div>
   </section>
 
+  <section class="station gifs" id="gifs">
+    <h2><small>Station 13 · GIF corner</small>GIFs to share</h2>
+    <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
+    <div class="row"><a class="btn ghost giphy-follow" href="https://giphy.com/channel/djspinthat" target="_blank" rel="noopener"><span class="gdot" aria-hidden="true"></span>Follow @djspinthat on GIPHY ↗</a></div>
+    <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
+      <button type="button" data-g="bts" aria-pressed="true">BTS GIFs</button>
+      <button type="button" data-g="fav" aria-pressed="false">Favorites</button>
+      <button type="button" data-g="nights" aria-pressed="false">Every night</button>
+      <button type="button" data-g="army" aria-pressed="false">From ARMY</button>
+    </div>
+    <div class="gif-filters" id="gifFilters"></div>
+    <div class="field" id="gifCityWrap" hidden><label for="gifCity">City</label><select id="gifCity"></select></div>
+    <div class="gif-grid" id="gifGrid" aria-live="polite"></div>
+    <div class="gif-actions">
+      <div class="gif-act">
+        <h3>Share your GIF</h3>
+        <p class="v-note">Made a GIF from your own fancam or edit? Send it in. Once it's approved, it goes in "From ARMY" with your handle.</p>
+        <div class="row"><a class="btn" id="gifSubmit" href="#" target="_blank" rel="noopener">Share your GIF ↗</a></div>
+        <p class="v-note">Opens a GitHub form where you can drag your GIF in (a free account is needed). No account? DM it to <b>@djspinthat</b> on TikTok.</p>
+      </div>
+      <div class="gif-act">
+        <h3>Request a GIF</h3>
+        <div class="field"><label for="gifReq">What GIF would you love?</label><input id="gifReq" type="text" autocomplete="off" placeholder="e.g. Tokyo Night 1 Crystal Snow, Jimin's spin in Busan"></div>
+        <div class="row"><a class="btn ghost" id="gifReqSend" href="#" target="_blank" rel="noopener" aria-disabled="true">Send request ↗</a><button class="btn ghost" type="button" id="gifReqCopy">Copy as text</button><span class="fix-msg" id="gifReqMsg" aria-live="polite"></span></div>
+      </div>
+    </div>
+    <p class="v-note">Only share GIFs you made yourself. Fan-made only, and no sasaeng content, ever.</p>
+  </section>
+
   <section class="station fix" id="fix">
-    <details id="fixDetails"><summary class="fix-sum"><span><small>Spot a mistake? Got a theory?</small>Report a correction or share a theory</span><b>Open ▾</b></summary>
+    <details id="fixDetails"><summary class="fix-sum"><span><small>Station 10 · Spot a mistake? Got a theory?</small>Report a correction or share a theory</span><b>Open ▾</b></summary>
     <p class="help">Tell us what was really played, or why you think BTS picked a song for a city. You can send just a theory and leave the songs blank. Everything is checked before it goes on the site.</p>
     <form id="fixForm" novalidate>
       <div class="row">
@@ -901,7 +1120,7 @@ footer a{color:var(--violet)}
   </section>
 
   <footer>
-    <div class="kofi-row"><a class="kofi" data-kofi="footer" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJ Spin That on Ko-fi</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
+    <div class="kofi-row"><a class="kofi" data-kofi="footer" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJSpinThat</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
     <div>Setlists come from fan trackers and press reports and update after every show. Play buttons search Spotify or Apple Music, or SoundCloud and YouTube for songs that aren't there, like DDAENG. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
     <div>Sources: <a href="https://www.billboard.com/lists/bts-surprise-songs-arirang-tour-every-track/" target="_blank" rel="noopener">Billboard</a> · <a href="https://www.forbes.com/sites/laurasirikul/2026/06/24/all-of-the-dj-spin-that-surprise-songs-from-btss-arirang-world-tour/" target="_blank" rel="noopener">Forbes</a> · <a href="https://thehoneypop.com/2026/04/13/bts-surprise-songs-arirang-world-tour/" target="_blank" rel="noopener">The Honey Pop</a> · <a href="https://btsboy.com/bts-arirang-tour-surprise-songs" target="_blank" rel="noopener">BTS surprise song tracker</a> · <a href="https://www.setlist.fm/search?query=BTS" target="_blank" rel="noopener">setlist.fm</a></div>
   </footer>
@@ -1664,20 +1883,25 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["spin","intro"],show:["city"],bias:["bias","credits","units"],list:["disco"],burrow:["burrow","watch"],freebies:["freebies"],more:["vault","gifs","fix"]};
+const TAB_SECTIONS={spin:["intro","deck","spin","bias"],tour:["city","tourLinks","watch"],music:["disco","credits","units","vault","fix"],army:["armyLinks","freebies","gifs"],tv:["burrow"]};
+// old tab links keep working: #show, #bias, #list, #burrow, #freebies go to their new home
+const TAB_ALIAS={show:["tour"],list:["music"],bias:["spin","bias"],burrow:["tv","burrow"],more:["music","vault"],fix:["music","fix"],freebies:["army","freebies"],gifs:["army","gifs"],watch:["tour","watch"],vault:["music","vault"],credits:["music","credits"],units:["music","units"],moments:["tour","tourLinks"],remix:["army","armyLinks"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
 let currentTab="spin",pendingShow=null,deepOpened=null;
-function setTab(t,opts){if(!TAB_SECTIONS[t])t="spin";currentTab=t;document.documentElement.dataset.tab=t;
+function setTab(t,opts){let jump=null;if(!TAB_SECTIONS[t]&&TAB_ALIAS[t]){jump=TAB_ALIAS[t][1]||null;t=TAB_ALIAS[t][0]}if(!TAB_SECTIONS[t])t="spin";currentTab=t;document.documentElement.dataset.tab=t;
   Object.entries(TAB_SECTIONS).forEach(([k,ids])=>ids.forEach(id=>{const el=document.getElementById(id);if(el)el.hidden=k!==t}));
   document.querySelector("header.hero").classList.toggle("slim",t!=="spin");
   document.querySelectorAll("#tabbar button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===t?"page":"false"));
   if(!(opts&&opts.keepHash))try{history.replaceState(null,"",location.pathname+location.search+"#"+t)}catch(e){}
+  if(jump){const el=document.getElementById(jump);unfold(el);if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60);return}
   if(!(opts&&opts.noScroll))window.scrollTo({top:0,behavior:"auto"});
 }
+function unfold(el){const d=el&&el.querySelector(":scope > details");if(d)d.open=true}
+function goSection(t,id){setTab(t);if(id){const el=document.getElementById(id);unfold(el);if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60)}}
 document.querySelectorAll("#tabbar button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-function openShow(sh,opts){if(!sh)return;citySel.value=sh.city;fillNights();nightSel.value=String(ALL.filter(x=>x.city===sh.city).indexOf(sh));renderCity();setTab("show",{keepHash:true});
+function openShow(sh,opts){if(!sh)return;citySel.value=sh.city;fillNights();nightSel.value=String(ALL.filter(x=>x.city===sh.city).indexOf(sh));renderCity();setTab("tour",{keepHash:true});
   try{history.replaceState(null,"",location.pathname+location.search+"#"+showSlug(sh))}catch(e){}}
 function fillFind(){const sel=$("#findSel");const keep=sel.value;
   const cities=[...new Set(ALL.map(s=>s.city))];
@@ -1691,14 +1915,23 @@ function shareShow(sh,btn){const url="https://djspinthat.net/#"+showSlug(sh);con
   const copy=()=>navigator.clipboard.writeText(url).then(()=>{msg.textContent="Link copied. Paste it anywhere."}).catch(()=>{msg.textContent=url});
   if(navigator.share){navigator.share({title:"DJ Spin That",text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()})}else copy();}
 function routeHash(){const h=(location.hash||"").slice(1);if(!h)return false;
-  if(h==="rabbit-hole"||h==="kookie-burrow"||h==="kooky-burrow"){setTab("burrow",{noScroll:true});return true}
+  if(h==="rabbit-hole"||h==="kookie-burrow"||h==="kooky-burrow"||h==="dance"){setTab("burrow");return true}
+  if(TAB_ALIAS[h]){setTab(h,{noScroll:true,keepHash:true});return true}
   if(TAB_SECTIONS[h]){setTab(h,{noScroll:true});return true}
   const sh=findBySlug(h);if(sh){openShow(sh);return true}
   pendingShow=h;return false}
 addEventListener("hashchange",routeHash);
 function updDance(){const t=$("#dnSong").value.trim();document.querySelectorAll("[data-dn]").forEach(a=>{a.href="https://www.youtube.com/results?search_query="+encodeURIComponent(("BTS "+t+" "+a.dataset.dn).replace(/\s+/g," "))})}
 $("#dnSong").addEventListener("input",updDance);
-document.addEventListener("click",e=>{const a=e.target.closest('#burrow a[href="#bias"]');if(a){e.preventDefault();setTab("bias")}});
+document.addEventListener("click",e=>{const a=e.target.closest('#burrow a[href="#bias"]');if(a){e.preventDefault();goSection("spin","bias")}});
+/* the controller: every pad, knob and record jumps to a part of the site */
+const DK_SAY={"tour:city":"Tour · find your show","tour:watch":"Tour · watch it again","show:next":"Tour · the next show","music:vault":"Music · the song vault","tv:burrow":"DJ Spin TV · dance, shows and behind the scenes","music:disco":"Music · the checklist","music:credits":"Music · liner notes","music:units":"Music · subunits","action:spin":"DJ, spin that!","music:fix":"Look up · fix a song","action:share":"Share DJ Spin That","spin:bias":"DJ Spin · pick your bias","army:gifs":"ARMY · GIF corner","army:freebies":"ARMY · freebies"};
+document.addEventListener("click",e=>{const b=e.target.closest("#deck [data-go]");if(!b)return;const g=b.dataset.go;const[k,v]=g.split(":");
+  if(DK_SAY[g])$("#dkNow").textContent="▶ "+DK_SAY[g];track("deck/"+g);
+  if(k==="action"){if(v==="spin"){$("#spin").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#spinBtn").click(),500)}else $("#pageShare").click();return}
+  if(k==="show"){const nx=(typeof UPCOMING!=="undefined"&&UPCOMING[0])||ALL.find(s=>!s.songTitles.length);if(nx)openShow(nx);else goSection("tour","city");window.scrollTo({top:0});return}
+  goSection(k,v)});
+document.addEventListener("mouseover",e=>{const b=e.target.closest("#deck [data-go]");if(b&&DK_SAY[b.dataset.go])$("#dkNow").textContent=DK_SAY[b.dataset.go]});
 setTab("spin",{keepHash:true,noScroll:true});routeHash();
 
 /* ---------- Share this page ---------- */
@@ -1706,13 +1939,16 @@ const TAB_SHARE={spin:["DJ Spin That","Spin a random BTS surprise song from the 
  show:["Find your show","Look up the BTS surprise songs from your ARIRANG show 💜","show"],
  bias:["Bias & Subunit Spin","Let your bias pick your BTS song, and see who wrote every solo and subunit song 💜","bias"],
  list:["The surprise song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault? 💜","list"],
- burrow:["The Kooky Burrow","Fall down the BTS rabbit hole: dance practices, behind the scenes, BTS shows and reactions 💜","kooky-burrow"],
+ burrow:["Dance and choreo","Dance practices, choreo, behind the scenes, BTS shows and reactions 💜","dance"],
  freebies:["Freebies","Make a free photocard for your ARIRANG night, plus freebie ideas and trading tips 💜","freebies"],
- more:["Look Up","Look up any ARIRANG surprise song: lyrics, fan translations and why each city got it 💜","more"]};
+ tour:["Tour & My Show","Look up the BTS surprise songs from your ARIRANG show, and every moment from the tour 💜","tour"],
+ music:["Music & Checklist","Which BTS songs have been played on the ARIRANG tour, who wrote them, every subunit song, and why each city got its songs 💜","music"],
+ army:["ARMY Zone","Be the DJ, make a photocard and grab GIFs 💜","army"],
+ tv:["DJ Spin TV","Dance practices, choreo, BTS shows, behind the scenes and reaction videos 💜","tv"]};
 function toast(msg){let t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
   t.textContent=msg;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2200)}
 $("#pageShare").addEventListener("click",()=>{
-  const h=(location.hash||"").slice(1);const sh=currentTab==="show"&&findBySlug(h);
+  const h=(location.hash||"").slice(1);const sh=currentTab==="tour"&&findBySlug(h);
   if(sh){const url="https://djspinthat.net/#"+showSlug(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
     track("share-page/show/"+showSlug(sh));return doShare("DJ Spin That",text,url)}
   const [title,text,slug]=TAB_SHARE[currentTab]||TAB_SHARE.spin;track("share-page/"+currentTab);
@@ -1838,6 +2074,19 @@ let firstLoad=true;
     gotLive=true;clearTimeout(timer);setLive("live");
     apply(snap.docs);
   },()=>{clearTimeout(timer);fallback()});
+})();
+
+/* DJ Spin TV video booth */
+(()=>{const vj=document.getElementById("vj");if(!vj)return;
+ const tc=document.getElementById("vjTc"),t0=performance.now(),still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const p=n=>String(n).padStart(2,"0");
+ function tick(now){const f=Math.floor((now-t0)/1000*30),s=Math.floor(f/30);tc.textContent=`${p(Math.floor(s/3600))}:${p(Math.floor(s/60)%60)}:${p(s%60)}:${p(f%30)}`;if(!still)requestAnimationFrame(tick)}
+ if(tc){if(still)tc.textContent="00:00:00:00";else requestAnimationFrame(tick)}
+ vj.addEventListener("click",e=>{const b=e.target.closest(".vj-mon");if(!b)return;
+  vj.querySelectorAll(".vj-mon").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  const g=document.getElementById(b.dataset.vj);if(g)g.scrollIntoView({behavior:still?"auto":"smooth",block:"start"});
+  try{track("tv/"+b.dataset.vj)}catch(_){}});
+ vj.querySelectorAll(".vj-mon").forEach(x=>x.setAttribute("aria-pressed","false"));
 })();
 </script>
 

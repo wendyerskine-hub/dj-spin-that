@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="The ARIRANG tour moments board: the moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
+<title>Moments Board · DJ Spin That</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: full-bleed concert backdrop (video or ambient canvas), three stacked "stations" on glass: Spin, My City, My Bias. Deliberately single dark stage look. */
+:root{
+  --night:#110a1d;        /* deep aubergine stage */
+  --ink:#f4efff;          /* lilac-white text */
+  --muted:#b8a9d6;        /* dusty lavender */
+  --violet:#b48cff;       /* borahae violet */
+  --jade:#d9c2ff;         /* pale lilac labels */
+  --gold:#c77dff;         /* bright orchid accent */
+  --glass:rgba(28,14,48,.62);
+  --line:rgba(243,237,226,.14);
+  --f-display:"Gowun Batang","Nanum Myeongjo",Georgia,serif;
+  --f-body:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{min-height:100%}
+body{background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden}
+#stage{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--night)}
+#stage canvas,#stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#stage .photo{position:absolute;inset:-3%;background:url(stage.jpg?v=2) center 30%/cover no-repeat;filter:saturate(.7) brightness(.85);animation:drift 40s ease-in-out infinite alternate}
+#stage .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(120,60,220,.55),rgba(60,20,110,.45));mix-blend-mode:color}
+#stage canvas{opacity:.35}
+#stage .yt{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.5s}
+#stage .yt.on{opacity:1}
+#stage .yt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+
+@keyframes drift{from{transform:scale(1) translate(0,0)}to{transform:scale(1.06) translate(-1%,-1%)}}
+#stage.has-video .photo{opacity:0}
+#stage video{opacity:0;transition:opacity 1.2s}
+#stage.has-video video{opacity:1}
+#stage.has-video canvas{opacity:0}
+#stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,10,29,.25),rgba(17,10,29,.7) 55%,rgba(17,10,29,.9))}
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+
+header.hero{display:grid;gap:10px;padding-block:20px 6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(44px,9vw,104px);line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 .kicker{display:block;font-family:var(--f-mono);font-size:.22em;font-weight:600;color:var(--gold);letter-spacing:.4em;margin-bottom:.5em}
+.lede{max-width:60ch;color:var(--muted);margin:0;font-size:17px}
+.bg-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
+.bg-controls a{color:var(--violet)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+section.station{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
+section.spin,section.disco,section.units{grid-column:1/-1}
+.station h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.1;text-wrap:balance}
+.station h2 small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
+.station p.help{margin:0;color:var(--muted);font-size:14px}
+
+button,select,input{font:inherit}
+.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:12px 22px;font-weight:600;background:var(--gold);color:#1a0b2e;letter-spacing:.02em;transition:transform .15s, box-shadow .2s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(199,125,255,.45)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible,.seg button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+label{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+select{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+select option{background:#22123a;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.row>.field{flex:1 1 180px;display:grid;gap:6px;min-width:0}
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:center;gap:4px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:rgba(17,10,29,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.tabbar a{display:inline-flex;align-items:center;gap:7px;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:999px;cursor:pointer}
+.tabbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current="page"]{background:var(--gold);color:#1a0b2e}
+.tabbar a:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+@media (max-width:760px){
+  .tabbar{position:fixed;top:auto;bottom:0;left:0;right:0;justify-content:space-around;gap:0;padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));border-bottom:0;border-top:1px solid var(--line)}
+  .tabbar a{flex-direction:column;gap:3px;font-size:11px;padding:6px 4px;border-radius:12px;flex:1;min-width:0}
+  .tabbar a[aria-current="page"]{background:rgba(199,125,255,.22);color:var(--ink)}
+  .tabbar a[aria-current="page"] svg{stroke:var(--gold)}
+  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  footer{margin-bottom:8px}
+}
+@media (max-width:760px){.tabbar a span{font-size:10.5px;line-height:1.1;text-align:center;white-space:normal;max-width:72px}}
+/* responsive polish: tablets + touch */
+@media (min-width:761px) and (max-width:1100px){
+  .tabbar{gap:2px;padding-left:12px;padding-right:12px}
+  .tabbar a{flex:1;flex-direction:column;gap:4px;padding:8px 4px;font-size:12.5px;border-radius:14px;min-width:0;line-height:1.15;text-align:center}
+  .tabbar a span{white-space:nowrap}
+}
+@media (min-width:761px) and (max-width:860px){.tabbar a{font-size:11.5px}}
+footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
+footer a.kofi:hover{filter:brightness(1.08)}
+footer{color:var(--muted);font-size:12px;max-width:80ch;display:grid;gap:6px}
+footer a{color:var(--violet)}
+footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
+footer a.kofi:hover{filter:brightness(1.08)}
+.live{display:flex;gap:8px;align-items:center;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:6px}
+#liveDot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+#liveDot[data-state="live"]{background:var(--jade);box-shadow:0 0 0 0 rgba(217,194,255,.6);animation:pulse 2s infinite}
+#liveDot[data-state="off"]{background:var(--gold)}
+.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
+.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
+.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1{padding-right:54px}}
+.tabbar .tl,.tabbar .ts{font-weight:inherit}
+.tabbar .ts{display:none}
+@media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
+.tabbar a,.btn,.chip,.seg button,.cr-filter button{transition:background-color .5s ease,border-color .5s ease,color .3s ease}
+@media (max-width:760px){.tabbar a[aria-current="page"]{background:color-mix(in srgb,var(--gold) 24%,transparent)}}
+  .pc-preview:not(.show-back) #pcBack,.pc-preview.show-back #pcFront{display:none}
+}
+/* bigger phone tab bar */
+@media (max-width:760px){
+  .tabbar{padding:5px max(2px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(2px,env(safe-area-inset-left,0px))}
+  .tabbar a{gap:4px;padding:8px 0 7px;min-height:62px;border-radius:14px}
+  .tabbar svg{width:26px;height:26px;stroke-width:1.8}
+  .tabbar a span{font-size:12.5px;line-height:1.1;letter-spacing:-.01em;white-space:nowrap;max-width:none}
+  main{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:389px){.tabbar a span{font-size:11.5px}.tabbar svg{width:24px;height:24px}}
+/* holiday theme (draft): open the site with ?holiday=1 to preview. Snow + fairy lights from the holiday TikToks. */
+.tabbar a{text-decoration:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,194,255,.6)}70%{box-shadow:0 0 0 10px rgba(217,194,255,0)}100%{box-shadow:0 0 0 0 rgba(217,194,255,0)}}
+
+/* ---------- Moments board (same DJ hardware look as the Spin station) ---------- */
+:root{--red:#FF2A4B;--purple:#A855F7;--first:#ffd166;--hw1:#232938;--hw2:#0E111A}
+.board-wrap{display:grid;gap:14px}
+.console{border-radius:22px;padding:clamp(10px,2vw,18px);background:linear-gradient(180deg,#232938 0%,#141824 3%,#0E111A 97%,#05060A 100%);border:1px solid #273145;box-shadow:0 18px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
+.monitor{border-radius:14px;background:#06070b;border:1px solid #273145;padding:14px 16px;box-shadow:inset 0 0 40px rgba(168,85,247,.10);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px}
+@media (max-width:760px){.monitor{grid-template-columns:1fr}}
+.mon-k{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:#9aa3b8;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.mon-t{font-family:var(--f-display);font-size:clamp(24px,3.4vw,32px);line-height:1.1;margin:4px 0 2px}
+.mon-s{font-size:15px;color:var(--muted)}
+.mon-s b{color:var(--ink);font-weight:600}
+.mon-list{margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.mi{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.03)}
+.mi.solo{background:rgba(168,85,247,.16)}
+.mi .dot{flex:none;width:12px;height:12px;margin-top:4px;border-radius:3px;background:#1b2130;border:1px solid #2b3447}
+.mi .dot.on{border-color:rgba(255,255,255,.35)}
+.mi .nm{font-size:15px;font-weight:600;line-height:1.25}
+.mi .sub{font-size:13px;color:var(--muted)}
+.mi a,.mi button.lnk{font-size:14px}
+button.lnk{white-space:nowrap;background:none;border:0;padding:0;color:var(--violet);text-decoration:underline;cursor:pointer;font:inherit;font-size:14px;text-align:left}
+.solo-pane{border-left:1px dashed #2b3447;padding-left:16px}
+@media (max-width:760px){.solo-pane{border-left:0;border-top:1px dashed #2b3447;padding:12px 0 0}}
+.solo-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid #161b27;font-size:15px}
+.solo-row span{min-width:0}
+.pager{display:flex;flex-wrap:wrap;gap:10px;align-items:end;justify-content:space-between}
+.pager .field{display:grid;gap:6px;flex:1 1 240px;max-width:380px}
+.pager .btns{display:flex;gap:8px}
+.pg{min-width:48px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-weight:600;cursor:pointer;padding:0 14px}
+.pg:disabled{opacity:.35;cursor:default}
+.board{overflow-x:auto;padding:4px 2px 8px}
+.brow{display:grid;gap:6px;align-items:center}
+.brow.solo{background:rgba(168,85,247,.13);box-shadow:inset 0 0 0 1px rgba(168,85,247,.45);border-radius:8px}
+.rlabel{display:flex;align-items:center;gap:8px;min-height:36px;padding:2px 8px;border:0;background:none;color:var(--ink);cursor:pointer;text-align:left;font:inherit;border-radius:8px}
+.rlabel .s{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;font-family:var(--f-mono);font-size:12px;font-weight:600;background:#1b2130;color:#9aa3b8;border:1px solid #2b3447}
+.brow.solo .rlabel .s{background:var(--purple);color:#0b0710;border-color:var(--purple);box-shadow:0 0 10px rgba(168,85,247,.7)}
+.rlabel .t{font-size:14px;line-height:1.15}
+.cell{display:flex;justify-content:center}
+.led{width:28px;height:22px;padding:0;border-radius:5px;cursor:pointer;background:#1b2130;border:1px solid #2b3447}
+.led.on{border-color:rgba(255,255,255,.4)}
+.led.sel{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+.led.up{background:transparent;border:1px dashed #2b3447;cursor:default}
+.tape{border-radius:6px;padding:7px 6px 5px;text-align:center;color:#1a1422;background:#efe9f6;box-shadow:0 1px 0 rgba(0,0,0,.4);min-width:0}
+.tape.now{background:#ffe1ea}
+.tape.up{background:#1b2130;color:#9aa3b8;border:1px dashed #2b3447;box-shadow:none}
+.tape.sel{outline:3px solid var(--red);outline-offset:2px}
+.tape .ch{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;opacity:.7}
+.tape .d{font-family:var(--f-mono);font-weight:600;font-size:14px;line-height:1.1}
+.tape .c{font-size:13px;font-weight:600;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tape .n{font-size:11px;opacity:.75}
+.strip-foot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 2px}
+.vu{display:flex;flex-direction:column-reverse;gap:2px}
+.vu i{display:block;width:12px;height:6px;border-radius:2px;background:#1b2130}
+.cnt{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.sel-btn{min-width:60px;min-height:40px;border-radius:8px;cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;background:#1b2130;color:var(--ink);border:1px solid #2b3447}
+.sel-btn[aria-pressed="true"]{background:var(--red);color:#0b0710;border-color:var(--red);box-shadow:0 0 12px rgba(255,42,75,.6)}
+.sel-btn:disabled{opacity:.5;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:16px;height:14px;border-radius:4px}
+.led:focus-visible,.rlabel:focus-visible,.sel-btn:focus-visible,.pg:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+/* send form */
+.send .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px 16px}
+.send .field{display:grid;gap:6px;min-width:0}
+.send input[type=url],.send input[type=text]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px}
+.send input::placeholder{color:var(--muted);opacity:.7}
+.okline{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--f-body)}
+.okline input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--gold);flex:none}
+a.btn{text-decoration:none;display:inline-block}
+a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.msg{font-size:14px;color:var(--jade)}
+@media (max-width:760px){.rlabel .t{font-size:13px}.led{width:24px;height:20px}
+  .board-wrap>.console:first-child{order:4}.pager{order:1}#board{order:2}.legend{order:3}
+  .mon-list{grid-template-columns:1fr 1fr}.mi{padding:6px 8px;gap:6px}.mi .nm{font-size:14px}.mi .sub{font-size:12px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="stage" aria-hidden="true"><div class="photo"></div></div>
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <a href="./#spin" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></a>
+  <a href="./#tour" data-tab="tour" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">Tour &amp; My Show</b><b class="ts">Tour</b></span></a>
+  <a href="./#music" data-tab="music"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">Music &amp; Checklist</b><b class="ts">Music</b></span></a>
+  <a href="./#army" data-tab="army"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></a>
+  <a href="./#tv" data-tab="tv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 3l4 4 4-4"/></svg><span><b class="tl">DJ Spin TV</b><b class="ts">DJ Spin TV</b></span></a>
+</nav>
+<main>
+  <header class="hero">
+    <div class="eyebrow">BTS World Tour · 2026 · Moments Board</div>
+    <h1><span class="kicker">ARIRANG</span>The Moments Board</h1>
+    <p class="lede">Every show is a channel on the board, in date order. Each light is one moment ARMY watches for. Lit means there's a fancam. Press SEL on a show to see its moments, or S on a moment to follow it city to city.</p>
+    <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading the board…</span></div>
+  </header>
+
+  <section class="station" id="boardStation" aria-labelledby="boardH">
+    <h2 id="boardH"><small>Station · Moments mixer</small>Tap a light to see the moment</h2>
+    <div class="board-wrap">
+      <div class="console">
+        <div class="monitor" role="region" aria-live="polite" aria-label="Moments monitor">
+          <div id="monShow"></div>
+          <div class="solo-pane" id="monSolo"></div>
+        </div>
+      </div>
+      <div class="pager">
+        <div class="field"><label for="jumpSel">Jump to a show</label><select id="jumpSel"></select></div>
+        <div class="btns"><button type="button" class="pg" id="pgPrev" aria-label="Earlier shows">◀ Earlier</button><button type="button" class="pg" id="pgNext" aria-label="Later shows">Later ▶</button></div>
+      </div>
+      <div class="console board" id="board" role="group" aria-label="Moments board: shows across, moments down"></div>
+      <div class="legend">
+        <span><i style="background:var(--red);box-shadow:0 0 8px var(--red)"></i>Fancam logged</span>
+        <span><i style="background:var(--first);box-shadow:0 0 8px var(--first)"></i>First time at this show</span>
+        <span><i style="background:#1b2130;border:1px solid #2b3447"></i>Not spotted yet</span>
+        <span><i style="border:1px dashed #2b3447"></i>Up next</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="station send" id="send" aria-labelledby="sendH">
+    <h2 id="sendH"><small>Station · Send a fancam</small>Light up a moment</h2>
+    <p class="help">Filmed one of these moments? Send the link to your own post. Links only: your video stays on your account. Every clip is checked before it lights up on the board.</p>
+    <form id="sendForm" novalidate>
+      <div class="grid2">
+        <div class="field"><label for="sShow">Show</label><select id="sShow"></select></div>
+        <div class="field"><label for="sMoment">Moment</label><select id="sMoment"></select></div>
+        <div class="field"><label for="sLink">Link to your fancam</label><input id="sLink" type="url" inputmode="url" autocomplete="off" placeholder="TikTok, Instagram, YouTube or X link"></div>
+        <div class="field"><label for="sWho">Credit me as</label><input id="sWho" type="text" autocomplete="off" placeholder="@yourhandle"></div>
+      </div>
+      <label class="okline" style="margin-top:14px"><input type="checkbox" id="sOk"><span>I filmed this (or I have the filmer's OK), and DJ Spin That can link to it with my credit.</span></label>
+      <div class="row" style="margin-top:14px;align-items:center">
+        <a class="btn" id="sSend" href="#" target="_blank" rel="noopener" aria-disabled="true">Send for review ↗</a>
+        <button class="btn ghost" id="sCopy" type="button">Copy as text</button>
+        <span class="msg" id="sMsg" aria-live="polite"></span>
+      </div>
+      <p class="help small" style="margin-top:10px">Sending opens a pre-filled report on GitHub (a free account is needed). No account? Use “Copy as text” and send it to DJ Spin That by DM.</p>
+    </form>
+  </section>
+
+  <footer>
+    <div class="kofi-row"><a class="kofi" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJSpinThat</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
+    <div>Clips link to the fans who filmed them; nothing is re-uploaded. Ask and we'll take a link down. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
+  </footer>
+</main>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ISSUES="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
+const MON=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const fmtD=d=>{if(!d)return"";const[y,m,dd]=d.split("-");return MON[+m-1]+" "+(+dd)};
+const fmtLong=d=>{if(!d)return"";const[y,m,dd]=d.split("-");return MON[+m-1].charAt(0)+MON[+m-1].slice(1).toLowerCase()+" "+(+dd)+", "+y};
+const lerp=(a,b,t)=>Math.round(a+(b-a)*t);
+let SHOWS=[],PLAYED=[],UPNEXT=[],MOM=[],CLIPS=[],CH=[];
+let sel=null,solo=0,start=0,win=8;
+
+function rowColor(i){const t=MOM.length>1?i/(MOM.length-1):0;return`rgb(${lerp(255,168,t)},${lerp(42,85,t)},${lerp(75,247,t)})`}
+function clipsFor(showId,mi){const id=MOM[mi].id;return CLIPS.filter(c=>c.show===showId&&c.moment===id&&c.url)}
+function has(showId,mi){return clipsFor(showId,mi).length>0}
+function first(showId,mi){return clipsFor(showId,mi).some(c=>c.first)}
+function count(showId){let n=0;for(let i=0;i<MOM.length;i++)if(has(showId,i))n++;return n}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,"").replace(/\.com$/,"")}catch(e){return"clip"}}
+
+async function load(){
+  const get=(u,fb)=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>fb);
+  const [s,m]=await Promise.all([get("shows.json",window.__SHOWS||null),get("moments.json",window.__MOMENTS||null)]);
+  if(!s||!m){$("#liveDot").dataset.state="off";$("#liveText").textContent="The board couldn't load. Reload the page to try again.";return}
+  SHOWS=(s.shows||[]).slice().sort((a,b)=>a.order-b.order);
+  PLAYED=SHOWS.filter(x=>x.status==="played");UPNEXT=SHOWS.filter(x=>x.status!=="played").slice(0,2);
+  CH=PLAYED.concat(UPNEXT);
+  MOM=m.moments||[];CLIPS=m.clips||[];
+  solo=Math.max(0,MOM.findIndex(x=>x.id==="who-says-dj-spin-that"));
+  const h=(location.hash||"").slice(1);const hs=PLAYED.find(x=>x.id===h);
+  sel=hs?hs.id:(PLAYED.length?PLAYED[PLAYED.length-1].id:null);
+  $("#liveDot").dataset.state="live";
+  const logged=CLIPS.filter(c=>c.url).length;
+  $("#liveText").textContent=`${PLAYED.length} shows · ${logged} fancam${logged===1?"":"s"} on the board · updated ${fmtLong(m.updated||s.updated)}`;
+  fillSelects();measure();focusSel();render();
+}
+function measure(){
+  const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cw=w<560?62:96;
+  win=Math.max(3,Math.min(CH.length,Math.floor((w-lab-12)/(cw+6))));
+}
+function focusSel(){const i=CH.findIndex(x=>x.id===sel);if(i<0)return;if(i<start||i>=start+win)start=Math.max(0,Math.min(CH.length-win,i-win+2))}
+function render(){renderBoard();renderMonitor();$("#pgPrev").disabled=start<=0;$("#pgNext").disabled=start+win>=CH.length;$("#jumpSel").value=sel||""}
+function renderBoard(){
+  const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cols=`${lab}px repeat(${win},minmax(${w<560?58:88}px,1fr))`;
+  const vis=CH.slice(start,start+win);const live=PLAYED.length?PLAYED[PLAYED.length-1].id:null;
+  let html=`<div class="brow" style="grid-template-columns:${cols}"><div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#9aa3b8;align-self:end;padding:0 8px 6px">MOMENT · S = SOLO</div>`;
+  vis.forEach(s=>{const up=s.status!=="played",idx=CH.indexOf(s)+1;
+    html+=`<div class="tape${up?" up":""}${s.id===live?" now":""}${s.id===sel?" sel":""}"><div class="ch">CH ${String(idx).padStart(2,"0")}</div><div class="d">${esc(fmtD(s.date))}</div><div class="c" title="${esc(s.city)}">${esc(s.city)}</div><div class="n">${esc(s.night)}</div></div>`});
+  html+=`</div>`;
+  MOM.forEach((m,i)=>{const so=i===solo;
+    html+=`<div class="brow${so?" solo":""}" style="grid-template-columns:${cols}"><button type="button" class="rlabel" data-solo="${i}" aria-pressed="${so}"><span class="s">S</span><span class="t">${esc(m.label)}</span></button>`;
+    vis.forEach(s=>{const up=s.status!=="played",on=!up&&has(s.id,i),f=on&&first(s.id,i);const col=f?"var(--first)":rowColor(i);
+      const lbl=`${s.city} ${s.night}: ${m.label} — ${up?"up next":on?(f?"first time, fancam logged":"fancam logged"):"not spotted yet"}`;
+      html+=`<div class="cell"><button type="button" class="led${on?" on":""}${up?" up":""}${s.id===sel&&!up?" sel":""}" ${up?"disabled":""} data-show="${esc(s.id)}" data-m="${i}" aria-label="${esc(lbl)}" title="${esc(lbl)}" style="${on?`background:${col};box-shadow:0 0 10px ${col}`:""}"></button></div>`});
+    html+=`</div>`});
+  html+=`<div class="brow" style="grid-template-columns:${cols}"><div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#9aa3b8;padding-left:8px">LOGGED</div>`;
+  vis.forEach(s=>{const up=s.status!=="played",n=up?0:count(s.id),lit=Math.round(n/Math.max(1,MOM.length)*10);
+    let vu="";for(let k=0;k<10;k++)vu+=`<i style="${k<lit?`background:${k>=8?"var(--first)":rowColor(MOM.length-1-Math.round(k*(MOM.length-1)/9))}`:""}"></i>`;
+    html+=`<div class="strip-foot"><div class="vu" aria-hidden="true">${vu}</div><span class="cnt">${up?"UP NEXT":n+"/"+MOM.length}</span><button type="button" class="sel-btn" data-sel="${esc(s.id)}" aria-pressed="${s.id===sel}" ${up?"disabled":""} aria-label="Show ${esc(s.city)} ${esc(s.night)} on the monitor">${s.id===sel?"SEL ●":"SEL"}</button></div>`});
+  html+=`</div>`;
+  $("#board").innerHTML=html;
+}
+function renderMonitor(){
+  const S=PLAYED.find(x=>x.id===sel);
+  if(!S){$("#monShow").innerHTML=`<div class="mon-t">No shows yet</div>`;$("#monSolo").innerHTML="";return}
+  const songs=(S.songs||[]).map(x=>x.title).filter(Boolean);
+  let h=`<div class="mon-k"><span>SEL · ${esc(fmtD(S.date))} · ${esc(S.city.toUpperCase())}</span><span>${count(S.id)}/${MOM.length} LOGGED</span></div>
+  <div class="mon-t">${esc(S.city)} · ${esc(S.night)}</div>
+  <div class="mon-s">${esc(fmtLong(S.date))}${S.venue?" · "+esc(S.venue):""}${songs.length?` · Surprise songs: <b>${esc(songs.join(" & "))}</b>`:""}</div><div class="mon-list">`;
+  MOM.forEach((m,i)=>{const cs=clipsFor(S.id,i),on=cs.length>0,f=on&&first(S.id,i);
+    h+=`<div class="mi${i===solo?" solo":""}"><span class="dot${on?" on":""}" style="${on?`background:${f?"var(--first)":rowColor(i)}`:""}"></span><span style="min-width:0"><span class="nm">${esc(m.label)}${f?` <span style="font-family:var(--f-mono);font-size:11px;color:var(--first)">FIRST</span>`:""}</span><br><span class="sub">${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a href="${esc(c.url)}" target="_blank" rel="noopener">${k?"angle "+(k+1):"Watch"} ↗</a>${c.credit?` <span class="sub">${esc(c.credit)}</span>`:""}`).join(" · "):`<button type="button" class="lnk" data-send="${esc(S.id)}|${i}">Send a clip</button>`}</span></div>`});
+  h+=`</div>`;$("#monShow").innerHTML=h;
+  const m=MOM[solo];const rows=PLAYED.slice().reverse();const n=rows.filter(s=>has(s.id,solo)).length;
+  let o=`<div class="mon-k"><span style="color:var(--purple)">SOLO · ${String(solo+1).padStart(2,"0")}</span></div><div class="mon-t" style="font-size:clamp(22px,3vw,28px)">${esc(m.label)}</div><div class="mon-s">${esc(m.song||"")} · spotted at <b>${n}</b> of ${rows.length} shows</div><div style="margin-top:8px;max-height:420px;overflow:auto">`;
+  rows.forEach(s=>{const cs=clipsFor(s.id,solo);o+=`<div class="solo-row"><span>${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</span>${cs.length?`<a href="${esc(cs[0].url)}" target="_blank" rel="noopener">Watch ↗</a>`:`<button type="button" class="lnk" data-send="${esc(s.id)}|${solo}">Send a clip</button>`}</div>`});
+  o+=`</div>`;$("#monSolo").innerHTML=o;
+}
+function fillSelects(){
+  const rev=PLAYED.slice().reverse();
+  const opt=s=>`<option value="${esc(s.id)}">${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</option>`;
+  $("#jumpSel").innerHTML=rev.map(opt).join("");$("#sShow").innerHTML=rev.map(opt).join("");
+  $("#sMoment").innerHTML=MOM.map((m,i)=>`<option value="${i}">${String(i+1).padStart(2,"0")} · ${esc(m.label)}</option>`).join("");
+  $("#sShow").value=sel;$("#sMoment").value=String(solo);updSend();
+}
+function pick(showId,mi){if(showId)sel=showId;if(mi!=null)solo=mi;focusSel();render();if(showId&&history.replaceState)history.replaceState(null,"","#"+showId)}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-solo],[data-show],[data-sel],[data-send]");if(!t)return;
+  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sLink").focus({preventScroll:true}),400);return}
+  if(t.dataset.sel){pick(t.dataset.sel,null);return}
+  if(t.dataset.show){pick(t.dataset.show,+t.dataset.m);return}
+  if(t.dataset.solo!=null){pick(null,+t.dataset.solo)}
+});
+$("#jumpSel").addEventListener("change",e=>pick(e.target.value,null));
+$("#pgPrev").addEventListener("click",()=>{start=Math.max(0,start-win);render()});
+$("#pgNext").addEventListener("click",()=>{start=Math.min(CH.length-win,start+win);render()});
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{const w0=win;measure();if(w0!==win){focusSel();render()}},150)});
+addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(PLAYED.some(x=>x.id===h))pick(h,null)});
+
+/* send a fancam */
+function sendText(){const s=PLAYED.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];
+  return {title:`Fancam: ${m.label} · ${s?s.city+" "+s.night:""}`,
+  body:[`Show: ${s?`${s.city} ${s.night} (${s.date})`:""}`,`Show id: ${s?s.id:""}`,`Moment: ${m.label} (${m.id})`,`Link: ${$("#sLink").value.trim()}`,`Credit: ${$("#sWho").value.trim()||"(none)"}`,`Filmed it or has the filmer's OK: yes`].join("\n")}}
+function validLink(){return /^https?:\/\/\S+\.\S+/.test($("#sLink").value.trim())}
+function updSend(){const ok=validLink()&&$("#sOk").checked;const a=$("#sSend");a.setAttribute("aria-disabled",ok?"false":"true");
+  const t=sendText();a.href=ISSUES+"?labels=fancam&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);
+  $("#sMsg").textContent=ok?"":(!$("#sLink").value.trim()?"":(!validLink()?"Paste the full link, starting with https://":"Tick the box to send."))}
+["#sShow","#sMoment","#sLink","#sWho","#sOk"].forEach(id=>{$(id).addEventListener("input",updSend);$(id).addEventListener("change",updSend)});
+$("#sSend").addEventListener("click",()=>{setTimeout(()=>{$("#sMsg").textContent="Thank you! Your clip is waiting for review 💜"},300)});
+$("#sCopy").addEventListener("click",()=>{const t=sendText();const text=t.title+"\n"+t.body;
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#sMsg").textContent="Copied. Send it to DJ Spin That by DM."}).catch(()=>{$("#sMsg").textContent="Copy didn't work here. Select the text in the box and copy it.";let p=$("#sPre");if(!p){p=document.createElement("textarea");p.id="sPre";p.rows=6;p.readOnly=true;p.style.cssText="width:100%;margin-top:10px;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:13px";$("#sendForm").appendChild(p)}p.value=text;p.select()})});
+load();
+})();
+</script>
+</body>
+</html>

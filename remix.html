@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Remix the ARIRANG setlist: the whole show stays, you drop in one BTS song. Fan-made.">
+<title>Remix the Setlist · DJ Spin That</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&family=Permanent+Marker&display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: full-bleed concert backdrop (video or ambient canvas), three stacked "stations" on glass: Spin, My City, My Bias. Deliberately single dark stage look. */
+:root{
+  --night:#110a1d;        /* deep aubergine stage */
+  --ink:#f4efff;          /* lilac-white text */
+  --muted:#b8a9d6;        /* dusty lavender */
+  --violet:#b48cff;       /* borahae violet */
+  --jade:#d9c2ff;         /* pale lilac labels */
+  --gold:#c77dff;         /* bright orchid accent */
+  --glass:rgba(28,14,48,.62);
+  --line:rgba(243,237,226,.14);
+  --f-display:"Gowun Batang","Nanum Myeongjo",Georgia,serif;
+  --f-body:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{min-height:100%}
+body{background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden}
+#stage{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--night)}
+#stage canvas,#stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#stage .photo{position:absolute;inset:-3%;background:url(stage.jpg?v=2) center 30%/cover no-repeat;filter:saturate(.7) brightness(.85);animation:drift 40s ease-in-out infinite alternate}
+#stage .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(120,60,220,.55),rgba(60,20,110,.45));mix-blend-mode:color}
+#stage canvas{opacity:.35}
+#stage .yt{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.5s}
+#stage .yt.on{opacity:1}
+#stage .yt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+
+@keyframes drift{from{transform:scale(1) translate(0,0)}to{transform:scale(1.06) translate(-1%,-1%)}}
+#stage.has-video .photo{opacity:0}
+#stage video{opacity:0;transition:opacity 1.2s}
+#stage.has-video video{opacity:1}
+#stage.has-video canvas{opacity:0}
+#stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,10,29,.25),rgba(17,10,29,.7) 55%,rgba(17,10,29,.9))}
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+
+header.hero{display:grid;gap:10px;padding-block:20px 6px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(44px,9vw,104px);line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 .kicker{display:block;font-family:var(--f-mono);font-size:.22em;font-weight:600;color:var(--gold);letter-spacing:.4em;margin-bottom:.5em}
+.lede{max-width:60ch;color:var(--muted);margin:0;font-size:17px}
+.bg-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
+.bg-controls a{color:var(--violet)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+section.station{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
+section.spin,section.disco,section.units{grid-column:1/-1}
+.station h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.1;text-wrap:balance}
+.station h2 small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
+.station p.help{margin:0;color:var(--muted);font-size:14px}
+
+button,select,input{font:inherit}
+.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:12px 22px;font-weight:600;background:var(--gold);color:#1a0b2e;letter-spacing:.02em;transition:transform .15s, box-shadow .2s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(199,125,255,.45)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible,.seg button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+label{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+select{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+select option{background:#22123a;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.row>.field{flex:1 1 180px;display:grid;gap:6px;min-width:0}
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:center;gap:4px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:rgba(17,10,29,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.tabbar a{display:inline-flex;align-items:center;gap:7px;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:999px;cursor:pointer}
+.tabbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current="page"]{background:var(--gold);color:#1a0b2e}
+.tabbar a:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+@media (max-width:760px){
+  .tabbar{position:fixed;top:auto;bottom:0;left:0;right:0;justify-content:space-around;gap:0;padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));border-bottom:0;border-top:1px solid var(--line)}
+  .tabbar a{flex-direction:column;gap:3px;font-size:11px;padding:6px 4px;border-radius:12px;flex:1;min-width:0}
+  .tabbar a[aria-current="page"]{background:rgba(199,125,255,.22);color:var(--ink)}
+  .tabbar a[aria-current="page"] svg{stroke:var(--gold)}
+  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  footer{margin-bottom:8px}
+}
+@media (max-width:760px){.tabbar a span{font-size:10.5px;line-height:1.1;text-align:center;white-space:normal;max-width:72px}}
+/* responsive polish: tablets + touch */
+@media (min-width:761px) and (max-width:1100px){
+  .tabbar{gap:2px;padding-left:12px;padding-right:12px}
+  .tabbar a{flex:1;flex-direction:column;gap:4px;padding:8px 4px;font-size:12.5px;border-radius:14px;min-width:0;line-height:1.15;text-align:center}
+  .tabbar a span{white-space:nowrap}
+}
+@media (min-width:761px) and (max-width:860px){.tabbar a{font-size:11.5px}}
+footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
+footer a.kofi:hover{filter:brightness(1.08)}
+footer{color:var(--muted);font-size:12px;max-width:80ch;display:grid;gap:6px}
+footer a{color:var(--violet)}
+footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
+footer a.kofi:hover{filter:brightness(1.08)}
+.live{display:flex;gap:8px;align-items:center;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:6px}
+#liveDot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+#liveDot[data-state="live"]{background:var(--jade);box-shadow:0 0 0 0 rgba(217,194,255,.6);animation:pulse 2s infinite}
+#liveDot[data-state="off"]{background:var(--gold)}
+.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
+.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
+.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1{padding-right:54px}}
+.tabbar .tl,.tabbar .ts{font-weight:inherit}
+.tabbar .ts{display:none}
+@media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
+.tabbar a,.btn,.chip,.seg button,.cr-filter button{transition:background-color .5s ease,border-color .5s ease,color .3s ease}
+@media (max-width:760px){.tabbar a[aria-current="page"]{background:color-mix(in srgb,var(--gold) 24%,transparent)}}
+  .pc-preview:not(.show-back) #pcBack,.pc-preview.show-back #pcFront{display:none}
+}
+/* bigger phone tab bar */
+@media (max-width:760px){
+  .tabbar{padding:5px max(2px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(2px,env(safe-area-inset-left,0px))}
+  .tabbar a{gap:4px;padding:8px 0 7px;min-height:62px;border-radius:14px}
+  .tabbar svg{width:26px;height:26px;stroke-width:1.8}
+  .tabbar a span{font-size:12.5px;line-height:1.1;letter-spacing:-.01em;white-space:nowrap;max-width:none}
+  main{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:389px){.tabbar a span{font-size:11.5px}.tabbar svg{width:24px;height:24px}}
+/* holiday theme (draft): open the site with ?holiday=1 to preview. Snow + fairy lights from the holiday TikToks. */
+.tabbar a{text-decoration:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,194,255,.6)}70%{box-shadow:0 0 0 10px rgba(217,194,255,0)}100%{box-shadow:0 0 0 0 rgba(217,194,255,0)}}
+
+/* ---------- Remix the setlist: turntable + record crate ---------- */
+:root{--red:#FF2A4B;--purple:#A855F7;--pink:#ff6b8a}
+.hl-red{color:var(--red)}.hl-pur{color:var(--purple)}
+.deck{border-radius:26px;padding:clamp(14px,3vw,28px);background:radial-gradient(120% 90% at 20% 10%,rgba(80,24,110,.55) 0%,rgba(20,24,36,.9) 45%,#0E111A 100%);border:1px solid #273145;box-shadow:0 30px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);align-items:center}
+@media (max-width:860px){.deck{grid-template-columns:1fr}}
+.tt{position:relative;width:min(100%,460px);aspect-ratio:1;margin:0 auto}
+@media (min-width:861px){.deck{align-items:start}.tt{position:sticky;top:96px}}
+.tt .base{position:absolute;inset:0;border-radius:50%;background:#06070b;box-shadow:0 0 0 10px #141824,0 0 0 12px #273145,0 20px 50px rgba(0,0,0,.7)}
+.tt .vinyl{position:absolute;inset:3.5%;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#121016 0 2px,#0a090d 2px 4px);animation:spin 4s linear infinite}
+.tt .ring{position:absolute;border-radius:50%;box-sizing:border-box}
+.tt .lbl{position:absolute;left:31%;top:31%;width:38%;height:38%;border-radius:50%;background:linear-gradient(90deg,var(--red) 50%,var(--purple) 50%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#0b0710}
+.tt .lbl b{font-family:var(--f-body);font-weight:800;font-size:clamp(13px,3.2vw,18px);line-height:1}
+.tt .lbl small{font-family:var(--f-mono);font-size:clamp(8px,1.8vw,10px);letter-spacing:.12em;margin-top:4px}
+.tt .lbl i{width:12px;height:12px;border-radius:50%;background:#0b0710;margin-top:8px}
+.tt .pivot{position:absolute;right:-1%;top:-1%;width:12%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4efff,#9d90ad 60%,#4a3d5c);box-shadow:0 6px 16px rgba(0,0,0,.6)}
+.tt .arm{position:absolute;right:4%;top:4%;width:2.2%;height:62%;border-radius:6px;background:linear-gradient(#e6dff0,#8d80a0);transform-origin:50% 0;transition:transform .6s cubic-bezier(.2,.8,.3,1.2);box-shadow:4px 6px 12px rgba(0,0,0,.55)}
+.tt .arm::after{content:"";position:absolute;left:-180%;bottom:-3%;width:460%;height:8%;border-radius:6px;background:linear-gradient(#f4efff,#9d90ad);box-shadow:0 4px 10px rgba(0,0,0,.6)}
+.tt .chips{position:absolute;left:0;bottom:-2%;display:flex;gap:8px}
+.tt .chips span{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;border-radius:6px;padding:4px 8px;border:1px solid #273145;color:var(--muted)}
+.tt .chips span:first-child{background:#ffd166;color:#0b0710;border-color:#ffd166}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rec h3{font-family:var(--f-display);font-size:26px;margin:0 0 4px}
+.rec .sub{font-size:14px;color:var(--muted);margin:0 0 8px}
+.act{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--jade);margin:12px 4px 4px;text-transform:uppercase}
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.slot{width:100%;min-height:26px;padding:0 4px;border:0;background:transparent;display:flex;align-items:center;gap:8px;cursor:pointer;font:inherit}
+.slot i{flex:1;height:1px;background:rgba(255,255,255,.08)}
+.slot span{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:#8f82a8}
+.slot[aria-pressed="true"] i{background:var(--red)}
+.slot[aria-pressed="true"] span{color:var(--pink)}
+.slot:hover span{color:var(--ink)}
+.trk{display:flex;align-items:center;gap:12px;min-height:40px;padding:0 14px;border-radius:10px;background:rgba(255,255,255,.035)}
+.trk .no{font-family:var(--f-mono);font-size:12px;color:#8f82a8;width:28px;flex:none}
+.trk .t{flex:1;min-width:0;font-weight:600}
+.trk.dj{background:transparent;border:1px dashed #3a2f4a}
+.trk.dj .t{font-weight:400;color:var(--muted);font-family:var(--f-mono);font-size:13px}
+.trk.mine{min-height:48px;background:linear-gradient(90deg,rgba(255,42,75,.28),rgba(168,85,247,.18));border:1px solid var(--red);box-shadow:0 0 22px rgba(255,42,75,.35)}
+.trk.mine .t{font-size:18px;font-weight:700;color:#fff}
+.trk.mine .no{color:var(--pink)}
+.marker{font-family:"Permanent Marker",cursive;font-size:15px;color:var(--pink);transform:rotate(-4deg)}
+.crate-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
+.crate-head .field{display:grid;gap:6px;min-width:0}
+.crate-head input,.why input{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px}
+.crate-head input::placeholder,.why input::placeholder{color:var(--muted);opacity:.7}
+.crate{margin-top:14px;padding:20px 16px 16px;border-radius:20px;background:linear-gradient(#2a1f12,#1c140b);border:1px solid #4a3620;box-shadow:inset 0 10px 30px rgba(0,0,0,.45);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(30%,132px),1fr));gap:16px 14px}
+.sleeve{padding:0;border:0;background:transparent;cursor:pointer;text-align:left;transition:transform .2s;font:inherit;color:inherit}
+.sleeve .art{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden;box-shadow:0 8px 18px rgba(0,0,0,.55)}
+.sleeve .art::before{content:"";position:absolute;width:68%;height:68%;left:var(--x,16%);top:var(--y,8%);border-radius:50%;background:repeating-radial-gradient(circle,rgba(0,0,0,.35) 0 3px,rgba(0,0,0,.15) 3px 6px);mix-blend-mode:multiply}
+.sleeve .nm{position:absolute;left:9px;right:9px;bottom:8px;font-weight:700;font-size:14px;line-height:1.1;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.sleeve .meta{display:block;margin-top:6px;font-family:var(--f-mono);font-size:11px;color:#c9b88f;line-height:1.3}
+.sleeve .spun{color:#ffd166}
+.sleeve[aria-pressed="true"]{transform:translateY(-10px)}
+.sleeve[aria-pressed="true"] .art{box-shadow:0 0 0 3px #0b0710,0 0 0 6px var(--red),0 0 28px rgba(255,42,75,.6)}
+.sleeve[aria-pressed="true"] .meta::before{content:"● ON DECK · ";color:var(--pink)}
+.sleeve:focus-visible .art,.slot:focus-visible{outline:2px solid var(--jade);outline-offset:3px}
+.more{margin-top:12px;text-align:center}
+.send-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.send-row{grid-template-columns:1fr}}
+.drop{flex:none;width:132px;height:132px;border-radius:50%;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;text-decoration:none;color:#0b0710;background:radial-gradient(circle at 35% 30%,#ff6b8a,var(--red) 55%,#b3123f);animation:pulseDrop 1.6s ease-in-out infinite alternate}
+.drop b{font-family:var(--f-body);font-weight:800;font-size:22px;line-height:1}
+.drop small{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em}
+.drop[aria-disabled="true"]{background:#2b3447;color:#8f82a8;animation:none;pointer-events:none}
+@keyframes pulseDrop{from{box-shadow:0 0 0 0 rgba(255,42,75,.55)}to{box-shadow:0 0 0 14px rgba(255,42,75,0)}}
+.why{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+.why .fields{flex:1 1 260px;display:grid;gap:10px;min-width:0}
+.why .field{display:grid;gap:6px}
+.share{border-radius:14px;background:#06070b;border:1px solid #273145;padding:12px 14px;font-family:var(--f-mono);font-size:14px;color:var(--ink);margin-top:10px}
+.topl{display:grid;gap:10px}
+.topi{display:flex;align-items:center;gap:12px}
+.topi .disc{flex:none;width:34px;height:34px;border-radius:50%}
+.topi .bar{display:block;height:6px;border-radius:3px;background:#1b2130;overflow:hidden;margin-top:4px}
+.topi .bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--purple))}
+.msg{font-size:14px;color:var(--jade)}
+.listen{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 6px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--night)}
+.seg .dot,.play .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.dot.sp{background:#1ed760}.dot.am{background:#fa2d48}.dot.sc{background:#ff7700}
+.play{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font-size:12px;font-weight:600;text-decoration:none}
+.play:hover{border-color:var(--gold);background:rgba(199,125,255,.18)}
+.trk.mine .play{border-color:rgba(255,255,255,.4)}
+@media (max-width:520px){.play span.w{display:none}.play{padding:0 9px}}
+.setpl{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+a.btn{text-decoration:none;display:inline-block}
+@media (prefers-reduced-motion:reduce){.tt .vinyl,.drop{animation:none}}
+</style>
+</head>
+<body>
+<div id="stage" aria-hidden="true"><div class="photo"></div></div>
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <a href="./#spin" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></a>
+  <a href="./#tour" data-tab="tour"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">Tour &amp; My Show</b><b class="ts">Tour</b></span></a>
+  <a href="./#music" data-tab="music"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">Music &amp; Checklist</b><b class="ts">Music</b></span></a>
+  <a href="./#army" data-tab="army" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></a>
+  <a href="./#tv" data-tab="tv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 3l4 4 4-4"/></svg><span><b class="tl">DJ Spin TV</b><b class="ts">DJ Spin TV</b></span></a>
+</nav>
+<main>
+  <header class="hero">
+    <div class="eyebrow">BTS World Tour · 2026 · ARMY Remix</div>
+    <h1><span class="kicker">ARIRANG</span>Drop <span class="hl-red">one</span> track into the <span class="hl-pur">set</span></h1>
+    <p class="lede">The whole ARIRANG setlist stays on the record. Dig through the crate, pick one BTS song, and choose where the needle drops it.</p>
+  </header>
+
+  <section class="station" aria-labelledby="recH">
+    <div class="deck">
+      <div class="tt" aria-hidden="true">
+        <div class="base"></div>
+        <div class="vinyl" id="vinyl"><div class="lbl"><b>DJ SPIN THAT</b><small>ARIRANG · ARMY REMIX</small><i></i></div></div>
+        <div class="pivot"></div>
+        <div class="arm" id="arm"></div>
+        <div class="chips"><span>33⅓</span><span>ARMY EDIT</span></div>
+      </div>
+      <div class="rec">
+        <h3 id="recH">The record</h3>
+        <p class="sub">Pink groove = your track. Tap a “+ drop here” line to move it.</p>
+        <div class="listen">
+          <div class="seg" role="group" aria-label="Play songs on"><button type="button" data-svc="spotify"><span class="dot sp"></span>Spotify</button><button type="button" data-svc="apple"><span class="dot am"></span>Apple Music</button></div>
+          <button type="button" class="btn ghost" id="copyList" style="padding:9px 16px">Copy my tracklist</button>
+        </div>
+        <p class="help small" id="listHelp" style="margin:0 0 6px">Want it as a playlist? Copy your tracklist and paste it into a free playlist converter (like TuneMyMusic or Soundiiz). It builds the playlist in your Spotify or Apple Music.</p>
+        <span class="msg" id="listMsg" aria-live="polite"></span>
+        <div class="setpl" id="setPl" hidden></div>
+        <div id="tracks"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="station" aria-labelledby="crateH">
+    <div class="crate-head">
+      <div><h2 id="crateH"><small>Station · Dig the crate</small>Pick your song</h2><p class="help" id="where" style="margin-top:6px"></p></div>
+      <div class="field" style="flex:0 1 280px"><label for="q">Find a song</label><input id="q" type="search" autocomplete="off" placeholder="e.g. Spring Day, Black Swan"></div>
+    </div>
+    <div class="crate" id="crate" role="group" aria-label="Songs in the crate"></div>
+    <div class="more"><button type="button" class="btn ghost" id="moreBtn">Dig deeper</button></div>
+  </section>
+
+  <div class="send-row">
+    <section class="station" aria-labelledby="sendH">
+      <h2 id="sendH"><small>Station · Send your remix</small>Drop the needle</h2>
+      <div class="why">
+        <a class="drop" id="drop" href="#" target="_blank" rel="noopener" aria-disabled="true" aria-label="Drop the needle: send my remix"><b>DROP</b><small>THE NEEDLE</small></a>
+        <div class="fields">
+          <div class="field"><label for="why">Why this song? (optional)</label><input id="why" type="text" autocomplete="off" placeholder="It would hit so hard after Butter…"></div>
+          <div class="field"><label for="who">Credit me as (optional)</label><input id="who" type="text" autocomplete="off" placeholder="@yourhandle"></div>
+        </div>
+      </div>
+      <div id="after" hidden>
+        <p class="help" style="margin-top:14px">Share your remix so ARMY can add theirs:</p>
+        <div class="share" id="shareText"></div>
+        <div class="row" style="margin-top:10px;align-items:center"><button type="button" class="btn" id="copyShare">Copy to share</button><button type="button" class="btn ghost" id="copyText">Copy as text</button><span class="msg" id="msg" aria-live="polite"></span></div>
+      </div>
+      <p class="help small" style="margin-top:12px">Dropping the needle opens a pre-filled note on GitHub (a free account is needed). No account? Use “Copy as text” and send it to DJ Spin That by DM.</p>
+    </section>
+    <section class="station" aria-labelledby="topH">
+      <h2 id="topH"><small>Station · ARMY's picks</small>Most-dropped songs</h2>
+      <div class="topl" id="top"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="kofi-row"><a class="kofi" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJSpinThat</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
+    <div>Just for fun: the real setlist is up to BTS. Setlist from fan trackers and press reports. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
+  </footer>
+</main>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ISSUES="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
+const SOLO=m=>"Solo · "+m;
+const DISCO=[
+ ["2 Cool 4 Skool",2013,[["Intro: 2 Cool 4 Skool",SOLO("RM")],["We Are Bulletproof Pt.2"],["No More Dream"],["I Like It"],["Outro: Circle Room Cypher"],["Path"]]],
+ ["O!RUL8,2?",2013,[["Intro: O!RUL8,2?",SOLO("RM")],["N.O"],["We On"],["If I Ruled the World"],["Coffee"],["Cypher Pt.1","Rap line"],["Attack on Bangtan"],["Paldogangsan"],["Outro: Luv in Skool"]]],
+ ["Skool Luv Affair",2014,[["Intro: Skool Luv Affair","Rap line"],["Boy In Luv"],["Where You From"],["Just One Day"],["Tomorrow"],["Cypher Pt.2: Triptych","Rap line"],["Spine Breaker"],["Jump"],["Outro: Propose","Vocal line"],["Miss Right"]]],
+ ["Dark & Wild",2014,[["Intro: What Am I to You",SOLO("RM")],["Danger"],["War of Hormone"],["Hip Hop Phile"],["Let Me Know"],["Rain"],["Cypher Pt.3: Killer","Rap line"],["Embarrassed"],["Could You Turn Off Your Cell Phone"],["Blanket Kick"],["24/7=Heaven"],["Look Here"],["2nd Grade"],["Outro: Does That Make Sense?","Vocal line"]]],
+ ["The Most Beautiful Moment in Life Pt.1",2015,[["Intro: The Most Beautiful Moment in Life",SOLO("SUGA")],["I NEED U"],["Hold Me Tight"],["Dope"],["Boyz With Fun"],["Converse High"],["Moving On"],["Love Is Not Over","Vocal line"]]],
+ ["The Most Beautiful Moment in Life Pt.2",2015,[["Intro: Never Mind",SOLO("SUGA")],["RUN"],["Butterfly"],["Whalien 52"],["Ma City"],["Baepsae (Silver Spoon)"],["Autumn Leaves"],["House of Cards","Vocal line"]]],
+ ["The Most Beautiful Moment in Life: Young Forever",2016,[["Epilogue: Young Forever"],["Fire"],["Save Me"],["Butterfly (Prologue Mix)","Vocal line"]]],
+ ["Wings",2016,[["Blood Sweat & Tears"],["Begin",SOLO("Jung Kook")],["Lie",SOLO("Jimin")],["Stigma",SOLO("V")],["First Love",SOLO("SUGA")],["Reflection",SOLO("RM")],["MAMA",SOLO("j-hope")],["Awake",SOLO("Jin")],["Lost","Vocal line"],["Cypher Pt.4","Rap line"],["Am I Wrong"],["21st Century Girl"],["2! 3!"],["Spring Day"],["Not Today"],["Outro: Wings"],["A Supplementary Story: You Never Walk Alone"]]],
+ ["Love Yourself: Her",2017,[["Intro: Serendipity",SOLO("Jimin")],["DNA"],["Best of Me"],["Dimple","Vocal line"],["Pied Piper"],["MIC Drop"],["Go Go"],["Outro: Her","Rap line"],["Sea"]]],
+ ["Love Yourself: Tear",2018,[["Intro: Singularity",SOLO("V")],["Fake Love"],["The Truth Untold","Vocal line"],["134340"],["Paradise"],["Love Maze"],["Magic Shop"],["Airplane Pt.2"],["Anpanman"],["So What"],["Outro: Tear","Rap line"]]],
+ ["Love Yourself: Answer",2018,[["Euphoria",SOLO("Jung Kook")],["Trivia 起: Just Dance",SOLO("j-hope")],["I'm Fine"],["IDOL"],["Answer: Love Myself"],["Trivia 承: Love",SOLO("RM")],["Trivia 轉: Seesaw",SOLO("SUGA")],["Epiphany",SOLO("Jin")]]],
+ ["Map of the Soul: Persona",2019,[["Intro: Persona",SOLO("RM")],["Boy With Luv"],["Mikrokosmos"],["Make It Right"],["HOME"],["Jamais Vu","Jin, j-hope & Jung Kook"],["Dionysus"]]],
+ ["Map of the Soul: 7",2020,[["Interlude: Shadow",SOLO("SUGA")],["Black Swan"],["Filter",SOLO("Jimin")],["My Time",SOLO("Jung Kook")],["Louder than Bombs"],["ON"],["UGH!","Rap line"],["00:00 (Zero O'Clock)","Vocal line"],["Inner Child",SOLO("V")],["Friends","Jimin & V"],["Moon",SOLO("Jin")],["Respect","RM & SUGA"],["We Are Bulletproof: The Eternal"],["Outro: Ego",SOLO("j-hope")]]],
+ ["BE",2020,[["Life Goes On"],["Fly To My Room"],["Blue & Grey"],["Telepathy"],["Dis-ease"],["Stay"]]],
+ ["Proof",2022,[["Yet To Come"],["Run BTS"],["For Youth"],["Born Singer"]]],
+ ["Singles & soundtracks","2018–2023",[["DDAENG","Rap line"],["Heartbeat"],["Dynamite"],["Butter"],["Permission to Dance"],["Take Two"],["The Planet"]]],
+ ["Japanese originals","2015–2021",[["Wake Up"],["The Stars"],["For You"],["Good Day"],["Wishing on a Star"],["Crystal Snow"],["Don't Leave Me"],["Let Go"],["Lights"],["Your Eyes Tell"],["Stay Gold"],["Film out"]]]
+];
+const MAIN_SET=new Set(["dynamite"]);
+
+const PAL=[["#FF2A4B","#5b1a7a"],["#A855F7","#1d2a6b"],["#ffd166","#c2185b"],["#2ec4b6","#3a0ca3"],["#ff8fab","#6a00f4"],["#f15bb5","#00bbf9"],["#fee440","#9b5de5"],["#ff6b6b","#2b2d42"]];
+const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,"");
+let svc="spotify";try{const s=localStorage.getItem("arirang-svc");if(s==="apple"||s==="spotify")svc=s}catch(e){}
+const NOT_STREAMING=new Set(["ddaeng","sea"]);
+function songLink(t){const q=encodeURIComponent(("BTS "+t.replace(/\s*\(.*?\)\s*/g," ")).trim());
+  if(NOT_STREAMING.has(norm(t)))return{href:"https://soundcloud.com/search?q="+q,cls:"sc",name:"SoundCloud"};
+  return svc==="apple"?{href:"https://music.apple.com/us/search?term="+q,cls:"am",name:"Apple Music"}:{href:"https://open.spotify.com/search/"+q,cls:"sp",name:"Spotify"}}
+function playBtn(t){const l=songLink(t);return`<a class="play" href="${l.href}" target="_blank" rel="noopener" aria-label="Play ${esc(t)} on ${l.name}"><span class="dot ${l.cls}"></span>▶<span class="w"> ${l.name}</span></a>`}
+let ACTS=[],CAT=[],SPUN=new Set(),pick=null,slot=null,shown=24,TOTAL=0;
+
+async function load(){
+  const get=(u,fb)=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>fb);
+  const [sl,sh,rx]=await Promise.all([get("setlist.json",window.__SETLIST||null),get("shows.json",window.__SHOWS||null),get("remix.json",window.__REMIX||{top:[]})]);
+  ACTS=(sl&&sl.acts)||[];
+  const pl=(sl&&sl.playlists)||{};const plb=[];
+  if(pl.spotify)plb.push(`<a class="play" style="min-height:40px;font-size:13px" href="${esc(pl.spotify)}" target="_blank" rel="noopener"><span class="dot sp"></span>Open the ARIRANG set on Spotify ↗</a>`);
+  if(pl.apple)plb.push(`<a class="play" style="min-height:40px;font-size:13px" href="${esc(pl.apple)}" target="_blank" rel="noopener"><span class="dot am"></span>Open the ARIRANG set on Apple Music ↗</a>`);
+  if(plb.length){$("#setPl").innerHTML=plb.join("");$("#setPl").hidden=false}
+  const inSet=new Set(ACTS.flatMap(a=>a.songs).filter(x=>x!=="*").map(norm));
+  ((sh&&sh.shows)||[]).forEach(s=>(s.songs||[]).forEach(x=>SPUN.add(norm(x.title))));
+  DISCO.slice().reverse().forEach(([album,year,tracks],ri)=>{const ai=DISCO.length-1-ri;tracks.forEach(([t,who])=>{if(who&&/^Solo/.test(who))return;if(inSet.has(norm(t)))return;CAT.push({t,album,year,who:who||"",ai,spun:SPUN.has(norm(t))})})});
+  TOTAL=ACTS.reduce((n,a)=>n+a.songs.length,0);
+  const enc=ACTS.findIndex(a=>/encore/i.test(a.name));
+  slot=enc>=0?ACTS.slice(0,enc).reduce((n,a)=>n+a.songs.length,0)+2:Math.floor(TOTAL/2); // default: right after Butter
+  const sd=CAT.find(c=>c.t==="Spring Day");pick=sd?sd.t:(CAT[0]&&CAT[0].t);
+  renderTop(rx);render();
+}
+function songAt(i){let n=0;for(const a of ACTS){if(i<n+a.songs.length)return a.songs[i-n];n+=a.songs.length}return null}
+function prevName(i){for(let k=i-1;k>=0;k--){const s=songAt(k);if(s&&s!=="*")return s;if(s==="*")return"a surprise song"}return null}
+function whereText(){if(slot===0)return"to open the show";if(slot>=TOTAL)return"to close the show";return"right after "+prevName(slot)}
+function render(){renderTracks();renderCrate();renderSend();document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.svc===svc)))}
+function remixList(){const out=[];let i=0;ACTS.forEach(a=>a.songs.forEach(s=>{if(i===slot&&pick)out.push(pick);if(s!=="*")out.push(s);i++}));if(slot>=TOTAL&&pick)out.push(pick);return out}
+function listText(){return remixList().map(t=>"BTS - "+t).join("\n")}
+function renderTracks(){
+  let h="",i=0,num=0;const tot=TOTAL+(pick?1:0);
+  const slotBtn=k=>`<li><button type="button" class="slot" data-slot="${k}" aria-pressed="${k===slot}" aria-label="${k===0?"Drop your song at the very start":k>=TOTAL?"Drop your song at the end":"Drop your song after "+esc(prevName(k))}"><i></i><span>${k===slot?"▼ NEEDLE DROPS HERE":"+ drop here"}</span><i></i></button></li>`;
+  ACTS.forEach(a=>{h+=`<div class="act">${esc(a.name)}</div><ol class="tl">`;
+    a.songs.forEach(s=>{
+      if(i===slot&&pick){num++;h+=`<li><div class="trk mine"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(pick)}</span><span class="marker">your pick!</span>${playBtn(pick)}</div></li>`}
+      else h+=slotBtn(i);
+      num++;h+=s==="*"?`<li><div class="trk dj"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">DJ Spin That · surprise song (changes every night)</span></div></li>`:`<li><div class="trk"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(s)}</span>${playBtn(s)}</div></li>`;
+      i++});
+    h+=`</ol>`});
+  if(slot>=TOTAL&&pick){num++;h+=`<ol class="tl"><li><div class="trk mine"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(pick)}</span><span class="marker">your pick!</span>${playBtn(pick)}</div></li></ol>`}else h+=`<ol class="tl">${slotBtn(TOTAL)}</ol>`;
+  $("#tracks").innerHTML=h;
+  // grooves on the record: one ring per track, yours glows
+  const v=$("#vinyl");v.querySelectorAll(".ring").forEach(r=>r.remove());
+  const outer=48.5,inner=20,band=(outer-inner)/tot,mineK=Math.min(slot,TOTAL);
+  for(let k=0;k<tot;k++){const r=outer-k*band,el=document.createElement("span");el.className="ring";
+    const mine=pick&&k===mineK;el.style.cssText=`left:${50-r}%;top:${50-r}%;width:${2*r}%;height:${2*r}%;border:${Math.max(1.5,band*3.2).toFixed(1)}px solid ${mine?"var(--red)":(k%2?"rgba(255,255,255,.05)":"rgba(168,85,247,.08)")};${mine?"box-shadow:0 0 18px rgba(255,42,75,.8),inset 0 0 12px rgba(255,42,75,.6)":""}`;
+    v.insertBefore(el,v.firstChild)}
+  $("#arm").style.transform=`rotate(${(pick?12+mineK/Math.max(1,tot-1)*20:2).toFixed(1)}deg)`;
+}
+function renderCrate(){
+  const q=norm($("#q").value);const list=CAT.filter(c=>!q||norm(c.t).includes(q)||norm(c.album).includes(q));
+  const vis=list.slice(0,shown);
+  $("#crate").innerHTML=vis.length?vis.map((c,k)=>{const p=PAL[c.ai%PAL.length],ang=(c.ai*47+k*13)%360;
+    return `<button type="button" class="sleeve" data-pick="${esc(c.t)}" aria-pressed="${c.t===pick}"><span class="art" style="background:linear-gradient(${ang}deg,${p[0]},${p[1]});--x:${8+(c.ai*13)%30}%;--y:${4+(c.ai*7)%20}%"><span class="nm">${esc(c.t)}</span></span><span class="meta">${esc(c.album)} · ${esc(c.year)}${c.who?" · "+esc(c.who):""}${c.spun?`<br><span class="spun">Spun on this tour</span>`:""}</span></button>`}).join(""):`<p class="help" style="grid-column:1/-1;color:#c9b88f">No songs match. Try another word.</p>`;
+  $("#moreBtn").hidden=list.length<=shown;
+  $("#where").textContent=pick?`${pick} is on deck, dropping ${whereText()}.`:"Pick a record, then choose where it drops.";
+}
+function remixText(){return{title:`Setlist remix: ${pick} ${whereText()}`,body:[`Song: ${pick}`,`Where: ${whereText()} (slot ${slot+1})`,`Why: ${$("#why").value.trim()||"(not given)"}`,`Credit: ${$("#who").value.trim()||"(none)"}`].join("\n")}}
+function shareLine(){return`My ARIRANG setlist remix: + ${pick} ${whereText()}. What would you drop in? djspinthat.net/remix #DJSpinThat #ARMY`}
+function renderSend(){const a=$("#drop");a.setAttribute("aria-disabled",pick?"false":"true");const t=remixText();a.href=ISSUES+"?labels=remix&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);$("#shareText").textContent=shareLine()}
+function renderTop(rx){const top=(rx&&rx.top)||[];const box=$("#top");
+  if(!top.length){box.innerHTML=`<p class="help">ARMY's picks show up here once the first remixes are counted. Be one of the first.</p>`;return}
+  const max=top[0][1]||1;box.innerHTML=top.slice(0,8).map(([t,n],k)=>{const c=CAT.find(x=>x.t===t);const p=PAL[(c?c.ai:k)%PAL.length];
+    return `<div class="topi"><span class="disc" style="background:radial-gradient(circle,${p[0]} 0 26%,#0b0710 27% 31%,#151119 32% 100%);box-shadow:inset 0 0 0 1px #273145"></span><span style="flex:1;min-width:0"><b style="font-size:15px">${esc(t)}</b><span class="bar"><i style="width:${Math.round(n/max*100)}%"></i></span></span><span style="font-family:var(--f-mono);font-size:12px;color:var(--muted)">${esc(n)}</span></div>`}).join("")}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-slot]");if(s){slot=+s.dataset.slot;render();return}
+  const p=e.target.closest("[data-pick]");if(p){pick=p.dataset.pick;render();if(innerWidth<860)document.querySelector(".deck").scrollIntoView({behavior:"smooth",block:"start"})}});
+$("#q").addEventListener("input",()=>{shown=24;renderCrate()});
+document.querySelectorAll("[data-svc]").forEach(b=>b.addEventListener("click",()=>{svc=b.dataset.svc;try{localStorage.setItem("arirang-svc",svc)}catch(e){}render()}));
+$("#copyList").addEventListener("click",()=>{const text=listText();
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#listMsg").textContent="Tracklist copied! "+remixList().length+" songs (the two nightly surprise songs aren't included)."}).catch(()=>{$("#listMsg").textContent="Copy didn't work here. Select the list below and copy it.";let p=$("#listPre");if(!p){p=document.createElement("textarea");p.id="listPre";p.rows=8;p.readOnly=true;p.style.cssText="width:100%;margin:6px 0;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:13px";$("#listMsg").after(p)}p.value=text;p.select()})});
+$("#moreBtn").addEventListener("click",()=>{shown+=24;renderCrate()});
+["#why","#who"].forEach(id=>$(id).addEventListener("input",renderSend));
+$("#drop").addEventListener("click",()=>{setTimeout(()=>{$("#after").hidden=false},300)});
+const copy=(text,ok)=>(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#msg").textContent=ok}).catch(()=>{$("#msg").textContent="Copy didn't work here. Select the text above and copy it."});
+$("#copyShare").addEventListener("click",()=>copy(shareLine(),"Copied! Paste it in your post 💜"));
+$("#copyText").addEventListener("click",()=>{const t=remixText();$("#after").hidden=false;copy(t.title+"\n"+t.body,"Copied. Send it to DJ Spin That by DM.")});
+load();
+})();
+</script>
+</body>
+</html>

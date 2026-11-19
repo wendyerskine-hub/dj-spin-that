@@ -1,0 +1,48 @@
+{
+  "updated": "2026-11-19",
+  "about": "The main ARIRANG tour setlist in show order (from setlist.fm and press setlists, e.g. London and Paris, July 2026). Two surprise songs (DJ Spin That) change every night. Used by remix.html. Optional: paste links to DJ Spin That's own ARIRANG setlist playlists in playlists.spotify / playlists.apple to show 'Open the ARIRANG set' buttons on the remix page.",
+  "acts": [
+    {
+      "name": "Act 1",
+      "songs": [
+        "Hooligan",
+        "Aliens",
+        "Run BTS",
+        "they don't know 'bout us",
+        "Like Animals",
+        "FAKE LOVE",
+        "SWIM",
+        "Merry Go Round"
+      ]
+    },
+    {
+      "name": "Act 2",
+      "songs": [
+        "2.0",
+        "NORMAL",
+        "Not Today",
+        "MIC Drop",
+        "FYA",
+        "Fire",
+        "Body to Body",
+        "IDOL"
+      ]
+    },
+    {
+      "name": "Encore",
+      "songs": [
+        "Come Over",
+        "Butter",
+        "Dynamite",
+        "*",
+        "*",
+        "Please",
+        "Into the Sun"
+      ]
+    }
+  ],
+  "playlists": {
+    "spotify": "",
+    "apple": ""
+  }
+}
