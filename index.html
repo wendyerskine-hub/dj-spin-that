@@ -476,6 +476,11 @@ html.holiday #xmasLights{display:block;position:fixed;left:0;right:0;top:0;heigh
 .xmas-chip{display:none}
 html.holiday .xmas-chip{display:inline-flex;align-items:center;gap:6px;justify-self:start;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1a0b2e;background:linear-gradient(90deg,#ff4d5e,#e8c46a,#3ddc84);padding:5px 12px;border-radius:999px;margin-bottom:6px}
 html.holiday main{position:relative;z-index:2}
+/* ko-fi */
+.kofi-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:6px}
+footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
+footer a.kofi:hover{filter:brightness(1.08)}
+.kofi-btn{text-decoration:none}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -841,6 +846,12 @@ footer a{color:var(--violet)}
       </ul>
     </div>
 
+    <div class="bgroup kofi-card"><div class="bhead"><h3>Keep the freebies free</h3><span>Totally optional 💜</span></div>
+      <p class="help">The photocards, GIFs, loops and setlists here are free for every ARMY, with no ads. If DJ Spin That made your tour a little more fun, you can help cover hosting and design costs with a Ko-fi tip.</p>
+      <div class="dn-btns"><a class="btn kofi-btn" data-kofi="freebies" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener">☕ Buy us a coffee on Ko-fi ↗</a></div>
+      <p class="v-note">Tips go to running this fan site. They don't go to BTS, HYBE or BIGHIT MUSIC.</p>
+    </div>
+
     <div class="bgroup"><div class="bhead"><h3>Find freebies</h3><span>BTS and BT21 freebie ideas on TikTok and YouTube</span></div><div class="bcards">
         <a class="acard" href="https://www.tiktok.com/search?q=BTS%20freebies%20concert" target="_blank" rel="noopener" data-acct="freebies/tt-bts"><span class="aname">BTS freebies</span><span class="ahandle">TikTok</span><span class="adesc">Ideas ARMY hand out at concerts: photocards, stickers, bracelets and more.</span><span class="ago">Search TikTok ↗</span></a>
         <a class="acard" href="https://www.tiktok.com/search?q=BT21%20freebies" target="_blank" rel="noopener" data-acct="freebies/tt-bt21"><span class="aname">BT21 freebies</span><span class="ahandle">TikTok</span><span class="adesc">Cute BT21-themed freebie ideas and hauls.</span><span class="ago">Search TikTok ↗</span></a>
@@ -877,6 +888,7 @@ footer a{color:var(--violet)}
   </section>
 
   <footer>
+    <div class="kofi-row"><a class="kofi" data-kofi="footer" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJ Spin That on Ko-fi</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
     <div>Setlists come from fan trackers and press reports and update after every show. Play buttons search Spotify or Apple Music, or SoundCloud and YouTube for songs that aren't there, like DDAENG. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
     <div>Sources: <a href="https://www.billboard.com/lists/bts-surprise-songs-arirang-tour-every-track/" target="_blank" rel="noopener">Billboard</a> · <a href="https://www.forbes.com/sites/laurasirikul/2026/06/24/all-of-the-dj-spin-that-surprise-songs-from-btss-arirang-world-tour/" target="_blank" rel="noopener">Forbes</a> · <a href="https://thehoneypop.com/2026/04/13/bts-surprise-songs-arirang-world-tour/" target="_blank" rel="noopener">The Honey Pop</a> · <a href="https://btsboy.com/bts-arirang-tour-surprise-songs" target="_blank" rel="noopener">BTS surprise song tracker</a> · <a href="https://www.setlist.fm/search?query=BTS" target="_blank" rel="noopener">setlist.fm</a></div>
   </footer>
@@ -1150,6 +1162,7 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
   else if(e.target.closest("#fixCopy"))track("correction/copied/"+$("#fixCity").value);
   else if(e.target.closest('a[href*="Exukk6JO9i0"]'))track("promo-video");
+  else if(e.target.closest("[data-kofi]"))track("kofi/"+e.target.closest("[data-kofi]").dataset.kofi);
   else if(e.target.closest("#spinBtn"))track("spin");
   else if(e.target.closest("#tabbar button"))track("tab/"+e.target.closest("#tabbar button").dataset.tab);
   else if(e.target.closest("#shareShow"))track("share/"+citySel.value+"/"+(nightSel.selectedOptions[0]||{}).textContent);
