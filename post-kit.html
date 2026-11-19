@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Post kit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#110a1d;--card:#1d1030;--ink:#f4efff;--muted:#b8a9d6;--line:rgba(243,237,226,.16);--red:#ff5468;--purple:#b48cff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 60% at 0% 0%,rgba(255,84,104,.18),transparent 60%),radial-gradient(120% 60% at 100% 100%,rgba(180,140,255,.18),transparent 60%),var(--bg);color:var(--ink);font:16px/1.45 Outfit,system-ui,sans-serif;min-height:100vh;padding:20px 16px 60px}
+main{max-width:640px;margin:0 auto;display:grid;gap:18px}
+h1{font-family:"Gowun Batang",serif;font-size:30px;margin:0}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+p{margin:0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px}
+label{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:grid;gap:6px}
+select,input{width:100%;font:inherit;font-size:17px;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;padding:12px}
+input::placeholder{color:#8f80ad}
+.songs{display:grid;gap:10px}
+.tag{font-size:13px;color:var(--purple);min-height:18px}
+.tag.new{color:#3ddc84}
+h2{font-size:18px;margin:0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+textarea{width:100%;min-height:150px;font:inherit;font-size:15px;color:var(--ink);background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:12px;resize:vertical}
+button,.btn{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:999px;padding:10px 18px;background:linear-gradient(90deg,var(--red),var(--purple));color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:44px}
+.btn.ghost{background:transparent;border:1.5px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.note{font-size:13px;color:var(--muted)}
+.ok{color:#3ddc84}
+</style></head><body><main>
+<div><div class="eyebrow">DJ Spin That · private</div><h1>Tonight's post kit</h1><p>Type the surprise songs as soon as you hear them. Captions for every app fill in for you, ready to copy.</p></div>
+
+<section class="card">
+  <label>Show<select id="show"></select></label>
+  <div class="songs">
+    <label>Song 1<input id="s1" list="titles" placeholder="e.g. Spring Day" autocomplete="off"></label><div class="tag" id="t1"></div>
+    <label>Song 2<input id="s2" list="titles" placeholder="e.g. Mikrokosmos" autocomplete="off"></label><div class="tag" id="t2"></div>
+    <label>Song 3 (only if they played three)<input id="s3" list="titles" placeholder="optional" autocomplete="off"></label><div class="tag" id="t3"></div>
+  </div>
+  <datalist id="titles"></datalist>
+</section>
+
+<section class="card"><h2>TikTok <button data-copy="tt">Copy</button></h2><textarea id="tt" readonly></textarea></section>
+<section class="card"><h2>Instagram <button data-copy="ig">Copy</button></h2><textarea id="ig" readonly></textarea></section>
+<section class="card"><h2>Threads <button data-copy="th">Copy</button></h2><textarea id="th" readonly></textarea></section>
+<section class="card"><h2>X / Twitter <button data-copy="x">Copy</button></h2><textarea id="x" readonly></textarea><div class="note" id="xlen"></div></section>
+
+<section class="card">
+  <h2>Video for the post</h2>
+  <p>The updater makes this night's DJ Spin That loop (MP4 for TikTok/Reels, GIF for everywhere) within about an hour of the songs being reported. If it isn't there yet, post the caption with the site link and add the loop later, or tell Claude the songs to make it right away.</p>
+  <div class="row"><a class="btn" id="mp4" target="_blank" rel="noopener">Open MP4 ↗</a><a class="btn ghost" id="gif" target="_blank" rel="noopener">Open GIF ↗</a><a class="btn ghost" id="site" target="_blank" rel="noopener">Night page ↗</a></div>
+</section>
+<p class="note">Before the show? Pick the show and leave the songs empty: the captions become a "guess tonight's songs" post.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const nk=t=>String(t).toLowerCase().replace(/[^a-z0-9]/g,"");
+const FLAG={Taiwan:"🇹🇼",Thailand:"🇹🇭",Malaysia:"🇲🇾",Singapore:"🇸🇬",Indonesia:"🇮🇩",Australia:"🇦🇺","Hong Kong":"🇭🇰",Philippines:"🇵🇭",Japan:"🇯🇵","South Korea":"🇰🇷",Korea:"🇰🇷",USA:"🇺🇸","United States":"🇺🇸",Brazil:"🇧🇷",Mexico:"🇲🇽",Germany:"🇩🇪",UK:"🇬🇧",Canada:"🇨🇦"};
+let SH=[];
+const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}):"";
+fetch("shows.json?"+Date.now()).then(r=>r.json()).then(d=>{
+  SH=(d.shows||[]).filter(s=>s.status!=="cancelled").sort((a,b)=>(a.order||0)-(b.order||0));
+  const up=SH.filter(s=>s.status==="upcoming"),recent=SH.filter(s=>s.status==="played").slice(-6).reverse();
+  $("show").innerHTML=`<optgroup label="Coming up">${up.slice(0,10).map(o).join("")}</optgroup><optgroup label="Recent">${recent.map(o).join("")}</optgroup>`;
+  const titles=[...new Set(SH.flatMap(s=>(s.songs||[]).map(x=>x.title)))].sort();
+  $("titles").innerHTML=titles.map(t=>`<option value="${t.replace(/"/g,"&quot;")}">`).join("");
+  try{const k=JSON.parse(localStorage.getItem("postkit")||"{}");if(k.show&&SH.some(s=>s.id===k.show))$("show").value=k.show;["s1","s2","s3"].forEach(i=>{if(k[i])$(i).value=k[i]})}catch(e){}
+  build()});
+function ord(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+function o(s){return `<option value="${s.id}">${s.city} · ${s.night} · ${fmt(s.date)}</option>`}
+function playsBefore(title,show){const k=nk(title);return SH.filter(s=>s.status==="played"&&(s.order||0)<(show.order||0)&&(s.songs||[]).some(x=>nk(x.title)===k))}
+function build(){
+  const sh=SH.find(s=>s.id===$("show").value);if(!sh)return;
+  const songs=["s1","s2","s3"].map(i=>$(i).value.trim()).filter(Boolean);
+  try{localStorage.setItem("postkit",JSON.stringify({show:sh.id,s1:$("s1").value,s2:$("s2").value,s3:$("s3").value}))}catch(e){}
+  const n=(sh.night.match(/\d+/)||["1"])[0],city=sh.city,flag=FLAG[sh.country]||"",tagCity="#"+city.replace(/[^A-Za-z0-9]/g,""),url=`djspinthat.net/#${slug(city)}-${n}`;
+  const notes=songs.map(t=>{const p=playsBefore(t,sh);return p.length?{t,txt:`${ord(p.length+1)} time on the tour (last: ${p[p.length-1].city})`,first:false}:{t,txt:"FIRST TIME on the ARIRANG tour 🚨",first:true}});
+  ["t1","t2","t3"].forEach((id,i)=>{const s=$("s"+(i+1)).value.trim();const m=notes.find(x=>x.t===s);$(id).textContent=m?m.txt:"";$(id).className="tag"+(m&&m.first?" new":"")});
+  const debut=notes.filter(x=>x.first).map(x=>x.t);
+  const list=songs.join(" × ");
+  let tt,ig,th,x;
+  if(!songs.length){
+    tt=`${city} ${sh.night} tonight ${flag}🎧 Which surprise songs is BTS pulling from the vault? Drop your guess 👇 Results on djspinthat.net after the show #BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
+    ig=`${city} ${sh.night} tonight ${flag}🎧\n\nWhich surprise songs is BTS pulling from the vault? Drop your guess 👇\n\nResults after the show: link in bio 💜\n.\n#BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
+    th=`${city} ${sh.night} tonight ${flag} What are your surprise song guesses? 🎧👇`;
+    x=`${city} ${sh.night} tonight ${flag}🎧 Surprise song guesses? 👇 Results on ${url} after the show #BTS #ARIRANG ${tagCity}`;
+  }else{
+    const extra=debut.length?` ${debut.join(" and ")} ${debut.length>1?"are tour debuts":"is a tour debut"} 🚨`:"";
+    tt=`DJ, spin that 🎧 ${city} ${sh.night} ${flag} got ${list}!${extra} Were you there? Tell me your reaction 👇 Play them at ${url} #BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
+    ig=`DJ, spin that 🎧 ${city} ${sh.night} ${flag}\n\n🥁 ${songs.join("\n🥁 ")}\n${extra?"\n"+extra.trim()+"\n":""}\nWere you there? Tell me your reaction 👇\nPlay every surprise song: link in bio 💜\n.\n#BTS #ARIRANG ${tagCity} #BTSARMY #DJSpinThat #fanmade`;
+    th=`${city} ${sh.night} surprise songs ${flag}🎧\n${list}${extra?"\n"+extra.trim():""}\nWere you there?? 👇`;
+    x=`🎧 ${city} ${sh.night} surprise songs ${flag}: ${list}${extra?" ·"+extra:""}\nPlay them: ${url}\n#BTS #ARIRANG ${tagCity}`;
+  }
+  $("tt").value=tt;$("ig").value=ig;$("th").value=th;$("x").value=x;
+  $("xlen").textContent=`${x.length} / 280 characters`+(x.length>280?" (too long: trim it)":"");
+  const base="https://raw.githubusercontent.com/wendyerskine-hub/dj-spin-that/main/social/";const nm=`dj-spin-that-${slug(city)}-night-${n}`;
+  $("mp4").href=base+`cities-mp4/${nm}.mp4`;$("gif").href=base+`cities/${nm}.gif`;$("site").href="https://"+url;
+}
+["show","s1","s2","s3"].forEach(i=>$(i).addEventListener("input",build));$("show").addEventListener("change",build);
+document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(!b)return;const t=$(b.dataset.copy);
+  (navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).then(()=>{b.textContent="Copied ✓";setTimeout(()=>b.textContent="Copy",1500)}).catch(()=>{t.select();document.execCommand("copy");b.textContent="Copied ✓"})});
+</script></body></html>
