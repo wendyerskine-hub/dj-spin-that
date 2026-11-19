@@ -31,6 +31,10 @@ p.sub b{color:var(--ink)}
 .badge{display:inline-block;margin-top:18px;background:var(--silver);color:#1a0b2e;font-weight:800;font-size:22px;padding:8px 20px;border-radius:999px}
 .url{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;color:var(--silver);margin-top:22px}
 .big{font-size:84px;margin-bottom:6px}
+.zh{font-family:"Noto Sans TC","WenQuanYi Zen Hei","PingFang TC",sans-serif;font-weight:700;font-size:26px;color:var(--ink);margin-top:18px}
+.chips7{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px;max-width:460px}
+.chips7 span{padding:9px 16px;border-radius:999px;background:rgba(214,218,227,.12);border:1.5px solid rgba(214,218,227,.4);font-weight:600;font-size:19px}
+.chips7 .ot7{background:linear-gradient(90deg,#ff4d5e,#b48cff);border:0}
 .hint{display:inline-block;margin-top:20px;padding:10px 18px;border-radius:999px;border:1.5px solid rgba(214,218,227,.45);font-size:19px;color:var(--ink)}
 .polas{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin-top:22px}
 .pola{width:200px;padding:10px 10px 12px;background:#f4f1ea;border-radius:6px;box-shadow:0 14px 30px rgba(0,0,0,.55);color:#1a0b2e;text-align:center}
@@ -68,6 +72,21 @@ html.r45 .polas{gap:12px}html.r45 .pola .ph{height:96px}html.r45 .pola{width:180
   <div class="big">👇</div>
   <h1>Reply with your photo + your city</h1>
   <p class="sub">Best ones get featured on djspinthat.net 💜</p>
+</section>
+
+<section class="scene" id="k1">
+  <div class="eyebrow">Kaohsiung · Night 1 · Tonight 🇹🇼</div>
+  <h1>Kaohsiung ARMY, who's ready for the DJ to spin that s**t? 🎧</h1>
+  <p class="sub zh">高雄 ARMY，準備好了嗎？</p>
+</section>
+
+<section class="scene" id="k2">
+  <div class="eyebrow">Comment challenge 👇</div>
+  <h1>Drop your favorite BTS member or OT7 sticker</h1>
+  <div class="chips7">
+    <span>RM</span><span>Jin</span><span>SUGA</span><span>j-hope</span><span>Jimin</span><span>V</span><span>Jung Kook</span><span class="ot7">OT7 💜</span>
+  </div>
+  <p class="sub zh">留言貼上你最愛的成員或 OT7 貼圖 👇</p>
 </section>
 
 <section class="scene" id="s1">
@@ -123,13 +142,15 @@ html.r45 .polas{gap:12px}html.r45 .pola .ph{height:96px}html.r45 .pola{width:180
 const q=new URLSearchParams(location.search);
 if(q.get("ratio")==="45"){document.documentElement.classList.add("r45");document.documentElement.style.height=document.body.style.height=document.getElementById("v").style.height="675px";window.VH=675}
 let S;
-if(q.get("post")==="photo"){S=[["p0",0,3.6],["p1",3.3,8.8],["p2",8.5,11.2],["s6",10.9,13.6]];window.DUR=13.5}
+if(q.get("post")==="kaohsiung"){S=[["k1",0,3.9],["k2",3.6,8.2],["s6",7.9,10.6]];window.DUR=10.5}
+else if(q.get("post")==="photo"){S=[["p0",0,3.6],["p1",3.3,8.8],["p2",8.5,11.2],["s6",10.9,13.6]];window.DUR=13.5}
 else{S=[["s0",0,3.4],["s1",3.1,6.8],["s2",6.5,10.3],["s3",10,14.4],["s4",14.1,18.4],["s5",18.1,20.4],["s6",20.1,22.8]];window.DUR=22.7}
 document.querySelectorAll(".scene").forEach(e=>{if(!S.some(x=>x[0]===e.id))e.style.display="none"});
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 const cv=document.getElementById("spark"),ctx=cv.getContext("2d");if(window.VH)cv.height=1350;let seed=5;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
 const P=Array.from({length:110},()=>({x:rnd()*1080,y:rnd()*1920,r:1+rnd()*3.2,s:20+rnd()*60,ph:rnd()*6.28,tw:1.5+rnd()*3}));
 function setFrame(t){
+  document.querySelectorAll(".chips7 span").forEach((e,i)=>{const k=ease((t-3.9-i*.14)/.25);e.style.opacity=k;e.style.transform=`scale(${.7+.3*k})`});
   for(let i=1;i<=4;i++){const el=document.getElementById("q"+i);const k=ease((t-3.5-i*.35)/.35);el.style.opacity=k;el.style.transform=`rotate(${[-4,3,-2,4][i-1]}deg) translateY(${(1-k)*-40}px) scale(${.9+.1*k})`}
   for(const [id,a,b] of S){const el=document.getElementById(id);const o=Math.min(ease((t-a)/.35),ease((b-t)/.35));el.style.opacity=o;el.style.transform=`translateY(${(1-o)*18}px)`}
   document.getElementById("r1").style.transform=`rotate(${t*210}deg)`;document.getElementById("r2").style.transform=`rotate(${t*190}deg)`;
