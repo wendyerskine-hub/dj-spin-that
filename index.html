@@ -486,6 +486,14 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .fc-btns{display:flex;flex-wrap:wrap;gap:8px}
 .fc-btns .svc{flex:0 1 auto;font-size:14px;padding:9px 14px;min-height:44px}
 .fc-btns .svc.main{border-style:solid;border-color:var(--gold)}
+.fc-row{display:grid;gap:6px}
+.fancams,.fc-row,.fc-btns{min-width:0;max-width:100%}
+.fc-btns .svc{max-width:100%;min-width:0;overflow-wrap:anywhere;word-break:break-word;text-align:center}
+.fc-btns .svc.ig.main{font-size:12.5px;letter-spacing:0}
+.fc-lab{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fc-btns .svc.tt .dot{background:#25F4EE;box-shadow:3px 0 0 #FE2C55}
+.fc-btns .svc.ig .dot{background:radial-gradient(circle at 30% 110%,#fdf497 0,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.fc-btns .svc.yt2 .dot{background:#ff2a2a}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -1096,15 +1104,23 @@ function songCard(title,artist,sub,kindHTML,flag){
   const id="q"+Math.random().toString(36).slice(2);
   return {html:`<div class="ns reveal"><div class="qr" id="${id}"></div><div style="min-width:0">${kindHTML||""}<h3>${esc(title)}</h3><div class="song-meta">${esc(sub)}</div>${flag?`<div class="flag">Reports differ</div>`:""}${svcButtons(title,artist)}<button type="button" class="qrtoggle" aria-expanded="false">Show QR code</button></div></div>`,id,url};
 }
-// Fancams: YouTube searches for this night (fans title clips with the date as YYMMDD, the city and "Day n")
+// Fancams: TikTok and Instagram Reels first (where fans post clips), YouTube as a backup
 function fancamBox(show){
-  const n=(show.night.match(/\d+/)||["1"])[0],d=(show.date||"").replace(/-/g,"").slice(2),c=show.city;
+  const n=(show.night.match(/\d+/)||["1"])[0],d=(show.date||"").replace(/-/g,"").slice(2),c=show.city,night=show.night.replace(" (FESTA)","");
+  const tag="BTS_WORLDTOUR_ARIRANG_"+c.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  const clean=t=>t.replace(/\s*\(.*?\)\s*/g," ").trim();
+  const tt=q=>"https://www.tiktok.com/search/video?q="+encodeURIComponent(q);
+  const ig=q=>"https://www.instagram.com/explore/search/keyword/?q="+encodeURIComponent(q);
+  const igTag=t=>"https://www.instagram.com/explore/tags/"+encodeURIComponent(t.toLowerCase())+"/";
   const yt=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q)+"&sp=CAI%253D";
-  const btn=(q,label,cls="")=>`<a class="svc dp live fc${cls}" data-q="${esc(q)}" data-t="${esc(label)}" href="${yt(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${esc(label)}</a>`;
-  const songs=show.songTitles.map(t=>btn(`${d} BTS ${t.replace(/\s*\(.*?\)\s*/g," ").trim()} ${c} fancam`,`${t} fancam`)).join("");
+  const a=(href,label,cls,app)=>`<a class="svc fc ${cls}" data-fc="${app}" href="${href}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${esc(label)}</a>`;
+  const songs=show.songTitles;
+  const row=(name,items)=>`<div class="fc-row"><div class="fc-lab">${name}</div><div class="svc-btns fc-btns">${items}</div></div>`;
   return `<div class="fancams"><div class="eyebrow">Fancams from this night 🎥</div>
-    <div class="svc-btns fc-btns">${btn(`${d} BTS ${c} fancam`,`All ${c} ${show.night.replace(" (FESTA)","")} fancams`," main")}${songs}${btn(`BTS ARIRANG ${c} day ${n} surprise songs`,"Surprise songs moment")}${btn(`${d} BTS ${c} full concert`,"Full concert")}</div>
-    <p class="v-note">Opens YouTube, newest first. Fan-filmed clips belong to their creators: like and comment on theirs 💜</p></div>`;
+    ${row("TikTok",a(tt(`bts ${c} day ${n} fancam`),`${c} ${night}`,"tt main","tiktok")+songs.map(t=>a(tt(`bts ${clean(t)} ${c}`),clean(t),"tt","tiktok")).join(""))}
+    ${row("Instagram Reels",a(igTag(tag),"#"+tag,"ig main","instagram")+a(ig(`bts ${c} day ${n}`),`${c} ${night}`,"ig","instagram")+songs.map(t=>a(ig(`bts ${clean(t)} ${c}`),clean(t),"ig","instagram")).join(""))}
+    ${row("YouTube",a(yt(`${d} BTS ${c} fancam`),`${c} ${night}`,"yt2","youtube")+songs.map(t=>a(yt(`${d} BTS ${clean(t)} ${c} fancam`),clean(t),"yt2","youtube")).join("")+a(yt(`${d} BTS ${c} full concert`),"Full concert","yt2","youtube"))}
+    <p class="v-note">Opens the app on your phone, newest posts first where the app allows. Instagram search may ask you to log in. Fan-filmed clips belong to their creators: like and comment on theirs 💜</p></div>`;
 }
 function renderCity(){
   const list=ALL.filter(s=>s.city===citySel.value);
@@ -1177,6 +1193,7 @@ document.addEventListener("click",e=>{
   else if(e.target.closest("#fixSend"))track(($("#fixSong1").value||$("#fixSong2").value?"correction":"theory")+"/sent/"+$("#fixCity").value);
   else if(e.target.closest("#fixCopy"))track("correction/copied/"+$("#fixCity").value);
   else if(e.target.closest('a[href*="Exukk6JO9i0"]'))track("promo-video");
+  else if(e.target.closest("a.fc[data-fc]"))track("fancam/"+e.target.closest("a.fc").dataset.fc);
   else if(e.target.closest("[data-kofi]"))track("kofi/"+e.target.closest("[data-kofi]").dataset.kofi);
   else if(e.target.closest("#spinBtn"))track("spin");
   else if(e.target.closest("#tabbar button"))track("tab/"+e.target.closest("#tabbar button").dataset.tab);
