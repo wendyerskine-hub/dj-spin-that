@@ -1206,7 +1206,7 @@ function renderDisco(){
   const groups=DISCO.map(([alb,yr,tracks])=>{
     const items=tracks.map(([t,unit])=>{const k=nk(t);known.add(k);const pl=P[k]||[];const main=MAIN_SET.has(k);if(!main){total++;if(pl.length)played++}
       const tip=main?`<b>Main set</b>Played every night before the surprise songs.`:pl.length?`<b>Played ${pl.length}×</b>${esc(placesText(pl))}`:`<b>Still in the vault</b>Not played yet on the ARIRANG tour.`;
-      return `<li><button type="button" class="dsong${pl.length&&!main?" on":""}${main?" main":""}" aria-label="${esc(t)}: ${pl.length?"played "+pl.length+" times":"not played yet"}"><span class="box" aria-hidden="true"></span><span>${esc(t)}${pl.length>1?`<span class="n">${pl.length}×</span>`:""}</span>${unit?`<span class="tag">${esc(unit.replace("Solo · ",""))}</span>`:""}<span class="tip" role="tooltip">${tip}</span></button></li>`}).join("");
+      return `<li><button type="button" class="dsong${pl.length&&!main?" on":""}${main?" main":""}" aria-label="${esc(t)}: ${pl.length?"played "+pl.length+(pl.length===1?" time":" times"):"not played yet"}"><span class="box" aria-hidden="true"></span><span>${esc(t)}${pl.length>1?`<span class="n">${pl.length}×</span>`:""}</span>${unit?`<span class="tag">${esc(unit.replace("Solo · ",""))}</span>`:""}<span class="tip" role="tooltip">${tip}</span></button></li>`}).join("");
     const pc=tracks.filter(([t])=>!MAIN_SET.has(nk(t))&&(P[nk(t)]||[]).length).length,tc=tracks.filter(([t])=>!MAIN_SET.has(nk(t))).length;
     return `<details class="alb" data-alb="${esc(alb)}"><summary><span class="an">${esc(alb)}</span><span class="ay">${yr}</span><span class="ac">${pc}/${tc}</span></summary><ul>${items}</ul></details>`});
   const extra=Object.keys(P).filter(k=>!known.has(k));
