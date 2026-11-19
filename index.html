@@ -481,6 +481,11 @@ html.holiday main{position:relative;z-index:2}
 footer a.kofi,a.kofi{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
 footer a.kofi:hover{filter:brightness(1.08)}
 .kofi-btn{text-decoration:none}
+/* fancams on My Show */
+.fancams{display:grid;gap:10px;margin-top:6px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.fc-btns{display:flex;flex-wrap:wrap;gap:8px}
+.fc-btns .svc{flex:0 1 auto;font-size:14px;padding:9px 14px;min-height:44px}
+.fc-btns .svc.main{border-style:solid;border-color:var(--gold)}
 /* fold-away correction form */
 .fix details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .fix details>summary::-webkit-details-marker{display:none}
@@ -1091,6 +1096,16 @@ function songCard(title,artist,sub,kindHTML,flag){
   const id="q"+Math.random().toString(36).slice(2);
   return {html:`<div class="ns reveal"><div class="qr" id="${id}"></div><div style="min-width:0">${kindHTML||""}<h3>${esc(title)}</h3><div class="song-meta">${esc(sub)}</div>${flag?`<div class="flag">Reports differ</div>`:""}${svcButtons(title,artist)}<button type="button" class="qrtoggle" aria-expanded="false">Show QR code</button></div></div>`,id,url};
 }
+// Fancams: YouTube searches for this night (fans title clips with the date as YYMMDD, the city and "Day n")
+function fancamBox(show){
+  const n=(show.night.match(/\d+/)||["1"])[0],d=(show.date||"").replace(/-/g,"").slice(2),c=show.city;
+  const yt=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q)+"&sp=CAI%253D";
+  const btn=(q,label,cls="")=>`<a class="svc dp live fc${cls}" data-q="${esc(q)}" data-t="${esc(label)}" href="${yt(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${esc(label)}</a>`;
+  const songs=show.songTitles.map(t=>btn(`${d} BTS ${t.replace(/\s*\(.*?\)\s*/g," ").trim()} ${c} fancam`,`${t} fancam`)).join("");
+  return `<div class="fancams"><div class="eyebrow">Fancams from this night 🎥</div>
+    <div class="svc-btns fc-btns">${btn(`${d} BTS ${c} fancam`,`All ${c} ${show.night.replace(" (FESTA)","")} fancams`," main")}${songs}${btn(`BTS ARIRANG ${c} day ${n} surprise songs`,"Surprise songs moment")}${btn(`${d} BTS ${c} full concert`,"Full concert")}</div>
+    <p class="v-note">Opens YouTube, newest first. Fan-filmed clips belong to their creators: like and comment on theirs 💜</p></div>`;
+}
 function renderCity(){
   const list=ALL.filter(s=>s.city===citySel.value);
   const show=list[+nightSel.value]||list[0];if(!show)return;
@@ -1102,7 +1117,7 @@ function renderCity(){
   }
   const cards=show.songs.map(t=>songCard(t.title,"BTS",metaLine(t.title),"",show.disputed));
   try{$("#findSel").value=showSlug(show)}catch(e){}
-  $("#cityResult").innerHTML=head+cards.map(c=>c.html).join("")+`<div class="share-row"><button class="btn ghost" type="button" id="shareShow">Share this show</button><span class="msg" aria-live="polite"></span></div>`;
+  $("#cityResult").innerHTML=head+cards.map(c=>c.html).join("")+fancamBox(show)+`<div class="share-row"><button class="btn ghost" type="button" id="shareShow">Share this show</button><span class="msg" aria-live="polite"></span></div>`;
   $("#shareShow").addEventListener("click",e=>shareShow(show,e.currentTarget));
   cards.forEach(c=>drawQR(document.getElementById(c.id),c.url,96));
 }
