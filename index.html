@@ -1122,7 +1122,8 @@ section.golinks{grid-column:1/-1}
   <footer>
     <div class="kofi-row"><a class="kofi" data-kofi="footer" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Support DJSpinThat</a><span>Free and ad-free. Tips help cover hosting and design costs 💜</span></div>
     <div>Setlists come from fan trackers and press reports and update after every show. Play buttons search Spotify or Apple Music, or SoundCloud and YouTube for songs that aren't there, like DDAENG. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
-    <div>Sources: <a href="https://www.billboard.com/lists/bts-surprise-songs-arirang-tour-every-track/" target="_blank" rel="noopener">Billboard</a> · <a href="https://www.forbes.com/sites/laurasirikul/2026/06/24/all-of-the-dj-spin-that-surprise-songs-from-btss-arirang-world-tour/" target="_blank" rel="noopener">Forbes</a> · <a href="https://thehoneypop.com/2026/04/13/bts-surprise-songs-arirang-world-tour/" target="_blank" rel="noopener">The Honey Pop</a> · <a href="https://btsboy.com/bts-arirang-tour-surprise-songs" target="_blank" rel="noopener">BTS surprise song tracker</a> · <a href="https://www.setlist.fm/search?query=BTS" target="_blank" rel="noopener">setlist.fm</a></div>
+    <div id="srcLatest" hidden></div>
+    <div>Sources, checked after every show: live reports from ARMY at the show (<a href="https://x.com/search?q=%23BTS_WORLDTOUR_ARIRANG&f=live" target="_blank" rel="noopener">#BTS_WORLDTOUR_ARIRANG</a> and each city's tag) · <a href="https://www.setlist.fm/search?query=BTS+ARIRANG" target="_blank" rel="noopener">setlist.fm</a> · local press in each city · <a href="https://www.billboard.com/lists/bts-surprise-songs-arirang-tour-every-track/" target="_blank" rel="noopener">Billboard's running list</a> · reports sent to DJ Spin That. A night counts as confirmed once two sources match.</div>
   </footer>
 </main>
 
@@ -1137,6 +1138,8 @@ function ingest(docs){
   ALL.forEach(x=>x.songTitles=(x.songs||[]).map(t=>t.title));
   SHOWS=ALL.filter(x=>x.status!=="upcoming"&&x.songTitles.length);
   UPCOMING=ALL.filter(x=>x.status!=="cancelled"&&(x.status==="upcoming"||!x.songTitles.length));
+  try{const last=SHOWS.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))||(a.order||0)-(b.order||0)).pop();const el=document.getElementById("srcLatest");
+    if(last&&el){el.textContent=`Surprise songs up to date through ${last.city} ${last.night} (${fmtDate(last.date,true)}): ${last.songTitles.join(" × ")}.`;el.hidden=false}}catch(e){}
 }
 const fmtDate=(iso,withYear)=>{if(!iso)return"";const d=new Date(iso+"T12:00:00");return d.toLocaleDateString("en-US",{month:"short",day:"numeric",...(withYear?{year:"numeric"}:{})})};
 
