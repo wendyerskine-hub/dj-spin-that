@@ -9,12 +9,25 @@
 <meta property="og:url" content="https://djspinthat.net/moments.html">
 <meta property="og:title" content="ARIRANG Moments Board · DJ Spin That">
 <meta property="og:description" content="The moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
-<meta property="og:image" content="https://djspinthat.net/og-card.png">
+<meta property="og:image" content="https://djspinthat.net/og-moments.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://djspinthat.net/og-moments.jpg">
 <title>Moments Board · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* page share button */
+header.hero{position:relative}
+.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
+.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
+.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);z-index:50;background:var(--ink);color:var(--night);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (min-width:761px){.toast{bottom:28px}}
+</style>
 <style>
 /* Layout: full-bleed concert backdrop (video or ambient canvas), three stacked "stations" on glass: Spin, My City, My Bias. Deliberately single dark stage look. */
 :root{
@@ -111,7 +124,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
 .pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
 .pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1{padding-right:54px}}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
 .tabbar .tl,.tabbar .ts{font-weight:inherit}
 .tabbar .ts{display:none}
 @media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
@@ -206,6 +219,14 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
   .board-wrap>.console:first-child{order:4}.pager{order:1}#board{order:2}.legend{order:3}
   .mon-list{grid-template-columns:1fr 1fr}.mi{padding:6px 8px;gap:6px}.mi .nm{font-size:14px}.mi .sub{font-size:12px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ARMY of the week */
+.feat{border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,42,75,.18),rgba(168,85,247,.22));display:grid;gap:8px;margin-bottom:14px}
+.feat .fk{font-family:var(--f-mono,monospace);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.feat h3{margin:0;font-size:22px;line-height:1.2}.feat p{margin:0}.feat q{font-style:italic}
+.feat .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.feat .row a,.feat .row button{display:inline-flex;align-items:center;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:inherit;font:600 14px inherit;font-family:inherit;text-decoration:none;cursor:pointer}
+.okline{display:flex;gap:10px;align-items:flex-start;font-size:14px}.okline input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
 </style>
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -222,11 +243,13 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · Moments Board</div>
     <h1><span class="kicker">ARIRANG</span>The Moments Board</h1>
+    <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
     <p class="lede">Every show is a channel on the board, in date order. Each light is one moment ARMY watches for. Lit means there's a fancam. Press SEL on a show to see its moments, or S on a moment to follow it city to city.</p>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading the board…</span></div>
   </header>
 
   <section class="station" id="boardStation" aria-labelledby="boardH">
+    <div id="featured" hidden></div>
     <h2 id="boardH"><small>Station · Moments mixer</small>Tap a light to see the moment</h2>
     <div class="board-wrap">
       <div class="console">
@@ -270,11 +293,13 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
   </section>
 
   <footer>
+    <div><a href="/s/">Every surprise song, city by city →</a></div>
     <div class="follow-row"><span>Follow DJ Spin That</span><a class="follow" href="https://www.tiktok.com/@djspinthat0" target="_blank" rel="noopener me">TikTok <i>@djspinthat0</i></a><a class="follow" href="https://www.instagram.com/djspinthat0613/" target="_blank" rel="noopener me">Instagram <i>@djspinthat0613</i></a><a class="follow" href="https://www.threads.com/@djspinthat0613" target="_blank" rel="noopener me">Threads <i>@djspinthat0613</i></a></div>
     <div class="kofi-row"><a class="kofi" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Love the tracker? Send a spin to keep it free &amp; updating 💜</a></div>
     <div>Clips link to the fans who filmed them; nothing is re-uploaded. Ask and we'll take a link down. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
   </footer>
 </main>
+<script src="share-card.js?v=2"></script>
 <script>
 (function(){
 const $=s=>document.querySelector(s);
@@ -302,6 +327,10 @@ async function load(){
   PLAYED=SHOWS.filter(x=>x.status==="played");UPNEXT=SHOWS.filter(x=>x.status!=="played").slice(0,2);
   CH=PLAYED.concat(UPNEXT);
   MOM=m.moments||[];CLIPS=m.clips||[];
+  try{const f=(m.featured||[])[0];const mo=f&&MOM.find(x=>x.id===f.moment),sh=f&&SHOWS.find(x=>x.id===f.show);
+    if(f&&f.url&&f.credit&&mo){const where=sh?`${sh.city} ${sh.night.replace(" (FESTA)","")}`:"";const box=$("#featured");
+      box.innerHTML=`<div class="feat"><div class="fk">Moment of the Week${f.week?" · "+esc(f.week):""}</div><h3>${esc(mo.label)}${where?" · "+esc(where):""}</h3><p>Filmed by ${esc(f.credit)}${f.note?" · "+esc(f.note):""}</p><div class="row"><a href="${esc(f.url)}" target="_blank" rel="noopener">Watch on ${esc(host(f.url))} ↗</a><button type="button" id="featCard">📸 Save this card</button></div></div>`;box.hidden=false;
+      $("#featCard").addEventListener("click",e=>{if(!window.DJCard)return;DJCard.share({kicker:"Moment of the Week",headline:mo.label,sub:where+(mo.song?" · "+mo.song:""),label:"Filmed by",lines:[f.credit],cta:"Light up your moment 👇",url:"djspinthat.net/moments",file:"moment-of-the-week",text:`${mo.label}${where?" ("+where+")":""} filmed by ${f.credit} is Moment of the Week on DJ Spin That 🎥 https://djspinthat.net/moments.html`,track:"feature/moment"},e.currentTarget)})}}catch(e){}
   solo=Math.max(0,MOM.findIndex(x=>x.id==="who-says-dj-spin-that"));
   const h=(location.hash||"").slice(1);const hs=PLAYED.find(x=>x.id===h);
   sel=hs?hs.id:(PLAYED.length?PLAYED[PLAYED.length-1].id:null);
@@ -405,5 +434,10 @@ if(a.id==="sSend")tr("moments/send-fancam");
  else if(/ko-fi\.com/.test(h))tr("kofi/moments");
 },true);})();
 </script>
+<script>(function(){var b=document.getElementById("pageShare");if(!b)return;
+function toast(m){var t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on")},2400)}
+b.addEventListener("click",function(){var url="https://djspinthat.net/moments.html",text="The BTS ARIRANG Moments Board: the moments ARMY waits for at every show, with fancams 🎥";try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"share-page/moments",event:true})}catch(e){}
+var copy=function(){(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){toast("Link copied. Paste it anywhere 💜")}).catch(function(){toast(url)})};
+if(navigator.share)navigator.share({title:"DJ Spin That",text:text,url:url}).catch(function(e){if(e&&e.name!=="AbortError")copy()});else copy()})})();</script>
 </body>
 </html>

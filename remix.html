@@ -8,12 +8,25 @@
 <meta property="og:url" content="https://djspinthat.net/remix.html">
 <meta property="og:title" content="Remix the ARIRANG setlist · DJ Spin That">
 <meta property="og:description" content="The whole show stays. You drop in one BTS song, wherever you want it. Fan-made.">
-<meta property="og:image" content="https://djspinthat.net/og-card.png">
+<meta property="og:image" content="https://djspinthat.net/og-remix.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://djspinthat.net/og-remix.jpg">
 <title>Remix the Setlist · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&family=Permanent+Marker&display=swap">
-<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* page share button */
+header.hero{position:relative}
+.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
+.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
+.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);z-index:50;background:var(--ink);color:var(--night);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (min-width:761px){.toast{bottom:28px}}
+</style>
 <style>
 /* Layout: full-bleed concert backdrop (video or ambient canvas), three stacked "stations" on glass: Spin, My City, My Bias. Deliberately single dark stage look. */
 :root{
@@ -112,7 +125,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
 .pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
 .pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1{padding-right:54px}}
+@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
 .tabbar .tl,.tabbar .ts{font-weight:inherit}
 .tabbar .ts{display:none}
 @media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
@@ -246,6 +259,14 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .setpl{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 a.btn{text-decoration:none;display:inline-block}
 @media (prefers-reduced-motion:reduce){.tt .vinyl,.drop{animation:none}}
+
+/* ARMY of the week */
+.feat{border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,42,75,.18),rgba(168,85,247,.22));display:grid;gap:8px;margin-bottom:14px}
+.feat .fk{font-family:var(--f-mono,monospace);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.feat h3{margin:0;font-size:22px;line-height:1.2}.feat p{margin:0}.feat q{font-style:italic}
+.feat .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.feat .row a,.feat .row button{display:inline-flex;align-items:center;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:inherit;font:600 14px inherit;font-family:inherit;text-decoration:none;cursor:pointer}
+.okline{display:flex;gap:10px;align-items:flex-start;font-size:14px}.okline input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
 </style>
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -262,6 +283,7 @@ a.btn{text-decoration:none;display:inline-block}
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · ARMY Remix</div>
     <h1><span class="kicker">ARIRANG</span>Remix the <span class="hl-pur">set</span>, add <span class="hl-red">one</span> track</h1>
+    <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
     <p class="lede">Rearrange the ARIRANG setlist any way you want, then dig through the crate and add one BTS song anywhere in the show.</p>
     <p class="inspo" id="inspo"><b>Inspired by @missnotright</b> 💜 This remix idea started with <a href="https://www.tiktok.com/t/ZTP9jg82H/" target="_blank" rel="noopener">her “BTS set change” video ↗</a>. She makes great music education for ARMY: how the songs are built, who made them, and why they hit. Follow her on <a href="https://www.tiktok.com/@missnotright" target="_blank" rel="noopener">TikTok ↗</a> · <a href="https://www.instagram.com/missnotright7/" target="_blank" rel="noopener">Instagram ↗</a></p>
   </header>
@@ -308,6 +330,7 @@ a.btn{text-decoration:none;display:inline-block}
         <div class="fields">
           <div class="field"><label for="why">Why this song? (optional)</label><input id="why" type="text" autocomplete="off" placeholder="It would hit so hard after Butter…"></div>
           <div class="field"><label for="who">Credit me as (optional)</label><input id="who" type="text" autocomplete="off" placeholder="@yourhandle"></div>
+          <label class="okline"><input type="checkbox" id="feat"><span>You can feature my remix as ARMY Remix of the Week, with my credit.</span></label>
         </div>
       </div>
       <div id="after" hidden>
@@ -318,12 +341,14 @@ a.btn{text-decoration:none;display:inline-block}
       <p class="help small" style="margin-top:12px">Dropping the needle opens a pre-filled note on GitHub (a free account is needed). No account? Use “Copy as text” and send it to DJ Spin That by DM.</p>
     </section>
     <section class="station" aria-labelledby="topH">
+      <div id="featured" hidden></div>
       <h2 id="topH"><small>Station · ARMY's picks</small>Most-dropped songs</h2>
       <div class="topl" id="top"></div>
     </section>
   </div>
 
   <footer>
+    <div><a href="/s/">Every surprise song, city by city →</a></div>
     <div class="follow-row"><span>Follow DJ Spin That</span><a class="follow" href="https://www.tiktok.com/@djspinthat0" target="_blank" rel="noopener me">TikTok <i>@djspinthat0</i></a><a class="follow" href="https://www.instagram.com/djspinthat0613/" target="_blank" rel="noopener me">Instagram <i>@djspinthat0613</i></a><a class="follow" href="https://www.threads.com/@djspinthat0613" target="_blank" rel="noopener me">Threads <i>@djspinthat0613</i></a></div>
     <div class="kofi-row"><a class="kofi" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Love the tracker? Send a spin to keep it free &amp; updating 💜</a></div>
     <div>Remix idea inspired by <a href="https://www.tiktok.com/@missnotright" target="_blank" rel="noopener">@missnotright</a> 💜</div>
@@ -450,10 +475,14 @@ function renderCrate(){
   $("#moreBtn").hidden=list.length<=shown;
   $("#where").textContent=mineIdx()>=0?`${pick} is in your set, ${whereText()}. Move it with ▲ ▼ above, or pick a different song.`:"Pick one record to add to your set.";
 }
-function remixText(){let n=0;const set=ORDER.filter(x=>x.k!=="act").map(x=>`${String(++n).padStart(2,"0")}. ${x.k==="dj"?(x.t?x.t+" (surprise spin)":"(surprise song)"):x.t}${x.k==="mine"?"  ← added":""}`).join("\n");return{title:`Setlist remix: ${changesText()}`,body:[`Added: ${mineIdx()>=0?pick+" "+whereText():"(none)"}`,`Moved: ${movedCount()} songs`,`Why: ${$("#why").value.trim()||"(not given)"}`,`Credit: ${$("#who").value.trim()||"(none)"}`,"","My set:",set].join("\n")}}
+function remixText(){let n=0;const set=ORDER.filter(x=>x.k!=="act").map(x=>`${String(++n).padStart(2,"0")}. ${x.k==="dj"?(x.t?x.t+" (surprise spin)":"(surprise song)"):x.t}${x.k==="mine"?"  ← added":""}`).join("\n");return{title:`Setlist remix: ${changesText()}`,body:[`Added: ${mineIdx()>=0?pick+" "+whereText():"(none)"}`,`Moved: ${movedCount()} songs`,`Why: ${$("#why").value.trim()||"(not given)"}`,`Credit: ${$("#who").value.trim()||"(none)"}`,`Feature OK: ${$("#feat").checked?"yes":"no"}`,"","My set:",set].join("\n")}}
 function shareLine(){return`My ARIRANG setlist remix: ${changesText()} 🎧 How would you run the show? djspinthat.net/remix #DJSpinThat #ARMY`}
 function renderSend(){const a=$("#drop");a.setAttribute("aria-disabled",(mineIdx()>=0||movedCount())?"false":"true");const t=remixText();a.href=ISSUES+"?labels=remix&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);$("#shareText").textContent=shareLine()}
-function renderTop(rx){const top=(rx&&rx.top)||[];const box=$("#top");
+function renderFeatured(rx){const f=(rx&&rx.featured||[])[0];const box=$("#featured");if(!f||!f.handle){box.hidden=true;return}
+  const sum=[f.add?`+ ${f.add}${f.after?" after "+f.after:""}`:"",f.moved?`${f.moved} songs moved`:"",(f.spins||[]).length?"surprise spin: "+f.spins.join(" × "):""].filter(Boolean).join(" · ");
+  box.innerHTML=`<div class="feat"><div class="fk">ARMY Remix of the Week${f.week?" · "+esc(f.week):""}</div><h3>${esc(f.handle)}'s remix</h3>${sum?`<p>${esc(sum)}</p>`:""}${f.why?`<p><q>${esc(f.why)}</q></p>`:""}<div class="row">${f.link?`<a href="${esc(f.link)}" target="_blank" rel="noopener">See ${esc(f.handle)}'s post ↗</a>`:""}<button type="button" id="featCard">📸 Save this card</button></div></div>`;box.hidden=false;
+  $("#featCard").addEventListener("click",e=>{if(!window.DJCard)return;DJCard.share({kicker:"ARMY Remix of the Week",headline:f.handle+"'s ARIRANG remix",sub:sum,lines:(f.list||[]).map(t=>({text:t,hl:f.add&&t.indexOf(f.add)>=0})),label:f.list&&f.list.length?"":(f.why?"Why":""),cta:"Remix yours 👇",url:"djspinthat.net/remix",file:"remix-of-the-week",text:`${f.handle}'s ARIRANG remix is ARMY Remix of the Week on DJ Spin That 🎛️ https://djspinthat.net/remix.html`,track:"feature/remix"},e.currentTarget)})}
+function renderTop(rx){renderFeatured(rx);const top=(rx&&rx.top)||[];const box=$("#top");
   if(!top.length){box.innerHTML=`<p class="help">ARMY's picks show up here once the first remixes are counted. Be one of the first.</p>`;return}
   const max=top[0][1]||1;box.innerHTML=top.slice(0,8).map(([t,n],k)=>{const c=CAT.find(x=>x.t===t);const p=PAL[(c?c.ai:k)%PAL.length];
     return `<div class="topi"><span class="disc" style="background:radial-gradient(circle,${p[0]} 0 26%,#0b0710 27% 31%,#151119 32% 100%);box-shadow:inset 0 0 0 1px #273145"></span><span style="flex:1;min-width:0"><b style="font-size:15px">${esc(t)}</b><span class="bar"><i style="width:${Math.round(n/max*100)}%"></i></span></span><span style="font-family:var(--f-mono);font-size:12px;color:var(--muted)">${esc(n)}</span></div>`}).join("")}
@@ -518,5 +547,10 @@ if(a.id==="drop")tr("remix/send/"+(document.querySelector('[data-pick][aria-pres
  else if(/ko-fi\.com/.test(h))tr("kofi/remix");
 },true);})();
 </script>
+<script>(function(){var b=document.getElementById("pageShare");if(!b)return;
+function toast(m){var t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on")},2400)}
+b.addEventListener("click",function(){var url="https://djspinthat.net/remix.html",text="Remix the BTS ARIRANG setlist: move any song, add one of your own, spin the 2 surprise songs 🎛️";try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"share-page/remix",event:true})}catch(e){}
+var copy=function(){(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){toast("Link copied. Paste it anywhere 💜")}).catch(function(){toast(url)})};
+if(navigator.share)navigator.share({title:"DJ Spin That",text:text,url:url}).catch(function(e){if(e&&e.name!=="AbortError")copy()});else copy()})})();</script>
 </body>
 </html>

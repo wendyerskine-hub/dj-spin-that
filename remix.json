@@ -1,5 +1,7 @@
 {
-  "updated": "2026-11-19",
-  "about": "Tally of songs ARMY dropped into their setlist remix. Add [\"Song title\", count] pairs to top, biggest first. Leave top empty to hide the chart.",
-  "top": []
+ "updated": "2026-11-19",
+ "about": "Tally of songs ARMY dropped into their setlist remix. Add [\"Song title\", count] pairs to top, biggest first. Leave top empty to hide the chart.",
+ "top": [],
+ "featured": [],
+ "about_featured": "ARMY Remix of the Week. Put the newest first: {\"week\":\"Nov 23\",\"handle\":\"@their_handle\",\"link\":\"their post URL (optional)\",\"add\":\"Song they added\",\"after\":\"song it follows\",\"moved\":3,\"spins\":[\"surprise 1\",\"surprise 2\"],\"why\":\"their reason (optional)\",\"list\":[\"01 Hooligan\", \"...\"] (optional full set)}. Only feature people who ticked \"Feature OK: yes\"."
 }

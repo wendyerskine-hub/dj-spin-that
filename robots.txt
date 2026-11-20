@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /post-kit.html
+Disallow: /komca-check.html
+Disallow: /gif-labeler.html
+Disallow: /tools/
+
+Sitemap: https://djspinthat.net/sitemap.xml
