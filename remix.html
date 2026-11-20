@@ -381,6 +381,7 @@ async function load(){
   const inSet=new Set(ACTS.flatMap(a=>a.songs).filter(x=>x!=="*").map(norm));
   ((sh&&sh.shows)||[]).forEach(s=>(s.songs||[]).forEach(x=>{SPUN.add(norm(x.title));POOL[norm(x.title)]=x.title}));
   ARIRANG_EXTRAS.forEach(t=>{POOL[norm(t)]=POOL[norm(t)]||t});
+  ["One More Night","NORMAL (Korean Ver.)"].forEach(t=>SPUN.add(norm(t))); // played in Busan in place of Please / NORMAL
   DISCO.slice().reverse().forEach(([album,year,tracks],ri)=>{const ai=DISCO.length-1-ri;tracks.forEach(([t,who])=>{if(who&&/^Solo/.test(who))return;if(inSet.has(norm(t)))return;CAT.push({t,album,year,who:who||"",ai,spun:SPUN.has(norm(t))})})});
   TOTAL=ACTS.reduce((n,a)=>n+a.songs.length,0);
   const enc=ACTS.findIndex(a=>/encore/i.test(a.name));

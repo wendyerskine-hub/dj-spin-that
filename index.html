@@ -1458,7 +1458,12 @@ const SUBUNITS=new Set(["Rap line","Vocal line","Jin, j-hope & Jung Kook","Jimin
 const UNIT_WHO={"Rap line":"Rap line · RM, SUGA, j-hope","Vocal line":"Vocal line · Jin, Jimin, V, Jung Kook"};
 const nk=t=>String(t).toLowerCase().replace(/[^a-z0-9]/g,"");
 let discoFilter="all";
-function playsByKey(){const m={};SHOWS.forEach(s=>s.songTitles.forEach(t=>{(m[nk(t)]=m[nk(t)]||[]).push(s)}));return m}
+// Main-set swaps: songs played in place of a main-set song (not surprise songs), so they count as played on the checklist
+const SET_SWAPS=[
+ {show:"2026-0180-busan-n1",song:"One More Night",replaced:"Please"},{show:"2026-0190-busan-n2",song:"One More Night",replaced:"Please"},
+ {show:"2026-0180-busan-n1",song:"NORMAL (Korean Ver.)",replaced:"NORMAL"},{show:"2026-0190-busan-n2",song:"NORMAL (Korean Ver.)",replaced:"NORMAL"}];
+function playsByKey(){const m={};SHOWS.forEach(s=>s.songTitles.forEach(t=>{(m[nk(t)]=m[nk(t)]||[]).push(s)}));
+  SET_SWAPS.forEach(w=>{const s=ALL.find(x=>x.id===w.show);if(!s)return;const a=(m[nk(w.song)]=m[nk(w.song)]||[]);if(!a.includes(s))a.push(s)});return m}
 function placesText(pl){return pl.map(s=>`${s.city} N${(s.night.match(/\d+/)||[""])[0]}${s.date?" ("+fmtDate(s.date)+")":""}`).join(", ")}
 function renderDisco(){
   const P=playsByKey();const known=new Set();let played=0,total=0;
