@@ -280,6 +280,7 @@ a.btn{text-decoration:none;display:inline-block}
         <p class="sub">Use ▲ ▼ (or drag the ⠿ handle) to move any song, even into another act. Pink = your added track. <button type="button" class="linkbtn" id="spinAll">🎲 Spin both surprise songs</button> · <button type="button" class="linkbtn" id="resetSet">Reset to the real setlist</button></p>
         <div class="listen">
           <div class="seg" role="group" aria-label="Play songs on"><button type="button" data-svc="spotify"><span class="dot sp"></span>Spotify</button><button type="button" data-svc="apple"><span class="dot am"></span>Apple Music</button><button type="button" data-svc="youtube"><span class="dot yt"></span>YouTube</button></div>
+          <button type="button" class="btn" id="cardRemix" style="padding:9px 16px">📸 Save my remix card</button>
           <button type="button" class="btn ghost" id="copyList" style="padding:9px 16px">Copy my tracklist</button>
         </div>
         <p class="help small" id="listHelp" style="margin:0 0 6px">Want it as a playlist? Copy your tracklist and paste it into a free playlist converter (like TuneMyMusic or Soundiiz). It builds the playlist in your Spotify or Apple Music.</p>
@@ -329,6 +330,7 @@ a.btn{text-decoration:none;display:inline-block}
     <div>Just for fun: the real setlist is up to BTS. Setlist from fan trackers and press reports. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
   </footer>
 </main>
+<script src="share-card.js?v=1"></script>
 <script>
 (function(){
 const $=s=>document.querySelector(s);
@@ -477,6 +479,10 @@ function addMine(t){pick=t;const i=mineIdx();if(i>=0)ORDER[i].t=pick;else{const 
   document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end)})();
 $("#q").addEventListener("input",()=>{shown=24;renderCrate()});
 document.querySelectorAll("[data-svc]").forEach(b=>b.addEventListener("click",()=>{svc=b.dataset.svc;try{localStorage.setItem("arirang-svc",svc)}catch(e){}render()}));
+$("#cardRemix").addEventListener("click",e=>{if(!window.DJCard)return;let n=0;
+  const lines=ORDER.filter(x=>x.k==="song"||x.k==="mine"||x.k==="dj").map(x=>({text:String(++n).padStart(2,"0")+"  "+(x.k==="dj"?(x.t?x.t+" 🎲":"Surprise song 🎲"):x.t)+(x.k==="mine"?"  ← my add":""),hl:x.k==="mine"}));
+  DJCard.share({kicker:"BTS ARIRANG Tour · ARMY Remix",headline:"My ARIRANG remix",headMax:104,sub:changesText(),lines,cta:"Remix yours 👇",url:"djspinthat.net/remix",file:"my-arirang-remix",
+    text:`My ARIRANG remix: ${changesText()} 🎛️ Remix yours: https://djspinthat.net/remix.html`,track:"remix"},e.currentTarget)});
 $("#copyList").addEventListener("click",()=>{const text=listText();
   (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#listMsg").textContent="Tracklist copied! "+remixList().length+" songs (the two nightly surprise songs aren't included)."}).catch(()=>{$("#listMsg").textContent="Copy didn't work here. Select the list below and copy it.";let p=$("#listPre");if(!p){p=document.createElement("textarea");p.id="listPre";p.rows=8;p.readOnly=true;p.style.cssText="width:100%;margin:6px 0;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:13px";$("#listMsg").after(p)}p.value=text;p.select()})});
 $("#moreBtn").addEventListener("click",()=>{shown+=24;renderCrate()});

@@ -80,6 +80,7 @@ button,select,input{font:inherit}
 .btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:12px 22px;font-weight:600;background:var(--gold);color:#1a0b2e;letter-spacing:.02em;transition:transform .15s, box-shadow .2s}
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(199,125,255,.45)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.card-btn{margin-top:10px;display:inline-flex;align-items:center;gap:6px}
 .btn:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible,.seg button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
 label{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 select{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
@@ -1134,6 +1135,7 @@ section.golinks{grid-column:1/-1}
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="share-card.js?v=1"></script>
 <script>
 /* ---------- Tour data: loaded live from the shared database ("shows" collection) ---------- */
 let SONGS={}, SHOWS=[], UPCOMING=[], ALL=[];
@@ -1269,7 +1271,11 @@ function updateSpinQR(){
   if(!current)return;
   const url=linkFor(current);
   drawQR($("#spinQR"),url,156);
-  $("#spinBtns").innerHTML=svcButtons(current);
+  $("#spinBtns").innerHTML=svcButtons(current)+`<button type="button" class="btn card-btn" id="cardSpin">📸 Save my card</button>`;
+  $("#cardSpin").addEventListener("click",e=>{if(!window.DJCard)return;const t=current,pl=playsOf(t);
+    DJCard.share({kicker:"The DJ spun me",headline:t,sub:metaLine(t),label:pl.length?`Played ${pl.length}× on the ARIRANG tour`:"",
+      lines:pl.length?pl.slice(0,9).map(p=>`${p.city} ${p.night.replace(" (FESTA)","")}`).concat(pl.length>9?[`+ ${pl.length-9} more`]:[]):["Still in the vault 👀","Not played on the ARIRANG tour yet"],
+      cta:"Spin yours 👇",url:"djspinthat.net",file:"dj-spin-that-"+t.toLowerCase().replace(/[^a-z0-9]+/g,"-"),text:`The DJ spun me ${t} 🎧 Spin yours: https://djspinthat.net`,track:"spin"},e.currentTarget)});
 }
 /* DJ table: platters spin up, titles flick on the mixer screen, then land */
 const DJ=(id=>document.getElementById("dj-"+id));
@@ -1366,8 +1372,11 @@ function renderCity(){
   }
   const cards=show.songs.map(t=>songCard(t.title,"BTS",metaLine(t.title),"",show.disputed));
   try{$("#findSel").value=showSlug(show)}catch(e){}
-  $("#cityResult").innerHTML=head+cards.map(c=>c.html).join("")+fancamBox(show)+`<div class="share-row"><button class="btn ghost" type="button" id="shareShow">Share this show</button><span class="msg" aria-live="polite"></span></div>`;
+  $("#cityResult").innerHTML=head+cards.map(c=>c.html).join("")+fancamBox(show)+`<div class="share-row"><button class="btn card-btn" type="button" id="cardShow">📸 I was there: save my card</button><button class="btn ghost" type="button" id="shareShow">Share this show</button><span class="msg" aria-live="polite"></span></div>`;
   $("#shareShow").addEventListener("click",e=>shareShow(show,e.currentTarget));
+  $("#cardShow").addEventListener("click",e=>{if(!window.DJCard)return;const n=show.night.replace(" (FESTA)",""),sl=showSlug(show);
+    DJCard.share({kicker:"BTS ARIRANG Tour · "+showDate(show),headline:"I was at "+show.city+"\n"+n,sub:show.venue||"",label:"The DJ spun",lines:show.songTitles,
+      cta:"What did YOUR night get? 👇",url:"djspinthat.net/#"+sl,file:"dj-spin-that-"+sl,text:`${show.city} ${n}: ${show.songTitles.join(" × ")} 🎧 ${showShareUrl(show)}`,track:"show/"+sl},e.currentTarget)});
   cards.forEach(c=>drawQR(document.getElementById(c.id),c.url,96));
 }
 citySel.addEventListener("change",()=>{nightSel.value="0";fillNights();renderCity()});
@@ -1932,7 +1941,10 @@ function fillFind(){const sel=$("#findSel");const keep=sel.value;
 function findBySlug(v){return ALL.find(s=>showSlug(s)===v)}
 $("#findGo").addEventListener("click",()=>{const sh=findBySlug($("#findSel").value);if(sh)openShow(sh);else $("#findSel").focus()});
 $("#findSel").addEventListener("change",()=>{const sh=findBySlug($("#findSel").value);if(sh)openShow(sh)});
-function shareShow(sh,btn){const url="https://djspinthat.net/#"+showSlug(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
+// Shows with their own share page (s/<slug>.html): the link preview shows the city and its surprise songs
+let SHARE_PAGES=new Set();fetch("s/index.json",{cache:"no-cache"}).then(r=>r.ok?r.json():[]).then(a=>{SHARE_PAGES=new Set((a||[]).map(x=>x.slug))}).catch(()=>{});
+const showShareUrl=sh=>{const sl=showSlug(sh);return SHARE_PAGES.has(sl)&&sh.songTitles.length?"https://djspinthat.net/s/"+sl+".html":"https://djspinthat.net/#"+sl};
+function shareShow(sh,btn){const url=showShareUrl(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
   const msg=btn.parentElement.querySelector(".msg");
   const copy=()=>navigator.clipboard.writeText(url).then(()=>{msg.textContent="Link copied. Paste it anywhere."}).catch(()=>{msg.textContent=url});
   if(navigator.share){navigator.share({title:"DJ Spin That",text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()})}else copy();}
@@ -1971,7 +1983,7 @@ function toast(msg){let t=document.querySelector(".toast");if(!t){t=document.cre
   t.textContent=msg;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2200)}
 $("#pageShare").addEventListener("click",()=>{
   const h=(location.hash||"").slice(1);const sh=currentTab==="tour"&&findBySlug(h);
-  if(sh){const url="https://djspinthat.net/#"+showSlug(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
+  if(sh){const url=showShareUrl(sh);const text=`${sh.city} ${sh.night.replace(" (FESTA)","")}: ${sh.songTitles.length?sh.songTitles.join(" × "):"surprise songs coming soon"} — DJ Spin That`;
     track("share-page/show/"+showSlug(sh));return doShare("DJ Spin That",text,url)}
   const [title,text,slug]=TAB_SHARE[currentTab]||TAB_SHARE.spin;track("share-page/"+currentTab);
   doShare(title+" · DJ Spin That",text,"https://djspinthat.net/#"+slug)});
