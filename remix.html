@@ -169,7 +169,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .trk.mine{min-height:48px;background:linear-gradient(90deg,rgba(255,42,75,.28),rgba(168,85,247,.18));border:1px solid var(--red);box-shadow:0 0 22px rgba(255,42,75,.35)}
 .trk.mine .t{font-size:18px;font-weight:700;color:#fff}
 .trk.mine .no{color:var(--pink)}
-.trk .mv{display:flex;gap:4px;flex:none}
+.trk .mv{display:flex;gap:4px;flex:none;padding-left:4px;border-left:1px solid rgba(255,255,255,.08)}
 .trk .mv button{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);font-size:14px;cursor:pointer;display:grid;place-items:center;padding:0}
 .trk .mv button:disabled{opacity:.3;cursor:default}
 .trk .mv button:hover:not(:disabled){border-color:var(--pink)}
@@ -185,8 +185,9 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .trk.spun-now{animation:spunNow .9s ease}
 @keyframes spunNow{0%{transform:scale(.97);box-shadow:0 0 0 0 rgba(255,42,75,.7)}60%{transform:scale(1.02);box-shadow:0 0 22px 4px rgba(255,42,75,.45)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){.trk.spun-now{animation:none}}
+.addback{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
 .linkbtn{background:none;border:0;color:var(--pink);text-decoration:underline;font:inherit;cursor:pointer;padding:0}
-@media (max-width:560px){.trk{gap:6px;padding:5px 6px}.trk .grab{display:none}.trk .no{width:22px}.trk .t{flex:1 1 0;overflow-wrap:anywhere;font-size:15px}.trk .play{padding:0 10px;min-height:36px}.trk .play .w{display:none}.trk .mv{margin-left:auto;gap:3px}.trk .mv button{width:36px;height:36px}.trk.mine,.trk.dj.has{flex-wrap:wrap}.trk.mine .t,.trk.dj.has .t{flex:1 1 140px}.trk .spinb{min-height:36px;padding:0 10px}.trk .marker{font-size:13px}}
+@media (max-width:560px){.trk{gap:6px;padding:5px 6px}.trk .grab{display:none}.trk .no{width:22px}.trk .t{flex:1 1 0;overflow-wrap:anywhere;font-size:15px}.trk .no{order:0}.trk .play{order:1;padding:0 10px;min-height:36px;margin-right:0}.trk .t{order:2}.trk .marker{order:3}.trk .spinb{order:4}.trk .mv{order:5}.trk .rm{order:6}.trk .play .w{display:none}.trk .mv{margin-left:auto;gap:3px}.trk .mv button{width:36px;height:36px}.trk.mine,.trk.dj.has{flex-wrap:wrap}.trk.mine .t,.trk.dj.has .t{flex:1 1 140px}.trk .spinb{min-height:36px;padding:0 10px}.trk .marker{font-size:13px}}
 .rec,#tracks,.tl{min-width:0;max-width:100%}
 .marker{font-family:"Permanent Marker",cursive;font-size:15px;color:var(--pink);transform:rotate(-4deg)}
 .crate-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
@@ -352,7 +353,7 @@ function songLink(t){const q=encodeURIComponent(("BTS "+t.replace(/\s*\(.*?\)\s*
 function playBtn(t){const l=songLink(t);return`<a class="play" href="${l.href}" target="_blank" rel="noopener" aria-label="Play ${esc(t)} on ${l.name}"><span class="dot ${l.cls}"></span>▶<span class="w"> ${l.name}</span></a>`}
 let ACTS=[],CAT=[],SPUN=new Set(),pick=null,slot=null,shown=24,TOTAL=0;
 // ORDER: the remixed show as a flat list. {k:"act",name} dividers stay put; {k:"song",t,o} / {k:"dj",o} / {k:"mine",t} move. o = original position.
-let ORDER=[],ORIG=[],POOL={};
+let ORDER=[],ORIG=[],POOL={},lastMineAt=null;
 
 async function load(){
   const get=(u,fb)=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>fb);
@@ -409,7 +410,7 @@ function renderTracks(){
     else if(x.k==="dj")h+=`<li><div class="trk dj${moved?" moved":""}${x.t?" has":""}" data-idx="${i}">${mv}${no}<span class="t">${x.t?`<small class="djl">🎲 DJ Spin That surprise</small>${esc(x.t)}`:"DJ Spin That · surprise song"}</span>${x.t?playBtn(x.t):""}<button type="button" class="spinb" data-spin="${i}" aria-label="Spin a random surprise song">🎲 ${x.t?"Re-spin":"Spin"}</button>${ctl}</div></li>`;
     else h+=`<li><div class="trk${moved?" moved":""}" data-idx="${i}">${mv}${no}<span class="t">${esc(x.t)}</span>${playBtn(x.t)}${ctl}</div></li>`});
   if(open)h+="</ol>";
-  if(mineIdx()<0&&pick)h+=`<p class="help small" style="margin-top:8px">Pick a song in the crate below to add it to your set.</p>`;
+  if(mineIdx()<0)h+=`<div class="addback">${pick?`<button type="button" class="spinb" id="addBack">＋ Add ${esc(pick)} back</button>`:""}<span class="help small">or tap any record in the crate below to add a song</span></div>`;
   $("#tracks").innerHTML=h;
   const tot=ORDER.filter(x=>x.k!=="act").length,mk=ORDER.filter(x=>x.k!=="act").findIndex(x=>x.k==="mine");
   const v=$("#vinyl");v.querySelectorAll(".ring").forEach(r=>r.remove());
@@ -439,10 +440,12 @@ document.addEventListener("click",e=>{
   if(up||dn){const i=+(up||dn).dataset[up?"up":"down"],it=ORDER[i];move(i,up?-1:1);const ni=ORDER.indexOf(it);const b=document.querySelector(`[data-idx="${ni}"] [data-${up?"up":"down"}]`)||document.querySelector(`[data-idx="${ni}"] button`);if(b)b.focus({preventScroll:false});return}
   const sb=e.target.closest("[data-spin]");if(sb){spinDj(+sb.dataset.spin);return}
   if(e.target.closest("#spinAll")){ORDER.forEach((x,i)=>{if(x.k==="dj")x.t=null});ORDER.forEach((x,i)=>{if(x.k==="dj")spinDj(i)});return}
-  if(e.target.closest("[data-rm]")){const i=mineIdx();if(i>=0)ORDER.splice(i,1);save();render();return}
+  if(e.target.closest("#addBack")){addMine(pick);return}
+  if(e.target.closest("[data-rm]")){const i=mineIdx();if(i>=0){lastMineAt=i;ORDER.splice(i,1)}save();render();return}
   if(e.target.closest("#resetSet")){pick=pick||null;buildOrder();save();render();return}
-  const p=e.target.closest("[data-pick]");if(p){pick=p.dataset.pick;const i=mineIdx();if(i>=0)ORDER[i].t=pick;else{let at=ORDER.findIndex(x=>x.k==="song"&&norm(x.t)==="butter");at=at<0?Math.floor(ORDER.length/2):at+1;ORDER.splice(at,0,{k:"mine",t:pick})}save();render();
-    const m=document.querySelector(".trk.mine");if(m&&innerWidth<860)m.scrollIntoView({behavior:"smooth",block:"center"})}});
+  const p=e.target.closest("[data-pick]");if(p){addMine(p.dataset.pick)}});
+function addMine(t){pick=t;const i=mineIdx();if(i>=0)ORDER[i].t=pick;else{const at=lastMineAt!=null&&lastMineAt<=ORDER.length?lastMineAt:(()=>{const b=ORDER.findIndex(x=>x.k==="song"&&norm(x.t)==="butter");return b<0?Math.floor(ORDER.length/2):b+1})();ORDER.splice(Math.max(1,at),0,{k:"mine",t:pick})}save();render();
+  const m=document.querySelector(".trk.mine");if(m){m.classList.add("spun-now");if(innerWidth<860)m.scrollIntoView({behavior:"smooth",block:"center"})}}
 // drag to reorder (mouse and touch) with the ⠿ handle
 (()=>{let drag=null;
   document.addEventListener("pointerdown",e=>{const g=e.target.closest("[data-grab]");if(!g)return;e.preventDefault();drag={i:+g.dataset.grab,it:ORDER[+g.dataset.grab]};g.closest(".trk").classList.add("dragging");g.setPointerCapture&&g.setPointerCapture(e.pointerId)});
@@ -480,6 +483,7 @@ if(a.id==="drop")tr("remix/send/"+(document.querySelector('[data-pick][aria-pres
  else if(a.id==="resetSet")tr("remix/reset");
  else if(a.dataset.up!=null||a.dataset.down!=null)tr("remix/move");
  else if(a.hasAttribute("data-rm"))tr("remix/remove-added");
+ else if(a.id==="addBack")tr("remix/add-back");
  else if(/open\.spotify\.com/.test(h))tr("remix/play/spotify");
  else if(/music\.apple\.com/.test(h))tr("remix/play/apple-music");
  else if(/soundcloud\.com/.test(h))tr("remix/play/soundcloud");
