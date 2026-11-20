@@ -546,6 +546,10 @@ section.deck-nav{grid-column:1/-1}
 @keyframes dkspin{to{transform:rotate(360deg)}}
 .dk-cap{text-align:center;font-family:var(--f-mono);font-size:13px;letter-spacing:.04em;color:var(--ink);margin-bottom:10px}
 .dk-pads{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+/* narrow decks (big screens shrink them, small phones, large text): pads go 2x2 so every label fits */
+.dk-a,.dk-b{container-type:inline-size}
+.dk-pads .dk-pad{padding-inline:4px;overflow-wrap:normal;word-break:normal;hyphens:none}
+@container (max-width:340px){.dk-pads{grid-template-columns:repeat(2,minmax(0,1fr))}.dk-pads .dk-pad{min-height:54px;font-size:14px}.dk-pads .dk-pad small{font-size:10px}}
 .dk-pad{min-height:60px;padding:4px 2px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;text-decoration:none;cursor:pointer;font:inherit;font-size:14px;font-weight:600;line-height:1.1;color:#FF5468;background:#2A141A;border:1.5px solid #FF2A4B}
 .dk-pad small{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;font-weight:400;opacity:.8}
 .dk-b .dk-pad{color:#c99bff;background:#1C142A;border-color:#A855F7}
