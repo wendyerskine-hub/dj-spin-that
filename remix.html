@@ -169,6 +169,25 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .trk.mine{min-height:48px;background:linear-gradient(90deg,rgba(255,42,75,.28),rgba(168,85,247,.18));border:1px solid var(--red);box-shadow:0 0 22px rgba(255,42,75,.35)}
 .trk.mine .t{font-size:18px;font-weight:700;color:#fff}
 .trk.mine .no{color:var(--pink)}
+.trk .mv{display:flex;gap:4px;flex:none}
+.trk .mv button{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);font-size:14px;cursor:pointer;display:grid;place-items:center;padding:0}
+.trk .mv button:disabled{opacity:.3;cursor:default}
+.trk .mv button:hover:not(:disabled){border-color:var(--pink)}
+.trk .grab{cursor:grab;touch-action:none;color:#8f82a8;font-size:18px;padding:4px 2px;user-select:none;flex:none}
+.trk.moved{box-shadow:inset 3px 0 0 var(--purple,#A855F7)}
+.trk.moved .no::after{content:" ↕";color:var(--purple,#A855F7)}
+.trk.dragging{opacity:.55;outline:1px dashed var(--pink)}
+.trk .rm{background:transparent;border:0;color:var(--pink);font-size:16px;cursor:pointer;padding:4px}
+.spinb{flex:none;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--pink);background:rgba(255,42,75,.12);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.trk.dj.has{border-style:solid;border-color:rgba(168,85,247,.6);background:rgba(168,85,247,.12)}
+.trk.dj.has .t{font-family:inherit;font-size:15px;font-weight:700;color:#fff;display:grid}
+.trk .djl{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--pink);font-weight:400}
+.trk.spun-now{animation:spunNow .9s ease}
+@keyframes spunNow{0%{transform:scale(.97);box-shadow:0 0 0 0 rgba(255,42,75,.7)}60%{transform:scale(1.02);box-shadow:0 0 22px 4px rgba(255,42,75,.45)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.trk.spun-now{animation:none}}
+.linkbtn{background:none;border:0;color:var(--pink);text-decoration:underline;font:inherit;cursor:pointer;padding:0}
+@media (max-width:560px){.trk{gap:6px;padding:5px 6px}.trk .grab{display:none}.trk .no{width:22px}.trk .t{flex:1 1 0;overflow-wrap:anywhere;font-size:15px}.trk .play{padding:0 10px;min-height:36px}.trk .play .w{display:none}.trk .mv{margin-left:auto;gap:3px}.trk .mv button{width:36px;height:36px}.trk.mine,.trk.dj.has{flex-wrap:wrap}.trk.mine .t,.trk.dj.has .t{flex:1 1 140px}.trk .spinb{min-height:36px;padding:0 10px}.trk .marker{font-size:13px}}
+.rec,#tracks,.tl{min-width:0;max-width:100%}
 .marker{font-family:"Permanent Marker",cursive;font-size:15px;color:var(--pink);transform:rotate(-4deg)}
 .crate-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
 .crate-head .field{display:grid;gap:6px;min-width:0}
@@ -231,8 +250,8 @@ a.btn{text-decoration:none;display:inline-block}
 <main>
   <header class="hero">
     <div class="eyebrow">BTS World Tour · 2026 · ARMY Remix</div>
-    <h1><span class="kicker">ARIRANG</span>Drop <span class="hl-red">one</span> track into the <span class="hl-pur">set</span></h1>
-    <p class="lede">The whole ARIRANG setlist stays on the record. Dig through the crate, pick one BTS song, and choose where the needle drops it.</p>
+    <h1><span class="kicker">ARIRANG</span>Remix the <span class="hl-pur">set</span>, add <span class="hl-red">one</span> track</h1>
+    <p class="lede">Rearrange the ARIRANG setlist any way you want, then dig through the crate and add one BTS song anywhere in the show.</p>
   </header>
 
   <section class="station" aria-labelledby="recH">
@@ -246,7 +265,7 @@ a.btn{text-decoration:none;display:inline-block}
       </div>
       <div class="rec">
         <h3 id="recH">The record</h3>
-        <p class="sub">Pink groove = your track. Tap a “+ drop here” line to move it.</p>
+        <p class="sub">Use ▲ ▼ (or drag the ⠿ handle) to move any song, even into another act. Pink = your added track. <button type="button" class="linkbtn" id="spinAll">🎲 Spin both surprise songs</button> · <button type="button" class="linkbtn" id="resetSet">Reset to the real setlist</button></p>
         <div class="listen">
           <div class="seg" role="group" aria-label="Play songs on"><button type="button" data-svc="spotify"><span class="dot sp"></span>Spotify</button><button type="button" data-svc="apple"><span class="dot am"></span>Apple Music</button></div>
           <button type="button" class="btn ghost" id="copyList" style="padding:9px 16px">Copy my tracklist</button>
@@ -332,6 +351,8 @@ function songLink(t){const q=encodeURIComponent(("BTS "+t.replace(/\s*\(.*?\)\s*
   return svc==="apple"?{href:"https://music.apple.com/us/search?term="+q,cls:"am",name:"Apple Music"}:{href:"https://open.spotify.com/search/"+q,cls:"sp",name:"Spotify"}}
 function playBtn(t){const l=songLink(t);return`<a class="play" href="${l.href}" target="_blank" rel="noopener" aria-label="Play ${esc(t)} on ${l.name}"><span class="dot ${l.cls}"></span>▶<span class="w"> ${l.name}</span></a>`}
 let ACTS=[],CAT=[],SPUN=new Set(),pick=null,slot=null,shown=24,TOTAL=0;
+// ORDER: the remixed show as a flat list. {k:"act",name} dividers stay put; {k:"song",t,o} / {k:"dj",o} / {k:"mine",t} move. o = original position.
+let ORDER=[],ORIG=[],POOL={};
 
 async function load(){
   const get=(u,fb)=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>fb);
@@ -342,39 +363,61 @@ async function load(){
   if(pl.apple)plb.push(`<a class="play" style="min-height:40px;font-size:13px" href="${esc(pl.apple)}" target="_blank" rel="noopener"><span class="dot am"></span>Open the ARIRANG set on Apple Music ↗</a>`);
   if(plb.length){$("#setPl").innerHTML=plb.join("");$("#setPl").hidden=false}
   const inSet=new Set(ACTS.flatMap(a=>a.songs).filter(x=>x!=="*").map(norm));
-  ((sh&&sh.shows)||[]).forEach(s=>(s.songs||[]).forEach(x=>SPUN.add(norm(x.title))));
+  ((sh&&sh.shows)||[]).forEach(s=>(s.songs||[]).forEach(x=>{SPUN.add(norm(x.title));POOL[norm(x.title)]=x.title}));
   DISCO.slice().reverse().forEach(([album,year,tracks],ri)=>{const ai=DISCO.length-1-ri;tracks.forEach(([t,who])=>{if(who&&/^Solo/.test(who))return;if(inSet.has(norm(t)))return;CAT.push({t,album,year,who:who||"",ai,spun:SPUN.has(norm(t))})})});
   TOTAL=ACTS.reduce((n,a)=>n+a.songs.length,0);
   const enc=ACTS.findIndex(a=>/encore/i.test(a.name));
   slot=enc>=0?ACTS.slice(0,enc).reduce((n,a)=>n+a.songs.length,0)+2:Math.floor(TOTAL/2); // default: right after Butter
   const sd=CAT.find(c=>c.t==="Spring Day");pick=sd?sd.t:(CAT[0]&&CAT[0].t);
+  buildOrder();
+  try{const sv=JSON.parse(localStorage.getItem("remix-order")||"null");if(sv&&Array.isArray(sv.order)&&sv.order.filter(x=>x.k!=="act").length>=ORIG.length){ORDER=sv.order;pick=(ORDER.find(x=>x.k==="mine")||{}).t||pick}}catch(e){}
   renderTop(rx);render();
 }
-function songAt(i){let n=0;for(const a of ACTS){if(i<n+a.songs.length)return a.songs[i-n];n+=a.songs.length}return null}
-function prevName(i){for(let k=i-1;k>=0;k--){const s=songAt(k);if(s&&s!=="*")return s;if(s==="*")return"a surprise song"}return null}
-function whereText(){if(slot===0)return"to open the show";if(slot>=TOTAL)return"to close the show";return"right after "+prevName(slot)}
-function render(){renderTracks();renderCrate();renderSend();document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.svc===svc)))}
-function remixList(){const out=[];let i=0;ACTS.forEach(a=>a.songs.forEach(s=>{if(i===slot&&pick)out.push(pick);if(s!=="*")out.push(s);i++}));if(slot>=TOTAL&&pick)out.push(pick);return out}
+function buildOrder(){ORDER=[];let o=0;ACTS.forEach((a,ai)=>{ORDER.push({k:"act",name:a.name});a.songs.forEach(t=>{ORDER.push(t==="*"?{k:"dj",o:o++}:{k:"song",t,o:o++})})});
+  ORIG=ORDER.filter(x=>x.k!=="act").map(x=>x.o);
+  // your added song starts right after Butter (or mid-show)
+  let at=ORDER.findIndex(x=>x.k==="song"&&norm(x.t)==="butter");at=at<0?Math.floor(ORDER.length/2):at+1;
+  if(pick)ORDER.splice(at,0,{k:"mine",t:pick})}
+const save=()=>{try{localStorage.setItem("remix-order",JSON.stringify({order:ORDER}))}catch(e){}};
+const label=x=>x.k==="dj"?"a surprise song":x.t;
+const mineIdx=()=>ORDER.findIndex(x=>x.k==="mine");
+function prevItem(i){for(let k=i-1;k>=0;k--)if(ORDER[k].k!=="act")return ORDER[k];return null}
+function whereText(){const i=mineIdx();if(i<0)return"";const pv=prevItem(i);return pv?"right after "+label(pv):"to open the show"}
+function movedCount(){const seq=ORDER.filter(x=>x.k==="song"||x.k==="dj").map(x=>x.o);let n=0;seq.forEach((o,k)=>{if(o!==k)n++});return n}
+function changesText(){const m=movedCount();const sp=ORDER.filter(x=>x.k==="dj"&&x.t).map(x=>x.t);const add=pick&&mineIdx()>=0?`+ ${pick} ${whereText()}`:"";return [add,m?`${m} song${m>1?"s":""} moved`:"",sp.length?`surprise spin: ${sp.join(" × ")}`:""].filter(Boolean).join(", ")||"the original setlist"}
+function remixList(){return ORDER.filter(x=>x.k==="song"||x.k==="mine"||(x.k==="dj"&&x.t)).map(x=>x.t)}
 function listText(){return remixList().map(t=>"BTS - "+t).join("\n")}
+function render(){renderTracks();renderCrate();renderSend();document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.svc===svc)))}
+function move(i,dir){ // step one song up/down, hopping over act dividers into the next act
+  let j=i+dir;if(j<0||j>=ORDER.length)return;
+  if(ORDER[j].k==="act"){if(j===0)return;const it=ORDER.splice(i,1)[0];ORDER.splice(dir<0?j:j,0,it);} // cross the divider
+  else{const t=ORDER[i];ORDER[i]=ORDER[j];ORDER[j]=t}
+  save();render()}
+function spinDj(i){const pool=Object.values(POOL);if(!pool.length)return;
+  const taken=new Set(ORDER.filter(x=>x.t).map(x=>norm(x.t)));const fresh=pool.filter(t=>!taken.has(norm(t)));const list=fresh.length?fresh:pool;
+  ORDER[i].t=list[Math.floor(Math.random()*list.length)];save();render();
+  const row=document.querySelector(`[data-idx="${i}"]`);if(row){row.classList.add("spun-now");setTimeout(()=>row.classList.remove("spun-now"),900)}}
 function renderTracks(){
-  let h="",i=0,num=0;const tot=TOTAL+(pick?1:0);
-  const slotBtn=k=>`<li><button type="button" class="slot" data-slot="${k}" aria-pressed="${k===slot}" aria-label="${k===0?"Drop your song at the very start":k>=TOTAL?"Drop your song at the end":"Drop your song after "+esc(prevName(k))}"><i></i><span>${k===slot?"▼ NEEDLE DROPS HERE":"+ drop here"}</span><i></i></button></li>`;
-  ACTS.forEach(a=>{h+=`<div class="act">${esc(a.name)}</div><ol class="tl">`;
-    a.songs.forEach(s=>{
-      if(i===slot&&pick){num++;h+=`<li><div class="trk mine"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(pick)}</span><span class="marker">your pick!</span>${playBtn(pick)}</div></li>`}
-      else h+=slotBtn(i);
-      num++;h+=s==="*"?`<li><div class="trk dj"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">DJ Spin That · surprise song (changes every night)</span></div></li>`:`<li><div class="trk"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(s)}</span>${playBtn(s)}</div></li>`;
-      i++});
-    h+=`</ol>`});
-  if(slot>=TOTAL&&pick){num++;h+=`<ol class="tl"><li><div class="trk mine"><span class="no">${String(num).padStart(2,"0")}</span><span class="t">${esc(pick)}</span><span class="marker">your pick!</span>${playBtn(pick)}</div></li></ol>`}else h+=`<ol class="tl">${slotBtn(TOTAL)}</ol>`;
+  let h="",num=0,open=false;const seqPos={};let sp=0;ORDER.forEach((x,i)=>{if(x.k==="song"||x.k==="dj")seqPos[i]=sp++});
+  const firstMovable=ORDER.findIndex(x=>x.k!=="act"),lastMovable=ORDER.length-1;
+  ORDER.forEach((x,i)=>{
+    if(x.k==="act"){if(open)h+="</ol>";h+=`<div class="act">${esc(x.name)}</div><ol class="tl">`;open=true;return}
+    num++;const moved=(x.k==="song"||x.k==="dj")&&x.o!==seqPos[i];
+    const mv=`<span class="grab" aria-hidden="true" data-grab="${i}">⠿</span>`,ctl=`<span class="mv"><button type="button" data-up="${i}" aria-label="Move ${esc(label(x))} up" ${i===firstMovable?"disabled":""}>▲</button><button type="button" data-down="${i}" aria-label="Move ${esc(label(x))} down" ${i===lastMovable?"disabled":""}>▼</button></span>`;
+    const no=`<span class="no">${String(num).padStart(2,"0")}</span>`;
+    if(x.k==="mine")h+=`<li><div class="trk mine" data-idx="${i}">${mv}${no}<span class="t">${esc(x.t)}</span><span class="marker">your pick!</span>${playBtn(x.t)}${ctl}<button type="button" class="rm" data-rm aria-label="Remove your added song">✕</button></div></li>`;
+    else if(x.k==="dj")h+=`<li><div class="trk dj${moved?" moved":""}${x.t?" has":""}" data-idx="${i}">${mv}${no}<span class="t">${x.t?`<small class="djl">🎲 DJ Spin That surprise</small>${esc(x.t)}`:"DJ Spin That · surprise song"}</span>${x.t?playBtn(x.t):""}<button type="button" class="spinb" data-spin="${i}" aria-label="Spin a random surprise song">🎲 ${x.t?"Re-spin":"Spin"}</button>${ctl}</div></li>`;
+    else h+=`<li><div class="trk${moved?" moved":""}" data-idx="${i}">${mv}${no}<span class="t">${esc(x.t)}</span>${playBtn(x.t)}${ctl}</div></li>`});
+  if(open)h+="</ol>";
+  if(mineIdx()<0&&pick)h+=`<p class="help small" style="margin-top:8px">Pick a song in the crate below to add it to your set.</p>`;
   $("#tracks").innerHTML=h;
-  // grooves on the record: one ring per track, yours glows
+  const tot=ORDER.filter(x=>x.k!=="act").length,mk=ORDER.filter(x=>x.k!=="act").findIndex(x=>x.k==="mine");
   const v=$("#vinyl");v.querySelectorAll(".ring").forEach(r=>r.remove());
-  const outer=48.5,inner=20,band=(outer-inner)/tot,mineK=Math.min(slot,TOTAL);
+  const outer=48.5,inner=20,band=(outer-inner)/Math.max(1,tot);
   for(let k=0;k<tot;k++){const r=outer-k*band,el=document.createElement("span");el.className="ring";
-    const mine=pick&&k===mineK;el.style.cssText=`left:${50-r}%;top:${50-r}%;width:${2*r}%;height:${2*r}%;border:${Math.max(1.5,band*3.2).toFixed(1)}px solid ${mine?"var(--red)":(k%2?"rgba(255,255,255,.05)":"rgba(168,85,247,.08)")};${mine?"box-shadow:0 0 18px rgba(255,42,75,.8),inset 0 0 12px rgba(255,42,75,.6)":""}`;
+    const mine=k===mk;el.style.cssText=`left:${50-r}%;top:${50-r}%;width:${2*r}%;height:${2*r}%;border:${Math.max(1.5,band*3.2).toFixed(1)}px solid ${mine?"var(--red)":(k%2?"rgba(255,255,255,.05)":"rgba(168,85,247,.08)")};${mine?"box-shadow:0 0 18px rgba(255,42,75,.8),inset 0 0 12px rgba(255,42,75,.6)":""}`;
     v.insertBefore(el,v.firstChild)}
-  $("#arm").style.transform=`rotate(${(pick?12+mineK/Math.max(1,tot-1)*20:2).toFixed(1)}deg)`;
+  $("#arm").style.transform=`rotate(${(mk>=0?12+mk/Math.max(1,tot-1)*20:2).toFixed(1)}deg)`;
 }
 function renderCrate(){
   const q=norm($("#q").value);const list=CAT.filter(c=>!q||norm(c.t).includes(q)||norm(c.album).includes(q));
@@ -382,17 +425,33 @@ function renderCrate(){
   $("#crate").innerHTML=vis.length?vis.map((c,k)=>{const p=PAL[c.ai%PAL.length],ang=(c.ai*47+k*13)%360;
     return `<button type="button" class="sleeve" data-pick="${esc(c.t)}" aria-pressed="${c.t===pick}"><span class="art" style="background:linear-gradient(${ang}deg,${p[0]},${p[1]});--x:${8+(c.ai*13)%30}%;--y:${4+(c.ai*7)%20}%"><span class="nm">${esc(c.t)}</span></span><span class="meta">${esc(c.album)} · ${esc(c.year)}${c.who?" · "+esc(c.who):""}${c.spun?`<br><span class="spun">Spun on this tour</span>`:""}</span></button>`}).join(""):`<p class="help" style="grid-column:1/-1;color:#c9b88f">No songs match. Try another word.</p>`;
   $("#moreBtn").hidden=list.length<=shown;
-  $("#where").textContent=pick?`${pick} is on deck, dropping ${whereText()}.`:"Pick a record, then choose where it drops.";
+  $("#where").textContent=mineIdx()>=0?`${pick} is in your set, ${whereText()}. Move it with ▲ ▼ above, or pick a different song.`:"Pick one record to add to your set.";
 }
-function remixText(){return{title:`Setlist remix: ${pick} ${whereText()}`,body:[`Song: ${pick}`,`Where: ${whereText()} (slot ${slot+1})`,`Why: ${$("#why").value.trim()||"(not given)"}`,`Credit: ${$("#who").value.trim()||"(none)"}`].join("\n")}}
-function shareLine(){return`My ARIRANG setlist remix: + ${pick} ${whereText()}. What would you drop in? djspinthat.net/remix #DJSpinThat #ARMY`}
-function renderSend(){const a=$("#drop");a.setAttribute("aria-disabled",pick?"false":"true");const t=remixText();a.href=ISSUES+"?labels=remix&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);$("#shareText").textContent=shareLine()}
+function remixText(){let n=0;const set=ORDER.filter(x=>x.k!=="act").map(x=>`${String(++n).padStart(2,"0")}. ${x.k==="dj"?(x.t?x.t+" (surprise spin)":"(surprise song)"):x.t}${x.k==="mine"?"  ← added":""}`).join("\n");return{title:`Setlist remix: ${changesText()}`,body:[`Added: ${mineIdx()>=0?pick+" "+whereText():"(none)"}`,`Moved: ${movedCount()} songs`,`Why: ${$("#why").value.trim()||"(not given)"}`,`Credit: ${$("#who").value.trim()||"(none)"}`,"","My set:",set].join("\n")}}
+function shareLine(){return`My ARIRANG setlist remix: ${changesText()} 🎧 How would you run the show? djspinthat.net/remix #DJSpinThat #ARMY`}
+function renderSend(){const a=$("#drop");a.setAttribute("aria-disabled",(mineIdx()>=0||movedCount())?"false":"true");const t=remixText();a.href=ISSUES+"?labels=remix&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);$("#shareText").textContent=shareLine()}
 function renderTop(rx){const top=(rx&&rx.top)||[];const box=$("#top");
   if(!top.length){box.innerHTML=`<p class="help">ARMY's picks show up here once the first remixes are counted. Be one of the first.</p>`;return}
   const max=top[0][1]||1;box.innerHTML=top.slice(0,8).map(([t,n],k)=>{const c=CAT.find(x=>x.t===t);const p=PAL[(c?c.ai:k)%PAL.length];
     return `<div class="topi"><span class="disc" style="background:radial-gradient(circle,${p[0]} 0 26%,#0b0710 27% 31%,#151119 32% 100%);box-shadow:inset 0 0 0 1px #273145"></span><span style="flex:1;min-width:0"><b style="font-size:15px">${esc(t)}</b><span class="bar"><i style="width:${Math.round(n/max*100)}%"></i></span></span><span style="font-family:var(--f-mono);font-size:12px;color:var(--muted)">${esc(n)}</span></div>`}).join("")}
-document.addEventListener("click",e=>{const s=e.target.closest("[data-slot]");if(s){slot=+s.dataset.slot;render();return}
-  const p=e.target.closest("[data-pick]");if(p){pick=p.dataset.pick;render();if(innerWidth<860)document.querySelector(".deck").scrollIntoView({behavior:"smooth",block:"start"})}});
+document.addEventListener("click",e=>{
+  const up=e.target.closest("[data-up]"),dn=e.target.closest("[data-down]");
+  if(up||dn){const i=+(up||dn).dataset[up?"up":"down"],it=ORDER[i];move(i,up?-1:1);const ni=ORDER.indexOf(it);const b=document.querySelector(`[data-idx="${ni}"] [data-${up?"up":"down"}]`)||document.querySelector(`[data-idx="${ni}"] button`);if(b)b.focus({preventScroll:false});return}
+  const sb=e.target.closest("[data-spin]");if(sb){spinDj(+sb.dataset.spin);return}
+  if(e.target.closest("#spinAll")){ORDER.forEach((x,i)=>{if(x.k==="dj")x.t=null});ORDER.forEach((x,i)=>{if(x.k==="dj")spinDj(i)});return}
+  if(e.target.closest("[data-rm]")){const i=mineIdx();if(i>=0)ORDER.splice(i,1);save();render();return}
+  if(e.target.closest("#resetSet")){pick=pick||null;buildOrder();save();render();return}
+  const p=e.target.closest("[data-pick]");if(p){pick=p.dataset.pick;const i=mineIdx();if(i>=0)ORDER[i].t=pick;else{let at=ORDER.findIndex(x=>x.k==="song"&&norm(x.t)==="butter");at=at<0?Math.floor(ORDER.length/2):at+1;ORDER.splice(at,0,{k:"mine",t:pick})}save();render();
+    const m=document.querySelector(".trk.mine");if(m&&innerWidth<860)m.scrollIntoView({behavior:"smooth",block:"center"})}});
+// drag to reorder (mouse and touch) with the ⠿ handle
+(()=>{let drag=null;
+  document.addEventListener("pointerdown",e=>{const g=e.target.closest("[data-grab]");if(!g)return;e.preventDefault();drag={i:+g.dataset.grab,it:ORDER[+g.dataset.grab]};g.closest(".trk").classList.add("dragging");g.setPointerCapture&&g.setPointerCapture(e.pointerId)});
+  document.addEventListener("pointermove",e=>{if(!drag)return;const el=document.elementFromPoint(e.clientX,e.clientY);const row=el&&el.closest("[data-idx]");
+    if(!row){const act=el&&el.closest(".act");return}
+    const j=+row.dataset.idx,i=ORDER.indexOf(drag.it);if(j===i)return;
+    ORDER.splice(i,1);ORDER.splice(j,0,drag.it);render();const nr=document.querySelector(`[data-idx="${ORDER.indexOf(drag.it)}"]`);if(nr)nr.classList.add("dragging")});
+  const end=()=>{if(!drag)return;drag=null;save();render()};
+  document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end)})();
 $("#q").addEventListener("input",()=>{shown=24;renderCrate()});
 document.querySelectorAll("[data-svc]").forEach(b=>b.addEventListener("click",()=>{svc=b.dataset.svc;try{localStorage.setItem("arirang-svc",svc)}catch(e){}render()}));
 $("#copyList").addEventListener("click",()=>{const text=listText();
@@ -416,6 +475,11 @@ if(a.id==="drop")tr("remix/send/"+(document.querySelector('[data-pick][aria-pres
  else if(a.id==="copyText")tr("remix/copy-as-text");
  else if(a.id==="moreBtn")tr("remix/dig-deeper");
  else if(a.dataset.pick)tr("remix/pick/"+a.dataset.pick);
+ else if(a.dataset.spin!=null)tr("remix/spin-one");
+ else if(a.id==="spinAll")tr("remix/spin-both");
+ else if(a.id==="resetSet")tr("remix/reset");
+ else if(a.dataset.up!=null||a.dataset.down!=null)tr("remix/move");
+ else if(a.hasAttribute("data-rm"))tr("remix/remove-added");
  else if(/open\.spotify\.com/.test(h))tr("remix/play/spotify");
  else if(/music\.apple\.com/.test(h))tr("remix/play/apple-music");
  else if(/soundcloud\.com/.test(h))tr("remix/play/soundcloud");
