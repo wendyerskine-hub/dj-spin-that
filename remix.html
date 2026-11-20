@@ -236,7 +236,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .seg button{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;min-height:36px}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--night)}
 .seg .dot,.play .dot{width:9px;height:9px;border-radius:50%;flex:none}
-.dot.sp{background:#1ed760}.dot.am{background:#fa2d48}.dot.sc{background:#ff7700}
+.dot.sp{background:#1ed760}.dot.am{background:#fa2d48}.dot.sc{background:#ff7700}.dot.yt{background:#ff3b3b}
 .play{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font-size:12px;font-weight:600;text-decoration:none}
 .play:hover{border-color:var(--gold);background:rgba(199,125,255,.18)}
 .trk.mine .play{border-color:rgba(255,255,255,.4)}
@@ -277,7 +277,7 @@ a.btn{text-decoration:none;display:inline-block}
         <h3 id="recH">The record</h3>
         <p class="sub">Use ▲ ▼ (or drag the ⠿ handle) to move any song, even into another act. Pink = your added track. <button type="button" class="linkbtn" id="spinAll">🎲 Spin both surprise songs</button> · <button type="button" class="linkbtn" id="resetSet">Reset to the real setlist</button></p>
         <div class="listen">
-          <div class="seg" role="group" aria-label="Play songs on"><button type="button" data-svc="spotify"><span class="dot sp"></span>Spotify</button><button type="button" data-svc="apple"><span class="dot am"></span>Apple Music</button></div>
+          <div class="seg" role="group" aria-label="Play songs on"><button type="button" data-svc="spotify"><span class="dot sp"></span>Spotify</button><button type="button" data-svc="apple"><span class="dot am"></span>Apple Music</button><button type="button" data-svc="youtube"><span class="dot yt"></span>YouTube</button></div>
           <button type="button" class="btn ghost" id="copyList" style="padding:9px 16px">Copy my tracklist</button>
         </div>
         <p class="help small" id="listHelp" style="margin:0 0 6px">Want it as a playlist? Copy your tracklist and paste it into a free playlist converter (like TuneMyMusic or Soundiiz). It builds the playlist in your Spotify or Apple Music.</p>
@@ -359,9 +359,10 @@ const ARIRANG_EXTRAS=["One More Night","NORMAL (Korean Ver.)","SWIM with RM (Chi
 
 const PAL=[["#FF2A4B","#5b1a7a"],["#A855F7","#1d2a6b"],["#ffd166","#c2185b"],["#2ec4b6","#3a0ca3"],["#ff8fab","#6a00f4"],["#f15bb5","#00bbf9"],["#fee440","#9b5de5"],["#ff6b6b","#2b2d42"]];
 const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,"");
-let svc="spotify";try{const s=localStorage.getItem("arirang-svc");if(s==="apple"||s==="spotify")svc=s}catch(e){}
+let svc="spotify";try{const s=localStorage.getItem("arirang-svc");if(s==="apple"||s==="spotify"||s==="youtube")svc=s}catch(e){}
 const NOT_STREAMING=new Set(["ddaeng","sea"]);
 function songLink(t){const q=encodeURIComponent(("BTS "+(/Ver\.|Remix/.test(t)?t:t.replace(/\s*\(.*?\)\s*/g," "))).trim());
+  if(svc==="youtube")return{href:"https://www.youtube.com/results?search_query="+q,cls:"yt",name:"YouTube"};
   if(NOT_STREAMING.has(norm(t)))return{href:"https://soundcloud.com/search?q="+q,cls:"sc",name:"SoundCloud"};
   return svc==="apple"?{href:"https://music.apple.com/us/search?term="+q,cls:"am",name:"Apple Music"}:{href:"https://open.spotify.com/search/"+q,cls:"sp",name:"Spotify"}}
 function playBtn(t){const l=songLink(t);return`<a class="play" href="${l.href}" target="_blank" rel="noopener" aria-label="Play ${esc(t)} on ${l.name}"><span class="dot ${l.cls}"></span>▶<span class="w"> ${l.name}</span></a>`}

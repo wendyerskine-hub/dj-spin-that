@@ -1169,7 +1169,8 @@ try{const s=localStorage.getItem("arirang-svc");if(s==="apple"||s==="spotify")sv
 const NOT_STREAMING=new Set(["ddaeng","sea"]);
 const offStream=t=>NOT_STREAMING.has(String(t).toLowerCase().replace(/[^a-z0-9]/g,""));
 function linkForSvc(title,artist,which){
-  const q=encodeURIComponent(((artist||"BTS")+" "+title.replace(/\s*\(.*?\)\s*/g," ")).trim());
+  // keep "(Korean Ver.)" / "(… Remix)" so the search finds that exact version, not the original
+  const q=encodeURIComponent(((artist||"BTS")+" "+(/Ver\.|Remix/.test(title)?title:title.replace(/\s*\(.*?\)\s*/g," "))).trim());
   if(offStream(title)&&which!=="youtube")return `https://soundcloud.com/search?q=${q}`;
   if(which==="youtube")return `https://www.youtube.com/results?search_query=${q}`;
   return which==="apple"?`https://music.apple.com/us/search?term=${q}`:`https://open.spotify.com/search/${q}`;
@@ -1177,7 +1178,9 @@ function linkForSvc(title,artist,which){
 function linkFor(title,artist){return linkForSvc(title,artist,svc)}
 // Songs with an official BTS dance practice video (mostly title tracks). Everything else links to live performances.
 const DANCE_PRACTICE=new Set(["nomoredream","wearebulletproofpt2","no","boyinluv","justoneday","danger","warofhormone","ineedu","dope","run","fire","saveme","bloodsweattears","nottoday","micdrop","dna","gogo","fakelove","idol","boywithluv","dionysus","on","blackswan","dynamite","butter","permissiontodance","baepsaesilverspoon"]);
-function dancePracticeBtn(title,artist){const clean=title.replace(/\s*\(.*?\)\s*/g," ").trim();const key=title.toLowerCase().replace(/[^a-z0-9]/g,"");
+function dancePracticeBtn(title,artist){
+  if(/Ver\.|Remix/.test(title)){const q=((artist||"BTS")+" "+title).trim();return `<a class="svc dp live" data-q="${esc(q)}" data-t="${esc(title)}" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Watch the video on YouTube</a>`}
+  const clean=title.replace(/\s*\(.*?\)\s*/g," ").trim();const key=title.toLowerCase().replace(/[^a-z0-9]/g,"");
   const solo=artist&&artist!=="BTS";const dp=!solo&&DANCE_PRACTICE.has(key);
   const q=((artist||"BTS")+" "+(key==="baepsaesilverspoon"?"Silver Spoon":clean)+(dp?" dance practice":" live performance")).replace(/\s+/g," ").trim();
   return `<a class="svc dp${dp?"":" live"}" data-q="${esc(q)}" data-t="${esc(title)}" href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${dp?"Dance practice on YouTube":"Live performance on YouTube"}</a>`}
@@ -1190,6 +1193,8 @@ function svcButtons(title,artist){
    and point the button at that song. Spotify: on phones, open the app straight into a search for the song
    (spotify:search:), falling back to the Spotify website search if the app isn't installed. */
 const SONG_CACHE_KEY="djst-am-v2";try{localStorage.removeItem("djst-am-v1")}catch(e){}let amCache={};try{amCache=JSON.parse(localStorage.getItem(SONG_CACHE_KEY)||"{}")}catch(e){}
+// versions and remixes keep their "(Korean Ver.)" / "(… Remix)" words in searches
+const keepVer=t=>/Ver\.|Remix/.test(t)?String(t).replace(/[()]/g," "):String(t).replace(/\(.*?\)/g," ");
 const normT=t=>String(t).toLowerCase().replace(/\(.*?\)/g," ").replace(/[^a-z0-9]+/g," ").trim();
 const amPending={};let amN=0;
 function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key])return cb(amCache[key]);
@@ -1205,7 +1210,7 @@ function itunesLookup(title,artist,cb){const key=artist+"|"+title;if(amCache[key
     const best=rs.map(r=>[score(r),r]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0])[0];
     finish(best?best[1].trackViewUrl:"")};
   sc.onerror=()=>finish("");setTimeout(()=>finish(""),12000);
-  sc.src="https://itunes.apple.com/search?"+new URLSearchParams({term:(artist+" "+title.replace(/\(.*?\)/g," ")).trim(),entity:"song",limit:"15",country:"us",callback:name});
+  sc.src="https://itunes.apple.com/search?"+new URLSearchParams({term:(artist+" "+keepVer(title)).replace(/\s+/g," ").trim(),entity:"song",limit:"15",country:"us",callback:name});
   document.head.appendChild(sc)}
 const amIO="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const a=en.target;amIO.unobserve(a);
   itunesLookup(a.dataset.t,a.dataset.a,url=>{if(url){a.href=url;a.dataset.exact="1"}})}),{rootMargin:"200px"}):null;
@@ -1214,12 +1219,12 @@ function upgradeAppleLinks(root){(root||document).querySelectorAll("a.svc.am[dat
 new MutationObserver(()=>upgradeAppleLinks()).observe(document.body,{childList:true,subtree:true});upgradeAppleLinks();
 const isPhone=()=>matchMedia("(hover:none) and (pointer:coarse)").matches;
 document.addEventListener("click",e=>{const a=e.target.closest("a.svc.sp[data-t]");if(!a||!isPhone())return;
-  e.preventDefault();const web=a.href;const q=(a.dataset.a+" "+a.dataset.t.replace(/\(.*?\)/g," ")).replace(/\s+/g," ").trim();
+  e.preventDefault();const web=a.href;const q=(a.dataset.a+" "+keepVer(a.dataset.t)).replace(/\s+/g," ").trim();
   let left=false;const onHide=()=>{if(document.hidden)left=true};document.addEventListener("visibilitychange",onHide);
   location.href="spotify:search:"+encodeURIComponent(q);
   setTimeout(()=>{document.removeEventListener("visibilitychange",onHide);if(!left&&!document.hidden)location.href=web},1600)});
 document.addEventListener("click",e=>{const a=e.target.closest("a.svc.yt[data-t],a.svc.dp");if(!a||!isPhone())return;
-  e.preventDefault();const web=a.href;const q=a.dataset.q||(a.dataset.a+" "+a.dataset.t.replace(/\(.*?\)/g," ")).replace(/\s+/g," ").trim();
+  e.preventDefault();const web=a.href;const q=a.dataset.q||(a.dataset.a+" "+keepVer(a.dataset.t)).replace(/\s+/g," ").trim();
   let left=false;const onHide=()=>{if(document.hidden)left=true};document.addEventListener("visibilitychange",onHide);
   location.href="youtube://results?search_query="+encodeURIComponent(q);
   setTimeout(()=>{document.removeEventListener("visibilitychange",onHide);if(!left&&!document.hidden)location.href=web},1600)});
