@@ -1,12 +1,24 @@
 {
  "updated": "2026-11-19",
- "about": "Moments to watch for at every ARIRANG show, in show order. Add a clip to clips: show = the show id from shows.json, moment = a moment id below, url = link to the fan's own post, credit = their handle, first = true if it happened for the first time at that show.",
+ "about": "Moments to watch for at every ARIRANG show, in concert order (live moments and all-night ones last). Add a clip to clips: show = the show id from shows.json, moment = a moment id below, url = link to the fan's own post, credit = their handle, first = true if it happened for the first time at that show.",
  "moments": [
+  {
+   "id": "opening-film",
+   "label": "Opening film",
+   "song": "Before Hooligan",
+   "note": "The film on the big screens before BTS come out"
+  },
   {
    "id": "hooligan-outfits",
    "label": "Hooligan outfits",
    "song": "Hooligan",
    "note": "Their new outfits for the city"
+  },
+  {
+   "id": "swim-wave",
+   "label": "The SWIM wave",
+   "song": "SWIM into Merry Go Round",
+   "note": "Dancers’ cloth wave turns from ocean blue to pink and purple. V swam the stage in Goyang"
   },
   {
    "id": "jimin-hip-rolls",
@@ -36,12 +48,14 @@
   {
    "id": "fire-monitor-spin",
    "label": "The monitor spin",
-   "song": "Start of Fire"
+   "song": "Start of Fire",
+   "note": "FYA flips straight into Fire, with pyro"
   },
   {
    "id": "jk-sings-arirang",
    "label": "JK sings Arirang",
-   "song": "End of Body to Body"
+   "song": "End of Body to Body",
+   "note": "Then the whole stadium sings Arirang"
   },
   {
    "id": "idol-walk",
@@ -70,8 +84,14 @@
   },
   {
    "id": "into-the-sun-adlibs",
-   "label": "Ad libs + fireworks",
+   "label": "Into the Sun ad libs",
    "song": "End of Into the Sun · Jin & vocal line"
+  },
+  {
+   "id": "fireworks-finale",
+   "label": "Fireworks finale",
+   "song": "Last notes of Into the Sun",
+   "note": "The fireworks that close every show"
   },
   {
    "id": "yoongi-mianhae-eomma",
@@ -82,6 +102,12 @@
    "id": "jk-modeo-ttweo",
    "label": "JK: “Modeo Ttweo”",
    "song": "Live moment"
+  },
+  {
+   "id": "army-bomb-ocean",
+   "label": "ARMY Bomb ocean",
+   "song": "All night",
+   "note": "The whole stadium lit up"
   },
   {
    "id": "fan-chants",
