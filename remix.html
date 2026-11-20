@@ -170,6 +170,11 @@ footer a.kofi:hover{filter:brightness(1.08)}
 .trk.mine .t{font-size:18px;font-weight:700;color:#fff}
 .trk.mine .no{color:var(--pink)}
 .trk .mv{display:flex;gap:4px;flex:none;padding-left:4px;border-left:1px solid rgba(255,255,255,.08)}
+/* every screen size: number, play, title ... arrows/remove on the far right */
+@media (max-width:560px){section.station{padding-left:14px;padding-right:14px}.deck{padding-left:2px!important;padding-right:2px!important;overflow:hidden}}
+@media (max-width:360px){.tabbar{overflow:hidden}}
+@media (max-width:360px){main{padding-left:8px!important;padding-right:8px!important}section.station{padding:12px 10px}.deck,.rec{padding-left:0!important;padding-right:0!important}.tt{max-width:100%}.tabbar button,.tabbar a{font-size:10px!important;padding-left:2px!important;padding-right:2px!important}.trk{gap:4px;padding:4px 5px}.trk .no{width:18px;font-size:11px}.trk .play{padding:0 9px}.trk .play .dot{display:none}.trk .mv{padding-left:6px;gap:2px}.trk .mv button{width:32px;height:34px}.trk .t{font-size:14px}}
+.trk .grab{order:0}.trk .no{order:1}.trk .play{order:2}.trk .t{order:3}.trk .marker{order:4}.trk .spinb{order:5}.trk .mv{order:6;margin-left:auto;padding-left:10px}.trk .rm{order:7}
 .trk .mv button{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);font-size:14px;cursor:pointer;display:grid;place-items:center;padding:0}
 .trk .mv button:disabled{opacity:.3;cursor:default}
 .trk .mv button:hover:not(:disabled){border-color:var(--pink)}
@@ -187,7 +192,7 @@ footer a.kofi:hover{filter:brightness(1.08)}
 @media (prefers-reduced-motion:reduce){.trk.spun-now{animation:none}}
 .addback{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
 .linkbtn{background:none;border:0;color:var(--pink);text-decoration:underline;font:inherit;cursor:pointer;padding:0}
-@media (max-width:560px){.trk{gap:6px;padding:5px 6px}.trk .grab{display:none}.trk .no{width:22px}.trk .t{flex:1 1 0;overflow-wrap:anywhere;font-size:15px}.trk .no{order:0}.trk .play{order:1;padding:0 10px;min-height:36px;margin-right:0}.trk .t{order:2}.trk .marker{order:3}.trk .spinb{order:4}.trk .mv{order:5}.trk .rm{order:6}.trk .play .w{display:none}.trk .mv{margin-left:auto;gap:3px}.trk .mv button{width:36px;height:36px}.trk.mine,.trk.dj.has{flex-wrap:wrap}.trk.mine .t,.trk.dj.has .t{flex:1 1 140px}.trk .spinb{min-height:36px;padding:0 10px}.trk .marker{font-size:13px}}
+@media (max-width:560px){.trk{gap:6px;padding:5px 6px}.trk .grab{display:none}.trk .no{width:22px}.trk .t{flex:1 1 0;overflow-wrap:anywhere;font-size:15px}.trk .play{padding:0 10px;min-height:36px}.trk .play .w{display:none}.trk .mv{margin-left:auto;gap:3px}.trk .mv button{width:36px;height:36px}.trk.mine,.trk.dj.has{flex-wrap:wrap}.trk.mine .t,.trk.dj.has .t{flex:1 1 140px}.trk .spinb{min-height:36px;padding:0 10px}.trk .marker{font-size:13px}}
 .rec,#tracks,.tl{min-width:0;max-width:100%}
 .marker{font-family:"Permanent Marker",cursive;font-size:15px;color:var(--pink);transform:rotate(-4deg)}
 .crate-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
