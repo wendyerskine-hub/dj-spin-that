@@ -228,6 +228,33 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .feat .row a,.feat .row button{display:inline-flex;align-items:center;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:inherit;font:600 14px inherit;font-family:inherit;text-decoration:none;cursor:pointer}
 .okline{display:flex;gap:10px;align-items:flex-start;font-size:14px}.okline input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
 .find{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:12px;color:var(--muted);margin:2px 0}.find .fl{flex-basis:auto}.find a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}.solo-find{display:inline-flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;text-align:right}
+
+/* moments view */
+.vtabs{display:flex;gap:6px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--glass);width:max-content;max-width:100%}
+.vtabs button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 15px var(--f-body);padding:10px 18px;border-radius:999px;cursor:pointer;min-height:44px}
+.vtabs button[aria-selected="true"]{background:linear-gradient(90deg,var(--red),var(--purple));color:#fff}
+.vtabs button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+.prog{display:grid;gap:6px}.prog .pt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--muted)}.prog .pt b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--red),var(--purple))}
+.wanted{border:1px solid rgba(255,209,102,.45);border-radius:16px;padding:16px;background:linear-gradient(135deg,rgba(255,209,102,.10),rgba(168,85,247,.12));display:grid;gap:10px}
+.wanted h3{margin:0;font-size:20px}.wanted h3 small{display:block;font:600 11px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--first);margin-bottom:4px}
+.wanted p{margin:0;color:var(--muted);font-size:14px}
+.wlist{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.wi{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.25);display:grid;gap:4px;min-width:0}
+.wi b{font-size:15px}.wi .w2{font-size:13px;color:var(--muted)}
+.wi .lnk,.mc .lnk{justify-self:start}
+.act{display:grid;gap:12px;margin-top:8px}
+.act h3{margin:6px 0 0;font:600 12px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--jade)}
+.mcards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.mc{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:rgba(0,0,0,.22);display:grid;gap:8px;align-content:start;min-width:0}
+.mc h4{margin:0;font-size:18px;line-height:1.2}.mc .ms{font-size:13px;color:var(--muted)}
+.mc .chips{display:flex;flex-wrap:wrap;gap:6px}
+.mc .chips a{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:rgba(255,255,255,.05)}
+.mc .chips a:hover,.mc .chips a:focus-visible{border-color:var(--violet)}
+.mc .acts{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+.mc .watch{display:inline-flex;align-items:center;min-height:40px;padding:6px 16px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--purple));color:#fff;font-weight:700;text-decoration:none}
+.mc.zero{border-style:dashed}.mc.zero .first{color:var(--first);font-size:14px;margin:0}
+.lnk.plain{background:none;border:0;color:var(--violet);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
 </style>
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -245,12 +272,22 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
     <div class="eyebrow">BTS World Tour · 2026 · Moments Board</div>
     <h1><span class="kicker">ARIRANG</span>The Moments Board</h1>
     <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
-    <p class="lede">Every show is a channel on the board, in date order. Each light is one moment ARMY watches for. Lit means there's a fancam. Press SEL on a show to see its moments, or S on a moment to follow it city to city.</p>
+    <p class="lede">The moments ARMY waits for at every ARIRANG show, with fan videos from each city. Watch them, or help find the ones still missing.</p>
     <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading the board…</span></div>
   </header>
 
-  <section class="station" id="boardStation" aria-labelledby="boardH">
+  <div class="vtabs" role="tablist" aria-label="Board views">
+    <button type="button" role="tab" id="tabMom" aria-selected="true" aria-controls="momView">Moments</button>
+    <button type="button" role="tab" id="tabBoard" aria-selected="false" aria-controls="boardStation">Full board</button>
+  </div>
+
+  <section class="station" id="momView" role="tabpanel" aria-labelledby="tabMom">
     <div id="featured" hidden></div>
+    <div class="wanted" id="wanted" aria-labelledby="wantedH"></div>
+    <div id="momGroups"></div>
+  </section>
+
+  <section class="station" id="boardStation" aria-labelledby="boardH" role="tabpanel" hidden>
     <h2 id="boardH"><small>Station · Moments mixer</small>Tap a light to see the moment</h2>
     <div class="board-wrap">
       <div class="console">
@@ -280,7 +317,7 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
       <div class="grid2">
         <div class="field"><label for="sShow">Show</label><select id="sShow"></select></div>
         <div class="field"><label for="sMoment">Moment</label><select id="sMoment"></select></div>
-        <div class="field"><label for="sLink">Link to your fancam</label><input id="sLink" type="url" inputmode="url" autocomplete="off" placeholder="TikTok, Instagram, YouTube or X link"></div>
+        <div class="field"><label for="sLink">Link to your fancam</label><input id="sLink" type="url" inputmode="url" autocomplete="off" placeholder="TikTok, Instagram, Threads or YouTube link"></div>
         <div class="field"><label for="sWho">Credit me as</label><input id="sWho" type="text" autocomplete="off" placeholder="@yourhandle"></div>
       </div>
       <label class="okline" style="margin-top:14px"><input type="checkbox" id="sOk"><span>I filmed this (or I have the filmer's OK), and DJ Spin That can link to it with my credit.</span></label>
@@ -347,8 +384,42 @@ async function load(){
   $("#liveDot").dataset.state="live";
   const logged=CLIPS.filter(c=>c.url).length;
   $("#liveText").textContent=`${PLAYED.length} shows · ${logged} fancam${logged===1?"":"s"} on the board · updated ${fmtLong(m.updated||s.updated)}`;
-  fillSelects();measure();focusSel();render();
+  fillSelects();measure();focusSel();render();renderMoments();
+  if(hs||location.hash==="#board")setView("board");
 }
+/* ---- Moments view: one card per moment, grouped by act; no empty boxes ---- */
+const ACTS=["Act 1","Act 2","Encore","Anytime"];
+const ACT_NOTE={"Act 1":"Hooligan to Merry Go Round","Act 2":"2.0 to IDOL","Encore":"Come Over to the fireworks","Anytime":"Live moments and the crowd"};
+const shortN=S=>`${S.city} N${(S.night.match(/\d+/)||["1"])[0]}`;
+function showsWith(mi){return PLAYED.filter(S=>has(S.id,mi))}
+function renderMoments(){
+  const P=PLAYED.length,total=P*MOM.length;let lit=0;PLAYED.forEach(S=>{lit+=count(S.id)});
+  // most wanted: popular moments missing at the newest shows, rotating daily
+  const PRI=["fireworks-finale","jk-sings-arirang","who-says-dj-spin-that","fire-monitor-spin","idol-walk","butter-trio","swim-wave","hooligan-outfits","dynamite-dance-break","jimin-hip-rolls","ot7-camera-fya","into-the-sun-adlibs","yoongi-jk-come-over","hobi-mic-drop-intro","opening-film","army-bomb-ocean"];
+  const gaps=[];PLAYED.slice(-8).reverse().forEach((S,si)=>PRI.forEach((id,pi)=>{const mi=MOM.findIndex(m=>m.id===id);if(mi>=0&&!has(S.id,mi))gaps.push({S,mi,score:si*3+pi})}));
+  gaps.sort((a,b)=>a.score-b.score);const day=Math.floor(Date.now()/864e5);const pickW=[];const usedM=new Set(),usedS={};
+  for(let k=0;k<gaps.length&&pickW.length<6;k++){const g=gaps[(k+day)%gaps.length];if(usedM.has(g.mi)||(usedS[g.S.id]||0)>=2)continue;usedM.add(g.mi);usedS[g.S.id]=(usedS[g.S.id]||0)+1;pickW.push(g)}
+  $("#wanted").innerHTML=`<h3 id="wantedH"><small>🔍 Most wanted this week</small>Help us find these</h3>
+    <div class="prog"><div class="pt"><span><b>${lit}</b> of ${total.toLocaleString()} moments found across ${P} shows</span><span><b>${Math.round(lit/total*100)}%</b> lit</span></div><div class="bar"><i style="width:${Math.max(1,lit/total*100).toFixed(1)}%"></i></div></div>
+    <p>Were you there, or did you see a video? Tap a link to search, then send it in.</p>
+    <div class="wlist">${pickW.map(g=>`<div class="wi"><b>${esc(MOM[g.mi].label)}</b><span class="w2">${esc(shortN(g.S))} · ${esc(fmtLong(g.S.date))}</span>${findLinks(g.S,g.mi)}<button type="button" class="lnk plain" data-send="${esc(g.S.id)}|${g.mi}">Send it</button></div>`).join("")}</div>`;
+  // cards by act
+  $("#momGroups").innerHTML=ACTS.map(act=>{const ids=MOM.map((m,i)=>[m,i]).filter(([m])=>(m.act||"Anytime")===act);if(!ids.length)return"";
+    return `<section class="act" aria-label="${esc(act)}"><h3>${esc(act)} · ${esc(ACT_NOTE[act]||"")}</h3><div class="mcards">${ids.map(([m,i])=>{
+      const ws=showsWith(i),n=ws.length;const isFull=c=>/Full show/i.test(c.credit||"");let latest=null,lc=null;for(let k=ws.length-1;k>=0&&!lc;k--){const c=clipsFor(ws[k].id,i).find(x=>!isFull(x));if(c){latest=ws[k];lc=c}}if(!lc&&n){latest=ws[n-1];lc=clipsFor(latest.id,i)[0]}
+      const chips=ws.slice().reverse().slice(0,6).map(S=>`<a href="${esc(clipsFor(S.id,i)[0].url)}" target="_blank" rel="noopener">${esc(shortN(S))}</a>`).join("")+(n>6?`<a href="#board" data-follow="${i}">+${n-6} more</a>`:"");
+      const target=PLAYED[PLAYED.length-1];
+      return n?`<article class="mc"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div>
+        <div class="prog"><div class="pt"><span>Found at <b>${n}</b> of ${P} shows</span></div><div class="bar"><i style="width:${Math.max(2,n/P*100).toFixed(1)}%"></i></div></div>
+        <div class="chips">${chips}</div>
+        <div class="acts"><a class="watch" href="${esc(lc.url)}" target="_blank" rel="noopener">▶ Watch ${esc(shortN(latest))}</a><button type="button" class="lnk plain" data-follow="${i}">Follow it city to city</button></div></article>`
+      :`<article class="mc zero"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div><p class="first">Not found yet. Be the first to light it up ✨</p>${target?findLinks(target,i):""}<button type="button" class="lnk plain" data-send="${esc(target?target.id:"")}|${i}">Send a clip</button></article>`}).join("")}</div></section>`}).join("");
+}
+function setView(v){const b=v==="board";$("#tabMom").setAttribute("aria-selected",String(!b));$("#tabBoard").setAttribute("aria-selected",String(b));$("#momView").hidden=b;$("#boardStation").hidden=!b;
+  if(b){measure();focusSel();render()}}
+$("#tabMom").addEventListener("click",()=>{setView("mom");if(history.replaceState)history.replaceState(null,"",location.pathname)});
+$("#tabBoard").addEventListener("click",()=>{setView("board");if(history.replaceState)history.replaceState(null,"","#board")});
+document.addEventListener("click",e=>{const f=e.target.closest("[data-follow]");if(!f)return;e.preventDefault();setView("board");pick(null,+f.dataset.follow);$("#boardStation").scrollIntoView({behavior:"smooth",block:"start"})});
 function measure(){
   const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cw=w<560?62:96;
   win=Math.max(3,Math.min(CH.length,Math.floor((w-lab-12)/(cw+6))));

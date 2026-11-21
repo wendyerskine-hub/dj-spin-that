@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-21",
  "about": "Moments to watch for at every ARIRANG show, in concert order (live moments and all-night ones last). Add a clip to clips: show = the show id from shows.json, moment = a moment id below, url = link to the fan's own post, credit = their handle, first = true if it happened for the first time at that show.",
  "moments": [
   {
@@ -7,133 +7,154 @@
    "label": "Opening film",
    "song": "Before Hooligan",
    "note": "The film on the big screens before BTS come out",
-   "q": "opening intro"
+   "q": "opening intro",
+   "act": "Act 1"
   },
   {
    "id": "hooligan-outfits",
    "label": "Hooligan outfits",
    "song": "Hooligan",
    "note": "Their new outfits for the city",
-   "q": "Hooligan"
+   "q": "Hooligan",
+   "act": "Act 1"
   },
   {
    "id": "swim-wave",
    "label": "The SWIM wave",
    "song": "SWIM into Merry Go Round",
    "note": "Dancers’ cloth wave turns from ocean blue to pink and purple. V swam the stage in Goyang",
-   "q": "SWIM Merry Go Round"
+   "q": "SWIM Merry Go Round",
+   "act": "Act 1"
   },
   {
    "id": "jimin-hip-rolls",
    "label": "Jimin's hip rolls",
    "song": "2.0",
-   "q": "2.0"
+   "q": "2.0",
+   "act": "Act 2"
   },
   {
    "id": "hobi-mic-drop-intro",
    "label": "Hobi's intro",
    "song": "MIC Drop",
-   "q": "MIC Drop"
+   "q": "MIC Drop",
+   "act": "Act 2"
   },
   {
    "id": "rm-born-in-seoul",
    "label": "RM: “Born in Seoul”",
    "song": "MIC Drop, right before Jin sings",
-   "q": "MIC Drop"
+   "q": "MIC Drop",
+   "act": "Act 2"
   },
   {
    "id": "ot7-camera-fya",
    "label": "OT7 camera look",
    "song": "Start of FYA",
-   "q": "FYA"
+   "q": "FYA",
+   "act": "Act 2"
   },
   {
    "id": "jk-rm-fya-dance",
    "label": "JK & RM dance",
    "song": "FYA",
-   "q": "FYA"
+   "q": "FYA",
+   "act": "Act 2"
   },
   {
    "id": "fire-monitor-spin",
    "label": "The monitor spin",
    "song": "Start of Fire",
    "note": "FYA flips straight into Fire, with pyro",
-   "q": "Fire"
+   "q": "Fire",
+   "act": "Act 2"
   },
   {
    "id": "jk-sings-arirang",
    "label": "JK sings Arirang",
    "song": "End of Body to Body",
    "note": "Then the whole stadium sings Arirang",
-   "q": "Body to Body"
+   "q": "Body to Body",
+   "act": "Act 2"
   },
   {
    "id": "idol-walk",
    "label": "The Idol walk",
    "song": "IDOL",
-   "q": "IDOL"
+   "q": "IDOL",
+   "act": "Act 2"
   },
   {
    "id": "yoongi-jk-come-over",
    "label": "Yoongi & JK enter",
    "song": "Come Over",
-   "q": "Come Over"
+   "q": "Come Over",
+   "act": "Encore"
   },
   {
    "id": "butter-trio",
    "label": "Butter trio",
    "song": "Butter · V, JK & Jin",
-   "q": "Butter"
+   "q": "Butter",
+   "act": "Encore"
   },
   {
    "id": "dynamite-dance-break",
    "label": "Dynamite dance break",
    "song": "Dynamite · Jimin, JK, Jin & V",
-   "q": "Dynamite"
+   "q": "Dynamite",
+   "act": "Encore"
   },
   {
    "id": "who-says-dj-spin-that",
    "label": "Who says “DJ Spin That”",
    "song": "Each surprise song",
-   "q": ""
+   "q": "",
+   "act": "Encore"
   },
   {
    "id": "into-the-sun-adlibs",
    "label": "Into the Sun ad libs",
    "song": "End of Into the Sun · Jin & vocal line",
-   "q": "Into the Sun"
+   "q": "Into the Sun",
+   "act": "Encore"
   },
   {
    "id": "fireworks-finale",
    "label": "Fireworks finale",
    "song": "Last notes of Into the Sun",
    "note": "The fireworks that close every show",
-   "q": "Into the Sun fireworks"
+   "q": "Into the Sun fireworks",
+   "act": "Encore"
   },
   {
    "id": "yoongi-mianhae-eomma",
    "label": "Yoongi: Mianhae Eomma",
    "song": "Live moment",
-   "q": "Suga ment"
+   "q": "Suga ment",
+   "act": "Anytime"
   },
   {
    "id": "jk-modeo-ttweo",
    "label": "JK: “Modeo Ttweo”",
    "song": "Live moment",
-   "q": "Jungkook ment"
+   "q": "Jungkook ment",
+   "act": "Anytime"
   },
   {
    "id": "army-bomb-ocean",
    "label": "ARMY Bomb ocean",
    "song": "All night",
    "note": "The whole stadium lit up",
-   "q": "army bomb"
+   "q": "army bomb",
+   "act": "Anytime"
   },
   {
    "id": "fan-chants",
    "label": "Fan chants",
    "song": "All night",
-   "q": "fanchant"
+   "q": "fanchant",
+   "act": "Anytime"
   }
  ],
  "clips": [
