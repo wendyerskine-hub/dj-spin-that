@@ -42,7 +42,6 @@ button,.btn{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:9
 <section class="card"><h2>TikTok <button data-copy="tt">Copy</button></h2><textarea id="tt" readonly></textarea></section>
 <section class="card"><h2>Instagram <button data-copy="ig">Copy</button></h2><textarea id="ig" readonly></textarea></section>
 <section class="card"><h2>Threads <button data-copy="th">Copy</button></h2><textarea id="th" readonly></textarea></section>
-<section class="card"><h2>X / Twitter <button data-copy="x">Copy</button></h2><textarea id="x" readonly></textarea><div class="note" id="xlen"></div></section>
 
 <section class="card">
   <h2>Video for the post</h2>
@@ -99,8 +98,7 @@ function build(){
     th=`${city} ${sh.night} surprise songs ${fl}🎧\n${list}${extra?"\n"+extra.trim():""}\nWere you there?? 👇`;
     x=`🎧 ${city} ${sh.night} surprise songs ${fl}: ${list}${extra?" ·"+extra:""}\nPlay them: ${url}\n${trend} #BTS`;
   }
-  $("tt").value=tt;$("ig").value=ig;$("th").value=th;$("x").value=x;
-  $("xlen").textContent=`${x.length} / 280 characters`+(x.length>280?" (too long: trim it)":"");
+  $("tt").value=tt;$("ig").value=ig;$("th").value=th;
   const base="https://raw.githubusercontent.com/wendyerskine-hub/dj-spin-that/main/social/";const nm=`dj-spin-that-${slug(city)}-night-${n}`;
   $("mp4").href=base+`cities-mp4/${nm}.mp4`;$("gif").href=base+`cities/${nm}.gif`;$("site").href="https://"+url;
 }
