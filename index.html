@@ -344,6 +344,14 @@ details.alb .dsong .tag{margin-left:2px}
 .dsong .tip{display:none}
 .dsong:hover .tip,.dsong:focus-visible .tip,.dsong.show .tip{display:block}
 .disco-tools{display:flex;gap:10px;align-items:center}
+.disco-search{display:grid;gap:6px;max-width:620px}.disco-search label{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.disco-search input{width:100%;min-height:46px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--ink);font:16px var(--f-body)}
+.disco-search input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#discoHits{display:grid;gap:8px}#discoHits:empty{display:none}
+.dhit{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:rgba(0,0,0,.22);display:grid;gap:3px}
+.dhit b{font-size:16px}.dhit .dm{font-size:13px;color:var(--muted)}.dhit .ds{font-size:14px}
+.dhit .ds.on{color:var(--gold);font-weight:600}.dhit .ds a{color:var(--violet)}
+
 .disco-tools button{background:none;border:0;color:var(--violet);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:4px 0}
 /* station 4 compact rows */
 .unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:8px}
@@ -834,7 +842,7 @@ section.golinks{grid-column:1/-1}
 
     <section class="station disco" id="disco">
       <h2><small>Station 6 · The checklist</small>BTS discography: played and still in the vault</h2>
-      <p class="help">Every BTS song from 2013 to 2023, including Japanese originals and solo tracks on group albums, checked against the BTS Wiki. The ARIRANG album isn't included, since surprise songs are throwbacks. Hover over a song, or tap it on a phone, to see where it was played.</p>
+      <p class="help">Every BTS song from 2013 to now, including Japanese originals, solo tracks on group albums, the ARIRANG album and the SWIM member remixes, checked against the BTS Wiki. Hover over a song, or tap it on a phone, to see where it was played.</p>
       <div class="disco-top">
         <div class="disco-count"><b id="discoPlayed">0</b> of <span id="discoTotal">0</span> played <span class="bar" aria-hidden="true"><i id="discoBar"></i></span></div>
         <div class="seg" role="group" aria-label="Show songs">
@@ -843,6 +851,7 @@ section.golinks{grid-column:1/-1}
           <button type="button" data-f="left" aria-pressed="false">Still in the vault</button>
         </div>
       </div>
+      <div class="disco-search"><label for="discoQ">Has it been played? Search a song</label><input id="discoQ" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. Sea, Spring Day, Butterfly"><div id="discoHits" aria-live="polite"></div></div>
       <div class="disco-tools"><button type="button" id="discoOpen">Open all albums</button><button type="button" id="discoClose">Close all</button></div>
       <div class="disco-list" id="discoList"></div>
     </section>
@@ -1543,6 +1552,19 @@ function renderDisco(){
   renderCredits();
   fillPc();
 }
+// "Has it been played?" search across every song on the checklist (and any played song not on it)
+function discoSearch(){const q=$("#discoQ").value.trim(),box=$("#discoHits");const k=nk(q);if(k.length<2){box.innerHTML="";return}
+  const P=playsByKey();const seen=new Set(),hits=[];
+  DISCO.forEach(([alb,yr,tracks])=>tracks.forEach(([t,unit])=>{const tk=nk(t);if(!seen.has(tk)&&tk.includes(k)){seen.add(tk);hits.push({t,alb,yr,unit,k:tk})}}));
+  Object.keys(P).forEach(tk=>{if(!seen.has(tk)&&tk.includes(k)){seen.add(tk);const sh=P[tk][0];hits.push({t:sh.songTitles.find(x=>nk(x)===tk)||q,alb:"",yr:"",k:tk})}});
+  hits.sort((a,b)=>(a.k===k?-1:0)-(b.k===k?-1:0)||(a.k.indexOf(k)-b.k.indexOf(k))||a.t.length-b.t.length);
+  if(!hits.length){box.innerHTML=`<div class="dhit"><span class="ds">No BTS song matches “${esc(q)}”. Check the spelling, or try part of the title.</span></div>`;return}
+  box.innerHTML=hits.slice(0,6).map(h=>{const pl=P[h.k]||[];const main=MAIN_SET.has(h.k);
+    const where=pl.map(s=>`<a href="#${esc(showSlug(s))}">${esc(s.city)} N${(s.night.match(/\d+/)||[""])[0]}</a>${s.date?" ("+esc(fmtDate(s.date))+")":""}`).join(", ");
+    const st=main?`<span class="ds on">In the main set: played every night</span>`:pl.length?`<span class="ds on">✓ Played ${pl.length}× on the ARIRANG tour</span><span class="ds">${where}</span>`:`<span class="ds">Still in the vault: not played on the ARIRANG tour yet 👀</span>`;
+    return `<div class="dhit"><b>${esc(h.t)}</b>${h.alb?`<span class="dm">${esc(h.alb)} · ${esc(h.yr)}${h.unit?" · "+esc(h.unit.replace("Solo · ","")):""}</span>`:""}${st}</div>`}).join("");
+  clearTimeout(discoSearch.t);discoSearch.t=setTimeout(()=>track("checklist-search/"+q.toLowerCase().slice(0,40)),1200)}
+$("#discoQ").addEventListener("input",discoSearch);
 document.querySelectorAll('#disco .seg button').forEach(b=>b.addEventListener("click",()=>{discoFilter=b.dataset.f;document.querySelectorAll('#disco .seg button').forEach(x=>x.setAttribute("aria-pressed",x===b));renderDisco()}));
 $("#discoOpen").addEventListener("click",()=>document.querySelectorAll("#discoList details.alb").forEach(d=>d.open=true));
 $("#discoClose").addEventListener("click",()=>document.querySelectorAll("#discoList details.alb").forEach(d=>d.open=false));
