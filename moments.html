@@ -323,7 +323,8 @@ function findLinks(S,mi){const q=findQ(S,mi),d=(S.date||"").replace(/-/g,"").sli
   const tag="BTS_WORLDTOUR_ARIRANG_"+S.city.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
   const yt="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${S.city} ${d} ${q} fancam`);
   const tt="https://www.tiktok.com/search/video?q="+encodeURIComponent(`#${tag} ${q} day ${n}`);
-  return `<span class="find">Find it: <a href="${esc(tt)}" target="_blank" rel="noopener" data-find="tiktok">TikTok ↗</a> · <a href="${esc(yt)}" target="_blank" rel="noopener" data-find="youtube">YouTube ↗</a></span>`}
+  const ig="https://www.instagram.com/explore/tags/"+encodeURIComponent(tag.toLowerCase())+"/";
+  return `<span class="find">Find it: <a href="${esc(tt)}" target="_blank" rel="noopener" data-find="tiktok">TikTok ↗</a> · <a href="${esc(ig)}" target="_blank" rel="noopener" data-find="instagram" title="Reels tagged #${esc(tag)}">Reels ↗</a> · <a href="${esc(yt)}" target="_blank" rel="noopener" data-find="youtube">YouTube ↗</a></span>`}
 function host(u){try{return new URL(u).hostname.replace(/^www\./,"").replace(/\.com$/,"")}catch(e){return"clip"}}
 
 async function load(){
