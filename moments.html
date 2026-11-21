@@ -333,21 +333,18 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 
   <section class="station send" id="send" aria-labelledby="sendH">
     <h2 id="sendH"><small>Station · Send a fancam</small>Light up a moment</h2>
-    <p class="help">Filmed one of these moments? Send the link to your own post. Links only: your video stays on your account. Every clip is checked before it lights up on the board.</p>
+    <p class="help">Found a fan video of a moment? Send it in with a quick form: no account needed. It goes up on the board with credit after a quick check. Links only, so the video stays on the filmer's account.</p>
     <form id="sendForm" novalidate>
       <div class="grid2">
         <div class="field"><label for="sShow">Show</label><select id="sShow"></select></div>
         <div class="field"><label for="sMoment">Moment</label><select id="sMoment"></select></div>
-        <div class="field"><label for="sLink">Link to your fancam</label><input id="sLink" type="url" inputmode="url" autocomplete="off" placeholder="TikTok, Instagram, Threads or YouTube link"></div>
-        <div class="field"><label for="sWho">Credit me as</label><input id="sWho" type="text" autocomplete="off" placeholder="@yourhandle"></div>
       </div>
-      <label class="okline" style="margin-top:14px"><input type="checkbox" id="sOk"><span>I filmed this (or I have the filmer's OK), and DJ Spin That can link to it with my credit.</span></label>
       <div class="row" style="margin-top:14px;align-items:center">
-        <a class="btn" id="sSend" href="#" target="_blank" rel="noopener" aria-disabled="true">Send for review ↗</a>
-        <button class="btn ghost" id="sCopy" type="button">Copy as text</button>
+        <a class="btn" id="sSend" href="https://forms.gle/GKrh4T2VazNmBMRo8" target="_blank" rel="noopener">Open the form ↗</a>
+        <button class="btn ghost" id="sCopy" type="button">Copy show + moment</button>
         <span class="msg" id="sMsg" aria-live="polite"></span>
       </div>
-      <p class="help small" style="margin-top:10px">Sending opens a pre-filled report on GitHub (a free account is needed). No account? Use “Copy as text” and send it to DJ Spin That by DM.</p>
+      <p class="help small" style="margin-top:10px">The form asks for the video link, the show, the moment and who filmed it. Tap “Copy show + moment” first, then paste. Rather DM? Send the link to @djspinthat0 on TikTok or @djspinthat0613 on Instagram.</p>
     </form>
   </section>
 
@@ -514,7 +511,7 @@ function fillSelects(){
 function pick(showId,mi){if(showId)sel=showId;if(mi!=null)solo=mi;focusSel();render();if(showId&&history.replaceState)history.replaceState(null,"","#"+showId)}
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-solo],[data-show],[data-sel],[data-send]");if(!t)return;
-  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sLink").focus({preventScroll:true}),400);return}
+  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sCopy").focus({preventScroll:true}),400);return}
   if(t.dataset.sel){pick(t.dataset.sel,null);return}
   if(t.dataset.show){pick(t.dataset.show,+t.dataset.m);return}
   if(t.dataset.solo!=null){pick(null,+t.dataset.solo)}
@@ -525,18 +522,15 @@ $("#pgNext").addEventListener("click",()=>{start=Math.min(CH.length-win,start+wi
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{const w0=win;measure();if(w0!==win){focusSel();render()}},150)});
 addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(PLAYED.some(x=>x.id===h))pick(h,null)});
 
-/* send a fancam */
-function sendText(){const s=PLAYED.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];
-  return {title:`Fancam: ${m.label} · ${s?s.city+" "+s.night:""}`,
-  body:[`Show: ${s?`${s.city} ${s.night} (${s.date})`:""}`,`Show id: ${s?s.id:""}`,`Moment: ${m.label} (${m.id})`,`Link: ${$("#sLink").value.trim()}`,`Credit: ${$("#sWho").value.trim()||"(none)"}`,`Filmed it or has the filmer's OK: yes`].join("\n")}}
-function validLink(){return /^https?:\/\/\S+\.\S+/.test($("#sLink").value.trim())}
-function updSend(){const ok=validLink()&&$("#sOk").checked;const a=$("#sSend");a.setAttribute("aria-disabled",ok?"false":"true");
-  const t=sendText();a.href=ISSUES+"?labels=fancam&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body);
-  $("#sMsg").textContent=ok?"":(!$("#sLink").value.trim()?"":(!validLink()?"Paste the full link, starting with https://":"Tick the box to send."))}
-["#sShow","#sMoment","#sLink","#sWho","#sOk"].forEach(id=>{$(id).addEventListener("input",updSend);$(id).addEventListener("change",updSend)});
+/* send a fancam: Google Form (no account needed) */
+const FORM_URL="https://forms.gle/GKrh4T2VazNmBMRo8";
+function sendPair(){const S=PLAYED.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];return{show:S?`${S.city} ${S.night.replace(" (FESTA)","")} (${fmtLong(S.date)})`:"",moment:m.label}}
+function updSend(){$("#sMsg").textContent=""}
+["#sShow","#sMoment"].forEach(id=>$(id).addEventListener("change",updSend));
 $("#sSend").addEventListener("click",()=>{setTimeout(()=>{$("#sMsg").textContent="Thank you! Your clip is waiting for review 💜"},300)});
-$("#sCopy").addEventListener("click",()=>{const t=sendText();const text=t.title+"\n"+t.body;
-  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#sMsg").textContent="Copied. Send it to DJ Spin That by DM."}).catch(()=>{$("#sMsg").textContent="Copy didn't work here. Select the text in the box and copy it.";let p=$("#sPre");if(!p){p=document.createElement("textarea");p.id="sPre";p.rows=6;p.readOnly=true;p.style.cssText="width:100%;margin-top:10px;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font-family:var(--f-mono);font-size:13px";$("#sendForm").appendChild(p)}p.value=text;p.select()})});
+$("#sCopy").addEventListener("click",()=>{const p=sendPair();const text=`Show: ${p.show}\nMoment: ${p.moment}`;
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#sMsg").textContent="Copied. Now open the form and paste."}).catch(()=>{$("#sMsg").textContent=`Show: ${p.show} · Moment: ${p.moment}`})});
+$("#sSend").addEventListener("click",()=>{try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"moments/open-form",event:true})}catch(e){}});
 load();
 })();
 </script>
