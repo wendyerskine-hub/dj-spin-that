@@ -1554,10 +1554,11 @@ function renderDisco(){
 }
 // "Has it been played?" search across every song on the checklist (and any played song not on it)
 function discoSearch(){const q=$("#discoQ").value.trim(),box=$("#discoHits");const k=nk(q);if(k.length<2){box.innerHTML="";return}
+  const words=q.toLowerCase().split(/\s+/).map(nk).filter(Boolean);const m=tk=>tk.includes(k)||words.every(w=>tk.includes(w));
   const P=playsByKey();const seen=new Set(),hits=[];
-  DISCO.forEach(([alb,yr,tracks])=>tracks.forEach(([t,unit])=>{const tk=nk(t);if(!seen.has(tk)&&tk.includes(k)){seen.add(tk);hits.push({t,alb,yr,unit,k:tk})}}));
-  Object.keys(P).forEach(tk=>{if(!seen.has(tk)&&tk.includes(k)){seen.add(tk);const sh=P[tk][0];hits.push({t:sh.songTitles.find(x=>nk(x)===tk)||q,alb:"",yr:"",k:tk})}});
-  hits.sort((a,b)=>(a.k===k?-1:0)-(b.k===k?-1:0)||(a.k.indexOf(k)-b.k.indexOf(k))||a.t.length-b.t.length);
+  DISCO.forEach(([alb,yr,tracks])=>tracks.forEach(([t,unit])=>{const tk=nk(t);if(!seen.has(tk)&&m(tk)){seen.add(tk);hits.push({t,alb,yr,unit,k:tk})}}));
+  Object.keys(P).forEach(tk=>{if(!seen.has(tk)&&m(tk)){seen.add(tk);const sh=P[tk][0];hits.push({t:sh.songTitles.find(x=>nk(x)===tk)||q,alb:"",yr:"",k:tk})}});
+  hits.sort((a,b)=>(a.k===k?-1:0)-(b.k===k?-1:0)||((a.k.includes(k)?0:1)-(b.k.includes(k)?0:1))||a.t.length-b.t.length);
   if(!hits.length){box.innerHTML=`<div class="dhit"><span class="ds">No BTS song matches “${esc(q)}”. Check the spelling, or try part of the title.</span></div>`;return}
   box.innerHTML=hits.slice(0,6).map(h=>{const pl=P[h.k]||[];const main=MAIN_SET.has(h.k);
     const where=pl.map(s=>`<a href="#${esc(showSlug(s))}">${esc(s.city)} N${(s.night.match(/\d+/)||[""])[0]}</a>${s.date?" ("+esc(fmtDate(s.date))+")":""}`).join(", ");
