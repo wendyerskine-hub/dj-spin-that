@@ -10,7 +10,7 @@
 <meta property="og:image" content="https://djspinthat.net/og-card.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@600&family=Noto+Sans+KR:wght@700&display=swap">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="qrcode.js"></script>
 <style>
 /* Kid-friendly card maker for an iPad: huge buttons, three steps, card flips, friend scans a QR to keep it. */
 :root{--bg:#120a20;--ink:#fff;--muted:#d6c8f5;--violet:#a855f7;--red:#ff2a4b;--line:rgba(255,255,255,.18);color-scheme:dark}
@@ -44,7 +44,7 @@ input:focus-visible,.pick:focus-visible,.big:focus-visible{outline:4px solid #ff
 .flip.turned{transform:rotateY(180deg)}
 .qrbox{display:grid;gap:10px;justify-items:center;background:#fff;color:#1a0b2e;border-radius:24px;padding:18px 18px 14px}
 .qrbox b{font-size:22px}
-#qr img,#qr canvas{width:240px!important;height:240px!important}
+#qr svg{width:240px;height:240px;display:block}
 .hint{font-size:17px;color:var(--muted);margin:0}
 .done{font-size:30px;font-weight:800;margin:0}
 @media (prefers-reduced-motion:reduce){.flip{transition:none}}
@@ -148,7 +148,7 @@ async function show(m,stk,to,from,received){current={m,stk,to,from};$('#maker').
   await render(m,stk,to,from);
   $('#doneTxt').textContent=received?(to?`${to}, you got a card! 💜`:'You got a card! 💜'):'Here’s your card! 💜';
   $('#qrbox').hidden=!!received;$('#again').hidden=!!received;$('#recvHint').hidden=!received;
-  if(!received){$('#qr').innerHTML='';if(window.QRCode)new QRCode($('#qr'),{text:link(m,stk,to,from),width:240,height:240,colorDark:'#1a0b2e',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});else $('#qr').textContent=link(m,stk,to,from)}
+  if(!received){$('#qr').innerHTML='';if(window.qrcode){const q=qrcode(0,'M');q.addData(link(m,stk,to,from),'Byte');q.make();$('#qr').innerHTML=q.createSvgTag({cellSize:6,margin:0,scalable:true});const sv=$('#qr svg');if(sv){sv.setAttribute('width','240');sv.setAttribute('height','240');sv.querySelectorAll('path,rect').forEach(e=>{if(e.getAttribute('fill')==='black')e.setAttribute('fill','#1a0b2e')})}}else $('#qr').textContent=link(m,stk,to,from)}
   setTimeout(()=>$('#flip').classList.add('turned'),1400);setTimeout(()=>$('#flip').classList.remove('turned'),3400);
   scrollTo({top:0,behavior:'smooth'})}
 $('#make').addEventListener('click',()=>{const to=clean($('#to').value),from=clean($('#from').value);try{localStorage.setItem('la-from',from)}catch(e){}show(pick,sticker,to,from,false)});
