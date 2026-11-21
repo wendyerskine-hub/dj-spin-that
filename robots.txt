@@ -4,5 +4,6 @@ Disallow: /post-kit.html
 Disallow: /komca-check.html
 Disallow: /gif-labeler.html
 Disallow: /tools/
+Disallow: /little-army/
 
 Sitemap: https://djspinthat.net/sitemap.xml
