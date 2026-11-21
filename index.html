@@ -417,6 +417,9 @@ details.urow .badges{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin
 .pc-empty a,.steps a{color:var(--violet)}
 .steps,.tips{margin:0;padding-left:22px;display:grid;gap:8px;color:var(--muted);font-size:14px;max-width:720px}
 .steps b,.tips b{color:var(--ink)}
+.pc-sub{margin:14px 0 6px;font-size:15px;color:var(--ink)}
+.pc-fast{margin:0 0 4px;font-size:14px;color:var(--muted);max-width:720px;border-left:3px solid var(--gold);padding:6px 12px;background:rgba(255,255,255,.04);border-radius:0 10px 10px 0}.pc-fast b{color:var(--ink)}
+.pc-grid{display:grid;gap:2px;margin:8px 0 2px;font-size:13px;max-width:520px;overflow-x:auto}.pc-grid>div{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:10px;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.04)}.pc-grid span{font-variant-numeric:tabular-nums}.pc-grid [role=columnheader]{font-weight:700;color:var(--ink)}
 button.btn{cursor:pointer;font:inherit}
 .tabbar .tl,.tabbar .ts{font-weight:inherit}
 .tabbar .ts{display:none}
@@ -1025,22 +1028,54 @@ section.golinks{grid-column:1/-1}
         <button class="btn ghost" type="button" id="pcDlBack">Save back</button>
         <button class="btn ghost" type="button" id="pcDlSheet">Print sheets (9 per page) ↓</button>
       </div>
-      <p class="v-note">Use photos you took yourself or have permission to use, and keep cards free: never sell cards made with official photos. Print sheets are US Letter at 300 dpi: one page of fronts and one page of backs. Print both at 100% size ("Actual size"), not "Fit to page". Want your own photo on a card? See the Canva steps below.</p>
+      <p class="v-note">Use photos you took yourself or have permission to use, and keep cards free: never sell cards made with official photos. Print sheets are US Letter at 300 dpi: one page of fronts and one page of backs. Print both at 100% size ("Actual size"), not "Fit to page". Want different photos on each card, or to order them printed? See the Canva steps below.</p>
     </div>
 
     <div class="bgroup"><div class="bhead"><h3>From ARMY creators</h3><span>Freebies and photocard designs other ARMY made</span></div>
       <div class="pc-empty">Coming soon. We'll feature ARMY freebie makers here, with links to their own posts. Know a creator who should be here? <a href="#fix" data-goto="music">Tell us in Music ↓</a></div>
     </div>
 
-    <div class="bgroup"><div class="bhead"><h3>Make your own with Canva</h3><span>Design, print and cut photocards at home</span></div>
+    <div class="bgroup"><div class="bhead"><h3>Make your own with Canva</h3><span>Design one card, then print 9 on a page or order them</span></div>
+      <p class="pc-fast"><b>Fastest way:</b> skip Canva. Use the photocard maker above with “Your own photo”, then tap <b>Print sheets (9 per page)</b>. You get a page of 9 fronts and a page of 9 backs with cut marks, ready to print. Use Canva when you want your own layout or different photos on each card.</p>
+
+      <h4 class="pc-sub">1 · Design one card</h4>
       <ol class="steps">
-        <li><b>Start a design.</b> In <a href="https://www.canva.com/" target="_blank" rel="noopener">Canva</a>, tap Create a design, then Custom size, and enter <b>55 × 85 mm</b> (standard K-pop photocard size).</li>
-        <li><b>Turn on print bleed</b> (File, then Settings, then Show print bleed) so nothing important gets trimmed off the edges.</li>
-        <li><b>Add your photo and text.</b> Use your own concert photos, or upload the front you saved above. Keep names and words at least 3 mm from the edge.</li>
-        <li><b>Make the back.</b> Add a second page with your handle, the date and city, or a little message for whoever gets it.</li>
-        <li><b>Download for print:</b> Share, then Download, then <b>PDF Print</b>, with Crop marks and bleed ticked.</li>
-        <li><b>Print</b> on matte or glossy photo paper or 250–300 gsm cardstock, at 100% size. For double-sided cards, print the backs on the reverse side, or print separately and glue them back to back.</li>
-        <li><b>Cut and finish:</b> trim along the crop marks with a paper trimmer, round the corners with a 3–4 mm corner punch, and laminate or sleeve them if you want them to last.</li>
+        <li><b>Start a design.</b> In <a href="https://www.canva.com/" target="_blank" rel="noopener">Canva</a>, tap Create a design, then Custom size. Pick <b>mm</b> and enter <b>55 × 85</b> (standard K-pop photocard size).</li>
+        <li><b>Turn on print bleed</b> (File, then Settings, then Show print bleed) and stretch your photo past the edges so nothing white shows after cutting.</li>
+        <li><b>Add your photo and text.</b> Use your own concert photos, or upload a front you made above. Keep names and words at least 3 mm in from the edge.</li>
+        <li><b>Make the back</b> on page 2: your handle, the date and city, or a little message.</li>
+        <li><b>Save each side as a picture:</b> Share, then Download, File type <b>PNG</b>, all pages. You get one image for the front and one for the back. You'll use these in step 2.</li>
+      </ol>
+
+      <h4 class="pc-sub">2 · Print 9 cards on one page at home</h4>
+      <ol class="steps">
+        <li><b>Make a page-size design.</b> Create a design, Custom size, mm: <b>215.9 × 279.4</b> for US Letter, or <b>210 × 297</b> for A4.</li>
+        <li><b>Add your front.</b> Uploads, then upload the front PNG from step 1 and tap it to put it on the page.</li>
+        <li><b>Set its exact size.</b> With the card selected, tap <b>Position</b> in the top bar. Under <b>Advanced</b>, type width <b>55</b> and height <b>85</b> (turn the lock off if it changes the other number).</li>
+        <li><b>Make 9 and line them up.</b> Duplicate the card (Ctrl+D on a computer, or the duplicate button on a phone) until you have 9. Give each one these X and Y numbers in the same Advanced box. Cards sit edge to edge, so one cut separates two cards.
+          <div class="pc-grid" role="table" aria-label="Card positions in millimetres">
+            <div role="row"><span role="columnheader">Card</span><span role="columnheader">US Letter</span><span role="columnheader">A4</span></div>
+            <div role="row"><span role="rowheader">Left column</span><span role="cell">X 25.45</span><span role="cell">X 22.5</span></div>
+            <div role="row"><span role="rowheader">Middle column</span><span role="cell">X 80.45</span><span role="cell">X 77.5</span></div>
+            <div role="row"><span role="rowheader">Right column</span><span role="cell">X 135.45</span><span role="cell">X 132.5</span></div>
+            <div role="row"><span role="rowheader">Top row</span><span role="cell">Y 12.2</span><span role="cell">Y 21</span></div>
+            <div role="row"><span role="rowheader">Middle row</span><span role="cell">Y 97.2</span><span role="cell">Y 106</span></div>
+            <div role="row"><span role="rowheader">Bottom row</span><span role="cell">Y 182.2</span><span role="cell">Y 191</span></div>
+          </div>
+        </li>
+        <li><b>Make the backs.</b> Add a second page and repeat with the back PNG, using the same numbers. If every back is the same, you're done. If the backs are different, swap the left and right columns, because the page flips over.</li>
+        <li><b>Download:</b> Share, Download, <b>PDF Print</b>. No crop marks needed for this layout.</li>
+        <li><b>Print the fronts</b> (page 1) on 250–300 gsm cardstock or photo paper. In the print box choose <b>Actual size / 100%</b>, not “Fit to page”, and the best quality setting.</li>
+        <li><b>Print the backs.</b> Put the printed sheet back in the tray flipped over the <b>long edge</b> and print page 2. Try it on plain paper first and hold it up to a light to check the backs line up. Printing two sheets and gluing them back to back works too.</li>
+        <li><b>Cut and finish:</b> cut along the card edges with a paper trimmer (4 cuts each way), round the corners with a 3–4 mm corner punch, and sleeve or laminate them to make them last.</li>
+      </ol>
+
+      <h4 class="pc-sub">3 · Or have them printed</h4>
+      <ol class="steps">
+        <li><b>At a print shop</b> (Staples, FedEx Office or a local shop): bring or upload the 9-per-page PDF from section 2 (or the print sheets from the maker above). Ask for <b>double-sided on 100 lb cover cardstock</b> (about 270 gsm), <b>printed at actual size</b>, and ask them to cut the cards for you. Most shops can do it the same day for a small cutting fee.</li>
+        <li><b>From an online card printer:</b> they usually want one card per file. In your 55 × 85 mm Canva design, Download, <b>PDF Print</b>, and tick <b>Crop marks and bleed</b>. Upload the front and back where the site asks for them.</li>
+        <li><b>Pick the right size.</b> Choose a photocard or custom size of 55 × 85 mm (2.17 × 3.35 in). Regular business cards (3.5 × 2 in) are a different shape and will crop your design.</li>
+        <li><b>Options to ask for:</b> 300–350 gsm card, matte or gloss, and rounded corners (about 3 mm). Order a small test batch first to check the colors.</li>
       </ol>
       <p class="v-note">Please don't sell cards made from official BTS photos or BT21 characters. Those belong to HYBE and LINE FRIENDS. Free sharing and trading between ARMY is the spirit here.</p>
       <div class="dn-btns">
