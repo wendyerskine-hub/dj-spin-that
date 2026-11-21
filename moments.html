@@ -340,11 +340,11 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
         <div class="field"><label for="sMoment">Moment</label><select id="sMoment"></select></div>
       </div>
       <div class="row" style="margin-top:14px;align-items:center">
-        <a class="btn" id="sSend" href="https://forms.gle/GKrh4T2VazNmBMRo8" target="_blank" rel="noopener">Open the form ↗</a>
+        <a class="btn" id="sSend" href="https://forms.gle/GKrh4T2VazNmBMRo8" target="_blank" rel="noopener">Send it with the form ↗</a>
         <button class="btn ghost" id="sCopy" type="button">Copy show + moment</button>
         <span class="msg" id="sMsg" aria-live="polite"></span>
       </div>
-      <p class="help small" style="margin-top:10px">The form asks for the video link, the show, the moment and who filmed it. Tap “Copy show + moment” first, then paste. Rather DM? Send the link to @djspinthat0 on TikTok or @djspinthat0613 on Instagram.</p>
+      <p class="help small" style="margin-top:10px">The form opens with this show and moment filled in. Just add the video link and who filmed it. Rather DM? Send the link to @djspinthat0 on TikTok or @djspinthat0613 on Instagram.</p>
     </form>
   </section>
 
@@ -511,7 +511,7 @@ function fillSelects(){
 function pick(showId,mi){if(showId)sel=showId;if(mi!=null)solo=mi;focusSel();render();if(showId&&history.replaceState)history.replaceState(null,"","#"+showId)}
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-solo],[data-show],[data-sel],[data-send]");if(!t)return;
-  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sCopy").focus({preventScroll:true}),400);return}
+  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sSend").focus({preventScroll:true}),400);return}
   if(t.dataset.sel){pick(t.dataset.sel,null);return}
   if(t.dataset.show){pick(t.dataset.show,+t.dataset.m);return}
   if(t.dataset.solo!=null){pick(null,+t.dataset.solo)}
@@ -523,9 +523,12 @@ let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{const 
 addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(PLAYED.some(x=>x.id===h))pick(h,null)});
 
 /* send a fancam: Google Form (no account needed) */
-const FORM_URL="https://forms.gle/GKrh4T2VazNmBMRo8";
+const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSc7ZDBHO15l9jXwl_WVmlEbe8KX88l32AksdJzL3iVMlDULVw/viewform";
+const F_SHOW="entry.2095451885",F_MOMENT="entry.469094475";
+const formOpt=t=>String(t).replace(/[“”]/g,'"').replace(/[‘’]/g,"'");
+function formUrl(){const p=sendPair();return FORM_URL+"?usp=pp_url&"+F_SHOW+"="+encodeURIComponent(p.show)+"&"+F_MOMENT+"="+encodeURIComponent(formOpt(p.moment))}
 function sendPair(){const S=PLAYED.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];return{show:S?`${S.city} ${S.night.replace(" (FESTA)","")} (${fmtLong(S.date)})`:"",moment:m.label}}
-function updSend(){$("#sMsg").textContent=""}
+function updSend(){$("#sMsg").textContent="";$("#sSend").href=formUrl()}
 ["#sShow","#sMoment"].forEach(id=>$(id).addEventListener("change",updSend));
 $("#sSend").addEventListener("click",()=>{setTimeout(()=>{$("#sMsg").textContent="Thank you! Your clip is waiting for review 💜"},300)});
 $("#sCopy").addEventListener("click",()=>{const p=sendPair();const text=`Show: ${p.show}\nMoment: ${p.moment}`;
