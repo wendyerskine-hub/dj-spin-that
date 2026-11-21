@@ -2011,8 +2011,13 @@ function shareShow(sh,btn){const url=showShareUrl(sh);const text=`${sh.city} ${s
   const msg=btn.parentElement.querySelector(".msg");
   const copy=()=>navigator.clipboard.writeText(url).then(()=>{msg.textContent="Link copied. Paste it anywhere."}).catch(()=>{msg.textContent=url});
   if(navigator.share){navigator.share({title:"DJ Spin That",text,url}).catch(e=>{if(e&&e.name!=="AbortError")copy()})}else copy();}
+// djspinthat.net/played (or #played, ?q=song): open the "Has it been played?" search
+function goPlayed(){setTab("music",{noScroll:true,keepHash:true});const q=new URLSearchParams(location.search).get("q")||"";let n=0;
+  (function go(){const box=$(".disco-search"),inp=$("#discoQ");if((!box||!SHOWS.length)&&n++<40)return setTimeout(go,150);if(!box)return;
+    box.scrollIntoView({behavior:"smooth",block:"center"});if(q){inp.value=q;discoSearch()}setTimeout(()=>inp.focus({preventScroll:true}),400)})()}
 function routeHash(){const h=(location.hash||"").slice(1);if(!h)return false;
   if(h==="rabbit-hole"||h==="kookie-burrow"||h==="kooky-burrow"||h==="dance"){setTab("burrow");return true}
+  if(h==="played"||h==="search"){goPlayed();return true}
   if(TAB_ALIAS[h]){setTab(h,{noScroll:true,keepHash:true});return true}
   if(TAB_SECTIONS[h]){setTab(h,{noScroll:true});return true}
   const sh=findBySlug(h);if(sh){openShow(sh);return true}
