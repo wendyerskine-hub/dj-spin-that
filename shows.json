@@ -1700,14 +1700,27 @@
    "city": "Kaohsiung",
    "country": "Taiwan",
    "date": "2026-11-21",
-   "disputed": false,
+   "disputed": true,
    "night": "Night 2",
    "order": 540,
-   "songs": [],
-   "status": "upcoming",
+   "songs": [
+    {
+     "title": "Sea",
+     "album": "Love Yourself: Her",
+     "year": 2017,
+     "unit": "OT7"
+    }
+   ],
+   "status": "played",
    "tentative": false,
    "venue": "Kaohsiung National Stadium",
-   "id": "2026-0540-kaohsiung-n2"
+   "id": "2026-0540-kaohsiung-n2",
+   "notes": {
+    "Sea": "Tour debut: first time as a surprise song on the ARIRANG tour. Sea was a hidden track on the physical Love Yourself: Her album."
+   },
+   "sources": [
+    "Reported live by the site owner watching the show (Nov 21, 2026)"
+   ]
   },
   {
    "city": "Kaohsiung",
