@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-21",
  "shows": [
   {
    "city": "Goyang",
@@ -1667,7 +1667,7 @@
    "city": "Kaohsiung",
    "country": "Taiwan",
    "date": "2026-11-19",
-   "disputed": true,
+   "disputed": false,
    "night": "Night 1",
    "notes": {
     "Answer: Love Myself": "Tour debut: first time as a surprise song on the ARIRANG tour."
@@ -1688,7 +1688,8 @@
     }
    ],
    "sources": [
-    "Reported live by a DJ Spin That viewer watching the show (Nov 19, 2026)"
+    "Reported live by a DJ Spin That viewer watching the show (Nov 19, 2026)",
+    "https://www.nownews.com/news/6893714"
    ],
    "status": "played",
    "tentative": false,
