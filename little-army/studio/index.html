@@ -254,6 +254,16 @@ section{padding-top:18px}
 .art .who{position:absolute;top:14px;left:14px;background:#fff;border-radius:999px;font-size:16px;padding:3px 6px}
 .bigart{max-width:100%;max-height:52vh;border-radius:16px;border:6px solid #fff;box-shadow:0 12px 30px rgba(40,10,80,.35);display:block;margin:0 auto 12px}
 
+/* quotes */
+.qlist{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.qb{background:#fff;border:3px solid var(--c,#7c3aed);border-radius:22px;padding:14px 16px;text-align:left;position:relative;font-family:Fredoka;font-size:20px;font-weight:500;line-height:1.35;margin-bottom:22px}
+.qb::after{content:"";position:absolute;left:26px;bottom:-16px;border:9px solid transparent;border-top-color:var(--c,#7c3aed);border-width:16px 12px 0 12px}
+.qb small{display:block;font-family:Nunito;font-size:14px;font-weight:800;color:var(--ink2);margin-top:6px}
+.qb .fav{position:absolute;top:-12px;right:-6px;font-size:22px}
+.qwho{display:flex;align-items:center;gap:8px;font-weight:800;margin:-8px 0 0 6px;font-size:15px}
+.qwho span{font-size:26px}
+.spal .qs{font-family:Fredoka;font-size:12px;line-height:1.2;text-align:left;padding:6px;border-radius:10px;background:#fff;min-height:54px;display:block;overflow:hidden}
+
 /* badges */
 .ranks{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
 .rk{flex:1;min-width:150px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 12px}
@@ -555,7 +565,7 @@ const COLORS=['#2a1650','#7c3aed','#ff5fa2','#e0263a','#f5b700','#14b8a6','#2f80
 
 /* ======================= STATE & SAVING ======================= */
 const LS_KEY='little-dj-studio.v1';
-const FRESH=()=>({name:'',bias:'ot7',stamps:{},culture:{},bt21:{},mathRight:0,facts:{},korRight:0,korBest:0,stickers:{},journal:[],sinceSticker:{math:0,kor:0},lastJournalSticker:'',pin:''});
+const FRESH=()=>({name:'',bias:'ot7',stamps:{},culture:{},bt21:{},mathRight:0,facts:{},korRight:0,korBest:0,stickers:{},journal:[],sinceSticker:{math:0,kor:0},lastJournalSticker:'',pin:'',quotes:[],quoteRight:0});
 let state=FRESH();
 let SHOWS=[];      // from /shows.json
 let STOPS=[];      // unique cities in tour order
@@ -605,7 +615,7 @@ function clock(h){h=((h%24)+24)%24;const ap=h<12?'AM':'PM';const hh=h%12||12;ret
 function noonIn(tz){const h=12+(tz-9);const day=h<0?' the day before':h>=24?' the next day':'';return clock(h)+day}
 
 function points(){
- return Object.keys(state.stamps).length*10+Object.keys(state.culture).length*3+Object.keys(state.bt21).length*3+state.mathRight+state.korRight+Math.min(state.korBest,20)+state.journal.length*8;
+ return Object.keys(state.stamps).length*10+Object.keys(state.culture).length*3+Object.keys(state.bt21).length*3+state.mathRight+state.korRight+Math.min(state.korBest,20)+state.journal.length*8+(state.quoteRight||0);
 }
 function rankFor(p){let r=RANKS[0];RANKS.forEach(x=>{if(p>=x.min)r=x});return r}
 let lastRank=null;
@@ -852,7 +862,7 @@ function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(PDB,1);r.on
 async function idbDo(mode,fn){const d=await idb();return new Promise((res,rej)=>{const t=d.transaction(PST,mode),st=t.objectStore(PST);const r=fn(st);t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error)})}
 async function loadLocalCards(){try{const all=await idbDo('readonly',st=>st.getAll())||[];CARDS=all.map(p=>({id:'L'+p.id,key:p.id,member:p.member||'ot7',trade:!!p.trade,at:p.at||0,kind:p.kind||'card',who:p.who||'',artist:p.artist||'',fav:!!p.fav,url:URL.createObjectURL(p.blob)}))}catch(e){CARDS=[]}}
 function shrinkImg(file){return new Promise(res=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>{const k=Math.min(1,1100/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>res(b),'image/jpeg',.86)};im.onerror=()=>{URL.revokeObjectURL(u);res(null)};im.src=u})}
-async function addCards(files,member,kind){kind=kind||'card';const art=kind==='fanart';const word=art?'fan art':'photocard';let added=0;toast(`Adding ${files.length} ${word}${files.length>1&&!art?'s':''}… ${art?'🎨':'📒'}`);
+async function addCards(files,member,kind){kind=kind||'card';const art=kind==='fanart'||kind==='quote';const word=kind==='quote'?'quote picture':art?'fan art':'photocard';let added=0;toast(`Adding ${files.length} ${word}${files.length>1&&!art?'s':''}… ${art?'🎨':'📒'}`);
  for(const f of files){const blob=await shrinkImg(f);if(!blob)continue;const at=Date.now()+added;
   try{if(store.mode==='db'){if(!ASSETS){toast('Adding photos needs edit access to this page.');break}
     const a=await ASSETS.upload(blob);const row=art?{id:'A'+a.id,asset:a.id,url:a.url,member:'fanart',who:member,kind,artist:'',fav:false,trade:false,at}:{id:'A'+a.id,asset:a.id,url:a.url,member,kind,trade:false,at};await store.ccol.doc(row.id).set(row);CARDS.push(row)}
@@ -869,16 +879,17 @@ function drawPhoto(x,img,X,Y,S,seed,ratio){ratio=ratio||55/85;let h=S*.94,w=h*ra
  x.shadowColor='rgba(40,10,80,.3)';x.shadowBlur=S*.04;x.shadowOffsetY=S*.012;x.fillStyle='#fff';rr(x,-w/2,-h/2,w,h,S*.05);x.fill();x.shadowColor='transparent';
  const b=S*.025,iw=w-2*b,ih=h-2*b;x.save();rr(x,-iw/2,-ih/2,iw,ih,S*.035);x.clip();if(img){const k=Math.max(iw/img.width,ih/img.height);x.drawImage(img,-img.width*k/2,-ih/2-(img.height*k-ih)*.2,img.width*k,img.height*k)}else{x.fillStyle='#ddd0ff';x.fillRect(-iw/2,-ih/2,iw,ih)}x.restore();x.restore()}
 /* stickers and photocards share one id space: 'p-<cardId>' is a photo */
-function drawItem(x,id,X,Y,S){if(id.startsWith('p-')){const c=cardById(id.slice(2));const im=c?IMG[c.id]:null;const r=c&&c.kind==='fanart'&&im?Math.max(.5,Math.min(1.6,im.width/im.height)):0;drawPhoto(x,im,X,Y,S,c?c.at:0,r)}else{const st=stById(id);if(st)drawSticker(x,st,X,Y,S)}}
+function drawItem(x,id,X,Y,S){if(id.startsWith('q-')){const q=qById(id.slice(2));if(q)drawBubble(x,q,X+S/2,Y+S/2,S*1.4,S*.1)}else if(id.startsWith('p-')){const c=cardById(id.slice(2));const im=c?IMG[c.id]:null;const r=c&&(c.kind==='fanart'||c.kind==='quote')&&im?Math.max(.5,Math.min(1.6,im.width/im.height)):0;drawPhoto(x,im,X,Y,S,c?c.at:0,r)}else{const st=stById(id);if(st)drawSticker(x,st,X,Y,S)}}
 async function preload(ids){await Promise.all(ids.filter(i=>i&&i.startsWith('p-')).map(i=>{const c=cardById(i.slice(2));return c?cardImg(c):null}))}
 
 let bFilter='all',bPage=0,bSub='cards',aFilter='all';
-const PCARDS=()=>CARDS.filter(c=>c.kind!=='fanart'),ARTS=()=>CARDS.filter(c=>c.kind==='fanart');
+const PCARDS=()=>CARDS.filter(c=>c.kind!=='fanart'&&c.kind!=='quote'),ARTS=()=>CARDS.filter(c=>c.kind==='fanart'),QPICS=()=>CARDS.filter(c=>c.kind==='quote');
 function binderList(){return PCARDS().filter(c=>bFilter==='all'||(bFilter==='trade'?c.trade:c.member===bFilter)).sort((a,b)=>a.at-b.at)}
 function binderView(){const list=binderList();const pages=Math.max(1,Math.ceil((list.length+(bFilter==='trade'?0:1))/9));bPage=Math.min(bPage,pages-1);
  const slice=list.slice(bPage*9,bPage*9+9);const canAdd=bFilter!=='trade';
  const PC=PCARDS();const counts=MORDER.concat('ot7').map(k=>[k,PC.filter(c=>c.member===k).length]);const max=Math.max(1,...counts.map(c=>c[1]));const trades=PC.filter(c=>c.trade).length;
  if(bSub==='art')return artView();
+ if(bSub==='quotes')return quotesView();
  afterFns.push(newBQ);
  return `<section>${binderTabs()}<div class="secthead"><h2 style="font-size:30px;margin:0">📒 My Photocard Binder</h2><label class="btn pink" for="addCards">＋ Add photocards</label><input type="file" id="addCards" accept="image/*" multiple hidden></div>
  <p class="muted">Take a photo of each photocard (or pick them from your photos) and slide them into your binder! ${store.mode==='db'?'They are saved privately to your account.':'They stay on this device, and they also show up in the Card Studio.'}</p>
@@ -900,14 +911,49 @@ function newBQ(){const box=$('#bq');if(!box)return;const PC=PCARDS();const n=PC.
 function answerBQ(v){if(!bq||bq.done)return;bq.done=true;const ok=v===bq.a;document.querySelectorAll('[data-bqa]').forEach(b=>{const k=+b.dataset.bqa;if(k===bq.a)b.classList.add('right');else if(k===v)b.classList.add('wrong')});
  if(ok){state.mathRight++;state.sinceSticker.math++;save();updateHeader();if(state.sinceSticker.math>=5){state.sinceSticker.math=0;save();giveSticker(randomSticker(['member','fun']),'5 math missions solved!')}}
  $('#bqfb').innerHTML=(ok?'<span class="ok">대박! </span>':'<span class="no">Almost! </span>')+esc(bq.why);setTimeout(newBQ,ok?2200:3500)}
+/* ---------- quotes ---------- */
+const qById=id=>state.quotes.find(q=>q.id===id);
+function quotesView(){const qs=state.quotes.slice().sort((a,b)=>b.at-a.at);const pics=QPICS().sort((a,b)=>b.at-a.at);const game=qs.filter(q=>MEM[q.who]&&q.who!=='ot7');
+ if(game.length)afterFns.push(newQQ);
+ return `<section>${binderTabs()}<div class="secthead"><h2 style="font-size:30px;margin:0">💬 My Favorite Quotes</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn pink" data-qnew>✏️ Type a quote</button><label class="btn ghost" for="addQPic">🖼️ Add quote pictures</label><input type="file" id="addQPic" accept="image/*" multiple hidden></div></div>
+ <p class="muted">The funny things BTS say that make you laugh! Stamp them into your journal as speech bubbles, or make a quote photocard in 🎨 Freebies.</p>
+ ${game.length?`<div class="card" style="margin-bottom:16px"><h3>🤔 Who said it?</h3><div id="qq"></div></div>`:''}
+ ${qs.length?`<div class="qlist">${qs.map(q=>{const m=MEM[q.who];return `<div><button class="qb" style="--c:${m?m.c:'#7c3aed'};width:100%" data-qedit="${q.id}">${esc(q.text)}${q.from?`<small>📺 ${esc(q.from)}</small>`:''}${q.fav?'<span class="fav">❤️</span>':''}</button><div class="qwho"><span>${m?m.e:'💬'}</span>${m?esc(m.n):'Someone'}</div></div>`}).join('')}</div>`:''}
+ ${pics.length?`<h3 style="margin-top:20px">🖼️ Quote pictures</h3><div class="artgrid">${pics.map(c=>`<button class="art" data-qpic="${c.id}"><img src="${esc(c.url)}" alt="Quote picture" loading="lazy"><span class="who">${WHO(c.who).e}</span></button>`).join('')}</div>`:''}
+ ${!qs.length&&!pics.length?`<div class="card" style="text-align:center"><div style="font-size:60px">💬</div><p style="margin:0">No quotes yet! Tap <b>✏️ Type a quote</b>, or add screenshots with <b>🖼️ Add quote pictures</b>.</p></div>`:''}</section>`}
+let qq=null;
+function newQQ(){const box=$('#qq');if(!box)return;const pool=state.quotes.filter(q=>MEM[q.who]&&q.who!=='ot7');if(!pool.length)return;const q=pickOne(pool);
+ const opts=shuffle([q.who,...shuffle(MORDER.filter(k=>k!==q.who)).slice(0,3)]);qq={q,done:false};
+ box.innerHTML=`<div class="qb" style="--c:#7c3aed;margin-bottom:24px">${esc(q.text)}</div><div class="opts">${opts.map(k=>`<button data-qqa="${k}">${MEM[k].e} ${esc(MEM[k].n)}</button>`).join('')}</div><div class="feedback" id="qqfb"></div>`}
+function answerQQ(k){if(!qq||qq.done)return;qq.done=true;const ok=k===qq.q.who;document.querySelectorAll('[data-qqa]').forEach(b=>{if(b.dataset.qqa===qq.q.who)b.classList.add('right');else if(b.dataset.qqa===k)b.classList.add('wrong')});
+ if(ok){state.quoteRight=(state.quoteRight||0)+1;save();updateHeader()}
+ $('#qqfb').innerHTML=ok?'<span class="ok">대박! You know your BTS! 💜</span>':`<span class="no">It was ${esc(MEM[qq.q.who].n)} ${MEM[qq.q.who].e}!</span>`;setTimeout(newQQ,ok?1800:2800)}
+function quoteModal(id){const q=id?qById(id):{text:'',who:'',from:'',fav:false};modal(`<div style="font-size:48px">💬</div><h2 style="margin:4px 0">${id?'Edit quote':'New quote'}</h2>
+ <div class="form" style="text-align:left"><label for="qtext">What did they say?</label><textarea id="qtext" maxlength="160" placeholder="Type the funny quote…">${esc(q.text)}</textarea>
+ <label for="qfrom">Where is it from? (optional)</label><input type="text" id="qfrom" maxlength="40" value="${esc(q.from||'')}" placeholder="like Run BTS, a live, or a concert"></div>
+ <p style="font-weight:800;margin:12px 0 6px">Who said it?</p><div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-qwho="${k}" class="${q.who===k?'on':''}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px">${id?`<button class="btn ghost" data-qfav="${id}">${q.fav?'❤️ Favorite':'🤍 Favorite'}</button><button class="btn ghost" data-qdel="${id}">🗑 Delete</button>`:''}<button class="btn pink" data-qsave="${id||''}">💾 Save</button></div>`);qDraftWho=q.who}
+let qDraftWho='';
+function saveQuote(id){const text=($('#qtext').value||'').replace(/[<>]/g,'').trim().slice(0,160);if(!text){toast('Type the quote first! ✏️');return}const from=($('#qfrom').value||'').replace(/[<>]/g,'').trim().slice(0,40);
+ if(id){Object.assign(qById(id),{text,from,who:qDraftWho})}else state.quotes.push({id:'q'+Date.now(),text,from,who:qDraftWho,fav:false,at:Date.now()});save();closeModal();toast('Quote saved! 💬');render()}
+/* speech bubble drawn on a canvas (journal stamp and quote card) */
+function wrapLines(x,text,maxW){const words=String(text).split(/\s+/);const lines=[];let line='';for(const w of words){const t=line?line+' '+w:w;if(x.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t}if(line)lines.push(line);return lines}
+function drawBubble(x,q,cx,cy,maxW,f,tail){const m=MEM[q.who];const col=m?m.c:'#7c3aed';x.save();x.font=`600 ${f}px Fredoka,sans-serif`;x.textAlign='center';x.textBaseline='middle';
+ let lines=wrapLines(x,q.text,maxW);while(lines.length>6&&f>16){f-=2;x.font=`600 ${f}px Fredoka,sans-serif`;lines=wrapLines(x,q.text,maxW)}
+ const lh=f*1.25,w=Math.min(maxW,Math.max(...lines.map(l=>x.measureText(l).width)))+f*1.6,h=lines.length*lh+f*1.3;const X=cx-w/2,Y=cy-h/2;
+ x.shadowColor='rgba(40,10,80,.25)';x.shadowBlur=f*.5;x.shadowOffsetY=f*.15;x.fillStyle='#fff';rr(x,X,Y,w,h,f*.9);x.fill();
+ x.beginPath();if(tail==='up'){x.moveTo(X+w*.28,Y+2);x.lineTo(X+w*.22,Y-f*.9);x.lineTo(X+w*.4,Y+2)}else{x.moveTo(X+f*1.2,Y+h-2);x.lineTo(X+f*.6,Y+h+f*.9);x.lineTo(X+f*2.4,Y+h-2)}x.fill();x.shadowColor='transparent';
+ x.lineWidth=Math.max(3,f*.14);x.strokeStyle=col;rr(x,X,Y,w,h,f*.9);x.stroke();
+ x.fillStyle='#2a1650';lines.forEach((l,i)=>x.fillText(l,cx,Y+f*.65+lh*(i+.5)));
+ if(tail!=='up'&&m){x.font=`${f*1.5}px ${EMOJI}`;x.fillText(m.e,X+f*.6,Y+h+f*1.6)}x.restore()}
 function saveArtist(c){const i=$('#artist');if(!c||!i)return;const v=i.value.replace(/[<>]/g,'').trim().slice(0,40);if(v!==(c.artist||''))updateCard(c,{artist:v})}
 function cardModal(id){const c=cardById(id);if(!c)return;modal(`<img class="bigcard" src="${esc(c.url)}" alt="Photocard">
  <p style="font-weight:800;margin:0 0 6px">Who's on this card?</p><div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-cm="${id}|${k}" class="${c.member===k?'on':''}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div>
  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px"><button class="btn ${c.trade?'':'ghost'}" data-ctrade="${id}">🔁 ${c.trade?'Marked for trade':'It\'s a double, for trade'}</button><button class="btn ghost" data-cdel="${id}">🗑 Take it out</button><button class="btn pink" onclick="closeModal()">Done</button></div>`)}
-function addCardsModal(files,kind){const art=kind==='fanart';pendingKind=kind||'card';modal(`<div style="font-size:54px">${art?'🎨':'📒'}</div><h2 style="margin:4px 0">${files.length} new ${art?'fan art piece':'photocard'}${files.length>1?'s':''}!</h2><p style="margin-top:0">Who's ${art?'in':'on'} ${files.length>1?'these':'this'}? (You can change each one later.)</p>
+function addCardsModal(files,kind){const art=kind==='fanart'||kind==='quote';pendingKind=kind||'card';modal(`<div style="font-size:54px">${art?'🎨':'📒'}</div><h2 style="margin:4px 0">${files.length} new ${art?'fan art piece':'photocard'}${files.length>1?'s':''}!</h2><p style="margin-top:0">Who's ${art?'in':'on'} ${files.length>1?'these':'this'}? (You can change each one later.)</p>
  <div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-addm="${k}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div><button class="btn ghost small" style="margin-top:12px" onclick="closeModal()">Cancel</button>`);pendingFiles=files}
 let pendingFiles=null,pendingKind='card';
-function binderTabs(){return `<div class="subtabs"><button data-bsub="cards" class="${bSub==='cards'?'on':''}">📒 Photocards (${PCARDS().length})</button><button data-bsub="art" class="${bSub==='art'?'on':''}">🎨 Fan Art (${ARTS().length})</button></div>`}
+function binderTabs(){return `<div class="subtabs"><button data-bsub="cards" class="${bSub==='cards'?'on':''}">📒 Photocards (${PCARDS().length})</button><button data-bsub="art" class="${bSub==='art'?'on':''}">🎨 Fan Art (${ARTS().length})</button><button data-bsub="quotes" class="${bSub==='quotes'?'on':''}">💬 Quotes (${state.quotes.length+QPICS().length})</button></div>`}
 const WHO=k=>MEM[k]||{e:'🎨',n:'Other'};
 function artView(){const all=ARTS();const list=all.filter(c=>aFilter==='all'||(aFilter==='fav'?c.fav:c.who===aFilter)).sort((a,b)=>b.at-a.at);
  return `<section>${binderTabs()}<div class="secthead"><h2 style="font-size:30px;margin:0">🎨 My Fan Art Gallery</h2><label class="btn pink" for="addArt">＋ Add fan art</label><input type="file" id="addArt" accept="image/*" multiple hidden></div>
@@ -958,6 +1004,8 @@ function journalForm(){const songs=[...new Set([...Object.keys(allSongs()),...SE
   <div class="tools"><button class="tool on" data-tool="pen">✏️ Pen</button><button class="tool" data-tool="fat">🖍️ Marker</button><button class="tool" data-tool="erase">🧽 Eraser</button><button class="tool" data-tool="sticker">⭐ Stamp</button><button class="tool" data-undo>↩️ Undo</button><button class="tool" data-clear>🗑 Clear</button></div>
   <div class="tools" id="stampsize" style="display:none"><span style="font-weight:800">Sticker size:</span><button class="tool" data-ss="70">S</button><button class="tool on" data-ss="110">M</button><button class="tool" data-ss="170">L</button><span class="muted" style="font-size:14px">Pick a sticker, then tap the page to stick it!</span></div></div>
   <div><b style="font-size:15px">My stickers</b>${owned.length?`<div class="spal">${owned.map(s=>`<button data-stamp="${s.id}" aria-label="${esc(s.label)}"><canvas data-st="${s.id}" width="120" height="120"></canvas></button>`).join('')}</div>`:`<p class="muted" style="font-size:15px">Earn stickers in the Tour, Korean, Math, and BT21 tabs, and they'll show up here!</p>`}
+  ${state.quotes.length?`<b style="font-size:15px;display:block;margin-top:10px">My quotes</b><div class="spal" style="grid-template-columns:1fr 1fr">${state.quotes.map(q=>`<button data-stamp="q-${q.id}" aria-label="Quote"><span class="qs">${MEM[q.who]?MEM[q.who].e+' ':''}${esc(q.text.slice(0,50))}${q.text.length>50?'…':''}</span></button>`).join('')}</div>`:''}
+  ${QPICS().length?`<b style="font-size:15px;display:block;margin-top:10px">My quote pictures</b><div class="spal">${QPICS().map(c=>`<button data-stamp="p-${c.id}" aria-label="Quote picture"><img src="${esc(c.url)}" alt="" loading="lazy" style="aspect-ratio:auto"></button>`).join('')}</div>`:''}
   ${ARTS().length?`<b style="font-size:15px;display:block;margin-top:10px">My fan art</b><div class="spal">${ARTS().map(c=>`<button data-stamp="p-${c.id}" aria-label="Fan art"><img src="${esc(c.url)}" alt="" loading="lazy" style="aspect-ratio:auto"></button>`).join('')}</div>`:''}
   ${PCARDS().length?`<b style="font-size:15px;display:block;margin-top:10px">My photocards</b><div class="spal">${PCARDS().map(c=>`<button data-stamp="p-${c.id}" aria-label="Photocard"><img src="${esc(c.url)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}</div></div>
  <label for="jsong">🎵 Song of the day</label><select id="jsong"><option value="">Pick a song…</option>${songs.map(s=>`<option>${esc(s)}</option>`).join('')}</select>
@@ -971,7 +1019,7 @@ function initPad(){const c=$('#pad');if(!c)return;const x=c.getContext('2d');x.f
  padHist=[c.toDataURL()];let drawing=false,last=null;
  const pos=e=>{const r=c.getBoundingClientRect();return [(e.clientX-r.left)*c.width/r.width,(e.clientY-r.top)*c.height/r.height]};
  c.addEventListener('pointerdown',e=>{e.preventDefault();const p=pos(e);
-  if(jd.tool==='sticker'){if(!jd.stamp){toast('Pick a sticker or photocard first!');return}const S=jd.stampSize*2*(jd.stamp.startsWith('p-')?1.5:1);drawItem(x,jd.stamp,p[0]-S/2,p[1]-S/2,S);pushHist();return}
+  if(jd.tool==='sticker'){if(!jd.stamp){toast('Pick a sticker, photocard, or quote first!');return}const S=jd.stampSize*2*(jd.stamp.startsWith('p-')?1.5:jd.stamp.startsWith('q-')?1.6:1);drawItem(x,jd.stamp,p[0]-S/2,p[1]-S/2,S);pushHist();return}
   drawing=true;last=p;c.setPointerCapture(e.pointerId);dot(p)});
  c.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);x.lineCap='round';x.lineJoin='round';x.strokeStyle=jd.tool==='erase'?'#fffdf7':jd.color;x.lineWidth=jd.tool==='erase'?40:jd.tool==='fat'?22:7;x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p});
  const end=()=>{if(drawing){drawing=false;pushHist()}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
@@ -988,13 +1036,14 @@ function saveEntry(){const today=new Date();const e={id:'j'+Date.now(),created:D
 /* ======================= STICKERS & FREEBIES ======================= */
 let sSub='book',fm={tpl:'sheet',sel:[],msg:'Borahae 💜',from:''};
 const MSGS=['Borahae 💜','Thank you, ARMY!','Let\'s be friends! 🫰','화이팅! You can do it!','사랑해 💜','From one ARMY to another'];
-function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const owned=STICKERS.filter(s=>state.stickers[s.id]);const canMake=owned.length||PCARDS().length;fm.sel=fm.sel.filter(i=>!i.startsWith('p-')||(cardById(i.slice(2))&&cardById(i.slice(2)).kind!=='fanart'));
+function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const owned=STICKERS.filter(s=>state.stickers[s.id]);const canMake=owned.length||PCARDS().length||state.quotes.length;fm.sel=fm.sel.filter(i=>!i.startsWith('p-')||(cardById(i.slice(2))&&cardById(i.slice(2)).kind!=='fanart'));
  if(!fm.from)fm.from=state.name||'';
  const book=`<p class="muted" style="margin-top:0">You have <b>${owned.length}</b> of ${STICKERS.length} stickers. Gray ones are still waiting for you!</p>
   <div class="tip" style="margin-bottom:14px"><b>How to earn stickers:</b> 🎫 pass a city quiz · ✖️ every 5 math answers · 🇰🇷 every 5 Korean answers · 🌟 each BT21 buddy · 📓 your first journal page each day</div>
   ${sets.map(set=>`<h3 style="margin-top:16px">${esc(set)}</h3><div class="sbook">${STICKERS.filter(s=>s.set===set).map(s=>`<div class="sb ${state.stickers[s.id]?'':'locked'}"><canvas data-st="${s.id}" width="200" height="200"></canvas><small>${state.stickers[s.id]?esc(s.label):'???'}</small>${state.stickers[s.id]>1?`<span class="cnt">×${state.stickers[s.id]}</span>`:''}</div>`).join('')}</div>`).join('')}`;
  const maker=canMake?`<div class="fmwrap"><div>
-   <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button></div>
+   <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button><button data-tpl="quote" class="${fm.tpl==='quote'?'on':''}">💬 Quote photocard</button></div>
+   ${fm.tpl==='quote'?(state.quotes.length?`<h3 style="margin-top:14px">Pick a quote</h3><div class="chips">${state.quotes.map(q=>`<button data-fq="${q.id}" class="${fm.quote===q.id?'on':''}" style="font-size:15px;text-align:left;max-width:100%">${MEM[q.who]?MEM[q.who].e+' ':''}${esc(q.text.slice(0,60))}${q.text.length>60?'…':''}</button>`).join('')}</div>`:`<p class="tip" style="margin-top:12px">Type a quote in 📒 Binder → 💬 Quotes first!</p>`):''}
    <h3 style="margin-top:14px">2. Tap your stickers <span class="muted" style="font-size:16px">(${fm.sel.length}/${tplMax()})</span></h3><div class="sbook">${owned.map(s=>`<button class="sb ${fm.sel.includes(s.id)?'sel':''}" data-fsel="${s.id}"><canvas data-st="${s.id}" width="160" height="160"></canvas><small>${esc(s.label)}</small></button>`).join('')}${PCARDS().map(c=>`<button class="sb ${fm.sel.includes('p-'+c.id)?'sel':''}" data-fsel="p-${c.id}"><img class="ph" src="${esc(c.url)}" alt="" loading="lazy"><small>${MEM[c.member]?MEM[c.member].e+' '+esc(MEM[c.member].n):'Photocard'}</small></button>`).join('')}</div>
    <h3 style="margin-top:14px">3. Pick a message</h3><div class="chips">${MSGS.map((m,i)=>`<button data-msg="${i}" class="${fm.msg===m?'on':''}" style="font-size:16px">${esc(m)}</button>`).join('')}</div>
    <div class="form"><label for="ffrom">From (your ARMY name)</label><input type="text" id="ffrom" maxlength="16" value="${esc(fm.from)}" placeholder="Your ARMY name"></div></div>
@@ -1004,7 +1053,8 @@ function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const ow
  return `<section><h2 style="font-size:30px">🎨 Stickers &amp; Freebies</h2><div class="subtabs"><button data-ssub="book" class="${sSub==='book'?'on':''}">📒 My sticker book</button><button data-ssub="maker" class="${sSub==='maker'?'on':''}">✂️ Freebie maker</button></div>${sSub==='book'?book:maker}
  <p style="margin-top:20px"><button class="btn ghost" data-gotab="cards">💳 Make a photocard in the Card Studio →</button></p></section>`}
 function tplMax(){return fm.tpl==='sheet'?6:fm.tpl==='bookmark'?3:1}
-function freebieSize(){return fm.tpl==='bookmark'?[600,1800]:[1200,1800]}
+if(!('quote' in fm))fm.quote='';
+function freebieSize(){return fm.tpl==='bookmark'?[600,1800]:fm.tpl==='quote'?[1300,2008]:[1200,1800]}
 function bgArt(x,W,H){const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f3e8ff');g.addColorStop(.55,'#fde2f0');g.addColorStop(1,'#e0e7ff');x.fillStyle=g;x.fillRect(0,0,W,H);
  x.globalAlpha=.35;x.fillStyle='#c4a8ff';for(let i=0;i<40;i++){const px=(i*137.5)%W,py=(i*251.3)%H;star(x,px,py,14,6,5);x.fill()}x.globalAlpha=1;
  x.strokeStyle='#a78bfa';x.lineWidth=10;x.setLineDash([24,16]);rr(x,30,30,W-60,H-60,50);x.stroke();x.setLineDash([])}
@@ -1016,6 +1066,13 @@ async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.f
   const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawItem(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1690-(from?50:0));
   if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1700)}}
+ else if(fm.tpl==='quote'){const q=qById(fm.quote)||state.quotes[0];const s=sel[0];const m=q&&MEM[q.who];
+  x.fillStyle='#fff';rr(x,60,60,W-120,1180,60);x.fill();
+  if(s&&s.startsWith('p-')){const c=cardById(s.slice(2));const im=c&&IMG[c.id];if(im){x.save();rr(x,90,90,W-180,1120,44);x.clip();const k=Math.max((W-180)/im.width,1120/im.height);x.drawImage(im,W/2-im.width*k/2,90-(im.height*k-1120)*.2,im.width*k,im.height*k);x.restore()}}
+  else if(s)drawItem(x,s,W/2-450,200,900);else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a photocard or sticker',W/2,650)}
+  if(q)drawBubble(x,q,W/2,1530,W-300,72,'up');else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a quote',W/2,1530)}
+  x.textAlign='center';if(m){x.font="700 56px Fredoka,sans-serif";x.fillStyle='#2a1650';x.fillText('— '+m.e+' '+m.n,W/2,1810)}
+  x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜'+(from?'  ·  from '+from:''),W/2,1915)}
  else if(fm.tpl==='card'){const s=sel[0];x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,170);if(s)drawItem(x,s,150,260,900);
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,84);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1300);
   x.font="900 52px 'Noto Sans KR',sans-serif";x.fillStyle='#db2777';x.fillText('보라해',W/2,1420);
@@ -1057,12 +1114,14 @@ function badgeList(){const n=o=>Object.keys(o).length;const owned=Object.values(
   {ic:'🔁',t:'Trade Ready',d:'Mark 3 doubles for trading',got:PCARDS().filter(c=>c.trade).length>=3},
   {ic:'🖼️',t:'Art Lover',d:'Save 5 fan art pieces in your gallery',got:ARTS().length>=5},
   {ic:'🖌️',t:'Credit the Artist',d:'Add the artist\'s name on 5 fan art pieces',got:ARTS().filter(c=>c.artist).length>=5},
+  {ic:'💬',t:'Quote Keeper',d:'Save 5 favorite quotes',got:state.quotes.length+QPICS().length>=5},
+  {ic:'🤔',t:'Who Said It?',d:'Guess 10 quotes right',got:(state.quoteRight||0)>=10},
   {ic:'🎨',t:'Sticker Collector',d:'Collect 25 different stickers',got:owned>=25},
   {ic:'👑',t:'전설 Legend',d:'Reach the top rank',got:points()>=RANKS[3].min}
  ]}
 function badgesView(){const p=points(),r=rankFor(p);const next=RANKS.find(x=>x.min>p);
  return `<section><h2 style="font-size:30px">🏅 ${esc(nm())}'s Ranks &amp; Badges</h2>
- <p class="muted" style="margin-top:0">💜 points: 10 per city stamp · 3 per culture card · 3 per BT21 buddy · 8 per journal page · 1 per math or Korean answer · plus your best Korean streak (up to 20).</p>
+ <p class="muted" style="margin-top:0">💜 points: 1 per "Who said it?" answer · 10 per city stamp · 3 per culture card · 3 per BT21 buddy · 8 per journal page · 1 per math or Korean answer · plus your best Korean streak (up to 20).</p>
  <div class="ranks">${RANKS.map(x=>`<div class="rk ${x.en===r.en?'on':''}"><div style="font-size:28px">${x.emo}</div><b class="kr">${x.kr}</b> <b>${x.en}</b><div class="muted" style="font-size:14px">say: ${x.rom} · ${x.min}+ 💜</div></div>`).join('')}</div>
  ${next?`<p><b>${next.min-p} more 💜</b> to become <b class="kr">${next.kr}</b> (${next.en})!</p>`:`<p><b>You reached the top! You are a true 전설, a Legend! 👑</b></p>`}
  <div class="grid bgrid">${badgeList().map(b=>`<div class="badge ${b.got?'got':''}"><div class="ic">${b.ic}</div><b>${esc(b.t)}</b><span>${esc(b.d)}</span></div>`).join('')}</div>
@@ -1106,11 +1165,20 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
  if(d.cdel){const c=cardById(d.cdel);if(c&&confirm('Take this photocard out of your binder?')){deleteCard(c);closeModal();render()}return}
  if(d.addm){const f=pendingFiles;pendingFiles=null;closeModal();if(f&&f.length)addCards(f,d.addm,pendingKind);return}
  if(d.bsub){bSub=d.bsub;return render()}
+ if(d.qnew!==undefined)return quoteModal(null);
+ if(d.qedit)return quoteModal(d.qedit);
+ if(d.qwho){qDraftWho=d.qwho;document.querySelectorAll('[data-qwho]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.qsave!==undefined)return saveQuote(d.qsave);
+ if(d.qfav){const q=qById(d.qfav);q.fav=!q.fav;save();t.textContent=q.fav?'❤️ Favorite':'🤍 Favorite';return render()}
+ if(d.qdel){if(confirm('Delete this quote?')){state.quotes=state.quotes.filter(q=>q.id!==d.qdel);save();closeModal();render()}return}
+ if(d.qqa)return answerQQ(d.qqa);
+ if(d.qpic){const c=cardById(d.qpic);modal(`<img class="bigart" src="${esc(c.url)}" alt="Quote picture"><div style="display:flex;gap:10px;justify-content:center"><button class="btn ghost" data-adel="${c.id}">🗑 Remove</button><button class="btn pink" onclick="closeModal()">Done</button></div>`);return}
+ if(d.fq){fm.quote=d.fq;document.querySelectorAll('[data-fq]').forEach(b=>b.classList.toggle('on',b===t));return drawFreebie()}
  if(d.af){aFilter=d.af;return render()}
  if(d.art)return artModal(d.art);
  if(d.aw){const [id,k]=d.aw.split('|');const c=cardById(id);saveArtist(c);updateCard(c,{who:k});document.querySelectorAll('[data-aw]').forEach(b=>b.classList.toggle('on',b===t));return}
  if(d.afav){const c=cardById(d.afav);saveArtist(c);updateCard(c,{fav:!c.fav});return artModal(c.id)}
- if(d.adel){const c=cardById(d.adel);if(c&&confirm('Remove this fan art from your gallery?')){deleteCard(c);closeModal();render()}return}
+ if(d.adel){const c=cardById(d.adel);if(c&&confirm('Remove this picture?')){deleteCard(c);closeModal();render()}return}
  if(d.adone){saveArtist(cardById(d.adone));closeModal();return render()}
  if(d.pin)return pinKey(d.pin);
  if(d.gate!==undefined)return gateModal('open');
@@ -1144,7 +1212,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
 document.addEventListener('click',e=>{const g=e.target.closest('g.stop');if(g){tab='tour';go({city:g.dataset.city})}});
 document.addEventListener('keydown',e=>{if($('#pinbox')){if(/^[0-9]$/.test(e.key))pinKey(e.key);else if(e.key==='Backspace')pinKey('del');else if(e.key==='Enter')pinKey('go');return}if($('#mq')&&tab==='math'&&!$('#modal')){if(/^[0-9]$/.test(e.key))mathKey(e.key);else if(e.key==='Backspace')mathKey('del');else if(e.key==='Enter')mathKey('go')}});
 document.addEventListener('input',e=>{if(e.target.id==='ffrom'){fm.from=e.target.value;drawFreebie()}});
-document.addEventListener('change',e=>{if(e.target.id==='restore'&&e.target.files[0])restore(e.target.files[0]);if(e.target.id==='addCards'&&e.target.files.length){addCardsModal([...e.target.files],'card');e.target.value=''}if(e.target.id==='addArt'&&e.target.files.length){addCardsModal([...e.target.files],'fanart');e.target.value=''}});
+document.addEventListener('change',e=>{if(e.target.id==='restore'&&e.target.files[0])restore(e.target.files[0]);if(e.target.id==='addCards'&&e.target.files.length){addCardsModal([...e.target.files],'card');e.target.value=''}if(e.target.id==='addArt'&&e.target.files.length){addCardsModal([...e.target.files],'fanart');e.target.value=''}if(e.target.id==='addQPic'&&e.target.files.length){addCardsModal([...e.target.files],'quote');e.target.value=''}});
 function setTool(t){jd.tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));const ss=$('#stampsize');if(ss)ss.style.display=t==='sticker'?'flex':'none'}
 function saveM(){try{localStorage.setItem('little-army-math',JSON.stringify(mset))}catch(e){}}
 
