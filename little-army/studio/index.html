@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DJ Studio">
+<meta name="theme-color" content="#6d28d9">
+<title>Little DJ Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Little DJ Studio: a kid-safe BTS learning journal for an iPad.
+   No links leave this page. The Card Studio tab shows /little-army/ inside the page. Progress saves on this device only. */
+:root{
+  --bg:#f6f1ff; --bg2:#ece3ff; --ink:#2a1650; --ink2:#5b4a82;
+  --violet:#7c3aed; --violet2:#ddd0ff; --pink:#ff5fa2; --pink2:#ffd6e8;
+  --gold:#f5b700; --gold2:#fff1c2; --mint:#14b8a6; --mint2:#cbf5ee;
+  --red:#ff2a4b; --card:#fff; --line:#e3d8fb; --r:20px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:18px;line-height:1.55;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,h4{font-family:Fredoka,system-ui,sans-serif;margin:0 0 .4em;line-height:1.15;font-weight:600}
+button{font-family:inherit;font-size:inherit;cursor:pointer;color:inherit;touch-action:manipulation}
+input,select,textarea{font-family:inherit;font-size:17px;color:var(--ink)}
+.kr{font-family:'Noto Sans KR',sans-serif}
+.wrap{max-width:1060px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 70px max(16px,env(safe-area-inset-right))}
+.hidden{display:none!important}
+
+header{background:linear-gradient(120deg,#5b21b6 0%,#7c3aed 55%,#db2777 120%);color:#fff;padding:14px 0 0;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px rgba(40,10,80,.25)}
+.hrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-family:Fredoka;font-size:25px;font-weight:700;display:flex;align-items:center;gap:12px;line-height:1.1}
+.logo small{display:block;font-family:Nunito;font-size:13px;font-weight:700;opacity:.88}
+.avatar{width:58px;height:58px;border-radius:50%;background:#fff;border:3px solid #ffd45a;display:grid;place-items:center;font-size:34px;padding:0;box-shadow:0 2px 8px rgba(0,0,0,.2);position:relative}
+.avatar::after{content:"✏️";position:absolute;right:-6px;bottom:-4px;font-size:13px;background:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.chip{margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px;font-weight:800;font-size:15px;display:flex;gap:8px;align-items:center}
+.chip b{font-family:Fredoka;font-weight:600}
+.save{font-size:12px;opacity:.85}
+nav{display:flex;gap:4px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{background:transparent;border:0;color:#f1e9ff;padding:11px 15px;border-radius:16px 16px 0 0;font-weight:800;font-size:16px;white-space:nowrap}
+nav button.on{background:var(--bg);color:var(--ink)}
+
+section{padding-top:18px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:18px}
+.grid{display:grid;gap:14px}
+.muted{color:var(--ink2)}
+.btn{background:var(--violet);color:#fff;border:0;border-radius:16px;padding:12px 20px;font-weight:800;box-shadow:0 4px 0 #5b21b6;font-size:18px}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #5b21b6}
+.btn.pink{background:var(--pink);box-shadow:0 4px 0 #c43a7a}
+.btn.mint{background:var(--mint);box-shadow:0 4px 0 #0e8578}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.small{padding:8px 14px;font-size:15px}
+.btn:disabled{opacity:.45}
+.back{background:none;border:0;color:var(--violet);font-weight:800;padding:12px 0 6px;font-size:17px}
+.subtabs{display:flex;gap:8px;margin:6px 0 14px;flex-wrap:wrap}
+.subtabs button{border:2px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-weight:800;font-size:16px}
+.subtabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:800;background:var(--violet2);color:#4c1d95}
+.pill.gold{background:var(--gold2);color:#7a5200}
+.pill.mint{background:var(--mint2);color:#0b5f56}
+.pill.pink{background:var(--pink2);color:#9d174d}
+.tip{background:var(--gold2);border:2px dashed var(--gold);border-radius:var(--r);padding:14px 16px}
+
+/* tour map */
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.map{background:linear-gradient(180deg,#e9f3ff,#dbeaff);border:2px solid #cfe0f7;border-radius:var(--r);overflow:hidden;position:relative}
+.map svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.map .land{fill:#c8b8f0;stroke:#a993e6;stroke-width:.6}
+.map .route{fill:none;stroke:#ff5fa2;stroke-width:1.6;stroke-dasharray:4 3;opacity:.75}
+.map .stop{cursor:pointer}
+.map .stop circle.o{fill:#fff;stroke:#7c3aed;stroke-width:2}
+.map .stop.played circle.o{fill:#7c3aed}
+.map .stop.stamped circle.o{fill:#f5b700;stroke:#a87a00}
+.map .stop.now circle.o{fill:#ff2a4b;stroke:#fff}
+.map .stop text{font:700 9px Nunito,sans-serif;fill:#2a1650;paint-order:stroke;stroke:#fff;stroke-width:2.6px;pointer-events:none}
+.map .hit{fill:transparent}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:14px;font-weight:700;padding:8px 12px;color:var(--ink2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:2px solid #7c3aed}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px;text-align:center}
+.stat b{font-family:Fredoka;font-size:28px;display:block;color:var(--violet)}
+.stat span{font-size:13px;font-weight:800;color:var(--ink2)}
+.passport{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.stampbtn{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 10px;text-align:center;position:relative}
+.stampbtn .fl{font-size:36px;line-height:1.1;display:block}
+.stampbtn b{font-family:Fredoka;font-weight:600;font-size:18px;display:block}
+.stampbtn small{display:block;font-size:13px;font-weight:700;color:var(--ink2)}
+.stampbtn.got{border-color:var(--gold);background:#fffaea}
+.stampbtn.got::after{content:"✓";position:absolute;top:8px;right:10px;background:var(--gold);color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-weight:900;font-size:15px}
+.stampbtn.soon{opacity:.8;border-style:dashed}
+
+/* city page */
+.cityhead{border-radius:var(--r);padding:20px;color:#fff;background:linear-gradient(135deg,#6d28d9,#db2777);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.cityhead .fl{font-size:70px;line-height:1}
+.cityhead h2{font-size:36px;margin:0}
+.cityhead .sub{font-weight:700;opacity:.92}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.fact{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:16.5px}
+.fact b.lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:2px}
+.fact .big{font-family:Fredoka;font-size:24px;font-weight:600;color:var(--ink)}
+.dyk{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.dyk li{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px 12px 50px;position:relative}
+.dyk li::before{content:attr(data-e);position:absolute;left:12px;top:10px;font-size:26px}
+.songs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.song{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px;text-align:left;display:flex;gap:12px;align-items:center}
+.song .disc{width:46px;height:46px;border-radius:50%;flex:none;background:radial-gradient(circle,#fff 0 14%,var(--c,#7c3aed) 15% 34%,#1b1626 35%);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.song b{font-family:Fredoka;font-weight:600;font-size:18px;display:block;line-height:1.2}
+.song small{color:var(--ink2);font-weight:700;font-size:14px}
+.note{background:var(--violet2);border-radius:14px;padding:10px 14px;font-size:16px;margin-top:8px}
+
+/* quizzes */
+.q{margin:14px 0;padding:16px;border:2px solid var(--line);border-radius:18px;background:#fff}
+.q .qt{font-family:Fredoka;font-size:21px;font-weight:600}
+.choices{display:grid;gap:10px;margin-top:10px;grid-template-columns:1fr 1fr}
+@media(max-width:560px){.choices{grid-template-columns:1fr}}
+.choices button{text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:800;font-size:17px}
+.choices button.right{background:#dcfce7;border-color:#16a34a}
+.choices button.wrong{background:#ffe4e6;border-color:#e11d48}
+.why{margin-top:10px;font-weight:700;font-size:16px}
+.ok{color:#15803d}.no{color:#be123c}
+.progressdots{display:flex;gap:6px}
+.progressdots i{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.progressdots i.on{background:var(--violet)}
+
+/* korean */
+.wgrid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.flash{perspective:900px;background:none;border:0;padding:0;height:170px}
+.flash .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flash.flip .in{transform:rotateY(180deg)}
+.flash .fc{position:absolute;inset:0;border-radius:18px;border:2px solid var(--line);background:#fff;display:grid;place-items:center;align-content:center;gap:4px;padding:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:center}
+.flash .fc.b{transform:rotateY(180deg);background:var(--violet2);border-color:#c4b0ff}
+.flash .hg{font-family:'Noto Sans KR';font-weight:900;font-size:34px;line-height:1.15}
+.flash .rom{font-weight:800;color:var(--ink2);font-size:15px}
+.flash .em{font-size:40px;line-height:1}
+.flash .mean{font-family:Fredoka;font-size:20px;font-weight:600}
+.gamebox{text-align:center;max-width:640px;margin:0 auto}
+.bigq{font-family:'Noto Sans KR';font-weight:900;font-size:clamp(56px,12vw,96px);line-height:1.1;margin:8px 0}
+.bigemo{font-size:clamp(40px,8vw,64px);line-height:1.2;letter-spacing:4px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.opts button{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 10px;font-family:Fredoka;font-size:22px;font-weight:600}
+.opts button.right{background:#dcfce7;border-color:#16a34a}
+.opts button.wrong{background:#ffe4e6;border-color:#e11d48}
+.streak{font-weight:800;color:var(--ink2);margin-top:12px}
+.hangul{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.hangul div{background:#fff;border:2px solid var(--line);border-radius:14px;text-align:center;padding:8px 4px}
+.hangul b{font-family:'Noto Sans KR';font-weight:900;font-size:34px;display:block;line-height:1.2}
+.hangul span{font-weight:800;font-size:14px;color:var(--ink2)}
+.hangul div.v{background:var(--pink2);border-color:#ffb3d1}
+.culture{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.ccard{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px;text-align:left}
+.ccard .em{font-size:44px;line-height:1}
+.ccard h3{margin:6px 0 4px;font-size:21px}
+.ccard.read{border-color:var(--mint);background:#f3fffc}
+
+/* math */
+.mathwrap{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:start}
+@media(max-width:860px){.mathwrap{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:2px solid var(--line);background:#fff;border-radius:14px;min-width:52px;padding:8px 12px;font-weight:800;font-size:18px}
+.chips button.on{background:var(--violet);color:#fff;border-color:var(--violet)}
+.problem{font-size:23px;font-weight:700;line-height:1.5;margin:6px 0 12px;min-height:2.6em}
+.eq{font-family:Fredoka;font-size:clamp(44px,9vw,64px);font-weight:600;text-align:center;margin:4px 0}
+.ansbox{font-family:Fredoka;font-size:44px;font-weight:600;text-align:center;background:#fff;border:3px solid var(--violet);border-radius:18px;min-height:72px;line-height:66px;margin:0 auto 12px;max-width:260px}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:360px;margin:0 auto}
+.keypad button{background:#fff;border:2px solid var(--line);border-radius:16px;font-family:Fredoka;font-size:30px;font-weight:600;height:66px;box-shadow:0 3px 0 var(--line)}
+.keypad button:active{transform:translateY(2px);box-shadow:none}
+.keypad button.go{background:var(--mint);color:#fff;border-color:var(--mint);box-shadow:0 3px 0 #0e8578;font-size:22px}
+.feedback{margin-top:12px;font-weight:800;min-height:1.5em;text-align:center;font-size:19px}
+.model{margin-top:10px;background:#fff;border:2px dashed #c4b0ff;border-radius:16px;padding:12px 14px;font-size:16.5px}
+.groups{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.groups .g{border:2px solid #c4b0ff;border-radius:12px;padding:4px 6px;display:flex;flex-wrap:wrap;gap:2px;max-width:150px;font-size:18px;line-height:1.1}
+.factgrid{display:grid;grid-template-columns:30px repeat(11,1fr);gap:3px;font-size:12px;font-weight:800}
+.factgrid div{aspect-ratio:1;border-radius:5px;display:grid;place-items:center;background:#f1ecfb;color:var(--ink2)}
+.factgrid div.h{background:none;color:var(--ink)}
+.factgrid div.m1{background:#e6d9ff}.factgrid div.m2{background:#c4a8ff;color:#fff}.factgrid div.m3{background:#7c3aed;color:#fff}
+
+/* bt21 */
+.btgrid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.bt{background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px;text-align:left;position:relative}
+.bt .em{font-size:56px;line-height:1;width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:var(--c)}
+.bt h3{margin:10px 0 2px;font-size:24px}
+.bt.got{border-color:var(--gold)}
+.bt.got::after{content:"⭐";position:absolute;top:12px;right:14px;font-size:24px}
+
+/* stickers */
+.sbook{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.sb{background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px;text-align:center;position:relative}
+.sb canvas{width:100%;height:auto;display:block}
+.sb small{display:block;font-weight:800;font-size:13px;color:var(--ink2);line-height:1.2;margin-top:2px}
+.sb.locked canvas{filter:grayscale(1) brightness(1.5);opacity:.28}
+.sb .cnt{position:absolute;top:6px;right:8px;background:var(--pink);color:#fff;border-radius:999px;font-size:12px;font-weight:900;padding:1px 7px}
+.sb.sel{border-color:var(--pink);box-shadow:0 0 0 3px var(--pink2)}
+.fmwrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+@media(max-width:860px){.fmwrap{grid-template-columns:1fr}}
+.preview canvas{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;border-radius:16px;box-shadow:0 10px 30px rgba(60,20,110,.25)}
+.secthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
+
+/* journal */
+.jlist{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.jcard{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:12px;text-align:left}
+.jcard img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;margin-bottom:8px}
+.form label{display:block;font-weight:800;margin:14px 0 6px;font-size:16px}
+.form select,.form textarea,.form input[type=text]{width:100%;padding:12px;border:2px solid var(--line);border-radius:14px;background:#fff}
+.form textarea{min-height:100px;resize:vertical}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.moods button{background:#fff;border:2px solid var(--line);border-radius:16px;padding:6px 10px;font-size:30px;line-height:1.1}
+.moods button small{display:block;font-size:12px;font-weight:800;color:var(--ink2)}
+.moods button.on{border-color:var(--pink);background:#fff0f6}
+.pagewrap{display:grid;grid-template-columns:1fr 230px;gap:12px;align-items:start}
+@media(max-width:760px){.pagewrap{grid-template-columns:1fr}}
+.page{width:100%;aspect-ratio:4/3;border-radius:16px;border:2px solid var(--line);background:#fffdf7;touch-action:none;display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);padding:0}
+.sw.on{box-shadow:0 0 0 3px var(--ink)}
+.tool{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 10px;font-weight:800;font-size:15px}
+.tool.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.spal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:430px;overflow:auto;background:#fff;border:2px solid var(--line);border-radius:16px;padding:8px}
+.spal button{background:#faf7ff;border:2px solid var(--line);border-radius:12px;padding:3px}
+.spal button.on{border-color:var(--pink);background:#fff0f6}
+.spal canvas{width:100%;height:auto;display:block}
+
+/* badges */
+.ranks{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
+.rk{flex:1;min-width:150px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 12px}
+.rk.on{border-color:var(--pink);background:#fff0f6}
+.rk b{font-family:Fredoka;font-size:19px;font-weight:600}
+.bgrid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.badge{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:14px;text-align:center}
+.badge .ic{font-size:44px;filter:grayscale(1);opacity:.35}
+.badge.got .ic{filter:none;opacity:1}
+.badge.got{border-color:var(--gold);background:#fffaea}
+.badge b{font-family:Fredoka;font-weight:600;display:block;font-size:17px}
+.badge span{font-size:14px;color:var(--ink2)}
+
+.modal{position:fixed;inset:0;background:rgba(30,10,60,.5);display:grid;place-items:center;z-index:50;padding:18px}
+.modal .card{max-width:520px;width:100%;text-align:center;max-height:90vh;overflow:auto}
+.pop{animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-weight:800;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:90vw;text-align:center}
+footer{font-size:14px;color:var(--ink2);margin-top:40px;border-top:2px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){.flash .in{transition:none}.pop{animation:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding-bottom:0">
+    <div class="hrow">
+      <div class="logo"><button id="avatarBtn" class="avatar" aria-label="Change my name and bias"></button><div><span id="title">Little DJ Studio</span><small>ARMY world tour · Korean · math · stickers · freebies 💜</small></div></div>
+      <div class="chip">💜 <span id="pts">0</span> · <b id="rankName"></b><span class="save" id="saveState"></span></div>
+    </div>
+    <nav id="nav">
+      <button data-tab="tour" class="on">🗺️ Tour</button>
+      <button data-tab="korean">🇰🇷 Korean</button>
+      <button data-tab="math">✖️ Math</button>
+      <button data-tab="bt21">🌟 BT21</button>
+      <button data-tab="journal">📓 Journal</button>
+      <button data-tab="stickers">🎨 Freebies</button>
+      <button data-tab="cards">💳 Cards</button>
+      <button data-tab="badges">🏅 Badges</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<div class="wrap"><footer>
+  <b>For grown-ups:</b> everything here stays on this page: no outside links, no social media, no chat. Progress saves on this iPad. Add it to the Home Screen (Share → Add to Home Screen) so Safari keeps the progress, and make a backup now and then from the 🏅 Badges tab. Tour songs come from the DJ Spin That tour list and update as the tour goes on. The BT21 buddies here are emoji stand-ins; the real BT21 characters belong to LINE Friends. Math problems with ARMY stories use made-up numbers.
+  
+</footer></div>
+
+<script>
+/* ======================= MEMBERS ======================= */
+const MEM={
+ rm:{n:'RM',kr:'알엠',c:'#9aa1ad',e:'🐨'},
+ jin:{n:'Jin',kr:'진',c:'#ff6fb5',e:'🐹'},
+ suga:{n:'SUGA',kr:'슈가',c:'#8a93a3',e:'🐱'},
+ jhope:{n:'j-hope',kr:'제이홉',c:'#f0a500',e:'🐿️'},
+ jimin:{n:'Jimin',kr:'지민',c:'#3a3a46',e:'🐥'},
+ v:{n:'V',kr:'뷔',c:'#e0263a',e:'🐯'},
+ jk:{n:'Jung Kook',kr:'정국',c:'#d4a53a',e:'🐰'},
+ ot7:{n:'OT7',kr:'방탄소년단',c:'#7c3aed',e:'💜'}
+};
+const MORDER=['rm','jin','suga','jhope','jimin','v','jk'];
+const SEVEN=MORDER.map(k=>MEM[k].e).join('');
+
+/* ======================= TOUR CITIES ======================= */
+/* tz = hours from UTC on show day. hi = [greeting, how to say it, language]. */
+const CITIES={
+'Goyang':{f:'🇰🇷',cont:'Asia',lat:37.66,lon:126.83,tz:9,hi:['안녕하세요','ahn-nyong-ha-say-yo','Korean'],
+ facts:[['🏙️','Goyang is right next to Seoul, the capital of South Korea.'],['🌷','Goyang is known for flowers. It holds a big flower festival by its lake.'],['🦆','Ilsan Lake Park in Goyang has one of the biggest human-made lakes in Asia.']],
+ bts:'The ARIRANG tour started here, in BTS\'s home country! Opening night\'s first surprise song was I NEED U.',
+ q:{q:'Goyang is right next to which big city?',c:['Seoul','Tokyo','Busan','Beijing'],a:0}},
+'Tokyo':{f:'🇯🇵',cont:'Asia',lat:35.68,lon:139.69,tz:9,hi:['こんにちは','kon-nee-chee-wah','Japanese'],
+ facts:[['🗾','Tokyo is the capital of Japan.'],['👥','More people live in the Tokyo area than in any other city area in the world, about 37 million!'],['🥚','Tokyo Dome has a puffy white roof, so people call it "The Big Egg."'],['🗻','On a clear day you can see Mount Fuji from Tokyo.']],
+ bts:'BTS has Japanese albums too. Crystal Snow, a song sung in Japanese, was a surprise song here.',
+ q:{q:'What is Tokyo Dome\'s nickname?',c:['The Big Apple','The Big Egg','The Bird\'s Nest','The Rice Bowl'],a:1}},
+'Tampa':{f:'🇺🇸',cont:'North America',lat:27.95,lon:-82.46,tz:-4,hi:['Hello','heh-low','English'],
+ facts:[['🌴','Tampa is on the west coast of Florida, on Tampa Bay.'],['🦭','In winter, gentle manatees swim to warm water near Tampa.'],['🏴‍☠️','Every year Tampa has a pirate festival called Gasparilla, with a pirate ship parade!']],
+ q:{q:'Which gentle sea animal visits warm water near Tampa in winter?',c:['Penguin','Manatee','Polar bear','Walrus'],a:1}},
+'El Paso':{f:'🇺🇸',cont:'North America',lat:31.76,lon:-106.49,tz:-6,hi:['¡Hola!','OH-lah','English and Spanish'],
+ facts:[['🌵','El Paso is in Texas, in the Chihuahuan Desert.'],['🌉','It sits right on the border with Mexico. The Rio Grande river runs between El Paso and Ciudad Juárez, Mexico.'],['⛰️','The Franklin Mountains are inside the city. It is one of the biggest city parks in the United States.']],
+ q:{q:'Which river runs between El Paso and Mexico?',c:['The Mississippi','The Amazon','The Rio Grande','The Nile'],a:2}},
+'Mexico City':{f:'🇲🇽',cont:'North America',lat:19.43,lon:-99.13,tz:-6,hi:['¡Hola!','OH-lah','Spanish'],
+ facts:[['🏛️','Mexico City is built where the old Aztec city of Tenochtitlan stood, on top of a lake.'],['⛰️','It is high up in the mountains: about 2,240 meters (7,350 feet) above the sea.'],['🦎','Smiley pink salamanders called axolotls live in the canals of Xochimilco, in Mexico City.']],
+ q:{q:'Which smiley salamander lives in Mexico City\'s canals?',c:['Axolotl','Gecko','Iguana','Chameleon'],a:0}},
+'Stanford':{f:'🇺🇸',cont:'North America',lat:37.43,lon:-122.17,tz:-7,hi:['Hello','heh-low','English'],
+ facts:[['🎓','Stanford is a big university in California, near the city of Palo Alto.'],['💻','It is in Silicon Valley, where many famous computer and phone companies started.'],['🌉','San Francisco and the Golden Gate Bridge are about an hour\'s drive north.']],
+ q:{q:'Stanford is in which famous tech area?',c:['Silicon Valley','Death Valley','Napa Valley','Hollywood'],a:0}},
+'Las Vegas':{f:'🇺🇸',cont:'North America',lat:36.17,lon:-115.14,tz:-7,hi:['Hello','heh-low','English'],
+ facts:[['🏜️','Las Vegas is in Nevada, in the middle of the Mojave Desert.'],['💡','It is famous for bright lights and big shows.'],['🌊','Nearby, the giant Hoover Dam holds back the Colorado River to make Lake Mead.']],
+ bts:'BTS played four nights here, the most of any US stop on this tour so far, tied with Los Angeles.',
+ q:{q:'Las Vegas is in which desert?',c:['Sahara','Gobi','Mojave','Atacama'],a:2}},
+'Busan':{f:'🇰🇷',cont:'Asia',lat:35.18,lon:129.08,tz:9,hi:['안녕하세요','ahn-nyong-ha-say-yo','Korean'],
+ facts:[['⚓','Busan is South Korea\'s second-biggest city and one of the busiest ports in the world.'],['🏖️','Haeundae Beach in Busan is one of Korea\'s most famous beaches.'],['🎨','Gamcheon Culture Village is a hillside full of rainbow-colored houses.']],
+ bts:'Jimin and Jung Kook both grew up in Busan! Ma City is a song about the members\' hometowns, and Paldogangsan is about the different ways people talk around Korea. Both were surprise songs here.',
+ q:{q:'Which two members grew up in Busan?',c:['RM and Jin','Jimin and Jung Kook','SUGA and V','j-hope and Jin'],a:1}},
+'Madrid':{f:'🇪🇸',cont:'Europe',lat:40.42,lon:-3.70,tz:2,hi:['¡Hola!','OH-lah','Spanish'],
+ facts:[['👑','Madrid is the capital of Spain, right near the middle of the country.'],['🏰','The Royal Palace of Madrid has more than 3,000 rooms!'],['🍫','A favorite treat is churros dipped in thick hot chocolate.']],
+ q:{q:'Madrid is the capital of which country?',c:['Mexico','Italy','Spain','Portugal'],a:2}},
+'Brussels':{f:'🇧🇪',cont:'Europe',lat:50.85,lon:4.35,tz:2,hi:['Bonjour / Hallo','bohn-ZHOOR / HAH-low','French and Dutch'],
+ facts:[['🧇','Belgium is famous for waffles and chocolate.'],['⚛️','The Atomium is a giant shiny building shaped like a tiny piece of metal (an iron crystal), made 165 billion times bigger!'],['🇪🇺','Brussels is where the European Union, a group of 27 countries, has its main offices.']],
+ q:{q:'What is the Atomium in Brussels shaped like?',c:['A giant waffle','A giant iron crystal','A giant shoe','A giant crown'],a:1}},
+'London':{f:'🇬🇧',cont:'Europe',lat:51.51,lon:-0.13,tz:1,hi:['Hello','heh-low','English'],
+ facts:[['🏰','London is the capital of the United Kingdom, on the River Thames.'],['🔔','Big Ben is not the clock tower: it is the name of the giant bell inside!'],['🚌','London is famous for red double-decker buses.']],
+ bts:'In 2019, BTS played London\'s Wembley Stadium, one of the most famous concert stadiums in the world.',
+ q:{q:'Big Ben is actually the name of a...',c:['Bell','Bridge','Bus','Boat'],a:0}},
+'Munich':{f:'🇩🇪',cont:'Europe',lat:48.14,lon:11.58,tz:2,hi:['Servus! / Hallo','SAIR-voos / HAH-low','German'],
+ facts:[['🏔️','Munich is in southern Germany, close to the snowy Alps.'],['🏄','In Munich\'s English Garden, people surf on a wave in a river, right in the city!'],['🥨','Big soft pretzels are a Munich favorite.']],
+ q:{q:'What do people do on the river wave in Munich\'s English Garden?',c:['Ice skate','Surf','Fish','Paint'],a:1}},
+'Paris':{f:'🇫🇷',cont:'Europe',lat:48.86,lon:2.35,tz:2,hi:['Bonjour','bohn-ZHOOR','French'],
+ facts:[['🗼','The Eiffel Tower was finished in 1889 for a world\'s fair.'],['🖼️','The Louvre is the biggest art museum in the world. The Mona Lisa lives there.'],['🥐','Parisians buy fresh baguettes and croissants from bakeries every day.']],
+ q:{q:'When was the Eiffel Tower finished?',c:['1789','1889','1989','2009'],a:1}},
+'East Rutherford':{f:'🇺🇸',cont:'North America',lat:40.83,lon:-74.10,tz:-4,hi:['Hello','heh-low','English'],
+ facts:[['🏟️','East Rutherford is a town in New Jersey, home of MetLife Stadium.'],['🗽','From here you can see the skyline of New York City, just across the Hudson River.'],['🦢','The stadium sits in the Meadowlands, an area of wetlands full of birds.']],
+ bts:'BTS played MetLife Stadium on their 2019 tour too.',
+ q:{q:'MetLife Stadium is near which huge city?',c:['Chicago','New York City','Miami','Seattle'],a:1}},
+'Foxborough':{f:'🇺🇸',cont:'North America',lat:42.07,lon:-71.25,tz:-4,hi:['Hello','heh-low','English'],
+ facts:[['🏡','Foxborough is a small town in Massachusetts with about 18,000 people.'],['🏟️','Gillette Stadium holds about 65,000 people. A single concert can have more than three times the people of the whole town!'],['🫖','Boston is close by. The Boston Tea Party happened there in 1773.']],
+ q:{q:'Gillette Stadium holds about 65,000 people. Foxborough has about 18,000. Which is bigger?',c:['The town','The stadium crowd','They are the same','Nobody knows'],a:1}},
+'Baltimore':{f:'🇺🇸',cont:'North America',lat:39.29,lon:-76.61,tz:-4,hi:['Hello','heh-low','English'],
+ facts:[['🦀','Baltimore is in Maryland, famous for blue crabs.'],['🐬','The National Aquarium sits on Baltimore\'s Inner Harbor.'],['🇺🇸','The words to "The Star-Spangled Banner" were written after a battle at Fort McHenry in Baltimore in 1814.']],
+ q:{q:'Which crab is Maryland famous for?',c:['Blue crab','King crab','Hermit crab','Coconut crab'],a:0}},
+'Arlington':{f:'🇺🇸',cont:'North America',lat:32.74,lon:-97.11,tz:-5,hi:['Howdy!','HOW-dee','English'],
+ facts:[['🤠','Arlington is in Texas, between Dallas and Fort Worth.'],['📺','AT&T Stadium has one of the biggest video screens in any stadium.'],['🎢','The first Six Flags theme park opened in Arlington in 1961.']],
+ q:{q:'Arlington is between Dallas and which city?',c:['Austin','Houston','Fort Worth','El Paso'],a:2}},
+'Toronto':{f:'🇨🇦',cont:'North America',lat:43.65,lon:-79.38,tz:-4,hi:['Hello / Bonjour','heh-low / bohn-ZHOOR','English (Canada uses English and French)'],
+ facts:[['🍁','Toronto is the biggest city in Canada.'],['🌊','It sits on Lake Ontario, one of the five Great Lakes.'],['🗼','The CN Tower is 553 meters tall. Brave visitors can walk around the outside edge, hooked to a safety rope!']],
+ q:{q:'Toronto is on which Great Lake?',c:['Lake Ontario','Lake Superior','Lake Michigan','Lake Tahoe'],a:0}},
+'Chicago':{f:'🇺🇸',cont:'North America',lat:41.88,lon:-87.63,tz:-5,hi:['Hello','heh-low','English'],
+ facts:[['🌊','Chicago is on Lake Michigan, in the state of Illinois.'],['🫘','Its giant shiny sculpture, Cloud Gate, is nicknamed "The Bean."'],['🍕','Chicago is famous for super-thick deep-dish pizza.'],['💚','Every March, the Chicago River is dyed bright green for St. Patrick\'s Day.']],
+ bts:'BTS also played Soldier Field on their 2019 tour.',
+ q:{q:'What is Chicago\'s famous shiny sculpture nicknamed?',c:['The Egg','The Bean','The Spoon','The Mirror'],a:1}},
+'Los Angeles':{f:'🇺🇸',cont:'North America',lat:34.05,lon:-118.24,tz:-7,hi:['Hello','heh-low','English'],
+ facts:[['🎬','Los Angeles is home to Hollywood, where lots of movies are made.'],['🌊','LA sits on the Pacific Ocean, the biggest ocean on Earth.'],['🏙️','It is the second-biggest city in the United States.']],
+ bts:'In 2021, BTS played four nights at SoFi Stadium in LA, and this tour played four nights there again!',
+ q:{q:'Los Angeles is on which ocean?',c:['Atlantic','Indian','Arctic','Pacific'],a:3}},
+'Bogotá':{f:'🇨🇴',cont:'South America',lat:4.71,lon:-74.07,tz:-5,hi:['¡Hola!','OH-lah','Spanish'],
+ facts:[['⛰️','Bogotá, the capital of Colombia, is high in the Andes mountains: about 2,640 meters up.'],['🪙','The Gold Museum has more than 30,000 golden objects made long ago.'],['🚲','On Sundays, Bogotá closes big roads to cars so people can bike, skate, and walk. It\'s called Ciclovía.']],
+ q:{q:'On Sundays, Bogotá closes big roads so people can...',c:['Have a parade','Bike, skate, and walk','Plant trees','Sleep in'],a:1}},
+'Lima':{f:'🇵🇪',cont:'South America',lat:-12.05,lon:-77.04,tz:-5,hi:['¡Hola!','OH-lah','Spanish (and Quechua)'],
+ facts:[['🌊','Lima is the capital of Peru, on the Pacific coast.'],['☁️','Lima almost never gets rain! Instead, a misty sea fog called garúa rolls in.'],['🦙','Peru is home to llamas, alpacas, and Machu Picchu, an ancient city in the mountains.']],
+ q:{q:'Lima almost never gets what?',c:['Sunshine','Rain','Wind','Visitors'],a:1}},
+'Santiago':{f:'🇨🇱',cont:'South America',lat:-33.45,lon:-70.67,tz:-3,hi:['¡Hola!','OH-lah','Spanish'],
+ facts:[['🏔️','Santiago is the capital of Chile, with the snowy Andes mountains right behind it.'],['📏','Chile is super long and skinny: about 4,300 km long but only about 180 km wide on average.'],['🏜️','The north of Chile has the Atacama, one of the driest deserts on Earth.']],
+ q:{q:'Chile is famous for being very...',c:['Round','Long and skinny','Flat','Square'],a:1}},
+'Buenos Aires':{f:'🇦🇷',cont:'South America',lat:-34.60,lon:-58.38,tz:-3,hi:['¡Hola!','OH-lah','Spanish'],
+ facts:[['💃','The tango dance was born in Buenos Aires, the capital of Argentina.'],['🛣️','Avenida 9 de Julio is one of the widest streets in the world.'],['🍮','A favorite sweet is dulce de leche, a creamy caramel.']],
+ q:{q:'Which dance was born in Buenos Aires?',c:['Ballet','Hip hop','Tango','Hula'],a:2}},
+'São Paulo':{f:'🇧🇷',cont:'South America',lat:-23.55,lon:-46.63,tz:-3,hi:['Olá!','oh-LAH','Portuguese'],
+ facts:[['🏙️','São Paulo is the biggest city in South America.'],['🗣️','People in Brazil speak Portuguese, not Spanish.'],['🏮','São Paulo has the biggest Japanese community outside Japan, and a Korean neighborhood called Bom Retiro.']],
+ q:{q:'What language do people speak in Brazil?',c:['Spanish','Portuguese','French','English'],a:1}},
+'Kaohsiung':{f:'🇹🇼',cont:'Asia',lat:22.63,lon:120.30,tz:8,hi:['你好','nee how','Mandarin Chinese (and Taiwanese)'],
+ facts:[['⚓','Kaohsiung is a big port city in the south of Taiwan.'],['🐉','At Lotus Pond, you walk in through a dragon\'s mouth and out through a tiger\'s mouth!'],['☀️','The stadium is shaped like a dragon, and its roof is covered in solar panels that make electricity from sunlight.']],
+ q:{q:'The roof of Kaohsiung\'s stadium is covered in...',c:['Grass','Solar panels','Gold','Snow'],a:1}},
+'Bangkok':{f:'🇹🇭',cont:'Asia',lat:13.76,lon:100.50,tz:7,hi:['สวัสดี','sah-wah-DEE','Thai'],
+ facts:[['🙏','In Thailand, people greet each other with a wai: palms pressed together and a little bow.'],['🛶','Bangkok has floating markets where people sell food from boats.'],['🛺','Three-wheeled taxis called tuk-tuks zoom around the city.']],
+ q:{q:'What is a wai?',c:['A boat','A spicy soup','A greeting with palms together','A kind of taxi'],a:2}},
+'Kuala Lumpur':{f:'🇲🇾',cont:'Asia',lat:3.14,lon:101.69,tz:8,hi:['Apa khabar?','AH-pah kah-BAR','Malay'],
+ facts:[['🏢','The Petronas Twin Towers were the tallest buildings in the world from 1998 to 2004.'],['🌉','A sky bridge connects the two towers in the middle.'],['🌊','Kuala Lumpur means "muddy river meeting place," because two rivers meet there.']],
+ q:{q:'What connects the Petronas Twin Towers?',c:['A zip line','A sky bridge','A tunnel','A rope'],a:1}},
+'Singapore':{f:'🇸🇬',cont:'Asia',lat:1.35,lon:103.82,tz:8,hi:['Hello / 你好 / Selamat / வணக்கம்','four ways!','English, Mandarin, Malay, and Tamil'],
+ facts:[['🦁','Singapore is a city AND a country! Its mascot, the Merlion, is half lion, half fish.'],['🌍','It is very close to the equator, about 137 km north of it, so it is warm all year.'],['🌳','Gardens by the Bay has giant metal "Supertrees" covered in plants that light up at night.']],
+ q:{q:'How many official languages does Singapore have?',c:['1','2','4','7'],a:2}},
+'Jakarta':{f:'🇮🇩',cont:'Asia',lat:-6.21,lon:106.85,tz:7,hi:['Halo! / Apa kabar?','HAH-low / AH-pah KAH-bar','Indonesian'],
+ facts:[['🏝️','Jakarta is the capital of Indonesia, on the island of Java.'],['🗺️','Indonesia has more than 17,000 islands!'],['🏗️','Indonesia is building a brand-new capital city called Nusantara, on the island of Borneo.']],
+ q:{q:'About how many islands does Indonesia have?',c:['17','170','1,700','More than 17,000'],a:3}},
+'Melbourne':{f:'🇦🇺',cont:'Australia',lat:-37.81,lon:144.96,tz:11,hi:['G\'day!','guh-DAY','English'],
+ facts:[['🚋','Melbourne has one of the biggest tram networks in the world.'],['🐧','Little penguins come home every evening to the rocks at St Kilda pier.'],['🎨','Its narrow laneways are covered in colorful street art.']],
+ q:{q:'Melbourne has one of the world\'s biggest networks of...',c:['Trams','Canals','Ski lifts','Subways'],a:0}},
+'Sydney':{f:'🇦🇺',cont:'Australia',lat:-33.87,lon:151.21,tz:11,hi:['G\'day!','guh-DAY','English'],
+ facts:[['⛵','The Sydney Opera House has a roof that looks like big white sails.'],['🌉','People call the Sydney Harbour Bridge "the Coathanger" because of its shape.'],['🏄','Bondi Beach is one of the most famous surf beaches in the world.']],
+ q:{q:'What is the Sydney Harbour Bridge\'s nickname?',c:['The Coathanger','The Rainbow','The Smile','The Banana'],a:0}},
+'Hong Kong':{f:'🇭🇰',cont:'Asia',lat:22.32,lon:114.17,tz:8,hi:['你好','nay hoe','Cantonese and English'],
+ facts:[['🏙️','Hong Kong has more skyscrapers than any other city in the world.'],['⛴️','The Star Ferry has carried people across Victoria Harbour for more than 100 years.'],['🥟','Dim sum, little dishes like dumplings and buns, is a Hong Kong favorite.']],
+ q:{q:'Hong Kong has more ___ than any other city in the world.',c:['Skyscrapers','Volcanoes','Beaches','Castles'],a:0}},
+'Manila':{f:'🇵🇭',cont:'Asia',lat:14.60,lon:120.98,tz:8,hi:['Kumusta!','koo-MOOS-tah','Filipino and English'],
+ facts:[['🏝️','Manila is the capital of the Philippines, a country of more than 7,000 islands.'],['🚐','Colorful jeepneys, decorated like art, carry people around the city.'],['🧱','Intramuros is an old city inside stone walls, built more than 400 years ago.']],
+ q:{q:'What colorful vehicles carry people around Manila?',c:['Gondolas','Jeepneys','Tuk-tuks','Trams'],a:1}}
+};
+const SEOUL={lat:37.57,lon:126.98,tz:9};
+const SETLIST_PER_NIGHT=23;
+
+/* ======================= SONGS: Korean titles ======================= */
+const KTITLE={
+ 'Spring Day':['봄날','bom-nal','spring day (봄 = spring, 날 = day)'],
+ 'Blood Sweat & Tears':['피 땀 눈물','pi ttam nun-mul','blood, sweat, tears'],
+ 'Boy With Luv':['작은 것들을 위한 시','ja-geun geot-deu-reul wi-han si','a poem for small things'],
+ 'Dope':['쩔어','jjeo-reo','awesome!'],
+ 'Fire':['불타오르네','bul-ta-o-reu-ne','it\'s burning up'],
+ 'Mikrokosmos':['소우주','so-u-ju','little universe'],
+ 'Paradise':['낙원','na-gwon','paradise'],
+ 'Baepsae (Silver Spoon)':['뱁새','baep-sae','a tiny crow-tit bird'],
+ 'Boy In Luv':['상남자','sang-nam-ja','a tough guy'],
+ 'Go Go':['고민보다 Go','go-min-bo-da go','go instead of worrying'],
+ 'Paldogangsan':['팔도강산','pal-do-gang-san','all the lands of Korea'],
+ 'Spine Breaker':['등골브레이커','deung-gol-beu-re-i-keo','spine breaker'],
+ 'Attack on Bangtan':['진격의 방탄','jin-gyeo-gui bang-tan','Bangtan charging forward'],
+ 'Boyz With Fun':['흥탄소년단','heung-tan so-nyeon-dan','the fun boys (a play on 방탄소년단)'],
+ 'Just One Day':['하루만','ha-ru-man','just one day'],
+ 'Autumn Leaves':['고엽','go-yeop','fallen leaves'],
+ 'Telepathy':['잠시','jam-si','for a moment'],
+ 'Dis-ease':['병','byeong','sickness'],
+ 'Tomorrow':['내일','nae-il','tomorrow'],
+ 'Hold Me Tight':['잡아줘','ja-ba-jwo','hold me'],
+ 'UGH!':['욱','uk','a burst of anger'],
+ 'Sea':['바다','ba-da','sea'],
+ 'Butterfly':['나비 (Butterfly)','na-bi','butterfly']
+};
+
+/* ======================= KOREAN ======================= */
+const WORDS=[
+ ['안녕','an-nyeong','hi / bye (to friends)','👋'],
+ ['안녕하세요','an-nyeong-ha-se-yo','hello (polite)','🙇'],
+ ['감사합니다','gam-sa-ham-ni-da','thank you (polite)','🙏'],
+ ['고마워','go-ma-wo','thanks (to a friend)','💕'],
+ ['사랑해','sa-rang-hae','I love you','💜'],
+ ['보라해','bo-ra-hae','I purple you (V made this up in 2016!)','🟣'],
+ ['화이팅','hwa-i-ting','you can do it!','💪'],
+ ['대박','dae-bak','awesome!','🤩'],
+ ['친구','chin-gu','friend','🧑‍🤝‍🧑'],
+ ['노래','no-rae','song','🎵'],
+ ['춤','chum','dance','💃'],
+ ['별','byeol','star','⭐'],
+ ['바다','ba-da','sea','🌊'],
+ ['봄','bom','spring','🌸'],
+ ['하늘','ha-neul','sky','☁️'],
+ ['꿈','kkum','dream','💭'],
+ ['행복','haeng-bok','happiness','😊'],
+ ['나비','na-bi','butterfly','🦋'],
+ ['맛있어','ma-si-sseo','yummy!','😋'],
+ ['떡볶이','tteok-bok-ki','spicy rice cakes','🌶️'],
+ ['한글','han-geul','the Korean alphabet','🔤'],
+ ['한국','han-guk','Korea','🇰🇷'],
+ ['막내','mak-nae','the youngest (Jung Kook is BTS\'s 막내!)','🐣'],
+ ['아미','a-mi','ARMY','💜'],
+ ['방탄소년단','bang-tan so-nyeon-dan','BTS (Bulletproof Boy Scouts)','🛡️']
+];
+const NUMS=[['하나','ha-na'],['둘','dul'],['셋','set'],['넷','net'],['다섯','da-seot'],['여섯','yeo-seot'],['일곱','il-gop'],['여덟','yeo-deol'],['아홉','a-hop'],['열','yeol']];
+// Hangul letters for the decoder: [letter, sound, index in Unicode table]
+const CONS=[['ㄱ','g',0],['ㄴ','n',2],['ㄷ','d',3],['ㄹ','r',5],['ㅁ','m',6],['ㅂ','b',7],['ㅅ','s',9],['ㅇ','(quiet)',11],['ㅈ','j',12],['ㅎ','h',18]];
+const VOWS=[['ㅏ','a',0],['ㅓ','eo',4],['ㅗ','o',8],['ㅜ','u',13],['ㅡ','eu',18],['ㅣ','i',20]];
+const READWORDS=[['아미','a-mi','ARMY'],['바다','ba-da','sea'],['하나','ha-na','one'],['나비','na-bi','butterfly'],['지도','ji-do','map'],['우리','u-ri','we / us'],['오리','o-ri','duck'],['나무','na-mu','tree'],['고구마','go-gu-ma','sweet potato'],['머리','meo-ri','head'],['지민','ji-min','Jimin'],['진','jin','Jin']];
+const CULTURE=[
+ {id:'arirang',e:'🎶',t:'Arirang (아리랑)',b:'Arirang is Korea\'s most famous folk song. People have sung it for hundreds of years, and there are thousands of versions from all around Korea. In 2012 it was added to UNESCO\'s list of treasures of world culture.',dyk:'BTS named this whole tour ARIRANG!',q:{q:'What is Arirang?',c:['A Korean folk song','A kind of kimchi','A mountain','A dance move'],a:0}},
+ {id:'hangeul',e:'🔤',t:'Hangeul (한글)',b:'Long ago, Korean was written with Chinese characters, which were very hard to learn. In the 1440s, King Sejong and his scholars created Hangeul, an alphabet so simple that anyone could learn it in a few days.',dyk:'Korea celebrates Hangeul Day every October 9!',q:{q:'Who created Hangeul?',c:['King Sejong','BTS','A famous chef','Nobody knows'],a:0}},
+ {id:'hanbok',e:'👘',t:'Hanbok (한복)',b:'Hanbok is traditional Korean clothing, with bright colors and flowing shapes. People wear it for holidays, weddings, and special days.',dyk:'BTS has worn modern hanbok-style outfits on stage and in music videos.',q:{q:'When do people often wear hanbok?',c:['For holidays and special days','Only to swim','Only at school','Never'],a:0}},
+ {id:'seollal',e:'🧧',t:'Seollal (설날)',b:'Seollal is Lunar New Year. Families gather, eat rice cake soup (tteokguk), and children do a deep bow called sebae to their elders. Elders often give them money in pretty envelopes!',dyk:'Eating tteokguk on Seollal means you turn one year older.',q:{q:'What soup do Koreans eat on Seollal?',c:['Rice cake soup','Chicken soup','Corn soup','Tomato soup'],a:0}},
+ {id:'chuseok',e:'🌕',t:'Chuseok (추석)',b:'Chuseok is the harvest festival, on the night of the big autumn full moon. Families travel home, share food, and make songpyeon, little half-moon rice cakes.',dyk:'Chuseok is sometimes called "Korean Thanksgiving."',q:{q:'What shape is songpyeon?',c:['Half-moon','Star','Square','Heart'],a:0}},
+ {id:'kimchi',e:'🥬',t:'Kimchi (김치)',b:'Kimchi is spicy fermented vegetables, usually cabbage. There are hundreds of kinds! In late fall, families and neighbors make huge batches together. This is called kimjang.',dyk:'Kimjang, making kimchi together, is on UNESCO\'s list of world culture too.',q:{q:'What is kimjang?',c:['Making kimchi together','A dance','A holiday dessert','A kind of hat'],a:0}},
+ {id:'bow',e:'🙇',t:'Bowing and two hands',b:'In Korea, people bow to say hello and thank you, especially to older people. When you give or receive something from an elder, you use two hands to show respect.',dyk:'You can watch BTS bow to the crowd at the end of every show.',q:{q:'How do you hand something to an elder in Korea?',c:['With two hands','Toss it','With your foot','Slide it'],a:0}},
+ {id:'hangang',e:'🌉',t:'The Han River (한강)',b:'The Han River flows right through Seoul. Its banks are lined with parks where people picnic, ride bikes, and order fried chicken delivered to their picnic blanket!',dyk:'More than 25 bridges cross the Han River in Seoul.',q:{q:'Which river flows through Seoul?',c:['The Han River','The Nile','The Thames','The Seine'],a:0}}
+];
+
+/* ======================= BT21 (emoji stand-ins) ======================= */
+const BT21=[
+ {id:'koya',n:'KOYA',e:'🐨',m:'rm',c:'#cfe3ff',d:'A sleepy blue koala who is very smart. Koya is almost always napping, and its ears pop off when it gets surprised!'},
+ {id:'rj',n:'RJ',e:'🦙',m:'jin',c:'#fff3e0',d:'A fluffy, polite alpaca who loves to cook and share yummy food with friends.'},
+ {id:'shooky',n:'SHOOKY',e:'🍪',m:'suga',c:'#f5e1c8',d:'A small, mischievous cookie who loves pranks and is NOT a fan of milk.'},
+ {id:'mang',n:'MANG',e:'🐴',m:'jhope',c:'#e6f7ff',d:'A dancer who wears a mask. Nobody is quite sure who Mang really is! He loves to dance more than anything.'},
+ {id:'chimmy',n:'CHIMMY',e:'🐶',m:'jimin',c:'#fff7c2',d:'A hardworking puppy in a yellow hoodie who never gives up, and sticks out its tongue when excited.'},
+ {id:'tata',n:'TATA',e:'👽',m:'v',c:'#ffd6dc',d:'A curious little prince from a faraway planet, with a heart-shaped head and super stretchy arms.'},
+ {id:'cooky',n:'COOKY',e:'🐰',m:'jk',c:'#ffe0ef',d:'A pink bunny who works out to be tough and strong, but is still super cute.'},
+ {id:'van',n:'VAN',e:'🤖',m:'army',c:'#e8e8f0',d:'A space robot who guards the BT21 friends. Van stands for ARMY!'}
+];
+
+/* ======================= STICKERS ======================= */
+// kinds: member, word, city, bt21, fun
+const STICKERS=[];
+MORDER.concat('ot7').forEach(k=>STICKERS.push({id:'m-'+k,kind:'member',m:k,label:MEM[k].n,set:'Members'}));
+[['사랑해','sa-rang-hae'],['보라해','bo-ra-hae'],['화이팅','hwa-i-ting'],['대박','dae-bak'],['아미','a-mi'],['봄날','bom-nal'],['고마워','go-ma-wo'],['친구','chin-gu'],['행복','haeng-bok'],['안녕','an-nyeong']].forEach(([w,r],i)=>STICKERS.push({id:'w-'+i,kind:'word',w,label:r,set:'Korean words'}));
+Object.keys(CITIES).forEach(c=>STICKERS.push({id:'c-'+c,kind:'city',city:c,label:c,set:'Tour stamps'}));
+BT21.forEach(b=>STICKERS.push({id:'b-'+b.id,kind:'bt21',b,label:b.n,set:'BT21 buddies'}));
+[['💜','Borahae','#c4a8ff'],['🎧','DJ',"#ffd6e8"],['⭐','Star','#fff1c2'],['🌙','Moon','#d9e4ff'],['🌸','Spring','#ffe0ef'],['🦋','Butterfly','#d6f5ff'],['🌊','Sea','#cbf5ee'],['🎤','Mic','#ffe4cc'],['🎫','Ticket','#fff1c2'],['🌈','Rainbow','#f1e6ff'],['💌','Love letter','#ffd6e8'],['🫰','Finger heart','#ffe0ef']].forEach(([e,l,c],i)=>STICKERS.push({id:'f-'+i,kind:'fun',e,label:l,c,set:'Fun'}));
+const stById=id=>STICKERS.find(s=>s.id===id);
+
+const RANKS=[
+ {min:0,kr:'연습생',en:'Trainee',rom:'yeon-seup-saeng',emo:'🌱'},
+ {min:60,kr:'신인',en:'Rookie',rom:'sin-in',emo:'🎤'},
+ {min:180,kr:'아이돌',en:'Idol',rom:'a-i-dol',emo:'✨'},
+ {min:350,kr:'전설',en:'Legend',rom:'jeon-seol',emo:'👑'}
+];
+const MOODS=[['😊','happy'],['🤩','excited'],['😌','calm'],['😴','sleepy'],['🥹','touched'],['😢','sad'],['💪','strong'],['🥰','loved']];
+const COLORS=['#2a1650','#7c3aed','#ff5fa2','#e0263a','#f5b700','#14b8a6','#2f80ed','#8b5a2b','#ffffff'];
+
+/* ======================= STATE & SAVING ======================= */
+const LS_KEY='little-dj-studio.v1';
+const FRESH=()=>({name:'',bias:'ot7',stamps:{},culture:{},bt21:{},mathRight:0,facts:{},korRight:0,korBest:0,stickers:{},journal:[],sinceSticker:{math:0,kor:0},lastJournalSticker:''});
+let state=FRESH();
+let SHOWS=[];      // from /shows.json
+let STOPS=[];      // unique cities in tour order
+function lsSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));return true}catch(e){return false}}
+function lsLoad(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null}catch(e){return null}}
+let saveTimer=null;
+function save(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{$('#saveState').textContent=lsSave()?'· saved ✓':'· not saved'},400)}
+
+/* ======================= HELPERS ======================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pickOne=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const nm=()=>state.name||'Little ARMY';
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2800)}
+function modal(html,wide){closeModal();const m=document.createElement('div');m.className='modal';m.id='modal';m.innerHTML=`<div class="card"${wide?' style="max-width:720px"':''}>${html}</div>`;m.addEventListener('click',e=>{if(e.target===m)closeModal()});document.body.appendChild(m)}
+function closeModal(){const m=$('#modal');if(m)m.remove()}
+function km(a,b){const R=6371,t=Math.PI/180,dLa=(b.lat-a.lat)*t,dLo=(b.lon-a.lon)*t;const h=Math.sin(dLa/2)**2+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dLo/2)**2;return Math.round(2*R*Math.asin(Math.sqrt(h)))}
+const fmt=n=>n.toLocaleString('en-US');
+function clock(h){h=((h%24)+24)%24;const ap=h<12?'AM':'PM';const hh=h%12||12;return hh+':00 '+ap}
+function noonIn(tz){const h=12+(tz-9);const day=h<0?' the day before':h>=24?' the next day':'';return clock(h)+day}
+
+function points(){
+ return Object.keys(state.stamps).length*10+Object.keys(state.culture).length*3+Object.keys(state.bt21).length*3+state.mathRight+state.korRight+Math.min(state.korBest,20)+state.journal.length*8;
+}
+function rankFor(p){let r=RANKS[0];RANKS.forEach(x=>{if(p>=x.min)r=x});return r}
+let lastRank=null;
+function updateHeader(){const p=points(),r=rankFor(p);$('#pts').textContent=p;$('#rankName').innerHTML=`${r.emo} <span class="kr">${r.kr}</span> ${r.en}`;
+ $('#avatarBtn').textContent=MEM[state.bias]?MEM[state.bias].e:'💜';
+ $('#title').textContent=state.name?`${state.name}'s Little DJ Studio`:'Little DJ Studio';
+ if(lastRank&&lastRank!==r.en){modal(`<div class="pop" style="font-size:80px">${r.emo}</div><h2>You leveled up!</h2><p style="font-size:20px">You are now a <b class="kr">${r.kr}</b> (${r.rom}): <b>${r.en}</b>!</p><button class="btn" onclick="closeModal()">Yay! 💜</button>`)}
+ lastRank=r.en}
+
+/* stickers */
+function giveSticker(id,why){if(!id)return;state.stickers[id]=(state.stickers[id]||0)+1;save();const s=stById(id);
+ setTimeout(()=>{modal(`<p class="muted" style="margin:0;font-weight:800">${esc(why||'')}</p><h2 style="margin:6px 0">New sticker! 🎉</h2><div class="pop" style="width:200px;margin:8px auto"><canvas id="newSt" width="400" height="400" style="width:200px;height:200px"></canvas></div><p style="font-weight:800;margin:4px 0 14px">${esc(s.label)}</p><button class="btn pink" onclick="closeModal()">Put it in my book 📒</button>`);drawSticker($('#newSt').getContext('2d'),s,0,0,400)},350)}
+function randomSticker(kinds){const pool=STICKERS.filter(s=>kinds.includes(s.kind));const unowned=pool.filter(s=>!state.stickers[s.id]);return pickOne(unowned.length?unowned:pool).id}
+
+/* ======================= STICKER DRAWING ======================= */
+const EMOJI='"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+function rr(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+function star(x,cx,cy,R,r,n){x.beginPath();for(let k=0;k<n*2;k++){const a=-Math.PI/2+k*Math.PI/n,rad=k%2?r:R;x.lineTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad)}x.closePath()}
+function heart(x,cx,cy,s){x.beginPath();x.moveTo(cx,cy+s*.42);x.bezierCurveTo(cx-s*.9,cy-s*.15,cx-s*.45,cy-s*.75,cx,cy-s*.3);x.bezierCurveTo(cx+s*.45,cy-s*.75,cx+s*.9,cy-s*.15,cx,cy+s*.42);x.closePath()}
+function fitText(x,t,font,max,size){let s=size;do{x.font=font.replace('{s}',s);s-=2}while(x.measureText(t).width>max&&s>10);return s+2}
+function dieCut(x,shape){// white outline + soft shadow, then fill
+ x.save();x.shadowColor='rgba(40,10,80,.28)';x.shadowBlur=14;x.shadowOffsetY=5;x.fillStyle='#fff';shape(1.0);x.fill();x.restore()}
+function drawSticker(x,s,X,Y,S){x.save();x.translate(X,Y);const k=S/400;x.scale(k,k);x.textAlign='center';x.textBaseline='middle';
+ if(s.kind==='member'){const d=MEM[s.m];
+  dieCut(x,()=>{x.beginPath();x.arc(200,200,186,0,7)});
+  const g=x.createLinearGradient(40,40,360,360);if(s.m==='ot7'){g.addColorStop(0,'#a78bfa');g.addColorStop(1,'#ec4899')}else{g.addColorStop(0,'#fff');g.addColorStop(1,d.c)}
+  x.beginPath();x.arc(200,200,168,0,7);x.fillStyle=g;x.fill();
+  x.font='150px '+EMOJI;x.fillText(d.e,200,170);
+  x.fillStyle='#fff';rr(x,70,262,260,74,37);x.fill();x.fillStyle='#2a1650';const fs=fitText(x,d.n,"700 {s}px Fredoka,sans-serif",230,46);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(d.n,200,292);
+  x.font="900 22px 'Noto Sans KR',sans-serif";x.fillStyle='#5b4a82';x.fillText(d.kr,200,322)}
+ else if(s.kind==='word'){dieCut(x,()=>heart(x,200,215,370));heart(x,200,215,330);const g=x.createLinearGradient(0,40,400,360);g.addColorStop(0,'#c4a8ff');g.addColorStop(1,'#ff8fc8');x.fillStyle=g;x.fill();
+  const fs=fitText(x,s.w,"900 {s}px 'Noto Sans KR',sans-serif",250,96);x.font=`900 ${fs}px 'Noto Sans KR',sans-serif`;x.lineWidth=10;x.strokeStyle='#5b21b6';x.strokeText(s.w,200,175);x.fillStyle='#fff';x.fillText(s.w,200,175);
+  x.font="800 30px Nunito,sans-serif";x.fillStyle='#3b0764';x.fillText(s.label,200,250)}
+ else if(s.kind==='city'){const c=CITIES[s.city]||{f:'🎫'};dieCut(x,()=>{star(x,200,200,190,166,16)});star(x,200,200,174,152,16);x.fillStyle='#fff1c2';x.fill();
+  x.beginPath();x.arc(200,200,132,0,7);x.setLineDash([10,8]);x.lineWidth=6;x.strokeStyle='#a87a00';x.stroke();x.setLineDash([]);
+  x.font='100px '+EMOJI;x.fillText(c.f,200,160);
+  x.fillStyle='#7a2e00';const fs=fitText(x,s.city.toUpperCase(),"700 {s}px Fredoka,sans-serif",220,44);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(s.city.toUpperCase(),200,240);
+  x.font="800 20px Nunito,sans-serif";x.fillStyle='#a87a00';x.fillText('ARIRANG TOUR ✓',200,282)}
+ else if(s.kind==='bt21'){dieCut(x,()=>rr(x,16,16,368,368,90));rr(x,32,32,336,336,76);x.fillStyle=s.b.c;x.fill();
+  x.font='170px '+EMOJI;x.fillText(s.b.e,200,175);x.fillStyle='#2a1650';x.font="700 46px Fredoka,sans-serif";x.fillText(s.b.n,200,318)}
+ else {dieCut(x,()=>star(x,200,205,196,120,6));star(x,200,205,176,108,6);x.fillStyle=s.c;x.fill();x.font='140px '+EMOJI;x.fillText(s.e,200,190);
+  x.fillStyle='#2a1650';const fs=fitText(x,s.label,"700 {s}px Fredoka,sans-serif",200,38);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(s.label,200,300)}
+ x.restore()}
+function stickerCanvases(root){root.querySelectorAll('canvas[data-st]').forEach(c=>{const s=stById(c.dataset.st);if(s){const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);drawSticker(x,s,0,0,c.width)}})}
+document.fonts&&document.fonts.ready.then(()=>{stickerCanvases(document)});
+
+/* ======================= ROUTER ======================= */
+let tab='tour',view=null;
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;view=null;render();scrollTo({top:0})}));
+function go(v){view=v;render();scrollTo({top:0})}
+function render(){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ const M=$('#main');
+ if(tab==='tour')M.innerHTML=view&&view.city?cityView(view.city):view&&view.song?songsView():tourView();
+ else if(tab==='korean')M.innerHTML=koreanView();
+ else if(tab==='math')M.innerHTML=mathView();
+ else if(tab==='bt21')M.innerHTML=bt21View();
+ else if(tab==='journal')M.innerHTML=view&&view.newEntry?journalForm():journalView();
+ else if(tab==='stickers')M.innerHTML=stickersView();
+ else if(tab==='badges')M.innerHTML=badgesView();
+ else if(tab==='cards')M.innerHTML=cardsView();
+ updateHeader();stickerCanvases(M);after()}
+let afterFns=[];function after(){const f=afterFns;afterFns=[];f.forEach(fn=>fn())}
+
+/* ======================= TOUR ======================= */
+function stopStatus(city){const nights=SHOWS.filter(s=>s.city===city);const played=nights.filter(s=>s.status==='played');return {nights,played,soon:played.length===0}}
+const proj=(lat,lon)=>[(lon+180)/360*1000,(90-lat)/180*500];
+function nextShow(){return SHOWS.find(s=>s.status!=='played')}
+function tourView(){
+ const ns=nextShow();const stamped=Object.keys(state.stamps).length;
+ const pts=STOPS.filter(c=>CITIES[c]).map(c=>({c,p:proj(CITIES[c].lat,CITIES[c].lon)}));
+ const route=pts.map((o,i)=>(i?'L':'M')+o.p[0].toFixed(1)+' '+o.p[1].toFixed(1)).join(' ');
+ const labelLeft=new Set(['El Paso','Stanford','Las Vegas','Los Angeles','Lima','Santiago','Madrid','London','Tampa','Arlington','Kaohsiung','Jakarta','Melbourne','Bangkok','Mexico City','Foxborough','Chicago']);
+ const hide=new Set(['East Rutherford','Baltimore','Foxborough','Busan','Munich','Brussels','Kuala Lumpur','Hong Kong','Stanford','Arlington','Sydney']);
+ const dots=pts.map(o=>{const st=stopStatus(o.c);const cls=state.stamps[o.c]?'stamped':ns&&ns.city===o.c?'now':st.soon?'':'played';const L=labelLeft.has(o.c);
+  return `<g class="stop ${cls}" data-city="${esc(o.c)}" role="button" aria-label="${esc(o.c)}"><circle class="hit" cx="${o.p[0]}" cy="${o.p[1]}" r="11"/><circle class="o" cx="${o.p[0]}" cy="${o.p[1]}" r="4.6"/>${hide.has(o.c)?'':`<text x="${o.p[0]+(L?-7:7)}" y="${o.p[1]+3}" text-anchor="${L?'end':'start'}">${esc(o.c)}</text>`}</g>`}).join('');
+ return `<section><div class="hero">
+  <div><div class="map"><svg viewBox="0 40 1000 360" aria-label="World map of the ARIRANG tour"><path class="land" d="M335,472L334,474L333,475L327,475L321,475L317,474L317,474L316,473L322,473L328,473L330,472L332,471ZM58,471L52,471L49,470L47,469L47,469L45,468L47,467L52,468L55,469L57,470ZM375,467L378,468L379,470L380,471L380,472L375,473L371,474L366,475L360,475L353,475L350,474L350,473L356,472L358,471L360,470L361,469L363,468L365,467L366,467L370,466ZM163,454L167,455L170,454L169,455L166,456L162,456L159,455L160,454ZM151,454L155,455L154,455L150,455L146,454L148,453ZM225,450L228,450L231,450L233,451L231,451L227,451L224,451L220,451L217,451L216,450L217,449L221,450ZM310,447L310,448L310,449L309,450L306,451L303,451L299,451L300,450L297,451L294,451L292,450L292,449L295,448L297,448L300,448L301,446L301,445L301,443L302,442L305,441L306,442L307,443L308,445L309,446ZM0,485L0,485L3,484L8,485L8,484L9,484L10,484L10,484L11,484L11,484L12,484L16,485L19,484L20,484L28,483L31,484L32,484L36,485L44,486L50,486L61,487L69,486L81,487L87,488L95,487L102,486L103,485L92,485L83,484L81,483L73,482L74,481L75,480L76,479L75,478L71,477L69,476L64,475L71,475L78,475L82,476L86,475L91,474L93,473L92,472L89,471L85,470L79,470L74,470L69,470L67,469L63,468L61,467L60,464L61,464L64,465L69,464L73,464L75,465L80,465L83,464L87,464L90,463L94,462L94,461L93,460L94,459L97,459L99,460L103,459L107,459L111,459L114,458L118,458L121,457L124,456L127,457L128,457L133,456L136,457L140,457L144,456L148,457L152,457L156,457L160,457L164,457L167,457L170,456L174,456L177,456L180,456L183,455L185,456L186,457L188,458L191,457L194,458L198,458L201,459L205,459L209,458L213,458L217,459L220,459L222,458L220,457L219,456L215,456L214,455L213,454L212,452L214,452L218,452L221,452L225,453L227,453L229,454L232,454L236,454L240,454L243,453L246,454L250,454L252,452L254,453L258,453L261,453L263,454L267,454L270,455L274,455L276,454L277,453L280,454L284,454L286,455L288,455L292,455L295,455L298,454L301,454L305,453L309,453L311,452L313,451L314,450L313,449L312,448L311,447L310,446L310,445L310,444L310,443L311,442L312,440L313,439L312,438L312,437L313,436L315,435L317,434L318,433L321,432L322,431L323,430L325,430L328,429L329,429L331,428L334,428L336,427L337,426L339,426L341,426L340,427L337,428L336,429L334,428L332,429L330,429L328,430L326,431L326,432L326,433L327,434L326,435L323,435L321,436L320,437L318,438L318,439L319,440L320,441L322,441L324,442L326,443L326,444L327,446L328,446L329,447L330,450L330,451L331,452L331,453L331,455L330,456L328,457L324,457L323,458L321,459L317,460L313,461L310,461L306,462L304,463L299,463L295,463L290,463L285,463L286,464L291,465L294,465L295,466L292,467L288,467L284,468L283,469L283,470L287,471L287,472L291,473L297,473L302,474L306,475L311,476L317,476L324,477L329,478L334,479L337,480L338,481L342,480L346,479L351,478L357,478L362,477L369,477L375,477L381,478L383,477L387,476L394,476L399,475L404,475L410,474L416,474L421,473L419,472L418,471L418,470L412,470L406,471L401,471L400,470L401,468L402,467L406,466L411,466L414,465L417,464L420,463L424,462L427,462L429,462L434,462L438,461L441,461L444,460L447,460L451,459L454,458L456,457L457,456L454,455L455,454L457,453L460,453L463,452L466,451L468,450L469,449L471,448L475,448L476,449L479,449L480,448L481,447L484,447L485,448L488,449L492,448L495,448L498,448L499,449L502,448L505,448L508,447L511,447L514,446L517,446L520,445L522,444L524,445L526,444L528,446L530,447L533,446L534,445L537,444L541,445L542,446L544,445L547,444L551,444L553,444L557,444L560,445L561,446L563,446L566,446L569,446L572,446L575,446L578,445L581,445L583,444L586,444L589,443L591,443L593,441L594,440L597,441L598,442L600,442L603,442L605,443L607,444L610,443L611,442L614,441L617,441L619,440L623,440L625,439L627,438L629,438L632,438L634,437L636,436L639,436L641,436L642,435L644,434L646,433L649,433L651,433L654,433L657,433L659,434L659,435L661,436L663,437L666,437L668,438L671,439L673,439L676,438L678,437L681,438L683,438L686,438L689,439L691,439L694,442L694,442L693,444L691,444L688,445L689,446L692,446L691,447L690,448L689,450L691,450L694,451L697,450L699,449L700,448L701,447L703,446L704,445L705,444L707,444L710,444L713,443L716,443L717,442L718,441L720,440L722,439L725,439L726,438L728,437L730,437L733,437L735,437L738,436L741,437L743,436L744,434L745,435L747,436L749,437L752,437L754,436L757,437L760,437L762,436L764,437L766,437L769,437L772,437L774,436L777,437L779,436L780,435L782,434L786,432L787,433L790,433L791,434L795,436L798,436L800,436L803,436L806,435L808,435L810,434L813,434L816,433L818,434L819,434L821,435L824,435L826,436L829,437L833,437L836,437L838,436L840,435L842,435L845,435L848,435L850,435L853,435L855,435L858,435L860,435L863,435L866,434L869,434L872,434L874,434L875,433L875,431L877,432L877,433L878,435L879,435L882,436L885,436L889,436L891,436L895,436L897,436L901,436L904,436L906,437L906,438L907,439L910,439L913,440L917,440L921,441L924,441L927,441L929,440L931,441L933,442L936,443L939,443L942,443L944,444L947,445L949,446L952,446L955,446L958,447L961,447L965,447L968,447L971,448L974,448L976,449L975,450L974,451L973,452L972,453L970,455L967,455L965,456L961,457L960,458L958,459L956,460L955,461L954,462L954,463L954,464L956,465L956,466L958,467L963,468L964,469L959,469L955,470L949,470L947,471L947,473L945,474L944,475L948,476L949,477L951,478L955,479L959,480L963,481L969,481L971,483L979,483L979,484L981,484L989,484L995,485ZM312,400L315,401L319,402L318,403L315,403L314,402L313,404L311,404L308,404L306,403L303,403L299,401L296,400L293,397L295,397L299,399L302,400L304,399L305,397L307,396L309,396L310,398ZM337,392L340,393L339,394L335,395L334,394L331,395L330,394L333,392L336,393ZM695,388L691,388L691,387L691,386L691,385L693,386L696,386L696,387ZM904,363L907,364L908,364L910,363L912,364L912,367L911,368L911,370L910,369L908,371L907,371L906,371L904,369L904,367L902,364L902,363ZM981,364L981,365L983,364L984,365L984,366L983,367L981,369L980,370L981,372L979,372L976,373L976,375L974,378L972,379L970,380L968,379L966,379L963,378L963,377L964,375L968,373L969,372L971,371L974,370L975,368L977,366L978,365L978,364L980,362ZM985,350L987,353L987,351L988,352L989,354L991,355L993,355L994,354L996,355L995,357L994,359L992,359L991,360L992,361L991,361L990,363L989,365L987,366L986,365L985,365L987,362L986,361L983,360L983,359L985,358L985,356L985,354L984,352L984,351L983,350L981,348L980,346L981,346L982,347L984,348ZM964,312L963,312L962,311L960,310L958,309L956,307L956,306L957,306L958,307L960,308L960,309L963,310ZM995,298L996,299L996,300L994,301L993,300L992,299L994,298L995,299ZM0,296L998,297L996,297L996,296L997,296L998,295L0,295L1,295L0,296ZM966,296L965,296L964,295L964,294ZM964,291L965,294L964,293L963,294L963,293L963,291ZM639,288L639,291L640,292L640,294L639,294L639,293L638,294L639,296L638,297L637,298L637,300L636,303L635,307L633,312L632,316L631,319L629,320L626,321L625,320L622,319L622,318L621,315L620,313L620,311L621,309L622,309L622,308L623,306L624,304L623,303L622,301L622,298L623,297L623,295L625,295L626,294L627,294L629,294L630,292L633,291L633,289L633,288L634,288L636,286L636,285L637,283L638,285L638,286ZM899,288L900,290L902,289L902,291L904,292L904,293L904,295L905,297L905,297L906,299L906,301L907,303L910,304L912,305L913,307L913,307L915,309L916,312L917,311L918,313L919,312L919,315L921,317L922,318L925,320L925,322L925,324L925,326L927,328L926,331L926,332L925,334L925,336L925,338L923,340L921,342L920,344L919,345L919,348L918,349L917,351L917,353L917,354L915,355L912,355L909,356L908,357L906,358L904,357L902,357L903,355L901,356L899,358L897,357L895,357L893,356L891,356L889,354L888,352L888,350L886,349L884,349L885,348L884,346L883,347L880,348L882,346L882,345L883,343L883,341L881,344L879,345L878,347L876,346L876,344L874,342L872,341L873,341L869,339L867,339L865,337L860,338L856,339L853,340L850,339L847,341L845,342L845,343L843,344L841,344L839,344L837,344L835,344L833,344L831,346L831,346L829,347L828,347L826,347L824,347L821,346L820,345L820,343L821,343L821,342L821,341L822,339L821,338L820,335L819,333L820,332L818,330L818,329L817,328L817,326L815,324L815,323L816,324L815,321L816,322L817,323L817,322L816,319L816,319L815,318L815,316L816,315L816,314L816,312L817,310L817,313L818,311L821,310L822,309L824,308L825,307L826,308L828,307L830,306L831,306L831,305L833,305L836,305L837,303L838,302L840,301L840,299L840,298L842,296L843,298L844,297L843,296L844,295L845,295L845,293L847,292L848,291L849,290L849,290L850,290L850,289L852,289L853,288L855,290L857,291L858,291L860,292L859,290L861,288L862,287L862,286L863,285L865,284L866,284L868,284L868,282L866,281L868,281L869,282L871,283L873,283L874,283L876,284L877,283L878,283L879,283L880,284L880,286L879,287L878,287L878,288L877,290L876,291L876,292L879,293L881,294L882,295L884,297L885,297L886,297L887,298L889,299L891,298L892,297L892,296L893,294L894,292L893,290L893,290L893,288L893,286L894,285L894,284L894,283L895,281L895,281L896,280L897,281L897,283L898,283L898,284L899,286L899,287ZM950,279L951,280L949,280L948,278L950,279ZM835,278L834,278L830,277L833,276L835,277L835,278ZM947,277L946,277L944,277L943,277L944,276L945,276L946,277ZM949,277L949,277L947,275L946,273L947,273L948,275ZM846,278L843,279L843,278L843,277L844,276L847,275L847,274L850,273L852,273L853,273L854,273L853,274L850,275L847,276ZM827,272L828,273L830,273L831,274L828,275L826,275L824,275L825,273L827,273ZM841,272L841,274L837,275L833,274L833,273L835,273L837,274L839,274ZM944,273L944,274L942,273L941,272L939,271L940,270L941,271L943,272ZM938,270L937,271L936,270L935,269L935,268L936,270ZM802,269L807,269L808,268L813,269L814,271L818,272L821,273L818,274L815,273L813,273L810,273L807,273L804,272L802,271L801,272L796,270L795,269L793,269L795,266L798,267L800,268L801,268ZM874,267L873,269L873,267L873,266L874,265L874,266ZM933,269L932,269L931,268L930,266L929,264L930,264L930,265L931,265L932,267L933,268ZM922,265L921,265L920,266L919,267L917,268L916,268L914,267L912,266L912,265L915,266L916,265L917,264L917,264L917,265L919,265L920,264L921,263L921,262L923,262L923,262L923,264ZM853,260L852,261L851,260L850,259L853,259ZM862,259L863,261L861,260L859,259L857,260L855,259L856,258L859,258ZM925,262L925,263L924,262L923,261L922,260L921,258L919,258L919,257L921,258L922,258L923,259L924,260L925,261ZM873,253L873,258L876,259L879,256L882,255L884,255L887,256L889,257L892,257L896,259L902,261L904,262L905,264L906,265L910,267L911,268L908,269L909,271L911,272L913,275L915,275L915,276L917,277L916,277L919,279L919,279L917,280L916,279L914,279L911,278L909,276L907,275L906,272L902,271L900,272L898,273L898,275L896,276L895,275L892,275L889,273L886,272L886,273L882,273L883,271L885,270L884,267L883,265L878,263L875,262L871,260L870,261L869,261L869,260L869,259L867,258L870,257L872,257L871,256L867,256L866,254L864,254L863,253L866,252L868,251L872,252ZM848,246L846,249L844,249L841,249L836,249L834,249L833,251L836,254L837,253L843,252L842,253L841,253L840,254L838,255L840,259L840,260L842,263L842,265L841,266L840,265L841,262L838,263L837,263L838,262L836,260L836,257L834,258L834,261L835,265L833,266L832,265L832,262L832,260L831,260L830,258L831,256L831,254L833,250L833,248L836,246L838,247L841,248L845,247L847,245ZM857,247L857,249L856,249L855,251L857,252L856,252L855,251L854,247L854,245L855,244L856,245L857,246ZM794,266L791,266L789,264L785,262L784,260L782,258L780,256L778,252L776,249L775,247L774,245L771,243L770,241L768,239L765,236L765,235L766,235L771,235L773,238L775,240L777,241L780,244L782,244L785,246L786,248L788,250L787,252L789,253L790,253L790,255L791,257L793,257L795,259L794,262ZM827,245L831,247L827,248L826,250L826,252L824,254L824,257L823,261L822,260L819,261L818,260L816,260L815,259L811,260L810,258L808,258L806,258L806,254L804,254L803,251L803,249L803,246L805,244L807,245L809,245L809,243L811,242L814,241L816,239L817,237L818,236L821,235L823,233L824,231L825,231L827,232L827,233L829,234L831,235L831,236L829,236L829,238L827,239L826,241L828,244ZM851,227L851,228L851,230L851,233L850,230L848,231L849,233L848,234L845,233L844,231L845,230L843,228L842,229L841,229L839,231L839,230L840,228L842,227L843,226L844,227L846,226L847,225L849,225L848,223L851,224L851,226ZM726,233L723,233L722,231L721,227L723,223L725,224L726,226L727,229L727,232ZM331,222L328,222L328,222L329,221L329,220L330,220L331,220ZM844,221L843,222L843,224L842,225L840,223L841,222L841,221L842,220L843,220L843,221L845,219ZM829,224L825,227L827,225L829,223L831,221L832,218L832,221L831,222ZM839,217L840,218L842,218L842,219L841,220L839,221L839,220L839,218ZM849,216L849,219L847,219L847,220L848,221L847,222L847,220L846,220L845,218L847,218L847,217L845,215L848,215ZM838,214L837,216L836,215L834,213L837,213ZM837,199L839,199L840,199L840,199L839,201L840,203L840,205L838,206L838,208L838,210L840,211L841,210L844,212L844,213L845,214L845,215L842,214L841,212L841,213L839,212L836,212L835,212L835,210L836,210L835,209L835,210L834,208L833,207L833,205L834,205L834,201L835,199ZM318,199L317,200L315,200L313,200L313,199L314,199L316,199L317,199ZM286,200L286,201L284,200L282,199L283,199L284,199L285,199L286,199L288,200L288,200ZM298,195L301,195L301,195L303,195L305,195L306,195L306,196L308,196L308,197L309,197L310,198L309,199L308,199L307,199L306,199L305,199L304,199L304,199L303,199L302,201L301,201L301,200L299,199L298,200L296,199L295,200L293,199L293,198L296,199L298,199L299,198L298,197L298,196L296,195L297,195ZM806,198L804,199L802,199L802,196L803,195L806,194L808,194L808,195L807,197ZM68,197L68,197L67,197L67,196L66,195L67,195L67,195L67,194L67,194L67,194L68,194L69,194L69,195L70,196L70,196L69,197ZM66,193L66,193L65,192L65,192L65,192L65,192L66,192L67,192ZM65,191L64,191L63,191L63,191ZM62,191L62,191L62,191L61,191L60,190L60,190L61,190L61,190ZM57,189L57,189L56,189L56,189L57,188L57,188ZM279,187L280,188L282,187L283,188L286,190L287,191L288,191L290,192L290,192L292,193L294,194L294,194L292,195L290,195L288,195L284,195L286,193L285,193L283,192L282,192L281,190L280,190L277,189L276,189L273,188L272,188L273,187L270,187L268,188L267,188L267,189L265,189L264,189L265,188L266,187L267,187L269,186L271,186L271,186L274,186L276,186ZM285,184L284,184L283,183L282,182L283,180L284,180L285,182ZM837,187L835,189L834,187L834,185L835,182L837,180L839,181L838,182ZM284,176L281,177L281,176L282,175L284,175ZM286,176L286,178L285,178L285,176L284,175L284,175ZM874,155L874,156L873,158L872,157L870,158L869,159L868,158L868,157L869,155L871,156L872,155ZM596,151L594,152L594,153L594,153L592,154L590,154L590,152L591,152L591,152L592,152L594,152ZM566,151L567,152L570,152L572,152L572,152L573,152L573,153L569,153L569,153L565,152ZM543,144L542,146L543,147L542,148L540,147L538,147L535,146L535,144L538,144L541,144ZM526,136L527,137L527,141L526,141L524,142L523,141L523,138L523,136L524,136ZM892,147L891,149L891,150L890,152L886,154L881,154L877,157L875,156L875,154L870,155L867,156L864,156L867,158L865,163L863,164L862,163L862,160L861,159L859,158L862,157L864,155L866,153L868,152L874,151L877,151L880,146L882,148L886,145L887,144L889,140L889,137L890,136L893,135L894,139L894,141L892,144ZM527,133L526,135L524,134L524,133L524,132L526,131ZM900,127L902,128L904,127L904,130L900,131L898,133L893,131L892,134L889,135L888,132L890,130L893,129L894,126L894,123L898,126ZM323,121L325,121L328,121L326,122L325,122L322,121L321,120L322,119ZM328,114L327,114L323,113L321,111L322,111L325,112L328,113ZM157,115L156,116L151,114L150,113L148,112L147,112L144,111L143,110L143,109L146,110L148,110L151,110L152,111L153,113L156,114ZM344,109L342,112L344,111L346,111L345,112L347,113L349,112L351,113L351,115L353,115L353,116L354,118L353,120L351,121L350,120L350,118L349,117L346,120L344,120L346,118L344,118L341,118L335,118L335,117L337,116L335,115L338,114L341,109L342,108L345,107L346,107L346,107ZM131,100L134,100L133,103L136,105L135,105L133,104L132,103L130,102L130,100L130,100ZM899,109L902,114L898,113L896,117L899,120L899,122L897,120L895,122L894,120L894,117L894,114L895,112L895,108L893,106L894,102L896,101L895,99L896,99L897,101L898,103L898,106ZM481,105L476,106L472,106L475,103L473,100L477,98L479,97L481,97L484,98L483,100L483,102ZM535,96L534,98L531,96L530,95L534,94ZM75,91L72,92L71,92L70,90L73,89L74,89L76,89L77,90ZM492,87L489,90L492,90L495,90L494,92L491,95L494,95L497,98L499,99L501,102L501,103L505,104L504,105L503,106L504,108L502,109L498,109L493,110L492,109L490,110L487,110L485,111L484,111L488,108L491,107L486,107L485,106L488,105L487,103L487,101L491,102L492,100L490,98L487,98L486,97L487,96L486,95L484,96L484,94L483,92L484,89L486,87L488,87ZM40,84L38,84L37,83L35,83L38,82L40,83ZM280,77L279,79L278,79L277,78L277,78L278,77L279,77ZM273,76L269,77L267,77L267,77L269,75L273,75ZM23,73L25,73L26,73L29,74L31,74L31,74L29,75L27,74L26,74L23,74L23,74ZM263,68L264,69L265,68L267,69L270,70L273,71L273,72L276,72L277,73L275,74L271,73L269,72L266,73L262,75L261,73L258,73L260,72L260,70L261,67ZM460,65L459,67L462,69L459,71L451,73L448,74L445,73L437,72L440,71L433,70L438,69L438,68L432,68L434,66L439,66L443,67L447,66L451,67L455,65ZM289,63L286,64L285,62L287,61L289,60L291,61L291,62L291,63ZM0,58L7,61L14,63L14,65L16,66L15,64L23,64L28,67L25,68L21,68L21,71L20,72L17,71L15,70L11,70L11,68L8,68L5,68L3,67L4,66L0,67L2,68L0,70L1000,70L996,71L993,71L995,72L997,74L998,75L999,76L998,77L993,76L985,78L982,79L978,81L974,82L973,84L969,82L962,84L961,83L958,84L954,84L953,86L950,88L950,89L953,90L953,94L950,94L949,96L950,98L945,99L945,102L940,103L940,106L936,108L934,106L933,102L932,96L933,92L935,91L936,89L940,89L945,85L950,82L955,80L957,76L953,76L952,79L945,82L943,78L935,79L928,84L931,86L924,86L920,87L920,85L916,84L913,86L904,85L895,86L886,91L875,98L880,98L881,100L884,101L886,99L889,99L893,103L893,105L891,108L890,111L889,115L885,119L884,121L880,125L876,128L875,129L871,131L869,131L867,130L864,132L863,133L862,133L861,133L860,134L860,136L859,137L858,138L857,138L855,139L854,140L854,141L854,141L855,142L857,143L859,146L860,148L860,151L859,153L856,153L854,154L851,154L851,153L852,151L850,148L852,148L850,145L849,145L849,145L848,145L848,145L847,145L846,144L847,143L848,143L848,142L848,141L848,140L846,140L845,139L841,140L839,141L836,142L838,141L837,140L839,138L838,136L835,137L832,139L831,141L828,141L826,142L828,144L830,145L830,146L833,147L836,145L838,146L840,146L840,147L836,148L835,150L832,151L831,153L834,155L835,157L837,160L839,162L839,164L837,165L838,166L839,167L839,169L838,172L836,172L834,175L832,178L830,182L826,184L822,187L819,187L817,188L816,187L815,189L811,190L808,191L807,193L805,194L805,192L805,191L801,190L800,190L796,193L794,195L794,197L796,200L798,204L801,205L802,208L804,213L803,218L801,219L798,221L796,224L792,226L791,224L792,222L790,221L787,220L786,219L785,216L782,215L780,215L780,213L778,213L778,216L776,220L775,222L776,224L777,224L779,227L779,229L781,231L782,231L784,233L784,233L786,235L787,237L787,238L787,240L787,241L788,242L788,243L790,245L790,246L788,247L785,245L782,242L781,241L780,239L779,237L778,235L779,233L778,232L777,231L776,230L775,228L774,227L773,228L773,227L773,225L774,222L773,220L774,218L773,217L774,214L773,212L772,209L771,205L770,203L768,204L765,206L763,206L762,205L763,202L762,199L760,196L760,195L759,195L757,193L756,191L756,190L755,188L754,187L751,187L752,188L751,189L750,189L749,189L748,189L747,189L747,190L745,190L742,190L742,192L740,194L736,196L733,199L731,201L728,203L728,204L727,205L724,206L723,206L722,208L723,212L723,214L722,217L722,221L720,221L719,223L720,224L717,225L717,227L715,228L713,225L711,221L710,219L709,217L708,215L707,211L707,209L704,206L703,200L702,197L702,193L702,191L698,192L696,192L692,189L693,188L693,187L689,184L687,183L687,181L684,179L679,180L675,180L671,180L666,179L663,179L659,179L658,175L657,175L655,175L652,176L649,176L646,173L643,173L641,170L639,166L638,167L636,166L635,167L633,167L634,168L634,169L634,171L636,173L637,174L637,175L639,176L639,177L639,178L640,179L640,180L641,181L641,181L641,179L642,178L642,177L643,178L643,180L643,182L643,183L644,183L644,183L646,183L648,183L650,183L652,181L654,179L656,178L657,177L657,177L657,178L656,179L657,181L658,183L659,184L661,184L663,185L664,186L665,187L666,187L666,188L665,190L665,190L664,191L662,193L661,193L661,194L660,195L661,197L660,197L659,197L657,198L657,200L656,200L655,200L654,201L654,202L652,203L651,203L649,204L648,204L646,204L645,206L645,207L642,208L638,209L635,211L634,211L633,211L632,212L630,213L627,213L627,213L626,214L625,214L625,215L624,215L623,215L621,215L620,213L620,212L620,211L619,209L618,208L619,208L619,206L619,206L619,205L618,203L618,203L617,201L616,200L615,198L614,196L612,194L611,194L609,191L608,189L609,187L607,184L606,183L604,183L603,181L603,180L603,179L602,178L601,176L599,174L598,172L596,172L597,171L597,170L597,168L597,168L596,169L596,171L595,173L594,173L593,172L592,171L590,167L590,167L591,170L593,173L595,177L596,179L597,180L599,184L599,184L599,186L602,188L602,189L603,192L603,192L603,195L604,198L605,199L607,200L608,203L609,206L611,207L614,210L616,211L617,213L618,214L620,215L620,216L620,217L619,217L620,218L621,219L621,220L623,221L624,221L627,220L630,220L632,219L633,219L634,218L636,218L637,218L638,218L640,218L641,217L642,217L642,217L642,219L642,220L641,221L640,224L639,228L637,231L635,235L633,238L629,242L627,244L622,247L620,249L617,253L616,254L616,255L614,256L613,257L612,257L611,259L611,260L610,262L609,263L608,266L608,268L610,269L610,270L609,271L609,272L609,274L610,275L611,278L612,279L612,280L612,283L613,285L613,289L613,291L612,293L611,295L610,296L607,298L604,299L601,302L600,302L598,304L597,305L596,307L598,309L598,311L598,311L599,311L599,314L598,315L599,316L598,317L597,318L595,319L592,320L590,321L591,323L591,323L591,324L590,326L590,329L589,330L588,331L587,332L586,333L585,335L583,337L580,339L578,341L576,342L573,343L572,344L572,344L570,344L569,344L566,344L564,344L563,344L560,345L557,346L556,347L554,347L553,346L552,346L551,344L551,345L551,344L551,342L550,341L551,340L551,338L549,335L547,333L547,333L545,329L543,327L542,325L542,323L541,321L540,316L540,313L540,311L539,310L537,308L536,305L535,303L533,300L533,298L532,296L533,294L534,291L534,290L535,288L535,286L537,285L538,283L538,281L538,280L537,279L536,277L536,275L536,275L537,274L536,271L535,269L534,267L534,267L534,266L533,264L531,261L528,258L526,256L524,253L525,252L525,251L526,249L526,247L526,247L527,244L527,241L526,240L525,239L524,238L524,238L524,237L521,238L520,238L519,238L516,238L515,236L514,234L512,233L510,233L507,233L505,233L503,234L499,235L497,236L495,237L492,236L491,236L489,236L487,236L484,236L482,237L479,238L479,238L478,238L475,237L472,234L470,233L468,231L467,231L465,230L464,228L464,227L463,225L462,224L461,223L460,222L460,222L459,220L459,220L458,219L456,218L455,218L455,217L455,217L454,216L454,216L453,213L454,212L452,210L451,209L452,209L454,207L454,205L454,204L455,202L455,200L455,197L455,196L455,194L454,193L453,192L453,190L453,189L454,188L455,187L455,186L456,184L457,182L458,182L459,180L459,179L460,177L462,176L464,173L465,172L468,172L470,170L471,169L473,167L473,163L474,161L474,160L476,158L479,156L481,155L483,152L484,151L486,151L487,152L490,152L493,152L494,152L497,151L500,150L501,149L504,148L509,148L513,148L515,148L517,147L520,147L521,148L523,147L526,146L528,147L528,148L531,147L531,147L529,149L529,150L530,151L530,153L528,155L529,156L530,156L531,158L532,158L535,159L536,159L539,159L542,160L544,163L546,163L550,165L553,166L554,165L556,164L555,162L556,160L558,159L560,159L564,159L565,161L566,161L566,161L569,161L570,162L574,162L576,163L579,164L580,164L582,163L584,163L586,162L588,163L589,164L589,163L592,164L594,164L595,163L596,162L596,162L597,161L597,159L597,158L598,158L599,156L600,154L600,154L600,152L600,150L599,149L600,148L599,148L596,148L595,149L590,150L588,148L585,148L584,149L582,150L580,148L577,148L575,145L573,144L574,142L573,140L576,138L580,138L581,136L587,136L590,134L593,133L598,133L603,135L607,136L610,136L612,136L615,135L616,133L615,132L614,131L612,130L611,129L607,127L604,126L602,124L604,124L606,122L605,120L609,119L609,119L606,119L604,119L602,120L600,120L597,121L597,123L599,124L601,124L601,125L598,125L594,127L593,126L593,125L590,124L591,124L593,123L592,122L588,121L588,120L585,121L584,122L582,124L582,125L581,126L580,125L579,129L578,130L577,132L578,133L578,134L581,135L580,136L577,136L576,137L573,138L572,137L572,137L571,137L569,136L566,137L568,139L566,139L565,139L563,138L563,138L563,140L565,141L564,142L565,143L567,144L567,145L564,145L565,146L563,146L564,149L562,149L560,148L559,145L559,144L558,142L556,141L556,140L555,140L555,139L554,138L554,137L554,135L554,134L554,134L553,133L552,133L551,132L549,131L547,130L544,129L542,127L543,127L541,126L541,125L540,124L539,126L538,125L538,124L538,124L539,123L537,123L534,124L534,125L534,126L535,128L538,129L539,131L542,133L544,133L545,134L544,135L547,136L549,136L551,138L551,138L551,139L549,138L547,138L546,139L548,140L547,142L546,142L545,144L544,145L544,144L544,142L545,142L544,140L543,139L542,138L541,137L539,137L538,136L536,135L534,134L531,132L529,131L528,128L527,128L525,127L523,127L522,128L521,129L518,130L513,129L509,130L508,132L508,134L506,135L502,136L502,137L500,139L499,141L500,142L499,144L498,145L496,146L494,148L491,148L488,148L486,149L485,150L484,150L483,149L482,147L479,147L478,148L477,147L475,148L476,145L475,144L474,143L474,142L474,141L475,140L475,138L476,137L476,136L475,135L475,134L475,132L474,130L478,128L481,129L485,129L488,129L490,129L495,129L496,128L497,122L494,119L492,118L488,117L487,115L491,114L496,115L495,112L497,113L504,111L505,108L507,108L509,107L511,107L513,103L517,101L519,101L520,101L522,101L523,101L524,100L524,99L524,97L523,96L522,93L523,92L524,91L526,91L527,90L529,90L529,91L528,92L529,93L530,93L530,94L529,94L527,96L528,97L528,98L530,99L530,100L533,99L535,99L538,100L539,101L541,100L545,99L549,98L552,98L552,99L555,99L555,98L559,97L558,94L559,92L560,91L563,90L565,92L567,92L568,89L568,88L567,88L565,87L565,86L568,85L572,84L575,85L578,85L581,83L578,82L573,82L568,83L564,84L562,82L559,81L560,79L558,76L560,74L562,73L569,70L571,69L570,68L566,67L562,67L559,69L559,71L555,73L550,76L548,80L550,82L552,83L550,86L547,87L546,92L544,94L541,94L539,96L536,96L535,94L533,90L531,87L529,85L523,88L520,89L516,87L515,84L514,78L516,76L524,74L529,71L534,67L541,62L546,60L553,56L559,55L564,55L568,53L573,53L578,52L587,54L583,55L586,57L589,56L594,57L601,58L612,61L614,63L614,64L611,66L607,67L594,65L592,65L597,67L597,71L601,72L603,73L603,71L601,70L603,69L610,71L612,70L610,68L617,65L619,66L622,66L624,65L621,63L623,61L621,60L628,60L630,62L627,62L627,64L629,65L633,64L634,62L640,61L649,59L651,59L649,61L652,61L654,60L659,60L663,59L667,60L670,58L667,57L668,56L676,57L680,58L690,61L692,59L689,58L689,57L686,57L687,56L685,54L685,53L690,50L692,48L694,47L702,48L702,49L700,52L701,53L702,54L702,58L705,60L703,62L698,66L701,66L702,65L705,64L706,63L708,62L707,60L708,58L705,58L704,57L707,54L703,52L708,50L707,48L709,48L710,49L709,52L712,52L711,50L715,49L721,49L726,51L724,48L724,45L728,45L735,45L741,45L739,43L742,41L745,41L751,40L758,40L759,39L766,38L769,39L775,38L780,38L781,36L783,35L790,34L795,35L791,36L797,36L798,38L800,37L809,37L815,38L817,39L816,41L813,42L806,43L804,44L807,44L811,45L814,45L815,46L817,46L821,45L830,46L831,47L842,47L842,45L848,46L853,46L857,47L858,49L857,50L860,52L865,53L867,50L872,52L877,51L882,52L884,51L889,51L887,49L890,48L915,49L918,51L925,53L936,53L942,53L944,54L944,56L947,57L951,57L956,56L961,57L966,57L971,59L974,58L972,57L973,55L982,56L988,56L996,57ZM636,135L638,137L639,137L640,138L638,138L637,141L637,142L636,142L636,144L637,146L639,146L641,148L645,148L650,147L650,147L649,145L650,142L648,141L648,139L646,139L647,136L650,137L652,136L650,135L649,133L647,134L647,136L646,134L646,133L646,132L646,131L643,130L641,128L640,127L640,126L642,126L643,124L645,124L647,124L648,122L647,120L645,120L642,119L639,121L636,121L635,123L632,123L630,126L632,129L632,131L635,134ZM234,58L233,59L229,58L227,58L223,57L225,56L227,55L230,56L232,56L233,57ZM0,51L1000,53L997,53L996,53ZM0,51L0,51L3,51L7,52L6,52L4,53L0,53ZM248,57L248,60L252,58L256,59L255,61L257,63L260,61L262,59L262,56L266,56L270,57L274,58L274,59L272,61L274,62L274,64L268,66L265,66L262,65L261,67L258,69L257,70L254,72L250,72L248,73L248,75L245,75L241,78L238,81L237,83L237,86L241,87L242,89L244,91L248,91L253,92L255,93L257,94L261,95L264,96L268,97L271,97L271,99L272,102L274,105L278,108L280,107L282,104L280,100L278,98L283,97L286,95L287,93L287,91L285,89L282,87L285,84L284,81L283,77L285,76L290,77L293,77L295,77L297,77L301,79L302,80L307,80L307,83L308,86L310,87L312,88L316,87L319,84L321,82L323,85L326,88L329,92L328,94L332,95L335,97L339,97L341,98L342,101L344,101L345,102L345,105L343,106L341,107L337,108L333,110L329,111L323,110L318,110L316,110L313,112L310,114L306,117L302,120L305,119L309,116L315,114L319,113L322,115L319,116L320,119L321,122L325,123L329,123L332,119L332,121L334,122L330,124L324,126L322,127L318,129L316,129L316,126L321,124L317,124L314,125L314,126L311,127L308,128L305,129L304,130L303,131L303,132L304,134L305,134L305,133L306,134L306,134L304,135L302,135L300,135L299,135L298,135L295,136L299,136L300,136L296,137L294,137L295,137L294,138L295,138L294,140L292,142L292,141L291,141L290,140L291,142L291,142L292,143L291,144L289,147L289,147L290,145L288,144L288,141L287,142L288,144L286,144L288,145L288,147L289,148L289,148L290,151L288,153L285,154L283,156L282,156L280,157L280,158L277,160L275,161L274,163L274,165L274,167L275,169L276,171L276,172L278,175L278,177L277,178L277,180L276,180L275,180L274,179L273,178L272,176L270,174L270,173L270,171L270,169L267,167L266,166L264,168L263,168L262,166L260,166L257,166L254,166L252,166L251,166L252,167L252,168L252,169L252,169L251,169L250,169L248,169L245,168L243,168L241,167L239,167L237,168L234,170L232,171L230,173L230,174L230,176L230,177L230,178L230,178L230,178L229,181L229,183L228,186L228,188L229,189L229,191L230,193L232,195L233,196L234,198L237,198L238,200L240,199L242,199L244,198L246,198L248,196L249,195L249,192L249,192L251,191L254,190L257,190L258,190L259,191L259,192L257,194L257,195L257,196L257,197L256,199L255,199L255,199L255,199L255,199L255,200L255,201L255,201L255,202L255,203L255,204L254,205L254,205L253,206L254,206L254,206L255,206L255,206L256,206L257,206L257,206L257,206L259,206L260,206L261,206L261,206L262,206L263,206L263,206L264,206L265,206L266,206L266,207L267,207L268,208L269,208L269,209L269,209L269,210L268,211L268,212L268,214L268,214L268,216L268,216L267,217L268,218L267,218L267,219L268,220L268,221L269,222L271,223L272,224L272,225L273,225L273,225L274,226L275,225L276,225L278,224L279,223L280,223L280,224L282,224L283,224L284,225L285,226L287,226L289,224L290,224L290,223L290,221L292,219L294,219L294,219L296,219L298,217L299,217L301,215L302,216L302,216L302,217L302,218L300,218L301,220L301,221L300,223L301,225L302,225L303,223L302,222L302,220L305,218L305,217L306,216L307,218L309,218L310,220L311,221L313,221L316,220L318,222L320,222L321,221L321,220L325,220L328,220L326,221L327,222L329,223L331,224L331,226L333,226L334,227L336,228L338,230L338,231L339,231L340,232L341,233L345,234L345,233L347,233L350,234L351,234L353,235L356,237L357,238L357,238L358,240L360,245L361,245L361,247L359,249L360,250L365,251L365,253L367,252L371,253L375,254L377,256L376,257L379,257L385,258L389,258L393,260L397,263L399,264L401,264L402,265L403,269L404,270L402,275L401,277L397,281L395,284L393,286L393,286L392,288L392,294L391,298L391,300L390,301L390,304L387,308L386,311L384,312L383,314L380,314L376,315L374,316L371,317L368,319L365,322L365,324L365,325L365,328L364,330L362,331L359,336L357,338L355,340L354,342L352,344L351,346L347,347L345,347L344,347L341,346L339,346L338,344L338,346L341,348L341,350L342,351L342,353L340,356L335,358L330,358L327,358L327,360L327,362L327,363L326,364L323,364L320,363L319,364L320,367L321,368L323,367L324,368L321,369L319,371L319,374L318,375L315,375L313,377L312,379L315,381L318,381L317,384L313,385L312,389L309,390L308,391L309,394L311,395L310,395L307,395L306,396L303,397L303,400L302,400L298,399L295,397L292,395L291,393L292,392L290,390L290,385L291,383L294,380L290,380L293,377L293,373L297,373L298,368L296,367L295,370L294,370L294,366L295,361L297,359L296,356L296,353L297,353L298,349L300,344L302,340L301,336L302,334L301,330L303,327L304,321L304,316L305,309L305,305L305,301L302,299L301,298L296,295L291,292L289,291L288,288L288,288L286,284L283,279L280,273L279,272L278,270L276,268L274,267L275,266L274,263L275,261L277,259L278,257L278,256L277,257L275,256L276,255L275,253L276,253L277,251L278,249L278,248L279,247L281,246L281,245L282,245L281,244L282,243L284,243L285,241L286,239L285,239L285,237L285,234L285,234L285,231L284,230L283,229L282,228L283,227L282,227L282,226L280,225L279,225L278,226L277,227L277,227L276,228L278,229L277,229L277,230L275,230L275,228L274,229L274,229L273,227L272,227L271,227L270,227L270,228L270,227L268,227L267,226L268,225L268,225L267,224L266,224L265,223L265,222L264,222L264,223L264,223L263,223L262,222L262,222L262,221L262,220L261,220L262,219L261,218L260,217L259,216L258,215L256,214L257,214L257,214L257,214L257,213L256,213L256,213L254,213L253,213L252,213L251,212L250,212L248,211L247,211L245,211L244,210L241,207L239,206L237,205L235,205L233,206L232,207L230,206L228,205L225,204L223,204L220,202L218,201L217,200L215,200L213,199L211,198L208,196L207,195L206,193L207,193L207,192L208,191L208,190L207,189L206,188L205,187L203,184L200,182L199,180L197,179L196,178L196,177L195,176L193,175L193,173L191,172L190,171L188,170L188,169L187,167L186,164L186,163L184,162L183,162L181,162L181,163L181,164L181,166L182,167L184,169L185,170L185,170L186,171L186,171L187,173L188,174L188,175L190,176L191,179L192,180L192,181L193,183L194,183L195,184L196,185L196,186L195,187L194,187L194,185L192,183L190,182L188,181L188,179L188,178L187,177L185,176L184,176L184,175L182,175L180,173L181,173L182,173L183,172L183,171L181,169L179,168L178,166L177,164L176,162L175,160L174,158L172,157L171,156L171,155L169,155L168,155L166,154L165,154L165,152L162,150L160,146L160,145L158,144L156,142L156,140L154,138L155,136L155,133L154,131L155,129L156,124L155,120L154,117L154,116L154,116L158,117L159,119L160,118L160,116L159,114L158,114L153,111L151,110L146,109L144,106L145,105L141,103L141,101L137,99L137,98L136,97L133,96L133,93L129,91L128,89L125,88L120,88L117,87L111,85L109,84L104,83L100,83L95,82L91,81L88,81L89,83L87,84L84,84L82,85L79,86L78,84L79,81L82,80L82,80L78,81L76,83L72,85L74,86L72,88L69,90L66,90L65,92L61,93L60,94L57,96L55,95L52,96L49,97L47,98L42,99L42,98L45,97L48,96L51,95L54,94L55,93L59,92L60,91L62,90L62,88L64,86L61,87L60,87L58,88L56,86L56,87L55,86L52,87L50,87L50,85L50,84L49,83L45,84L43,83L41,82L41,80L39,79L40,78L42,76L43,75L45,74L47,75L49,73L51,74L53,73L53,72L51,71L53,70L52,70L49,71L48,71L46,71L42,71L38,70L37,69L33,68L37,66L43,65L45,65L45,66L51,66L49,65L45,64L43,62L41,61L37,60L38,59L43,59L47,57L47,56L50,55L53,54L58,53L61,53L65,52L69,52L71,54L73,53L77,53L77,54L81,54L84,54L90,55L95,55L97,56L101,55L105,56L108,56L114,57L118,58L121,59L123,57L127,57L131,57L135,56L139,55L141,56L143,56L144,54L146,55L151,57L154,55L155,57L158,57L159,56L163,56L167,57L173,58L177,59L180,59L184,60L180,61L185,62L192,62L195,61L198,63L201,61L198,60L200,59L203,59L205,59L207,60L210,61L213,61L218,62L222,62L227,62L226,60L229,60L233,60L233,63L235,61L237,61L238,58L235,56L232,55L232,52L236,50L239,51L242,52L246,55L243,56ZM183,47L181,48L188,47L192,49L195,47L197,48L199,51L201,50L199,47L201,47L204,47L207,48L209,51L210,53L214,54L220,55L219,57L215,57L216,58L215,59L210,59L206,58L202,58L197,59L189,59L185,60L184,58L180,58L177,58L174,56L176,55L180,55L184,55L188,55L182,54L176,54L172,54L171,53L177,52L173,52L168,51L171,49L173,48L180,46ZM210,46L207,48L203,46L204,46L208,45ZM288,47L288,48L285,48L282,48L279,48L278,48L275,46L275,45L277,45L283,45ZM260,47L262,49L264,46L271,45L276,48L276,50L281,49L284,48L290,49L294,51L294,52L299,51L302,53L309,54L311,55L314,58L309,59L315,61L320,62L324,64L328,64L327,66L322,69L319,68L315,66L311,66L311,68L314,69L317,70L319,71L320,74L319,76L316,75L309,73L313,75L316,77L316,78L309,77L303,75L299,74L300,73L296,72L292,70L292,71L284,72L282,71L284,69L289,69L295,68L294,67L295,66L298,63L297,62L296,61L292,60L286,59L288,58L285,56L283,56L281,55L279,56L274,56L264,56L258,55L254,54L251,53L254,52L250,52L249,49L252,47L254,46L262,45ZM221,45L225,45L230,45L230,46L228,47L232,48L231,51L227,52L224,52L222,51L215,49L215,48L221,48L218,46ZM899,47L895,47L889,46L889,46L891,45L895,45L899,46ZM241,48L238,50L235,50L233,47L233,46L235,45L237,44L243,44L249,45L244,47ZM165,52L158,53L157,52L150,50L151,49L153,47L156,45L153,44L162,43L166,44L173,44L176,45L179,46L176,47L169,49L165,51ZM919,41L915,43L911,42L906,41L907,40L912,41ZM240,42L238,43L234,43L231,42L233,41L237,40L239,41ZM903,40L901,42L891,42L886,43L880,41L882,39L886,39L893,39ZM226,37L229,38L229,40L227,42L223,42L220,42L220,40L215,40L215,38L218,38L222,37L226,37ZM199,38L201,39L203,39L206,39L206,40L205,42L195,42L188,43L184,43L184,42L189,41L177,42L173,41L177,38L179,38L187,38L192,40L197,40L193,38L196,37L198,37ZM660,54L658,54L649,53L648,52L643,51L643,50L646,49L646,48L651,45L649,45L655,43L655,41L661,40L670,38L679,38L684,37L689,36L691,37L689,38L680,40L671,41L662,44L658,46L654,49L655,51ZM237,36L240,37L246,37L248,38L247,39L250,39L252,40L256,40L260,40L264,40L270,39L275,40L278,41L278,42L277,43L272,43L269,43L261,43L255,43L251,43L243,42L242,41L242,39L239,38L233,38L230,37L231,36ZM177,34L177,36L175,37L172,38L167,39L163,39L159,39L163,36L169,35L173,35ZM239,35L238,35L233,35L232,34L238,34L240,34ZM194,34L189,35L185,34L187,33L191,33L195,33ZM569,34L562,35L558,34L559,34L558,33L564,32L565,33ZM195,32L192,32L187,32L187,32L190,31L192,31ZM234,33L230,34L227,33L226,32L226,31L230,31L231,31L235,32ZM222,32L223,34L219,33L214,32L208,32L211,31L207,31L207,30L212,30L220,31ZM792,32L776,34L781,30L784,30L786,30L793,31ZM551,29L560,31L553,32L551,34L549,34L548,37L544,37L538,35L541,34L537,33L531,31L529,29L537,28L538,29L542,29L543,28L547,28ZM571,27L576,28L572,29L564,29L556,29L555,28L551,28L548,27L557,26L561,27L564,26ZM642,26L638,27L636,27L635,27L632,28L629,27L631,26L625,26L630,26L634,26L635,26L636,26L639,25L643,26ZM778,31L772,31L764,30L759,29L757,27L753,27L760,25L766,24L772,26L778,28ZM258,29L262,30L258,30L253,33L248,33L242,32L239,31L239,30L241,30L236,30L233,29L231,27L233,26L235,25L238,25L237,24L243,24L247,26L252,26L256,27ZM310,19L317,19L323,20L328,20L328,21L321,22L315,23L312,24L318,24L312,25L307,26L302,28L297,29L295,29L286,30L290,30L288,31L291,32L288,33L284,34L282,35L278,36L279,36L284,36L284,37L276,38L269,38L261,38L257,38L251,38L251,36L256,36L255,34L257,33L264,35L260,33L256,32L258,31L263,31L264,30L260,29L259,27L266,27L268,28L273,26L266,26L257,26L252,25L249,24L246,23L246,23L250,22L253,22L258,21L263,20L266,21L269,21L271,20L275,19L280,19L288,19L290,19L298,19L304,19ZM425,18L442,20L437,21L426,21L411,22L413,22L423,22L431,23L436,22L439,23L436,25L443,24L456,22L465,23L466,24L455,26L453,27L444,27L451,27L448,29L445,31L445,34L449,36L444,36L440,37L445,39L446,41L443,41L446,44L440,44L443,45L442,46L438,46L435,46L438,48L438,49L433,48L431,49L435,50L439,51L440,54L435,54L432,53L429,52L430,53L427,55L434,55L438,55L430,58L423,60L415,61L412,61L409,62L405,65L399,67L397,67L393,68L389,68L387,70L387,72L386,74L381,76L382,78L381,80L380,83L376,83L371,81L366,81L363,79L361,77L357,73L355,71L355,69L351,66L352,64L350,63L353,60L357,59L358,58L359,56L356,57L354,57L352,58L348,57L348,55L349,53L352,53L357,54L352,52L350,51L347,52L345,51L348,48L346,47L344,45L341,42L337,41L337,40L330,39L324,38L316,39L310,39L306,38L302,36L309,35L315,35L303,34L296,33L297,32L307,31L317,29L319,28L311,27L313,26L323,24L327,24L326,23L333,22L341,22L350,22L353,23L360,21L367,22L371,22L376,23L370,22L370,20L379,19L389,19L393,18L403,18Z"/><path class="route" d="${route}"/>${dots}</svg>
+   <div class="legend"><span><i style="background:#fff"></i>coming up</span><span><i style="background:#7c3aed"></i>played</span><span><i style="background:#ff2a4b;border-color:#ff2a4b"></i>next show</span><span><i style="background:#f5b700;border-color:#a87a00"></i>you got the stamp!</span></div></div></div>
+  <div><div class="card"><h2 style="font-size:27px">🎫 My Tour Passport</h2>
+   <p style="margin:0">Tap a city on the map to visit it. Learn about the city, find out which surprise songs BTS sang there, then take the 3-question quiz to earn its <b>passport stamp sticker</b>!</p>
+   <div class="stats"><div class="stat"><b>${stamped}</b><span>stamps</span></div><div class="stat"><b>${STOPS.length}</b><span>tour cities</span></div><div class="stat"><b>${Object.values(state.stickers).filter(Boolean).length}</b><span>stickers</span></div></div></div>
+   ${ns?`<div class="tip" style="margin-top:12px"><b>🔴 Next show:</b> ${esc(ns.city)} ${CITIES[ns.city]?CITIES[ns.city].f:''} · ${esc(ns.night)} · ${new Date(ns.date+'T12:00').toLocaleDateString('en-US',{month:'long',day:'numeric'})}<br><button class="btn small" style="margin-top:8px" data-city="${esc(ns.city)}">Visit ${esc(ns.city)} →</button></div>`:''}
+   <button class="btn ghost" style="margin-top:12px;width:100%" data-songs>🎵 Song Spotter: every surprise song</button></div></div>
+  <h2 style="margin-top:22px;font-size:26px">All tour stops</h2>
+  <div class="grid passport">${STOPS.map(c=>{const d=CITIES[c]||{f:'🎫'};const st=stopStatus(c);return `<button class="stampbtn ${state.stamps[c]?'got':''} ${st.soon?'soon':''}" data-city="${esc(c)}"><span class="fl">${d.f}</span><b>${esc(c)}</b><small>${st.soon?'coming soon':st.played.length+' night'+(st.played.length>1?'s':'')}</small></button>`}).join('')}</div>
+ </section>`}
+
+function surpriseSongsIn(city){const out=[];SHOWS.filter(s=>s.city===city&&s.status==='played').forEach(s=>(s.songs||[]).forEach(t=>out.push({...t,night:s.night,notes:s.notes||{}})));return out}
+function allSongs(){const m={};SHOWS.forEach(s=>(s.songs||[]).forEach(t=>{if(!m[t.title])m[t.title]={...t,cities:[]};m[t.title].cities.push(s.city+' · '+s.night.replace(/ \(.*\)/,''))}));return m}
+function songColor(t){let h=0;for(const ch of t)h=(h*31+ch.charCodeAt(0))%360;return `hsl(${h} 75% 60%)`}
+function songBtn(t,extra){return `<button class="song" data-song="${esc(t.title)}"><span class="disc" style="--c:${songColor(t.title)}"></span><span><b>${esc(t.title)}</b><small>${KTITLE[t.title]?'<span class="kr">'+esc(KTITLE[t.title][0])+'</span> · ':''}${t.year?esc(t.year):''}${extra?' · '+esc(extra):''}</small></span></button>`}
+
+function cityView(c){const d=CITIES[c];const st=stopStatus(c);const songs=surpriseSongsIn(c);
+ const idx=STOPS.indexOf(c);const prev=idx>0?STOPS[idx-1]:null;
+ const dist=d&&prev&&CITIES[prev]?km(CITIES[prev],d):null;const fromSeoul=d?km(SEOUL,d):null;
+ if(!d)return `<button class="back" data-back>← Back to the map</button><div class="cityhead"><span class="fl">🎫</span><div><h2>${esc(c)}</h2></div></div><p>We haven't written this city's page yet. Check back soon!</p>${songs.length?`<h3>🎵 Surprise songs here</h3><div class="songs">${songs.map(t=>songBtn(t,t.night)).join('')}</div>`:''}`;
+ const notes=songs.filter(t=>t.notes[t.title]);
+ return `<button class="back" data-back>← Back to the map</button>
+ <div class="cityhead"><span class="fl">${d.f}</span><div><h2>${esc(c)}</h2><div class="sub">${esc(st.nights[0]?st.nights[0].country:'')} · ${esc(d.cont)}${st.nights[0]&&st.nights[0].venue?' · '+esc(st.nights[0].venue):''}</div><div class="sub">${st.nights.length} night${st.nights.length>1?'s':''} on the tour ${state.stamps[c]?' · ⭐ stamp earned!':''}</div></div></div>
+ <div class="facts">
+  <div class="fact"><b class="lbl">Say hello</b><span class="big">${esc(d.hi[0])}</span><br><span class="muted" style="font-weight:700">say: ${esc(d.hi[1])} · ${esc(d.hi[2])}</span></div>
+  <div class="fact"><b class="lbl">What time is it?</b>When it's <b>12:00 noon</b> in Seoul, it's <b>${noonIn(d.tz)}</b> in ${esc(c)}.<br><span class="muted" style="font-size:14px">${d.tz===9?'Same time as Seoul!':Math.abs(d.tz-9)+' hour'+(Math.abs(d.tz-9)>1?'s':'')+(d.tz<9?' behind':' ahead of')+' Seoul'+(d.tz<9?'':'')} (on show days)</span></div>
+  <div class="fact"><b class="lbl">How far?</b>${fromSeoul>100?`About <b>${fmt(fromSeoul)} km</b> from Seoul`:'Very close to Seoul!'}${dist?`<br>About <b>${fmt(dist)} km</b> from the last stop, ${esc(prev)}`:''}</div>
+ </div>
+ <h3 style="margin-top:20px;font-size:23px">🔎 Did you know?</h3>
+ <ul class="dyk">${d.facts.map(f=>`<li data-e="${f[0]}">${esc(f[1])}</li>`).join('')}${d.bts?`<li data-e="💜"><b>BTS connection:</b> ${esc(d.bts)}</li>`:''}</ul>
+ <h3 style="margin-top:20px;font-size:23px">🎵 Surprise songs in ${esc(c)}</h3>
+ ${songs.length?`<div class="songs">${songs.map(t=>songBtn(t,t.night)).join('')}</div>${notes.map(t=>`<div class="note">💜 <b>${esc(t.title)}:</b> ${esc(t.notes[t.title])}</div>`).join('')}<p class="muted" style="font-size:15px">Tap a song to learn more about it and see where else it was played.</p>`:`<p class="muted">BTS hasn't played here yet. After each show, the surprise songs will show up here! 🎧</p>`}
+ <div class="card" style="margin-top:20px;background:linear-gradient(180deg,#fff,#faf6ff)" id="quizArea">${state.stamps[c]?`<h3>⭐ You already have the ${esc(c)} stamp!</h3><p style="margin:0">You can take the quiz again for practice.</p><button class="btn ghost" style="margin-top:10px" data-quiz="${esc(c)}">Practice quiz</button>`:`<h3>🎫 Earn the ${esc(c)} stamp!</h3><p style="margin:0">Answer 3 questions. Get 2 right to earn the stamp sticker.</p><button class="btn pink" style="margin-top:10px" data-quiz="${esc(c)}">Start the quiz</button>`}</div>`}
+
+function songsView(){const m=allSongs();const list=Object.values(m).sort((a,b)=>b.cities.length-a.cities.length||a.title.localeCompare(b.title));const max=list.length?list[0].cities.length:1;
+ return `<button class="back" data-back>← Back to the map</button><h2 style="font-size:30px">🎵 Song Spotter</h2><p class="muted" style="margin-top:0">Every night BTS sings 2 surprise songs. Here are all of them so far, with the most-played at the top. Tap one to see where it was played.</p>
+ <div class="grid" style="gap:8px">${list.map(t=>`<button class="song" data-song="${esc(t.title)}" style="width:100%"><span class="disc" style="--c:${songColor(t.title)}"></span><span style="flex:1"><b>${esc(t.title)}</b><small>${KTITLE[t.title]?'<span class="kr">'+esc(KTITLE[t.title][0])+'</span> · ':''}${esc(t.album||'')}</small><span style="display:block;height:10px;border-radius:5px;margin-top:6px;background:linear-gradient(90deg,var(--violet),var(--pink));width:${Math.max(6,t.cities.length/max*100)}%"></span></span><span class="pill">${t.cities.length}×</span></button>`).join('')}</div>`}
+
+function songModal(title){const m=allSongs();const t=m[title];if(!t)return;const kt=KTITLE[title];const yrs=t.year?2026-t.year:null;
+ const cities=[...new Set(t.cities.map(x=>x.split(' · ')[0]))];
+ modal(`<div class="disc" style="width:90px;height:90px;border-radius:50%;margin:0 auto 10px;background:radial-gradient(circle,#fff 0 12%,${songColor(title)} 13% 34%,#1b1626 35%)"></div>
+  <h2 style="margin:0">${esc(title)}</h2>${kt?`<p style="margin:6px 0"><span class="kr" style="font-size:28px;font-weight:900">${esc(kt[0])}</span><br><span class="muted" style="font-weight:700">say: ${esc(kt[1])} · means "${esc(kt[2])}"</span></p>`:''}
+  <p style="margin:6px 0">${t.album?'From <b>'+esc(t.album)+'</b>':''}${t.year?' ('+t.year+')':''}${t.unit&&t.unit!=='OT7'?' · '+esc(t.unit):''}</p>
+  ${yrs!==null?`<div class="tip" style="text-align:left;font-size:16px">🧮 <b>Math moment:</b> This song came out in ${t.year}. 2026 − ${t.year} = <b>${yrs}</b>, so it was ${yrs} year${yrs===1?'':'s'} old on this tour!</div>`:''}
+  <h3 style="margin-top:14px">📍 Played ${t.cities.length} time${t.cities.length>1?'s':''} on the tour</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${t.cities.map(x=>`<span class="pill">${CITIES[x.split(' · ')[0]]?CITIES[x.split(' · ')[0]].f+' ':''}${esc(x)}</span>`).join('')}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px">${cities.slice(0,4).map(c=>`<button class="btn small ghost" data-city="${esc(c)}">Visit ${esc(c)}</button>`).join('')}<button class="btn small" onclick="closeModal()">Close</button></div>`)}
+
+/* city quiz */
+let quiz=null;
+function buildCityQuiz(c){const d=CITIES[c];const qs=[];const st=stopStatus(c);
+ qs.push({...d.q,why:''});
+ const songs=surpriseSongsIn(c);
+ if(songs.length){const here=new Set(songs.map(s=>s.title));const others=shuffle(Object.keys(allSongs()).filter(t=>!here.has(t))).slice(0,3);const right=pickOne(songs).title;const c4=shuffle([right,...others]);qs.push({q:`Which song was a surprise song in ${c}?`,c:c4,a:c4.indexOf(right),why:`BTS sang ${[...here].join(', ')} in ${c}.`})}
+ else{const country=st.nights[0]?st.nights[0].country:'';const others=shuffle([...new Set(SHOWS.map(s=>s.country).filter(x=>x!==country))]).slice(0,3);const c4=shuffle([country,...others]);qs.push({q:`${c} is in which country?`,c:c4,a:c4.indexOf(country),why:`${c} is in ${country}.`})}
+ const n=st.nights.length;
+ if(n>1&&Math.random()<.5){const ans=n*SETLIST_PER_NIGHT;const c4=shuffle([ans,ans+SETLIST_PER_NIGHT,ans-10,ans+5].map(String));qs.push({q:`Each show has ${SETLIST_PER_NIGHT} songs. BTS plays ${n} nights in ${c}. How many songs is that in all? (${n} × ${SETLIST_PER_NIGHT})`,c:c4,a:c4.indexOf(String(ans)),why:`${n} × ${SETLIST_PER_NIGHT} = ${ans} songs!`})}
+ else{const right=noonIn(d.tz);const wrong=new Set();[d.tz+1,d.tz-1,d.tz+3,d.tz-3,18-d.tz].forEach(t=>{const v=noonIn(t);if(v!==right)wrong.add(v)});const c4=shuffle([right,...[...wrong].slice(0,3)]);qs.push({q:`${c} is ${d.tz===9?'on the same time as':Math.abs(d.tz-9)+' hours '+(d.tz<9?'behind':'ahead of')} Seoul. When it's 12:00 noon in Seoul, what time is it in ${c}?`,c:c4,a:c4.indexOf(right),why:d.tz===9?'Same time!':`12 ${d.tz<9?'−':'+'} ${Math.abs(d.tz-9)} → ${right}.`})}
+ return qs}
+function startQuiz(c){quiz={c,qs:buildCityQuiz(c),i:0,right:0,answered:false};drawQuiz()}
+function drawQuiz(){const box=$('#quizArea');if(!box||!quiz)return;const q=quiz.qs[quiz.i];
+ box.innerHTML=`<div class="secthead"><h3 style="margin:0">🎫 ${esc(quiz.c)} quiz</h3><div class="progressdots">${quiz.qs.map((_,i)=>`<i class="${i<=quiz.i?'on':''}"></i>`).join('')}</div></div>
+ <div class="q"><div class="qt">${esc(q.q)}</div><div class="choices">${q.c.map((o,i)=>`<button data-qa="${i}">${esc(o)}</button>`).join('')}</div><div class="why" id="qwhy"></div></div><div id="qnext"></div>`}
+function answerQuiz(i){if(!quiz||quiz.answered)return;quiz.answered=true;const q=quiz.qs[quiz.i];const ok=i===q.a;if(ok)quiz.right++;
+ document.querySelectorAll('[data-qa]').forEach(b=>{const k=+b.dataset.qa;if(k===q.a)b.classList.add('right');else if(k===i)b.classList.add('wrong')});
+ $('#qwhy').innerHTML=(ok?'<span class="ok">✅ Yes! </span>':'<span class="no">Not quite. </span>')+esc(q.why||(ok?'':'The answer is: '+q.c[q.a]));
+ const last=quiz.i===quiz.qs.length-1;$('#qnext').innerHTML=`<button class="btn" data-qnext>${last?'See my result':'Next question →'}</button>`}
+function nextQuiz(){if(quiz.i<quiz.qs.length-1){quiz.i++;quiz.answered=false;drawQuiz();return}
+ const c=quiz.c,r=quiz.right;const box=$('#quizArea');const pass=r>=2;
+ if(pass&&!state.stamps[c]){state.stamps[c]=1;save();box.innerHTML=`<h3>🎉 ${r}/3! You earned the ${esc(c)} stamp!</h3><button class="btn" data-back>Back to the map</button>`;updateHeader();giveSticker('c-'+c,`You visited ${c}!`)}
+ else box.innerHTML=`<h3>${pass?'🌟':'💪'} You got ${r} out of 3${pass?'!':'.'}</h3><p style="margin:0">${pass?'Great practice!':'Read the city facts again and try once more. You can do it! 화이팅!'}</p><button class="btn pink" style="margin-top:10px" data-quiz="${esc(c)}">Try again</button>`;
+ quiz=null}
+
+/* ======================= KOREAN ======================= */
+let kSub='words',kgame=null;
+function koreanView(){const subs=[['words','📇 Word cards'],['game','🎯 Word game'],['count','🔢 Count to 10'],['hangul','🔤 Read Hangul'],['songs','🎵 Song titles'],['culture','🏯 Culture']];
+ let body='';
+ if(kSub==='words')body=`<p class="muted" style="margin-top:0">Tap a card to flip it. Say the word out loud!</p><div class="grid wgrid">${WORDS.map((w,i)=>`<button class="flash" data-flip="${i}"><div class="in"><div class="fc"><span class="hg">${esc(w[0])}</span><span class="rom">${esc(w[1])}</span></div><div class="fc b"><span class="em">${w[3]}</span><span class="mean">${esc(w[2])}</span></div></div></button>`).join('')}</div>`;
+ else if(kSub==='game'||kSub==='count'||kSub==='hangul')body=`<div class="card gamebox" id="kgame"></div>${kSub==='hangul'?hangulChart():''}`;
+ else if(kSub==='songs')body=`<p class="muted" style="margin-top:0">Lots of BTS songs have Korean titles. Here's what they mean! Can you spot words you already know?</p><div class="grid wgrid">${Object.entries(KTITLE).map(([en,k],i)=>`<button class="flash" data-flip="s${i}"><div class="in"><div class="fc"><span class="hg" style="font-size:${k[0].length>6?22:32}px">${esc(k[0])}</span><span class="rom">${esc(k[1])}</span></div><div class="fc b"><span class="mean">${esc(en)}</span><span class="rom">"${esc(k[2])}"</span></div></div></button>`).join('')}</div>`;
+ else if(kSub==='culture')body=`<p class="muted" style="margin-top:0">Read a card, then answer its question to collect 3 💜.</p><div class="grid culture">${CULTURE.map(c=>`<div class="ccard ${state.culture[c.id]?'read':''}"><div class="em">${c.e}</div><h3>${esc(c.t)}</h3><p style="margin:0 0 8px;font-size:16.5px">${esc(c.b)}</p><p style="margin:0;font-size:15.5px"><b>💜 Did you know?</b> ${esc(c.dyk)}</p>${state.culture[c.id]?'<p class="ok" style="margin:8px 0 0;font-weight:800">✓ Collected!</p>':`<div class="q" style="margin:10px 0 0;padding:10px"><b>${esc(c.q.q)}</b><div class="choices" style="grid-template-columns:1fr">${shuffle(c.q.c.map((o,i)=>[o,i])).map(([o,i])=>`<button data-cq="${c.id}:${i}">${esc(o)}</button>`).join('')}</div></div>`}</div>`).join('')}</div>`;
+ if(kSub==='game'||kSub==='count'||kSub==='hangul')afterFns.push(()=>{newKQ()});
+ return `<section><h2 style="font-size:30px">🇰🇷 Korean Corner <span class="kr" style="font-size:22px">한국어</span></h2><div class="subtabs">${subs.map(([k,l])=>`<button data-ksub="${k}" class="${kSub===k?'on':''}">${l}</button>`).join('')}</div>${body}</section>`}
+function hangulChart(){return `<h3 style="margin-top:20px">🔤 Hangul letters</h3><p class="muted" style="margin-top:0">Korean letters stack into blocks. A consonant + a vowel make one syllable: <span class="kr"><b>ㄴ</b> + <b>ㅏ</b> = <b style="font-size:22px">나</b></span> (na). ㅇ is quiet at the start of a block.</p><div class="hangul">${CONS.map(c=>`<div><b>${c[0]}</b><span>${esc(c[1])}</span></div>`).join('')}${VOWS.map(v=>`<div class="v"><b>${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div>`}
+const syl=(ci,vi)=>String.fromCharCode(0xAC00+(CONS[ci][2]*21+VOWS[vi][2])*28);
+const sylRom=(ci,vi)=>(CONS[ci][1]==='(quiet)'?'':CONS[ci][1])+VOWS[vi][1];
+function newKQ(){const box=$('#kgame');if(!box)return;let q;
+ if(kSub==='game'){const w=pickOne(WORDS);const others=shuffle(WORDS.filter(x=>x!==w)).slice(0,3);const opts=shuffle([w,...others]);q={big:`<div class="bigq" style="font-size:${w[0].length>4?'clamp(40px,9vw,64px)':''}">${esc(w[0])}</div><p class="muted" style="margin:0;font-weight:800">${esc(w[1])}</p>`,prompt:'What does it mean?',opts:opts.map(o=>o[3]+' '+o[2].replace(/ \(.*\)/,'')),a:opts.indexOf(w),after:`${w[0]} = ${w[2]}`}}
+ else if(kSub==='count'){const n=rnd(1,10);const pool=shuffle([...Array(10).keys()].filter(i=>i!==n-1)).slice(0,3);const opts=shuffle([n-1,...pool]);const em=n<=7?MORDER.slice(0,n).map(k=>MEM[k].e).join(''):'💜'.repeat(n);
+  q={big:`<div class="bigemo">${em}</div>`,prompt:`How many? Pick the Korean number.`,opts:opts.map(i=>NUMS[i][0]+' · '+NUMS[i][1]),a:opts.indexOf(n-1),after:`${n} = ${NUMS[n-1][0]} (${NUMS[n-1][1]})${n===7?' — just like 7 members! 💜':''}`,kr:true}}
+ else{if(Math.random()<.5){const ci=rnd(0,CONS.length-1),vi=rnd(0,VOWS.length-1);const r=sylRom(ci,vi);const opts=new Set([r]);while(opts.size<4)opts.add(sylRom(rnd(0,CONS.length-1),rnd(0,VOWS.length-1)));const o=shuffle([...opts]);q={big:`<div class="bigq">${syl(ci,vi)}</div>`,prompt:`How do you say this block? (${CONS[ci][0]} + ${VOWS[vi][0]})`,opts:o,a:o.indexOf(r),after:`${syl(ci,vi)} = ${r}`}}
+  else{const w=pickOne(READWORDS);const others=shuffle(READWORDS.filter(x=>x!==w)).slice(0,3);const o=shuffle([w,...others]);q={big:`<div class="bigq">${w[0]}</div>`,prompt:'Sound it out! Which word is it?',opts:o.map(x=>x[1]+' ('+x[2]+')'),a:o.indexOf(w),after:`${w[0]} = ${w[1]}, "${w[2]}"`}}}
+ kgame={...q,done:false,streak:kgame?kgame.streak:0};
+ box.innerHTML=`${q.big}<p style="font-weight:800;font-size:19px;margin:8px 0 0">${esc(q.prompt)}</p><div class="opts">${q.opts.map((o,i)=>`<button data-ko="${i}" class="${q.kr?'kr':''}" style="${q.kr?'font-size:20px':''}">${esc(o)}</button>`).join('')}</div><div class="feedback" id="kfb"></div><div class="streak">🔥 Streak: ${kgame.streak} · Best: ${state.korBest} · Every 5 right = a new sticker</div>`}
+function answerK(i){if(!kgame||kgame.done)return;kgame.done=true;const ok=i===kgame.a;
+ document.querySelectorAll('[data-ko]').forEach(b=>{const k=+b.dataset.ko;if(k===kgame.a)b.classList.add('right');else if(k===i)b.classList.add('wrong')});
+ if(ok){kgame.streak++;state.korRight++;state.korBest=Math.max(state.korBest,kgame.streak);state.sinceSticker.kor++;save()}else kgame.streak=0;
+ $('#kfb').innerHTML=(ok?`<span class="ok">${pickOne(['대박! ','잘했어! (great job!) ','화이팅! ','Yes! '])}</span>`:'<span class="no">Almost! </span>')+esc(kgame.after);
+ updateHeader();
+ if(ok&&state.sinceSticker.kor>=5){state.sinceSticker.kor=0;save();giveSticker(randomSticker(['word','fun']),'5 Korean answers right!');setTimeout(newKQ,600)}else setTimeout(newKQ,ok?1300:2600)}
+
+/* ======================= MATH ======================= */
+let mset={tables:[2,3,4,5],op:'mix',story:true},mq=null,mans='';
+try{const s=JSON.parse(localStorage.getItem('little-army-math')||'null');if(s)mset=Object.assign(mset,s)}catch(e){}
+const STORY_M=[
+ (a,b)=>`${a} ARMY friends each bring ${b} lightsticks. How many lightsticks in all?`,
+ (a,b)=>`A photocard binder page holds ${b} cards. How many cards fit on ${a} pages?`,
+ (a,b)=>`You make ${b} freebies for each of ${a} friends. How many freebies is that?`,
+ (a,b)=>`A sticker sheet has ${a} rows with ${b} stickers in each row. How many stickers?`,
+ (a,b)=>`BTS plays ${b} nights in each of ${a} cities. How many shows is that?`,
+ (a,b)=>`Each friendship bracelet has ${b} purple beads. How many purple beads for ${a} bracelets?`
+];
+const STORY_7M=b=>`BTS has 7 members. Each member signs ${b} albums. How many albums get signed?`;
+const STORY_D=[
+ (t,a,b)=>`${t} photocards are shared equally among ${a} friends. How many does each friend get?`,
+ (t,a,b)=>`You have ${t} stickers. Each freebie bag gets ${a}. How many bags can you fill?`,
+ (t,a,b)=>`${t} ARMY sit in rows of ${a}. How many rows are there?`,
+ (t,a,b)=>`A tour has ${t} shows split evenly into ${a} cities. How many shows in each city?`,
+ (t,a,b)=>`${t} beads make ${a} bracelets, the same number on each. How many beads per bracelet?`
+];
+const STORY_7D=t=>`${t} roses are shared equally among the 7 members. How many roses does each member get?`;
+function newMQ(){const a=pickOne(mset.tables),b=rnd(1,12);const op=mset.op==='mix'?(Math.random()<.5?'x':'d'):mset.op;
+ if(op==='x'){const story=mset.story?(a===7&&Math.random()<.5?STORY_7M(b):pickOne(STORY_M)(a,b)):'';mq={op,a,b,ans:a*b,eq:`${a} × ${b} = ?`,story}}
+ else{const t=a*b;const story=mset.story?(a===7&&Math.random()<.5?STORY_7D(t):pickOne(STORY_D)(t,a,b)):'';mq={op,a,b,t,ans:b,eq:`${t} ÷ ${a} = ?`,story}}
+ mq.tries=0;mans='';drawMQ()}
+function drawMQ(){const box=$('#mq');if(!box)return;box.innerHTML=`${mq.story?`<div class="problem">${esc(mq.story)}</div>`:''}<div class="eq">${mq.eq}</div><div class="ansbox" id="ans">${mans||'&nbsp;'}</div>
+ <div class="keypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-k="${n}">${n}</button>`).join('')}<button data-k="del" aria-label="Delete">⌫</button><button data-k="0">0</button><button data-k="go" class="go">Check ✓</button></div><div class="feedback" id="mfb"></div><div id="mmodel"></div>`}
+function factFamily(a,b){const p=a*b;return `<b>Fact family:</b> ${a} × ${b} = ${p} · ${b} × ${a} = ${p} · ${p} ÷ ${a} = ${b} · ${p} ÷ ${b} = ${a}`}
+function modelHTML(){const a=mq.a,b=mq.b;const groups=a<=6&&b<=10;const pic=pickOne(['💜','⭐','🎫','🌸']);
+ return `<div class="model">${mq.op==='x'?`<b>Think:</b> ${a} groups of ${b}.`:`<b>Think:</b> ${mq.t} split into ${a} equal groups. What times ${a} makes ${mq.t}? (${a} × ? = ${mq.t})`}
+ ${groups?`<div class="groups">${Array.from({length:a},()=>`<div class="g">${pic.repeat(b)}</div>`).join('')}</div>`:`<div style="margin-top:6px">Skip count by ${a}: ${Array.from({length:b},(_,i)=>a*(i+1)).join(', ')}</div>`}
+ <div style="margin-top:8px">${factFamily(a,b)}</div></div>`}
+function mathKey(k){if(!mq)return;if(k==='del'){mans=mans.slice(0,-1)}else if(k==='go'){checkMQ();return}else if(mans.length<3)mans+=k;$('#ans').innerHTML=mans||'&nbsp;'}
+function checkMQ(){if(!mans)return;const ok=+mans===mq.ans;const key=Math.min(mq.a,mq.b)+'x'+Math.max(mq.a,mq.b);
+ if(ok){if(mq.tries===0){state.mathRight++;state.facts[key]=(state.facts[key]||0)+1;state.sinceSticker.math++}save();
+  $('#mfb').innerHTML=`<span class="ok">${pickOne(['대박! 🎉','Perfect! 💜','You got it! ⭐','화이팅! 💪','So smart! 🐨'])} ${mq.op==='x'?`${mq.a} × ${mq.b} = ${mq.ans}`:`${mq.t} ÷ ${mq.a} = ${mq.ans}`}</span>`;
+  $('#mmodel').innerHTML=`<div class="model" style="border-style:solid;border-color:#bbf7d0">${factFamily(mq.a,mq.b)}</div>`;updateHeader();updateFactGrid();
+  if(state.sinceSticker.math>=5){state.sinceSticker.math=0;save();giveSticker(randomSticker(['member','fun']),'5 math missions solved!')}
+  mq.tries=-1;setTimeout(()=>{if(mq&&mq.tries===-1)newMQ()},1800)}
+ else{mq.tries++;mans='';$('#ans').innerHTML='&nbsp;';$('#mfb').innerHTML=`<span class="no">${mq.tries>1?`The answer is ${mq.ans}. Type it in to keep going!`:'Not yet! Look at the picture and try again.'}</span>`;$('#mmodel').innerHTML=modelHTML()}}
+function factGrid(){let h='<div class="h"></div>';for(let b=2;b<=12;b++)h+=`<div class="h">${b}</div>`;for(let a=2;a<=12;a++){h+=`<div class="h">${a}</div>`;for(let b=2;b<=12;b++){const k=Math.min(a,b)+'x'+Math.max(a,b);const n=state.facts[k]||0;h+=`<div class="${n>=3?'m3':n===2?'m2':n===1?'m1':''}" title="${a}×${b}">${a*b}</div>`}}return h}
+function updateFactGrid(){const g=$('#fg');if(g)g.innerHTML=factGrid();const c=$('#mcount');if(c)c.textContent=state.mathRight}
+function mathView(){afterFns.push(()=>newMQ());
+ return `<section><h2 style="font-size:30px">✖️ Math Missions</h2><p class="muted" style="margin-top:0">Every 5 right answers earns a new sticker!</p>
+ <div class="mathwrap"><div class="card" id="mq"></div>
+ <div class="grid"><div class="card"><h3>Pick your times tables</h3><div class="chips">${[2,3,4,5,6,7,8,9,10,11,12].map(n=>`<button data-tbl="${n}" class="${mset.tables.includes(n)?'on':''}">${n}</button>`).join('')}</div>
+  <h3 style="margin-top:14px">Type of problem</h3><div class="chips"><button data-op="x" class="${mset.op==='x'?'on':''}">× times</button><button data-op="d" class="${mset.op==='d'?'on':''}">÷ divide</button><button data-op="mix" class="${mset.op==='mix'?'on':''}">× and ÷</button></div>
+  <h3 style="margin-top:14px">Problems</h3><div class="chips"><button data-story="1" class="${mset.story?'on':''}">📖 ARMY stories</button><button data-story="0" class="${!mset.story?'on':''}">🔢 Just numbers</button></div></div>
+  <div class="card"><h3>🌟 My facts map</h3><p class="muted" style="margin:0 0 8px;font-size:15px">Each fact gets darker purple as you get it right (3 times = mastered). <b id="mcount">${state.mathRight}</b> solved so far!</p><div class="factgrid" id="fg">${factGrid()}</div></div></div></div></section>`}
+
+/* ======================= BT21 ======================= */
+function bt21View(){return `<section><h2 style="font-size:30px">🌟 Meet BT21</h2>
+ <p style="margin-top:0">In 2017, each BTS member dreamed up and helped design their own cartoon friend with LINE FRIENDS. Together they are <b>BT21</b>! Read each card, then answer "Who made me?" to get that buddy's sticker.</p>
+ <p class="muted" style="font-size:15px;margin-top:0">(Our emoji buddies stand in for the real BT21 characters.)</p>
+ <div class="grid btgrid">${BT21.map(b=>{const got=state.bt21[b.id];const opts=b.m==='army'?['ARMY','RM','Jin','V']:shuffle([b.m,...shuffle(MORDER.filter(k=>k!==b.m)).slice(0,3)]).map(k=>MEM[k].n);
+  const right=b.m==='army'?'ARMY':MEM[b.m].n;
+  return `<div class="bt ${got?'got':''}" style="--c:${b.c}"><div class="em">${b.e}</div><h3>${b.n}</h3><p style="margin:0 0 8px;font-size:16.5px">${esc(b.d)}</p>
+  ${got?`<p style="margin:0;font-weight:800">Made by ${b.m==='army'?'all of BTS, for ARMY 💜':esc(MEM[b.m].n)+' '+MEM[b.m].e}</p>`:`<b>Who made me?</b><div class="choices" style="grid-template-columns:1fr 1fr;margin-top:6px">${(b.m==='army'?shuffle(opts):opts).map(o=>`<button data-bt="${b.id}:${o===right?1:0}">${esc(o)}</button>`).join('')}</div>`}</div>`}).join('')}</div></section>`}
+
+/* ======================= JOURNAL ======================= */
+function journalView(){const today=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+ return `<section><div class="secthead"><h2 style="font-size:30px;margin:0">📓 My ARMY Journal</h2><button class="btn pink" data-newentry>✏️ New page</button></div>
+ <p class="muted">Today is ${today}. Make a scrapbook page: draw, stamp your stickers, and write about your BTS day. Each new page earns 8 💜, and your first page each day earns a sticker!</p>
+ <div class="tip"><b>💡 Ideas:</b> What song did you listen to today? How did it make you feel? Which tour city would you visit? What Korean word did you use? Who is your bias today and why?</div>
+ ${state.journal.length?`<div class="grid jlist" style="margin-top:16px">${state.journal.map(e=>`<div class="jcard">${e.img?`<img src="${e.img}" alt="Journal page">`:''}<b style="font-family:Fredoka;font-size:18px">${e.mood||''} ${esc(e.date)}</b>${e.song?`<div class="muted" style="font-weight:700">🎵 ${esc(e.song)}</div>`:''}${e.word?`<div class="muted" style="font-weight:700">🇰🇷 <span class="kr">${esc(e.word)}</span></div>`:''}${e.text?`<p style="margin:6px 0 0;white-space:pre-wrap">${esc(e.text)}</p>`:''}<button class="btn small ghost" style="margin-top:8px" data-delentry="${e.id}">🗑 Delete</button></div>`).join('')}</div>`:`<div class="card" style="margin-top:16px;text-align:center"><div style="font-size:60px">📔</div><p style="margin:0">Your journal is empty. Tap <b>New page</b> to start!</p></div>`}
+ </section>`}
+let jd=null;
+function journalForm(){const songs=[...new Set([...Object.keys(allSongs()),...SETLIST_SONGS])].sort((a,b)=>a.localeCompare(b));const owned=STICKERS.filter(s=>state.stickers[s.id]);
+ jd={mood:'',tool:'pen',color:COLORS[1],size:6,stamp:null,stampSize:110};
+ afterFns.push(initPad);
+ return `<section class="form"><button class="back" data-back>← Back to my journal</button><h2 style="font-size:28px">✏️ New journal page</h2>
+ <label>How do you feel today?</label><div class="moods">${MOODS.map(m=>`<button data-mood="${m[0]}">${m[0]}<small>${m[1]}</small></button>`).join('')}</div>
+ <label>My scrapbook page</label>
+ <div class="pagewrap"><div><canvas class="page" id="pad" width="1200" height="900"></canvas>
+  <div class="tools">${COLORS.map(c=>`<button class="sw ${c===jd.color?'on':''}" data-color="${c}" style="background:${c}" aria-label="color"></button>`).join('')}</div>
+  <div class="tools"><button class="tool on" data-tool="pen">✏️ Pen</button><button class="tool" data-tool="fat">🖍️ Marker</button><button class="tool" data-tool="erase">🧽 Eraser</button><button class="tool" data-tool="sticker">⭐ Sticker stamp</button><button class="tool" data-undo>↩️ Undo</button><button class="tool" data-clear>🗑 Clear</button></div>
+  <div class="tools" id="stampsize" style="display:none"><span style="font-weight:800">Sticker size:</span><button class="tool" data-ss="70">S</button><button class="tool on" data-ss="110">M</button><button class="tool" data-ss="170">L</button><span class="muted" style="font-size:14px">Pick a sticker, then tap the page to stick it!</span></div></div>
+  <div><b style="font-size:15px">My stickers</b>${owned.length?`<div class="spal">${owned.map(s=>`<button data-stamp="${s.id}" aria-label="${esc(s.label)}"><canvas data-st="${s.id}" width="120" height="120"></canvas></button>`).join('')}</div>`:`<p class="muted" style="font-size:15px">Earn stickers in the Tour, Korean, Math, and BT21 tabs, and they'll show up here!</p>`}</div></div>
+ <label for="jsong">🎵 Song of the day</label><select id="jsong"><option value="">Pick a song…</option>${songs.map(s=>`<option>${esc(s)}</option>`).join('')}</select>
+ <label for="jword">🇰🇷 A Korean word I used</label><select id="jword"><option value="">Pick a word…</option>${WORDS.map(w=>`<option value="${esc(w[0])} (${esc(w[1])})">${esc(w[0])} · ${esc(w[2].replace(/ \(.*\)/,''))}</option>`).join('')}</select>
+ <label for="jtext">📝 What I want to remember</label><textarea id="jtext" placeholder="Today I listened to… It made me feel…"></textarea>
+ <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn pink" data-saveentry>💾 Save my page</button><button class="btn ghost" data-back>Cancel</button></div></section>`}
+let padHist=[];
+function initPad(){const c=$('#pad');if(!c)return;const x=c.getContext('2d');x.fillStyle='#fffdf7';x.fillRect(0,0,c.width,c.height);
+ // faint lines like a journal
+ x.strokeStyle='#efe6d6';x.lineWidth=2;for(let y=90;y<c.height;y+=70){x.beginPath();x.moveTo(30,y);x.lineTo(c.width-30,y);x.stroke()}
+ padHist=[c.toDataURL()];let drawing=false,last=null;
+ const pos=e=>{const r=c.getBoundingClientRect();return [(e.clientX-r.left)*c.width/r.width,(e.clientY-r.top)*c.height/r.height]};
+ c.addEventListener('pointerdown',e=>{e.preventDefault();const p=pos(e);
+  if(jd.tool==='sticker'){if(!jd.stamp){toast('Pick a sticker from "My stickers" first!');return}const S=jd.stampSize*2;drawSticker(x,stById(jd.stamp),p[0]-S/2,p[1]-S/2,S);pushHist();return}
+  drawing=true;last=p;c.setPointerCapture(e.pointerId);dot(p)});
+ c.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);x.lineCap='round';x.lineJoin='round';x.strokeStyle=jd.tool==='erase'?'#fffdf7':jd.color;x.lineWidth=jd.tool==='erase'?40:jd.tool==='fat'?22:7;x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p});
+ const end=()=>{if(drawing){drawing=false;pushHist()}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
+ function dot(p){x.fillStyle=jd.tool==='erase'?'#fffdf7':jd.color;x.beginPath();x.arc(p[0],p[1],(jd.tool==='erase'?40:jd.tool==='fat'?22:7)/2,0,7);x.fill()}
+ function pushHist(){padHist.push(c.toDataURL());if(padHist.length>25)padHist.splice(1,1)}}
+function padUndo(){if(padHist.length<2)return;padHist.pop();const c=$('#pad'),x=c.getContext('2d');const im=new Image();im.onload=()=>{x.clearRect(0,0,c.width,c.height);x.drawImage(im,0,0)};im.src=padHist[padHist.length-1]}
+function shrinkPage(){const c=$('#pad');const s=document.createElement('canvas');s.width=600;s.height=450;s.getContext('2d').drawImage(c,0,0,600,450);return s.toDataURL('image/jpeg',.72)}
+function saveEntry(){const today=new Date();const e={id:'j'+Date.now(),created:Date.now(),date:today.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),mood:jd.mood,song:$('#jsong').value,word:$('#jword').value,text:$('#jtext').value.slice(0,2000),img:padHist.length>1?shrinkPage():''};
+ if(!e.img&&!e.text&&!e.song&&!e.word){toast('Draw, stamp, or write something first! ✏️');return}
+ state.journal.unshift(e);if(!lsSave()){state.journal.shift();toast('The iPad is out of room. Delete an old page first.');return}
+ const dk=today.toDateString();view=null;render();toast('Page saved! +8 💜');
+ if(state.lastJournalSticker!==dk){state.lastJournalSticker=dk;save();giveSticker(randomSticker(['fun','word','member']),'You wrote in your journal today!')}}
+
+/* ======================= STICKERS & FREEBIES ======================= */
+let sSub='book',fm={tpl:'sheet',sel:[],msg:'Borahae 💜',from:''};
+const MSGS=['Borahae 💜','Thank you, ARMY!','Let\'s be friends! 🫰','화이팅! You can do it!','사랑해 💜','From one ARMY to another'];
+function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const owned=STICKERS.filter(s=>state.stickers[s.id]);
+ if(!fm.from)fm.from=state.name||'';
+ const book=`<p class="muted" style="margin-top:0">You have <b>${owned.length}</b> of ${STICKERS.length} stickers. Gray ones are still waiting for you!</p>
+  <div class="tip" style="margin-bottom:14px"><b>How to earn stickers:</b> 🎫 pass a city quiz · ✖️ every 5 math answers · 🇰🇷 every 5 Korean answers · 🌟 each BT21 buddy · 📓 your first journal page each day</div>
+  ${sets.map(set=>`<h3 style="margin-top:16px">${esc(set)}</h3><div class="sbook">${STICKERS.filter(s=>s.set===set).map(s=>`<div class="sb ${state.stickers[s.id]?'':'locked'}"><canvas data-st="${s.id}" width="200" height="200"></canvas><small>${state.stickers[s.id]?esc(s.label):'???'}</small>${state.stickers[s.id]>1?`<span class="cnt">×${state.stickers[s.id]}</span>`:''}</div>`).join('')}</div>`).join('')}`;
+ const maker=owned.length?`<div class="fmwrap"><div>
+   <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button></div>
+   <h3 style="margin-top:14px">2. Tap your stickers <span class="muted" style="font-size:16px">(${fm.sel.length}/${tplMax()})</span></h3><div class="sbook">${owned.map(s=>`<button class="sb ${fm.sel.includes(s.id)?'sel':''}" data-fsel="${s.id}"><canvas data-st="${s.id}" width="160" height="160"></canvas><small>${esc(s.label)}</small></button>`).join('')}</div>
+   <h3 style="margin-top:14px">3. Pick a message</h3><div class="chips">${MSGS.map((m,i)=>`<button data-msg="${i}" class="${fm.msg===m?'on':''}" style="font-size:16px">${esc(m)}</button>`).join('')}</div>
+   <div class="form"><label for="ffrom">From (your ARMY name)</label><input type="text" id="ffrom" maxlength="16" value="${esc(fm.from)}" placeholder="Your ARMY name"></div></div>
+  <div><div class="card preview"><canvas id="fcv" width="1200" height="1800"></canvas><div style="display:grid;gap:10px;margin-top:14px"><button class="btn pink" data-fsave>💾 Save / AirDrop / Print</button><p class="muted" style="margin:0;font-size:14px;text-align:center">Prints nicely as a 4×6 photo. Cut out the stickers with a grown-up!</p></div></div></div></div>`
+  :`<div class="card" style="text-align:center"><div style="font-size:60px">🎨</div><p>Earn some stickers first, then come back to make freebies for your ARMY friends!</p></div>`;
+ if(sSub==='maker'&&owned.length)afterFns.push(drawFreebie);
+ return `<section><h2 style="font-size:30px">🎨 Stickers &amp; Freebies</h2><div class="subtabs"><button data-ssub="book" class="${sSub==='book'?'on':''}">📒 My sticker book</button><button data-ssub="maker" class="${sSub==='maker'?'on':''}">✂️ Freebie maker</button></div>${sSub==='book'?book:maker}
+ <p style="margin-top:20px"><button class="btn ghost" data-gotab="cards">💳 Make a photocard in the Card Studio →</button></p></section>`}
+function tplMax(){return fm.tpl==='sheet'?6:fm.tpl==='bookmark'?3:1}
+function freebieSize(){return fm.tpl==='bookmark'?[600,1800]:[1200,1800]}
+function bgArt(x,W,H){const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f3e8ff');g.addColorStop(.55,'#fde2f0');g.addColorStop(1,'#e0e7ff');x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.globalAlpha=.35;x.fillStyle='#c4a8ff';for(let i=0;i<40;i++){const px=(i*137.5)%W,py=(i*251.3)%H;star(x,px,py,14,6,5);x.fill()}x.globalAlpha=1;
+ x.strokeStyle='#a78bfa';x.lineWidth=10;x.setLineDash([24,16]);rr(x,30,30,W-60,H-60,50);x.stroke();x.setLineDash([])}
+async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.fonts.load("700 40px Fredoka");await document.fonts.load("900 40px 'Noto Sans KR'")}catch(e){}
+ const [W,H]=freebieSize();c.width=W;c.height=H;const x=c.getContext('2d');bgArt(x,W,H);x.textAlign='center';x.textBaseline='middle';
+ const sel=fm.sel.map(stById).filter(Boolean);const from=(($('#ffrom')||{}).value||fm.from||'').slice(0,16);
+ x.fillStyle='#5b21b6';
+ if(fm.tpl==='sheet'){x.font="700 78px Fredoka,sans-serif";x.fillText('A little ARMY freebie',W/2,140);x.font='60px '+EMOJI;x.fillText('💜',W/2,225);
+  const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawSticker(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
+  x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1690-(from?50:0));
+  if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1700)}}
+ else if(fm.tpl==='card'){const s=sel[0];x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,170);if(s)drawSticker(x,s,150,260,900);
+  x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,84);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1300);
+  x.font="900 52px 'Noto Sans KR',sans-serif";x.fillStyle='#db2777';x.fillText('보라해',W/2,1420);
+  if(from){x.font="800 50px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1560)}x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜',W/2,1690)}
+ else{x.font="900 64px 'Noto Sans KR',sans-serif";x.fillText('아미',W/2,150);x.font="800 32px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('ARMY',W/2,210);
+  for(let i=0;i<3;i++){const s=sel[i];if(s)drawSticker(x,s,90,270+i*420,420)}
+  x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-110,46);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1580);
+  if(from){x.font="800 34px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1660)}}}
+async function saveFreebie(){const c=$('#fcv');if(!c)return;await drawFreebie();c.toBlob(async blob=>{const file=new File([blob],'my-army-freebie.png',{type:'image/png'});
+ if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'My ARMY freebie 💜'});return}catch(e){if(e&&e.name==='AbortError')return}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-army-freebie.png';document.body.appendChild(a);a.click();a.remove()},'image/png')}
+
+/* ======================= CARD STUDIO (embedded) ======================= */
+function cardsView(){return `<section><h2 style="font-size:30px">💳 Little ARMY Card Studio</h2><p class="muted" style="margin-top:0">Make a photocard for a new ARMY friend. They scan the QR code to keep it!</p>
+ <iframe src="../" title="Little ARMY Card Studio" allow="web-share; clipboard-write" style="width:100%;height:min(1400px,85vh);border:0;border-radius:20px;background:#120a20;display:block"></iframe></section>`}
+
+/* ======================= BADGES ======================= */
+function badgeList(){const n=o=>Object.keys(o).length;const owned=Object.values(state.stickers).filter(Boolean).length;const fl=Object.values(state.facts).filter(v=>v>=3).length;
+ const conts=new Set(Object.keys(state.stamps).map(c=>CITIES[c]&&CITIES[c].cont).filter(Boolean));
+ return [
+  {ic:'🎫',t:'First Stamp',d:'Earn your first city stamp',got:n(state.stamps)>=1},
+  {ic:'🇰🇷',t:'Home Sweet Home',d:'Get the Goyang and Busan stamps',got:state.stamps['Goyang']&&state.stamps['Busan']},
+  {ic:'🌎',t:'Globe Trotter',d:'Stamps on 4 different continents',got:conts.size>=4},
+  {ic:'✈️',t:'World Tour',d:'Collect 15 city stamps',got:n(state.stamps)>=15},
+  {ic:'✖️',t:'Math Rookie',d:'Solve 10 math missions',got:state.mathRight>=10},
+  {ic:'➗',t:'Math Idol',d:'Solve 100 math missions',got:state.mathRight>=100},
+  {ic:'🧠',t:'Fact Master',d:'Master 20 facts on your facts map',got:fl>=20},
+  {ic:'🔥',t:'Korean Streak',d:'Get 10 in a row in a Korean game',got:state.korBest>=10},
+  {ic:'🏯',t:'Culture Explorer',d:'Collect all 8 culture cards',got:n(state.culture)>=CULTURE.length},
+  {ic:'🌟',t:'BT21 Best Friend',d:'Meet all 8 BT21 buddies',got:n(state.bt21)>=BT21.length},
+  {ic:'📓',t:'Journal Writer',d:'Make your first journal page',got:state.journal.length>=1},
+  {ic:'📚',t:'Scrapbook Star',d:'Make 7 journal pages',got:state.journal.length>=7},
+  {ic:'🎨',t:'Sticker Collector',d:'Collect 25 different stickers',got:owned>=25},
+  {ic:'👑',t:'전설 Legend',d:'Reach the top rank',got:points()>=RANKS[3].min}
+ ]}
+function badgesView(){const p=points(),r=rankFor(p);const next=RANKS.find(x=>x.min>p);
+ return `<section><h2 style="font-size:30px">🏅 ${esc(nm())}'s Ranks &amp; Badges</h2>
+ <p class="muted" style="margin-top:0">💜 points: 10 per city stamp · 3 per culture card · 3 per BT21 buddy · 8 per journal page · 1 per math or Korean answer · plus your best Korean streak (up to 20).</p>
+ <div class="ranks">${RANKS.map(x=>`<div class="rk ${x.en===r.en?'on':''}"><div style="font-size:28px">${x.emo}</div><b class="kr">${x.kr}</b> <b>${x.en}</b><div class="muted" style="font-size:14px">say: ${x.rom} · ${x.min}+ 💜</div></div>`).join('')}</div>
+ ${next?`<p><b>${next.min-p} more 💜</b> to become <b class="kr">${next.kr}</b> (${next.en})!</p>`:`<p><b>You reached the top! You are a true 전설, a Legend! 👑</b></p>`}
+ <div class="grid bgrid">${badgeList().map(b=>`<div class="badge ${b.got?'got':''}"><div class="ic">${b.ic}</div><b>${esc(b.t)}</b><span>${esc(b.d)}</span></div>`).join('')}</div>
+ <div class="card" style="margin-top:26px"><h3>👩‍👧 Grown-up corner</h3>
+  <p style="margin:0 0 10px;font-size:16px">Progress is saved on this iPad only. To keep it safe, add this page to the Home Screen (Share → Add to Home Screen), and save a backup file now and then (AirDrop it to your phone or save it to Files).</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn small" data-backup>💾 Save a backup</button><label class="btn small ghost" for="restore" style="display:inline-block">📂 Restore a backup</label><input type="file" id="restore" accept=".json,application/json" hidden><button class="btn small ghost" data-reset>Start over</button></div></div></section>`}
+async function backup(){const blob=new Blob([JSON.stringify({app:'little-dj-studio',v:1,saved:new Date().toISOString(),state})],{type:'application/json'});const name='little-dj-studio-backup-'+new Date().toISOString().slice(0,10)+'.json';const file=new File([blob],name,{type:'application/json'});
+ if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Little DJ Studio backup'});return}catch(e){if(e&&e.name==='AbortError')return}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
+function restore(file){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.app!=='little-dj-studio'||!d.state)throw 0;state=Object.assign(FRESH(),d.state);lsSave();lastRank=null;render();toast('Backup restored! 💜')}catch(e){toast('That file is not a Little DJ Studio backup.')}};r.readAsText(file)}
+
+/* ======================= PROFILE ======================= */
+function profileModal(first){modal(`<h2>${first?'Welcome, ARMY! 💜':'My ARMY profile'}</h2><p style="margin-top:0">${first?'Let\'s set up your tour passport.':''}</p>
+ <div class="form" style="text-align:left"><label for="pname">My ARMY name</label><input type="text" id="pname" maxlength="16" value="${esc(state.name)}" placeholder="Your nickname"></div>
+ <p style="font-weight:800;margin:14px 0 6px;text-align:left">My bias</p>
+ <div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-bias="${k}" class="${state.bias===k?'on':''}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div>
+ <button class="btn pink" style="margin-top:16px" data-saveprofile>${first?'Start my tour! ✈️':'Save'}</button>`)}
+
+/* ======================= EVENTS ======================= */
+document.addEventListener('click',e=>{const t=e.target.closest('button,[data-city],label');if(!t)return;const d=t.dataset;
+ if(t.id==='avatarBtn')return profileModal(false);
+ if(d.gotab){tab=d.gotab;view=null;render();scrollTo({top:0});return}
+ if(d.city){closeModal();tab='tour';return go({city:d.city})}
+ if(d.songs!==undefined)return go({song:1});
+ if(d.song)return songModal(d.song);
+ if(d.back!==undefined){quiz=null;return go(null)}
+ if(d.quiz)return startQuiz(d.quiz);
+ if(d.qa)return answerQuiz(+d.qa);
+ if(d.qnext!==undefined)return nextQuiz();
+ if(d.ksub){kSub=d.ksub;kgame=null;return render()}
+ if(d.flip!==undefined)return t.classList.toggle('flip');
+ if(d.ko)return answerK(+d.ko);
+ if(d.cq){const [id,i]=d.cq.split(':');const c=CULTURE.find(x=>x.id===id);if(+i===c.q.a){state.culture[id]=1;save();toast('✓ Collected! +3 💜');render()}else{t.classList.add('wrong');toast('Read the card again and try another answer!')}return}
+ if(d.k)return mathKey(d.k);
+ if(d.tbl){const n=+d.tbl;mset.tables=mset.tables.includes(n)?mset.tables.filter(x=>x!==n):[...mset.tables,n].sort((a,b)=>a-b);if(!mset.tables.length)mset.tables=[n];saveM();t.classList.toggle('on',mset.tables.includes(n));return newMQ()}
+ if(d.op){mset.op=d.op;saveM();document.querySelectorAll('[data-op]').forEach(b=>b.classList.toggle('on',b===t));return newMQ()}
+ if(d.story){mset.story=d.story==='1';saveM();document.querySelectorAll('[data-story]').forEach(b=>b.classList.toggle('on',b===t));return newMQ()}
+ if(d.bt){const [id,ok]=d.bt.split(':');if(ok==='1'){state.bt21[id]=1;save();render();giveSticker('b-'+id,'You met '+BT21.find(b=>b.id===id).n+'!')}else{t.classList.add('wrong');toast('Not quite! Try again 💜')}return}
+ if(d.newentry!==undefined)return go({newEntry:1});
+ if(d.mood){jd.mood=d.mood;document.querySelectorAll('[data-mood]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.color){jd.color=d.color;if(jd.tool==='erase'||jd.tool==='sticker')setTool('pen');document.querySelectorAll('[data-color]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.tool)return setTool(d.tool);
+ if(d.stamp){jd.stamp=d.stamp;setTool('sticker');document.querySelectorAll('[data-stamp]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.ss){jd.stampSize=+d.ss;document.querySelectorAll('[data-ss]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.undo!==undefined)return padUndo();
+ if(d.clear!==undefined){if(confirm('Clear the whole page?'))initPad();return}
+ if(d.saveentry!==undefined)return saveEntry();
+ if(d.delentry){if(confirm('Delete this journal page?')){state.journal=state.journal.filter(x=>x.id!==d.delentry);save();render()}return}
+ if(d.ssub){sSub=d.ssub;return render()}
+ if(d.tpl){fm.tpl=d.tpl;fm.sel=fm.sel.slice(0,tplMax());return render()}
+ if(d.fsel){const id=d.fsel;if(fm.sel.includes(id))fm.sel=fm.sel.filter(x=>x!==id);else if(fm.sel.length<tplMax())fm.sel.push(id);else if(tplMax()===1)fm.sel=[id];else{toast(`This freebie fits ${tplMax()} stickers. Tap one to remove it first.`);return}
+  document.querySelectorAll('[data-fsel]').forEach(b=>b.classList.toggle('sel',fm.sel.includes(b.dataset.fsel)));const h=[...document.querySelectorAll('h3')].find(h=>h.textContent.startsWith('2.'));if(h)h.querySelector('span').textContent=`(${fm.sel.length}/${tplMax()})`;return drawFreebie()}
+ if(d.msg){fm.msg=MSGS[+d.msg];document.querySelectorAll('[data-msg]').forEach(b=>b.classList.toggle('on',b===t));return drawFreebie()}
+ if(d.fsave!==undefined)return saveFreebie();
+ if(d.backup!==undefined)return backup();
+ if(d.reset!==undefined){if(confirm('Erase ALL progress, stickers, and journal pages on this iPad? (Save a backup first!)')&&confirm('Are you really sure?')){state=FRESH();lsSave();lastRank=null;render();profileModal(true)}return}
+ if(d.bias){state.bias=d.bias;document.querySelectorAll('[data-bias]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.saveprofile!==undefined){state.name=($('#pname').value||'').replace(/[<>]/g,'').trim().slice(0,16);save();closeModal();fm.from=state.name;try{localStorage.setItem('la-from',state.name)}catch(e){}render();return}
+});
+// map dots are SVG <g>, not buttons
+document.addEventListener('click',e=>{const g=e.target.closest('g.stop');if(g){tab='tour';go({city:g.dataset.city})}});
+document.addEventListener('keydown',e=>{if($('#mq')&&tab==='math'&&!$('#modal')){if(/^[0-9]$/.test(e.key))mathKey(e.key);else if(e.key==='Backspace')mathKey('del');else if(e.key==='Enter')mathKey('go')}});
+document.addEventListener('input',e=>{if(e.target.id==='ffrom'){fm.from=e.target.value;drawFreebie()}});
+document.addEventListener('change',e=>{if(e.target.id==='restore'&&e.target.files[0])restore(e.target.files[0])});
+function setTool(t){jd.tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));const ss=$('#stampsize');if(ss)ss.style.display=t==='sticker'?'flex':'none'}
+function saveM(){try{localStorage.setItem('little-army-math',JSON.stringify(mset))}catch(e){}}
+
+/* ======================= START ======================= */
+let SETLIST_SONGS=[];
+async function start(){const local=lsLoad();if(local)state=Object.assign(FRESH(),local);
+ if(!state.name){try{const f=localStorage.getItem('la-from');if(f)state.name=f}catch(e){}}
+ try{const r=await fetch('/shows.json',{cache:'no-cache'});const d=await r.json();SHOWS=(d.shows||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0)||a.date.localeCompare(b.date))}catch(e){SHOWS=[]}
+ try{const r=await fetch('/setlist.json',{cache:'no-cache'});const d=await r.json();SETLIST_SONGS=(d.acts||[]).flatMap(a=>a.songs).filter(s=>s&&s!=='*')}catch(e){}
+ STOPS=[];SHOWS.forEach(s=>{if(!STOPS.includes(s.city))STOPS.push(s.city)});if(!STOPS.length)STOPS=Object.keys(CITIES);
+ lastRank=rankFor(points()).en;render();if(local)$('#saveState').textContent='· saved ✓';
+ if(!local)profileModal(true)}
+start();
+</script>
+</body>
+</html>
