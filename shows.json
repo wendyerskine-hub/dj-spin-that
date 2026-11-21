@@ -1700,7 +1700,7 @@
    "city": "Kaohsiung",
    "country": "Taiwan",
    "date": "2026-11-21",
-   "disputed": true,
+   "disputed": false,
    "night": "Night 2",
    "order": 540,
    "songs": [
@@ -1726,7 +1726,8 @@
    },
    "sources": [
     "Reported live by the site owner watching the show (Nov 21, 2026)",
-    "Live report from a fan at the show, posted on TikTok"
+    "Live report from a fan at the show, posted on TikTok",
+    "Fan tracker report on social media"
    ]
   },
   {
