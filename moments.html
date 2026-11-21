@@ -227,6 +227,7 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .feat .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .feat .row a,.feat .row button{display:inline-flex;align-items:center;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:inherit;font:600 14px inherit;font-family:inherit;text-decoration:none;cursor:pointer}
 .okline{display:flex;gap:10px;align-items:flex-start;font-size:14px}.okline input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
+.find{font-size:12px;color:var(--muted)}.find a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}.solo-find{display:inline-flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;text-align:right}
 </style>
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -317,6 +318,12 @@ function clipsFor(showId,mi){const id=MOM[mi].id;return CLIPS.filter(c=>c.show==
 function has(showId,mi){return clipsFor(showId,mi).length>0}
 function first(showId,mi){return clipsFor(showId,mi).some(c=>c.first)}
 function count(showId){let n=0;for(let i=0;i<MOM.length;i++)if(has(showId,i))n++;return n}
+function findQ(S,mi){const m=MOM[mi];const songs=(S.songs||[]).map(x=>x.title);let q=m.q;if(m.id==="who-says-dj-spin-that")q=songs.length?songs[0]:"surprise song";return q||m.label}
+function findLinks(S,mi){const q=findQ(S,mi),d=(S.date||"").replace(/-/g,"").slice(2),n=(S.night.match(/\d+/)||["1"])[0];
+  const tag="BTS_WORLDTOUR_ARIRANG_"+S.city.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  const yt="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${S.city} ${d} ${q} fancam`);
+  const tt="https://www.tiktok.com/search/video?q="+encodeURIComponent(`#${tag} ${q} day ${n}`);
+  return `<span class="find">Find it: <a href="${esc(tt)}" target="_blank" rel="noopener" data-find="tiktok">TikTok ↗</a> · <a href="${esc(yt)}" target="_blank" rel="noopener" data-find="youtube">YouTube ↗</a></span>`}
 function host(u){try{return new URL(u).hostname.replace(/^www\./,"").replace(/\.com$/,"")}catch(e){return"clip"}}
 
 async function load(){
@@ -373,11 +380,11 @@ function renderMonitor(){
   <div class="mon-t">${esc(S.city)} · ${esc(S.night)}</div>
   <div class="mon-s">${esc(fmtLong(S.date))}${S.venue?" · "+esc(S.venue):""}${songs.length?` · Surprise songs: <b>${esc(songs.join(" & "))}</b>`:""}</div><div class="mon-list">`;
   MOM.forEach((m,i)=>{const cs=clipsFor(S.id,i),on=cs.length>0,f=on&&first(S.id,i);
-    h+=`<div class="mi${i===solo?" solo":""}"><span class="dot${on?" on":""}" style="${on?`background:${f?"var(--first)":rowColor(i)}`:""}"></span><span style="min-width:0"><span class="nm">${esc(m.label)}${f?` <span style="font-family:var(--f-mono);font-size:11px;color:var(--first)">FIRST</span>`:""}</span><br><span class="sub">${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a href="${esc(c.url)}" target="_blank" rel="noopener">${k?"angle "+(k+1):"Watch"} ↗</a>${c.credit?` <span class="sub">${esc(c.credit)}</span>`:""}`).join(" · "):`<button type="button" class="lnk" data-send="${esc(S.id)}|${i}">Send a clip</button>`}</span></div>`});
+    h+=`<div class="mi${i===solo?" solo":""}"><span class="dot${on?" on":""}" style="${on?`background:${f?"var(--first)":rowColor(i)}`:""}"></span><span style="min-width:0"><span class="nm">${esc(m.label)}${f?` <span style="font-family:var(--f-mono);font-size:11px;color:var(--first)">FIRST</span>`:""}</span><br><span class="sub">${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a href="${esc(c.url)}" target="_blank" rel="noopener">${k?"angle "+(k+1):"Watch"} ↗</a>${c.credit?` <span class="sub">${esc(c.credit)}</span>`:""}`).join(" · "):`${findLinks(S,i)} · <button type="button" class="lnk" data-send="${esc(S.id)}|${i}">Send a clip</button>`}</span></div>`});
   h+=`</div>`;$("#monShow").innerHTML=h;
   const m=MOM[solo];const rows=PLAYED.slice().reverse();const n=rows.filter(s=>has(s.id,solo)).length;
   let o=`<div class="mon-k"><span style="color:var(--purple)">SOLO · ${String(solo+1).padStart(2,"0")}</span></div><div class="mon-t" style="font-size:clamp(22px,3vw,28px)">${esc(m.label)}</div><div class="mon-s">${esc(m.song||"")} · spotted at <b>${n}</b> of ${rows.length} shows</div><div style="margin-top:8px;max-height:420px;overflow:auto">`;
-  rows.forEach(s=>{const cs=clipsFor(s.id,solo);o+=`<div class="solo-row"><span>${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</span>${cs.length?`<a href="${esc(cs[0].url)}" target="_blank" rel="noopener">Watch ↗</a>`:`<button type="button" class="lnk" data-send="${esc(s.id)}|${solo}">Send a clip</button>`}</div>`});
+  rows.forEach(s=>{const cs=clipsFor(s.id,solo);o+=`<div class="solo-row"><span>${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</span>${cs.length?`<a href="${esc(cs[0].url)}" target="_blank" rel="noopener">Watch ↗</a>`:`<span class="solo-find">${findLinks(s,solo)} · <button type="button" class="lnk" data-send="${esc(s.id)}|${solo}">Send a clip</button></span>`}</div>`});
   o+=`</div>`;$("#monSolo").innerHTML=o;
 }
 function fillSelects(){
@@ -439,5 +446,6 @@ function toast(m){var t=document.querySelector(".toast");if(!t){t=document.creat
 b.addEventListener("click",function(){var url="https://djspinthat.net/moments.html",text="The BTS ARIRANG Moments Board: the moments ARMY waits for at every show, with fancams 🎥";try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"share-page/moments",event:true})}catch(e){}
 var copy=function(){(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){toast("Link copied. Paste it anywhere 💜")}).catch(function(){toast(url)})};
 if(navigator.share)navigator.share({title:"DJ Spin That",text:text,url:url}).catch(function(e){if(e&&e.name!=="AbortError")copy()});else copy()})})();</script>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("[data-find]");if(!a)return;try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"moments/find-"+a.dataset.find,event:true})}catch(x){}});</script>
 </body>
 </html>
