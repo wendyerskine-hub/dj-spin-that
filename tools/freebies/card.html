@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- DJ Spin That handout photocards (no photos). 55x85 mm at 300 dpi = 650x1004 px.
+     ?m=rm|jin|suga|jhope|jimin|v|jk|ot7|dj  &side=front|back  -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@600&family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:650px;height:1004px;overflow:hidden;background:#0b0912}
+.card{position:relative;width:650px;height:1004px;overflow:hidden;color:#fff;font-family:Outfit,sans-serif;
+ background:radial-gradient(90% 55% at 15% 8%,rgba(255,42,75,.38),transparent 60%),radial-gradient(90% 55% at 85% 92%,rgba(168,85,247,.45),transparent 60%),#0b0912}
+.frame{position:absolute;inset:22px;border-radius:30px;border:3px solid var(--c);box-shadow:0 0 30px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 30px color-mix(in srgb,var(--c) 18%,transparent)}
+.top{position:absolute;top:58px;left:0;right:0;display:flex;justify-content:space-between;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;color:#e6dbff}
+.logo{position:absolute;top:100px;left:0;right:0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:40px;text-transform:uppercase;letter-spacing:.03em}
+.logo .r{color:#ff2a4b}.logo .p{color:#a855f7}
+.vinyl{position:absolute;left:50%;top:188px;width:400px;height:400px;margin-left:-200px;border-radius:50%;background:repeating-radial-gradient(circle,#07060b 0 5px,#17131f 6px 9px);box-shadow:0 0 0 4px #2d374d,0 0 70px color-mix(in srgb,var(--c) 55%,transparent)}
+.vinyl b{position:absolute;inset:31%;border-radius:50%;background:var(--lab);display:grid;place-items:center;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25)}
+.vinyl b i{font-style:normal;transform:translateY(-34px);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;color:var(--ink);letter-spacing:.02em}
+.vinyl b::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:#07060b}
+.vinyl .shine{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 40deg,transparent 0 20%,rgba(255,255,255,.10) 25%,transparent 32% 70%,rgba(255,255,255,.07) 75%,transparent 82%)}
+.name{position:absolute;top:618px;left:0;right:0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:120px;line-height:.9;text-transform:uppercase;color:var(--c);text-shadow:0 0 26px color-mix(in srgb,var(--c) 55%,transparent)}
+.name.long{font-size:96px}
+.kr{position:absolute;top:740px;left:0;right:0;text-align:center;font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:40px;color:#fff}
+.mic{position:absolute;top:806px;left:0;right:0;text-align:center;font-size:24px;color:#e6dbff}
+.mic span{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--dot,var(--c));vertical-align:-2px;margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.foot{position:absolute;bottom:62px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.14em;color:#e6dbff}
+.glitter{position:absolute;inset:0;pointer-events:none}
+/* back */
+.back .stars{position:absolute;left:0;top:70px;width:650px;height:300px}
+.back .army{position:absolute;top:300px;left:0;right:0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:120px;letter-spacing:.06em;color:#fff;text-shadow:0 0 28px rgba(168,85,247,.7)}
+.back .bora{position:absolute;top:430px;left:0;right:0;text-align:center;font-size:40px;font-weight:800;color:#e6dbff}
+.back .qr{position:absolute;left:50%;top:520px;margin-left:-125px;width:250px;height:250px;padding:16px;background:#fff;border-radius:22px}
+.back .qr img{width:218px;height:218px;display:block}
+.back .scan{position:absolute;top:790px;left:0;right:0;text-align:center;font-size:27px;font-weight:800}
+.back .url{position:absolute;top:832px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:24px;color:#e6dbff}
+.back .from{position:absolute;top:880px;left:90px;right:90px;font-size:23px;color:#e6dbff;border-bottom:2px dashed rgba(255,255,255,.45);padding-bottom:6px}
+</style></head><body>
+<div id="root"></div>
+<script>
+const P=new URLSearchParams(location.search),m=P.get('m')||'jk',side=P.get('side')||'front';
+const M={
+ rm:{n:'RM',kr:'알엠',c:'#c9ced8',lab:'linear-gradient(135deg,#f2f4f8,#9aa1ad)',ink:'#1b1f2a',mic:'Silver mic'},
+ jin:{n:'Jin',kr:'진',c:'#ff8fc8',lab:'linear-gradient(135deg,#ffc2e1,#ff6fb5)',ink:'#4a0d2c',mic:'Pink mic'},
+ suga:{n:'SUGA',kr:'슈가',c:'#c9ced8',lab:'linear-gradient(135deg,#f2f4f8,#9aa1ad)',ink:'#1b1f2a',mic:'Silver mic'},
+ jhope:{n:'j-hope',kr:'제이홉',c:'#f4f4f8',lab:'linear-gradient(135deg,#ffffff,#d9dbe3)',ink:'#2a1f3a',mic:'White mic'},
+ jimin:{n:'Jimin',kr:'지민',c:'#c9ced8',dot:'#15151b',lab:'linear-gradient(135deg,#3a3a46,#15151b)',ink:'#e6e8ee',mic:'Black mic',dark:1},
+ v:{n:'V',kr:'뷔',c:'#ff4d5e',lab:'linear-gradient(135deg,#ff8a95,#e0263a)',ink:'#3b0710',mic:'Red mic'},
+ jk:{n:'Jung Kook',kr:'정국',c:'#e8c46a',lab:'linear-gradient(135deg,#fff0bf,#d4a53a)',ink:'#3a2a05',mic:'Gold mic',long:1},
+ ot7:{n:'OT7',kr:'방탄소년단',c:'#b48cff',lab:'conic-gradient(#c9ced8 0 14.3%,#ff8fc8 0 28.6%,#c9ced8 0 42.9%,#f4f4f8 0 57.1%,#2a2a33 0 71.4%,#ff4d5e 0 85.7%,#e8c46a 0)',ink:'#fff',mic:'7 mics, one stage'},
+ dj:{n:'Spin it',kr:'DJ 스핀 댓',c:'#ff5d7a',lab:'conic-gradient(#ff2a4b 0 50%,#a855f7 50% 100%)',ink:'#fff',mic:'Who’s ready for the DJ? 🎧'}
+};
+const d=M[m];const root=document.getElementById('root');
+document.documentElement.style.setProperty('--c',d.c);document.documentElement.style.setProperty('--lab',d.lab);document.documentElement.style.setProperty('--ink',d.ink);if(d.dot)document.documentElement.style.setProperty('--dot',d.dot);
+if(side==='front'){
+ root.innerHTML=`<div class="card"><div class="frame"></div><div class="top"><span>ARIRANG</span><span>2026</span></div>
+ <div class="logo"><span class="r">DJ Spin</span> <span class="p">That</span></div>
+ <div class="vinyl"><div class="shine"></div><b><i>${m==='ot7'?'':m==='dj'?'':'BTS'}</i></b></div>
+ <div class="name${d.long?' long':''}"${m==='jhope'?' style="text-transform:none"':''}>${d.n}</div><div class="kr">${d.kr}</div>
+ <div class="mic">${m==='ot7'||m==='dj'?'':'<span></span>'}${d.mic}</div>
+ <div class="foot">LIVE VIEWING · ARMY FREEBIE 💜</div></div>`;
+} else {
+ root.innerHTML=`<div class="card back"><div class="frame" style="--c:#a855f7"></div><svg class="stars" viewBox="0 0 650 300" id="st"></svg>
+ <div class="army">ARMY</div><div class="bora">Borahae 💜</div>
+ <div class="qr" id="qr"></div><div class="scan">Scan for every surprise song 🎧</div><div class="url">djspinthat.net</div>
+ <div class="from">From your ARMY friend:</div></div>`;
+ // Big Dipper (Ursa Major): 7 stars, like the site's Plain back
+ const UM=[[0,1.0,17],[1.6,.6,15],[2.9,.9,17],[4.2,1.4,11],[4.5,2.9,14],[6.4,3.0,15],[6.6,1.2,18]],ux=x=>130+x*58,uy=y=>40+y*58;
+ const st=document.getElementById('st');let h='<polyline fill="none" stroke="rgba(230,219,255,.55)" stroke-width="3" points="'+[0,1,2,3,4,5,6,3].map(i=>ux(UM[i][0])+','+uy(UM[i][1])).join(' ')+'"/>';
+ const star=(x,y,r)=>{let p='';for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,rr=k%2?r*.45:r;p+=(x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1)+' '}return `<polygon points="${p}" fill="#fff" style="filter:drop-shadow(0 0 8px #b48cff)"/>`};
+ UM.forEach(([x,y,r])=>h+=star(ux(x),uy(y),r*1.5));st.innerHTML=h;
+ document.getElementById('qr').innerHTML='<img src="qr-played.svg" alt="QR code for djspinthat.net/played">'; // made locally: https://djspinthat.net/played/?ref=card
+}
+window.READY=true;
+</script></body></html>
