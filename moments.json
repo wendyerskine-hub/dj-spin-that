@@ -115,7 +115,1471 @@
    "song": "All night"
   }
  ],
- "clips": [],
+ "clips": [
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=Bms1yGzN2Cg",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=Bms1yGzN2Cg",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=Bms1yGzN2Cg",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=Bms1yGzN2Cg",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=Bms1yGzN2Cg",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=KjnTAmTEPdc",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=KjnTAmTEPdc",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=KjnTAmTEPdc",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=KjnTAmTEPdc",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=KjnTAmTEPdc",
+   "credit": "YouTube fancam · Not Today + MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0080-tampa-n3",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=YQDX0HQAAvA",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0080-tampa-n3",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=YQDX0HQAAvA",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0080-tampa-n3",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=YQDX0HQAAvA",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0170-las-vegas-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=fagOZ6rIGHU",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=2rB-A8rAox4",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0280-paris-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=LRdlODPThhw",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0280-paris-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=LRdlODPThhw",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=ezlIRSNUSmk",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=ezlIRSNUSmk",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=oW-Nr-NPJJY",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=oW-Nr-NPJJY",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0270-brussels-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=413ZuGUTSVU",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0270-brussels-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=413ZuGUTSVU",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=NXf-dKO_7SI",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=NXf-dKO_7SI",
+   "credit": "YouTube fancam · Please + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=hLLHRvKZefA",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=hLLHRvKZefA",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=wX57VCphEGA",
+   "credit": "YouTube fancam · Hooligan + Aliens + Run BTS",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=ROYwmCjjV0Q",
+   "credit": "YouTube fancam · Hooligan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=FwC3euHXrJs",
+   "credit": "YouTube fancam · Hooligan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=ZLYZbL2m2e0",
+   "credit": "YouTube fancam · Hooligan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0150-stanford-n2",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=dwREMmuqb2k",
+   "credit": "YouTube fancam · Hooligan (j-hope focus)",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "opening-film",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "army-bomb-ocean",
+   "url": "https://www.youtube.com/watch?v=vWg1eQxWNUU",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=kardYHosBK0",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=3ozwLPCFc7s",
+   "credit": "YouTube fancam · Come Over",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=yjq9H_lpnLI",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=DnnM87SZc3o",
+   "credit": "YouTube fancam · SWIM + Merry Go Round",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=UTQdFnuovFg",
+   "credit": "YouTube fancam · Body to Body + IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=UTQdFnuovFg",
+   "credit": "YouTube fancam · Body to Body + IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=sUfYFuWyMC8",
+   "credit": "YouTube fancam · Body to Body + IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=sUfYFuWyMC8",
+   "credit": "YouTube fancam · Body to Body + IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0080-tampa-n3",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=eVJvThbApg4",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=38ZZfdycnUo",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0070-tampa-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=pE-SgPBn-ww",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0100-el-paso-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=UmuB2gkWQZc",
+   "credit": "YouTube fancam · Surprise song: Best of Me",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0100-el-paso-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=qOQ08-Sh92g",
+   "credit": "YouTube fancam · Surprise song: Dionysus",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0090-el-paso-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=f6ZsuYaD_1w",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0090-el-paso-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=f6ZsuYaD_1w",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0100-el-paso-n2",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=LD255YV25jw",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0090-el-paso-n1",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=GIAVHeDK_K4",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0130-mexico-city-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=iG-bGpjjXQo",
+   "credit": "YouTube fancam · Surprise song: Spring Day",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0130-mexico-city-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=OXDONE-OWD4",
+   "credit": "YouTube fancam · Surprise song: Airplane Pt.2",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0120-mexico-city-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=b63kwScz19k",
+   "credit": "YouTube fancam · Surprise song: We Are Bulletproof Pt.2",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=2D8y74KB21E",
+   "credit": "YouTube fancam · Come Over + Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0150-stanford-n2",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=E_j24I4NfDA",
+   "credit": "YouTube fancam · Hooligan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=tzTejzf94ng",
+   "credit": "YouTube fancam · SWIM",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=n8VWczwyDbo",
+   "credit": "YouTube fancam · Surprise songs: N.O + Anpanman",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=3yKxJwfsvRY",
+   "credit": "YouTube fancam · Surprise songs: Boyz With Fun + Danger",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=_z1yPNHUTfA",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=_z1yPNHUTfA",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=MyeocecTiIo",
+   "credit": "YouTube fancam · Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0190-busan-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=sN0I3L1GaTE",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0190-busan-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=sN0I3L1GaTE",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0180-busan-n1",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=qkp7JwJV6bU",
+   "credit": "YouTube fancam · Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0180-busan-n1",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=t1GOR8RC4zc",
+   "credit": "YouTube fancam · Body to Body + IDOL (V focus)",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0180-busan-n1",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=t1GOR8RC4zc",
+   "credit": "YouTube fancam · Body to Body + IDOL (V focus)",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=6zOx3w5USVo",
+   "credit": "YouTube fancam · Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=Y3EiUdwgQNc",
+   "credit": "YouTube fancam · Surprise song: Best of Me",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=TQfOTEu8Suc",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=zQxv2DLDpy8",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=YhOFHj5v8O4",
+   "credit": "YouTube fancam · Come Over",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=gCR08asWsh8",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0210-madrid-n2",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=gCR08asWsh8",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=87EU5ke-gAo",
+   "credit": "YouTube fancam · Surprise song: Dionysus",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=efsnNpxhNhM",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=efsnNpxhNhM",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=efsnNpxhNhM",
+   "credit": "YouTube fancam · FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0220-london-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=iPXbERmmQXg",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0292-east-rutherford-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=pKgJNybVkFw",
+   "credit": "YouTube fancam · Surprise songs",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0292-east-rutherford-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=729FoqbajFE",
+   "credit": "YouTube fancam · SWIM",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=x72toYXAdo0",
+   "credit": "YouTube fancam · Surprise song: No More Dream",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "opening-film",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0296-foxborough-n1",
+   "moment": "army-bomb-ocean",
+   "url": "https://www.youtube.com/watch?v=xL0g7msfS-I",
+   "credit": "YouTube fancam · Full show",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0305-baltimore-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=WDLJbbyGVLg",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0300-baltimore-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=c9KSsArqf2E",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0330-toronto-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=FmNPN6i8MtE",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0330-toronto-n1",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=r8-SuBe-Mbc",
+   "credit": "YouTube fancam · Butter + Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0330-toronto-n1",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=r8-SuBe-Mbc",
+   "credit": "YouTube fancam · Butter + Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0330-toronto-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=OIFATyPCxxo",
+   "credit": "YouTube fancam · Surprise song: Dope",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=6wYS_9QikBI",
+   "credit": "YouTube fancam · Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=6wYS_9QikBI",
+   "credit": "YouTube fancam · Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=6wYS_9QikBI",
+   "credit": "YouTube fancam · Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=6wYS_9QikBI",
+   "credit": "YouTube fancam · Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=6wYS_9QikBI",
+   "credit": "YouTube fancam · Butter + Dynamite + surprise songs + Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=vZax-ZOzuq4",
+   "credit": "YouTube fancam · Surprise song: Mikrokosmos",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=mhhTPorC65U",
+   "credit": "YouTube fancam · IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0360-los-angeles-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=VOICjAJkOGQ",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0360-los-angeles-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=VOICjAJkOGQ",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0370-los-angeles-n3",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=8s11Nhhd90s",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0370-los-angeles-n3",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=8s11Nhhd90s",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0360-los-angeles-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=DsDh5FoX41U",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0380-los-angeles-n4",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=StjumTaYcqM",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0380-los-angeles-n4",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=UCeV5u4hmQY",
+   "credit": "YouTube fancam · Surprise song: Spring Day",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0370-los-angeles-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=sBq4A0bXV-Q",
+   "credit": "YouTube fancam · Surprise song: HOME",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0250-munich-n2",
+   "moment": "jk-sings-arirang",
+   "url": "https://www.youtube.com/watch?v=lVcJpJjavzE",
+   "credit": "YouTube fancam · Body to Body",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0240-munich-n1",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=_Hk_yt8Aeg8",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0240-munich-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=pSqaDuQ9jDY",
+   "credit": "YouTube fancam · SWIM",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0250-munich-n2",
+   "moment": "hooligan-outfits",
+   "url": "https://www.youtube.com/watch?v=b5s7Tbwp6OU",
+   "credit": "YouTube fancam · Hooligan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=gGRaC3bZn9U",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=gGRaC3bZn9U",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=gGRaC3bZn9U",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=gGRaC3bZn9U",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0010-goyang-n1",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=gGRaC3bZn9U",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=0NjvSsJ4XQs",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=0NjvSsJ4XQs",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "ot7-camera-fya",
+   "url": "https://www.youtube.com/watch?v=0NjvSsJ4XQs",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "jk-rm-fya-dance",
+   "url": "https://www.youtube.com/watch?v=0NjvSsJ4XQs",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "fire-monitor-spin",
+   "url": "https://www.youtube.com/watch?v=0NjvSsJ4XQs",
+   "credit": "YouTube fancam · MIC Drop + FYA + Fire",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=zTupT5QmExM",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0140-stanford-n1",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=zTupT5QmExM",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=U1h9ERikxqQ",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=U1h9ERikxqQ",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "hobi-mic-drop-intro",
+   "url": "https://www.youtube.com/watch?v=1nKQD2-hhms",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "rm-born-in-seoul",
+   "url": "https://www.youtube.com/watch?v=1nKQD2-hhms",
+   "credit": "YouTube fancam · MIC Drop",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "jimin-hip-rolls",
+   "url": "https://www.youtube.com/watch?v=RHNHQmt0ook",
+   "credit": "YouTube fancam · 2.0",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0160-las-vegas-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=XH3loCiQUS8",
+   "credit": "YouTube fancam · Surprise song: Go Go",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "idol-walk",
+   "url": "https://www.youtube.com/watch?v=7rgmH-NWJd8",
+   "credit": "YouTube fancam · IDOL",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0020-goyang-n2",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=QJ0-jFxsd8U",
+   "credit": "YouTube fancam · Come Over",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "yoongi-jk-come-over",
+   "url": "https://www.youtube.com/watch?v=SdcNyj5WyD4",
+   "credit": "YouTube fancam · Come Over",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=Yi1SbJfSMUM",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0030-goyang-n3",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=WsES5bMOnIU",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0175-las-vegas-n3",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=1zjdf-wooUg",
+   "credit": "YouTube fancam · Butter",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0176-las-vegas-n4",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=VOT6o3mztf8",
+   "credit": "YouTube fancam · Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "butter-trio",
+   "url": "https://www.youtube.com/watch?v=2sbMadawMZM",
+   "credit": "YouTube fancam · Butter + Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0298-foxborough-n2",
+   "moment": "dynamite-dance-break",
+   "url": "https://www.youtube.com/watch?v=2sbMadawMZM",
+   "credit": "YouTube fancam · Butter + Dynamite",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=PmMnoaDwmzI",
+   "credit": "YouTube fancam · SWIM + Merry Go Round",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0155-stanford-n3",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=-Yb80LBA_d0",
+   "credit": "YouTube fancam · SWIM",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0060-tampa-n1",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=qNaGI68pK60",
+   "credit": "YouTube fancam · Merry Go Round",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0020-goyang-n2",
+   "moment": "swim-wave",
+   "url": "https://www.youtube.com/watch?v=BJ0cM6fwogE",
+   "credit": "YouTube fancam · Merry Go Round",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0335-chicago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=md4T9bc8C0g",
+   "credit": "YouTube fancam · Surprise songs: Tomorrow + Hip Hop Phile",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0310-arlington-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=eXl2q-cDCFU",
+   "credit": "YouTube fancam · Surprise song: Go Go",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0340-chicago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=v3F_uJMKfM8",
+   "credit": "YouTube fancam · Surprise song: 134340",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0300-baltimore-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=nyxi4fIWqik",
+   "credit": "YouTube fancam · Surprise song: Telepathy",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0330-toronto-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=Rw39rLUzsKk",
+   "credit": "YouTube fancam · Surprise song: Outro: Wings",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0320-arlington-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=R7gXVhEf-3I",
+   "credit": "YouTube fancam · Surprise song: DNA",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0530-kaohsiung-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=Dn6_e8WQPmU",
+   "credit": "YouTube fancam · Surprise song (DNA / Answer: Love Myself)",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0530-kaohsiung-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=ZMpDVIwiN3A",
+   "credit": "YouTube fancam · Surprise song (DNA / Answer: Love Myself)",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0450-santiago-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=hd_ebND9V7U",
+   "credit": "YouTube fancam · Surprise songs: Telepathy + Heartbeat",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0450-santiago-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=7rkiJVR7Mjs",
+   "credit": "YouTube fancam · Surprise song: Heartbeat",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0450-santiago-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=lculwxw0dEA",
+   "credit": "YouTube fancam · Surprise song: Telepathy",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0450-santiago-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=Z9mK9EfWPJ4",
+   "credit": "YouTube fancam · Surprise song: Telepathy",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0450-santiago-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=mZkeQZo5xOI",
+   "credit": "YouTube fancam · Surprise song: Heartbeat",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0460-santiago-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=zXJqaLSe9RM",
+   "credit": "YouTube fancam · Surprise song: Jump",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0460-santiago-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=QLQddR3U1Sg",
+   "credit": "YouTube fancam · Surprise song: Jump",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0440-santiago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=NJxVEUOuYEU",
+   "credit": "YouTube fancam · Surprise song: Save Me",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0440-santiago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=CTb3dU8GrdI",
+   "credit": "YouTube fancam · Surprise song: RUN",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0440-santiago-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.tiktok.com/@arianakorni/video/7696693147933445398",
+   "credit": "@arianakorni on TikTok · Surprise song: RUN",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0430-lima-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=I4PVKTQm66g",
+   "credit": "YouTube fancam · Surprise songs: House of Cards + UGH!",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0430-lima-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=TFzNpi31W2g",
+   "credit": "YouTube fancam · Surprise songs: House of Cards + UGH!",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0430-lima-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=6trHyN51D7o",
+   "credit": "YouTube fancam · Surprise song: House of Cards",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0420-lima-n2",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.tiktok.com/@josselin.kelly/video/7694937467450920213",
+   "credit": "@josselin.kelly on TikTok · Surprise song: We Are Bulletproof: The Eternal",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0490-buenos-aires-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=aWXOzQ1DhEs",
+   "credit": "YouTube fancam · Surprise songs: Lost + Cypher Pt.4",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0500-sao-paulo-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=FV2PgO-GNCU",
+   "credit": "YouTube fancam · Surprise song: Black Swan",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0500-sao-paulo-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=VMGZPredr1w",
+   "credit": "YouTube fancam · Surprise song: Baepsae",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0520-sao-paulo-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=pTiz4D6neQI",
+   "credit": "YouTube fancam · Surprise song: DDAENG",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0390-bogota-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=Gyw9Qfd2r8Y",
+   "credit": "YouTube fancam · Surprise song: I'm Fine",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0390-bogota-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=sNkVAL7i0LI",
+   "credit": "YouTube fancam · Surprise song: I'm Fine",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0390-bogota-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=rgRv8GMHeuo",
+   "credit": "YouTube fancam · Surprise song: So What",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0390-bogota-n1",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.youtube.com/watch?v=SAZItle5FBk",
+   "credit": "YouTube fancam · Surprise song: I'm Fine",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0400-bogota-n2",
+   "moment": "into-the-sun-adlibs",
+   "url": "https://www.youtube.com/watch?v=66_dH4nb5gs",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0400-bogota-n2",
+   "moment": "fireworks-finale",
+   "url": "https://www.youtube.com/watch?v=66_dH4nb5gs",
+   "credit": "YouTube fancam · Into the Sun",
+   "found": "2026-11-21"
+  }
+ ],
  "featured": [],
  "about_featured": "Moment of the Week. Newest first: {\"week\":\"Nov 23\",\"moment\":\"a moment id\",\"show\":\"a show id from shows.json\",\"url\":\"link to the fan's own post\",\"credit\":\"@their_handle\",\"note\":\"optional\"}. Only with the filmer's OK."
 }
