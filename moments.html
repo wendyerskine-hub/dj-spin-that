@@ -255,6 +255,20 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .mc .watch{display:inline-flex;align-items:center;min-height:40px;padding:6px 16px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--purple));color:#fff;font-weight:700;text-decoration:none}
 .mc.zero{border-style:dashed}.mc.zero .first{color:var(--first);font-size:14px;margin:0}
 .lnk.plain{background:none;border:0;color:var(--violet);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
+
+.myhead{display:grid;gap:10px;border:1px solid var(--line);border-radius:16px;padding:16px;background:rgba(0,0,0,.22)}
+.myhead h3{margin:0;font-family:var(--f-display);font-size:clamp(26px,5vw,36px);line-height:1.05}.myhead .ms{color:var(--muted);font-size:14px}
+.myhead .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.cbtn{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font:600 14px var(--f-body);cursor:pointer;text-decoration:none}
+.cbtn.main{background:linear-gradient(90deg,var(--red),var(--purple));border:0;color:#fff}
+.cbtn:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+.clist{display:grid;gap:8px}
+.ci{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2)}
+.ci .ck{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;border:2px solid rgba(255,255,255,.25);color:transparent;margin-top:2px}
+.ci.on .ck{background:linear-gradient(135deg,var(--red),var(--purple));border-color:transparent;color:#fff}
+.ci b{font-size:16px}.ci .ms{font-size:13px;color:var(--muted)}.ci .cr{font-size:12px;color:var(--muted)}
+.ci .wl{display:inline-flex;margin-top:4px;font-weight:700;color:var(--violet)}
+.mc .share{background:none;border:0;color:var(--muted);font:600 13px var(--f-body);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
 </style>
 <script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -278,6 +292,7 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
 
   <div class="vtabs" role="tablist" aria-label="Board views">
     <button type="button" role="tab" id="tabMom" aria-selected="true" aria-controls="momView">Moments</button>
+    <button type="button" role="tab" id="tabShow" aria-selected="false" aria-controls="showView">My show</button>
     <button type="button" role="tab" id="tabBoard" aria-selected="false" aria-controls="boardStation">Full board</button>
   </div>
 
@@ -285,6 +300,12 @@ a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
     <div id="featured" hidden></div>
     <div class="wanted" id="wanted" aria-labelledby="wantedH"></div>
     <div id="momGroups"></div>
+  </section>
+
+  <section class="station" id="showView" role="tabpanel" aria-labelledby="tabShow" hidden>
+    <div class="field" style="max-width:420px"><label for="myShow">Pick your show</label><select id="myShow"></select></div>
+    <div id="myHead"></div>
+    <div id="myList"></div>
   </section>
 
   <section class="station" id="boardStation" aria-labelledby="boardH" role="tabpanel" hidden>
@@ -385,7 +406,9 @@ async function load(){
   const logged=CLIPS.filter(c=>c.url).length;
   $("#liveText").textContent=`${PLAYED.length} shows · ${logged} fancam${logged===1?"":"s"} on the board · updated ${fmtLong(m.updated||s.updated)}`;
   fillSelects();measure();focusSel();render();renderMoments();
-  if(hs||location.hash==="#board")setView("board");
+  fillMy();
+  const mh=(location.hash||"").match(/^#my-(.+)$/);if(mh&&PLAYED.some(x=>x.id===mh[1])){myId=mh[1];$("#myShow").value=myId;setView("my")}
+  else if(hs||location.hash==="#board")setView("board");
 }
 /* ---- Moments view: one card per moment, grouped by act; no empty boxes ---- */
 const ACTS=["Act 1","Act 2","Encore","Anytime"];
@@ -412,13 +435,33 @@ function renderMoments(){
       return n?`<article class="mc"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div>
         <div class="prog"><div class="pt"><span>Found at <b>${n}</b> of ${P} shows</span></div><div class="bar"><i style="width:${Math.max(2,n/P*100).toFixed(1)}%"></i></div></div>
         <div class="chips">${chips}</div>
-        <div class="acts"><a class="watch" href="${esc(lc.url)}" target="_blank" rel="noopener">▶ Watch ${esc(shortN(latest))}</a><button type="button" class="lnk plain" data-follow="${i}">Follow it city to city</button></div></article>`
-      :`<article class="mc zero"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div><p class="first">Not found yet. Be the first to light it up ✨</p>${target?findLinks(target,i):""}<button type="button" class="lnk plain" data-send="${esc(target?target.id:"")}|${i}">Send a clip</button></article>`}).join("")}</div></section>`}).join("");
+        <div class="acts"><a class="watch" href="${esc(lc.url)}" target="_blank" rel="noopener">▶ Watch ${esc(shortN(latest))}</a><button type="button" class="lnk plain" data-follow="${i}">Follow it city to city</button><button type="button" class="share" data-mcard="${i}">📸 Share</button></div></article>`
+      :`<article class="mc zero"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div><p class="first">Not found yet. Be the first to light it up ✨</p>${target?findLinks(target,i):""}<div class="acts"><button type="button" class="lnk plain" data-send="${esc(target?target.id:"")}|${i}">Send a clip</button><button type="button" class="share" data-mcard="${i}">📸 Share</button></div></article>`}).join("")}</div></section>`}).join("");
 }
-function setView(v){const b=v==="board";$("#tabMom").setAttribute("aria-selected",String(!b));$("#tabBoard").setAttribute("aria-selected",String(b));$("#momView").hidden=b;$("#boardStation").hidden=!b;
-  if(b){measure();focusSel();render()}}
+/* ---- My show: one night's checklist ---- */
+let myId=null;
+function fillMy(){const rev=PLAYED.slice().reverse();$("#myShow").innerHTML=rev.map(S=>`<option value="${esc(S.id)}">${esc(fmtD(S.date))} · ${esc(S.city)} ${esc(S.night)}</option>`).join("");
+  let saved=null;try{saved=localStorage.getItem("my-show")}catch(e){}myId=PLAYED.some(x=>x.id===saved)?saved:(rev[0]&&rev[0].id);$("#myShow").value=myId}
+function renderMy(){const S=PLAYED.find(x=>x.id===myId);if(!S)return;const n=count(S.id),T=MOM.length,missing=MOM.map((m,i)=>[m,i]).filter(([m,i])=>!has(S.id,i));
+  $("#myHead").innerHTML=`<div class="myhead"><div><h3>${esc(S.city)} ${esc(S.night.replace(" (FESTA)",""))}</h3><div class="ms">${esc(fmtLong(S.date))}${S.venue?" · "+esc(S.venue):""}${(S.songs||[]).length?" · Surprise songs: "+esc(S.songs.map(x=>x.title).join(" × ")):""}</div></div>
+    <div class="prog"><div class="pt"><span><b>${n}</b> of ${T} moments found</span><span><b>${Math.round(n/T*100)}%</b></span></div><div class="bar"><i style="width:${Math.max(2,n/T*100).toFixed(1)}%"></i></div></div>
+    <div class="row"><button type="button" class="cbtn main" id="myCard">📸 Save this night's card</button><button type="button" class="cbtn" id="myShare">Share this checklist</button></div></div>`;
+  $("#myList").innerHTML=ACTS.map(act=>{const ids=MOM.map((m,i)=>[m,i]).filter(([m])=>(m.act||"Anytime")===act);if(!ids.length)return"";
+    return `<section class="act" aria-label="${esc(act)}"><h3>${esc(act)}</h3><div class="clist">${ids.map(([m,i])=>{const cs=clipsFor(S.id,i);const on=cs.length>0;
+      return `<div class="ci${on?" on":""}"><span class="ck" aria-hidden="true">✓</span><div style="min-width:0"><b>${esc(m.label)}</b> <span class="ms">· ${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a class="wl" href="${esc(c.url)}" target="_blank" rel="noopener">${k?"Angle "+(k+1):"▶ Watch"} ↗</a>${c.credit?` <span class="cr">${esc(c.credit)}</span>`:""}`).join("<br>"):`${findLinks(S,i)}<button type="button" class="lnk plain" data-send="${esc(S.id)}|${i}">Send it</button>`}</div></div>`}).join("")}</div></section>`}).join("");
+  const night=S.night.replace(" (FESTA)",""),url="https://djspinthat.net/moments.html#my-"+S.id;
+  $("#myCard").addEventListener("click",e=>{if(!window.DJCard)return;DJCard.share({kicker:"ARIRANG Moments Board",headline:`${S.city}\n${night}`,sub:`${n} of ${T} moments found`,label:missing.length?"Still missing":"",lines:missing.length?missing.slice(0,8).map(([m])=>m.label).concat(missing.length>8?[`+ ${missing.length-8} more`]:[]):["Every moment found 💜"],cta:missing.length?"Were you there? Help finish it 👇":"Fully lit 🎆",url:"djspinthat.net/moments",file:"moments-"+S.id,text:`${S.city} ${night} on the ARIRANG Moments Board: ${n}/${T} found. Help finish it 🎥 ${url}`,track:"moments-show/"+S.id},e.currentTarget)});
+  $("#myShare").addEventListener("click",()=>{const t=`${S.city} ${night}: ${n}/${T} moments found on the ARIRANG Moments Board 🎥`;if(navigator.share)navigator.share({title:"DJ Spin That",text:t,url}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>{$("#myShare").textContent="Link copied"}).catch(()=>{})});
+}
+function momentCard(i,btn){if(!window.DJCard)return;const m=MOM[i],ws=showsWith(i),n=ws.length;
+  DJCard.share({kicker:"ARIRANG Moments Board",headline:m.label,sub:(m.song||"")+(n?` · found at ${n} shows`:""),label:n?"Caught in":"",lines:n?ws.slice().reverse().slice(0,10).map(shortN).concat(n>10?[`+ ${n-10} more`]:[]):["Not found yet 👀"],cta:n?"Which city did it best? 👀":"Be the first to find it 👇",url:"djspinthat.net/moments",file:"moment-"+m.id,text:`${m.label}${n?`: caught at ${n} ARIRANG shows. Which city did it best? 👀`:": nobody's found it yet 👀"} https://djspinthat.net/moments.html`,track:"moment-card/"+m.id},btn)}
+function setView(v){const b=v==="board",my=v==="my",mo=!b&&!my;$("#tabMom").setAttribute("aria-selected",String(mo));$("#tabShow").setAttribute("aria-selected",String(my));$("#tabBoard").setAttribute("aria-selected",String(b));$("#momView").hidden=!mo;$("#showView").hidden=!my;$("#boardStation").hidden=!b;
+  if(b){measure();focusSel();render()}if(my)renderMy()}
 $("#tabMom").addEventListener("click",()=>{setView("mom");if(history.replaceState)history.replaceState(null,"",location.pathname)});
+$("#tabShow").addEventListener("click",()=>{setView("my");if(history.replaceState&&myId)history.replaceState(null,"","#my-"+myId)});
+$("#myShow").addEventListener("change",e=>{myId=e.target.value;try{localStorage.setItem("my-show",myId)}catch(x){}renderMy();if(history.replaceState)history.replaceState(null,"","#my-"+myId)});
 $("#tabBoard").addEventListener("click",()=>{setView("board");if(history.replaceState)history.replaceState(null,"","#board")});
+document.addEventListener("click",e=>{const mc=e.target.closest("[data-mcard]");if(mc){momentCard(+mc.dataset.mcard,mc);return}});
 document.addEventListener("click",e=>{const f=e.target.closest("[data-follow]");if(!f)return;e.preventDefault();setView("board");pick(null,+f.dataset.follow);$("#boardStation").scrollIntoView({behavior:"smooth",block:"start"})});
 function measure(){
   const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cw=w<560?62:96;
