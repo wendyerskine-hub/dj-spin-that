@@ -226,6 +226,24 @@ section{padding-top:18px}
 .spal button.on{border-color:var(--pink);background:#fff0f6}
 .spal canvas{width:100%;height:auto;display:block}
 
+/* binder */
+.binder{background:linear-gradient(160deg,#4c1d95,#7c3aed 60%,#db2777);border-radius:26px;padding:16px;max-width:680px;margin:0 auto;box-shadow:0 10px 30px rgba(60,20,110,.3)}
+.pockets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pocket{aspect-ratio:55/85;border-radius:14px;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.35);padding:0;overflow:hidden;position:relative;display:grid;place-items:center;color:#fff;font-size:34px;font-weight:800}
+.pocket img{width:100%;height:100%;object-fit:cover;display:block}
+.pocket::after{content:"";position:absolute;inset:0;background:linear-gradient(155deg,rgba(255,255,255,.38),rgba(255,255,255,0) 38%);pointer-events:none}
+.pocket.empty{border-style:dashed;cursor:pointer}
+.pocket .tag{position:absolute;left:6px;bottom:6px;background:#fff;border-radius:999px;font-size:16px;line-height:1;padding:4px 7px;z-index:1}
+.pocket .trd{position:absolute;top:6px;right:6px;background:var(--gold);color:#3a2a05;border-radius:999px;font-size:12px;font-weight:900;padding:2px 8px;z-index:1}
+.bnav{display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:800;margin-top:12px;gap:8px}
+.bnav button{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);color:#fff;border-radius:14px;padding:8px 14px;font-weight:800}
+.bnav button:disabled{opacity:.35}
+.mbar{display:grid;grid-template-columns:34px 1fr 34px;gap:8px;align-items:center;font-weight:800;font-size:15px;margin:4px 0}
+.mbar .tr{height:14px;border-radius:7px;background:#f1ecfb;overflow:hidden}
+.mbar .tr i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,var(--violet),var(--pink))}
+.bigcard{width:min(70vw,280px);aspect-ratio:55/85;object-fit:cover;border-radius:18px;border:6px solid #fff;box-shadow:0 12px 30px rgba(40,10,80,.35);display:block;margin:0 auto 12px}
+.spal img,.sb img.ph{width:100%;aspect-ratio:55/85;object-fit:cover;border-radius:8px;display:block}
+
 /* badges */
 .ranks{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
 .rk{flex:1;min-width:150px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 12px}
@@ -276,6 +294,7 @@ footer{font-size:14px;color:var(--ink2);margin-top:40px;border-top:2px solid var
       <button data-tab="math">✖️ Math</button>
       <button data-tab="bt21">🌟 BT21</button>
       <button data-tab="journal">📓 Journal</button>
+      <button data-tab="binder">📒 Binder</button>
       <button data-tab="stickers">🎨 Freebies</button>
       <button data-tab="cards">💳 Cards</button>
       <button data-tab="badges">🏅 Badges</button>
@@ -286,7 +305,7 @@ footer{font-size:14px;color:var(--ink2);margin-top:40px;border-top:2px solid var
 <main class="wrap" id="main"></main>
 
 <div class="wrap"><footer>
-  <b>For grown-ups:</b> everything here stays on this page: no social media, no chat, and the only outside links (BT21's website and YouTube) are locked behind your secret code. Progress saves to the signed-in claude.ai account when opened on claude.ai, or on this device when opened on the website. Backups are in the 🏅 Badges tab. Tour songs come from the DJ Spin That tour list and update as the tour goes on. The BT21 buddies here are emoji stand-ins; the real BT21 characters belong to LINE Friends. Math problems with ARMY stories use made-up numbers.
+  <b>For grown-ups:</b> everything here stays on this page: no social media, no chat, and the only outside links (BT21's website and YouTube) are locked behind your secret code. Progress saves to the signed-in claude.ai account when opened on claude.ai, or on this device when opened on the website. Backups are in the 🏅 Badges tab. Tour songs come from the DJ Spin That tour list and update as the tour goes on. The BT21 buddies here are emoji stand-ins; the real BT21 characters belong to LINE Friends. Math problems with ARMY stories use made-up numbers. Binder photos are private: saved to the account on claude.ai, or kept on the device on the website.
   
 </footer></div>
 
@@ -533,7 +552,7 @@ let STOPS=[];      // unique cities in tour order
 function lsSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));return true}catch(e){return false}}
 function lsLoad(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null}catch(e){return null}}
 /* Two save modes: on claude.ai the page saves to the signed-in account (db), anywhere else it saves on this device. */
-let store={mode:'local',ref:null,jcol:null};let chain=Promise.resolve();
+let store={mode:'local',ref:null,jcol:null,ccol:null};let chain=Promise.resolve();
 const ON_SITE=/djspinthat\.net$/.test(location.hostname)||location.hostname==='localhost';
 function progressBody(){const {journal,...rest}=state;return JSON.parse(JSON.stringify(rest))}
 let saveTimer=null;
@@ -548,8 +567,9 @@ async function connectAccount(){
  setSave('· connecting…');
  try{const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),12000));
   const r=await Promise.race([timeout,(async()=>{const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);if(!db||!user)throw new Error('nodb');const uid=await user.id();if(!uid)throw new Error('nouid');
-   const ref=db.doc('data/users/'+uid+'/progress');const jcol=ref.collection('journal');const [snap,jsnap]=await Promise.all([ref.get(),jcol.get()]);return {ref,jcol,snap,jsnap}})()]);
-  store={mode:'db',ref:r.ref,jcol:r.jcol};
+   const ref=db.doc('data/users/'+uid+'/progress');const jcol=ref.collection('journal'),ccol=ref.collection('cards');const [snap,jsnap,csnap]=await Promise.all([ref.get(),jcol.get(),ccol.get()]);return {ref,jcol,ccol,snap,jsnap,csnap}})()]);
+  store={mode:'db',ref:r.ref,jcol:r.jcol,ccol:r.ccol};
+  CARDS=r.csnap.docs.map(d=>JSON.parse(JSON.stringify(d.data())));try{ASSETS=await window.claude.use('assets')}catch(e){ASSETS=null}
   const local=JSON.parse(JSON.stringify(state));
   if(r.snap.exists){state=Object.assign(FRESH(),JSON.parse(JSON.stringify(r.snap.data())),{journal:[]});
    state.journal=r.jsnap.docs.map(d=>JSON.parse(JSON.stringify(d.data()))).sort((a,b)=>(b.created||0)-(a.created||0))}
@@ -636,6 +656,7 @@ function render(){document.querySelectorAll('#nav button').forEach(b=>b.classLis
  else if(tab==='stickers')M.innerHTML=stickersView();
  else if(tab==='badges')M.innerHTML=badgesView();
  else if(tab==='cards')M.innerHTML=cardsView();
+ else if(tab==='binder')M.innerHTML=binderView();
  updateHeader();stickerCanvases(M);after()}
 let afterFns=[];function after(){const f=afterFns;afterFns=[];f.forEach(fn=>fn())}
 
@@ -812,6 +833,68 @@ function bt21View(){return `<section><h2 style="font-size:30px">🌟 Meet BT21</
   return `<div class="bt ${got?'got':''}" style="--c:${b.c}"><div class="em">${b.e}</div><h3>${b.n}</h3><p style="margin:0 0 8px;font-size:16.5px">${esc(b.d)}</p>
   ${got?`<p style="margin:0;font-weight:800">Made by ${b.m==='army'?'all of BTS, for ARMY 💜':esc(MEM[b.m].n)+' '+MEM[b.m].e}</p>`:`<b>Who made me?</b><div class="choices" style="grid-template-columns:1fr 1fr;margin-top:6px">${(b.m==='army'?shuffle(opts):opts).map(o=>`<button data-bt="${b.id}:${o===right?1:0}">${esc(o)}</button>`).join('')}</div>`}</div>`}).join('')}</div></section>`}
 
+/* ======================= PHOTOCARD BINDER ======================= */
+/* Her own photos of her photocards. On claude.ai: uploaded to this artifact's private asset store, rows in her account.
+   On the website: kept in this device's IndexedDB, the same store the Card Studio uses. Never put in the public repo. */
+let CARDS=[];const IMG={};let ASSETS=null;
+const PDB='little-army',PST='photos';
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(PDB,1);r.onupgradeneeded=()=>r.result.createObjectStore(PST,{keyPath:'id',autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbDo(mode,fn){const d=await idb();return new Promise((res,rej)=>{const t=d.transaction(PST,mode),st=t.objectStore(PST);const r=fn(st);t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error)})}
+async function loadLocalCards(){try{const all=await idbDo('readonly',st=>st.getAll())||[];CARDS=all.map(p=>({id:'L'+p.id,key:p.id,member:p.member||'ot7',trade:!!p.trade,at:p.at||0,url:URL.createObjectURL(p.blob)}))}catch(e){CARDS=[]}}
+function shrinkImg(file){return new Promise(res=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>{const k=Math.min(1,1100/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>res(b),'image/jpeg',.86)};im.onerror=()=>{URL.revokeObjectURL(u);res(null)};im.src=u})}
+async function addCards(files,member){let added=0;toast(`Adding ${files.length} photocard${files.length>1?'s':''}… 📒`);
+ for(const f of files){const blob=await shrinkImg(f);if(!blob)continue;const at=Date.now()+added;
+  try{if(store.mode==='db'){if(!ASSETS){toast('Adding photos needs edit access to this page.');break}
+    const a=await ASSETS.upload(blob);const row={id:'A'+a.id,asset:a.id,url:a.url,member,trade:false,at};await store.ccol.doc(row.id).set(row);CARDS.push(row)}
+   else{const key=await idbDo('readwrite',st=>st.add({member,blob,at,trade:false}));CARDS.push({id:'L'+key,key,member,trade:false,at,url:URL.createObjectURL(blob)})}
+   added++}catch(e){toast(e&&e.code==='quota_exceeded'?'The binder is full!':'One photo could not be added.')}}
+ if(added){toast(`Added ${added} photocard${added>1?'s':''}! 💜`);bPage=Math.max(0,Math.ceil(binderList().length/9)-1)}render()}
+async function updateCard(c,patch){Object.assign(c,patch);try{if(store.mode==='db'&&c.asset)await store.ccol.doc(c.id).update(patch);else if(c.key!=null)await idbDo('readwrite',st=>{const g=st.get(c.key);g.onsuccess=()=>{if(g.result)st.put(Object.assign(g.result,patch))};return g})}catch(e){toast('Could not save that change.')}}
+async function deleteCard(c){CARDS=CARDS.filter(x=>x!==c);try{if(store.mode==='db'&&c.asset){await store.ccol.doc(c.id).delete();if(ASSETS)await ASSETS.delete(c.asset)}else if(c.key!=null)await idbDo('readwrite',st=>st.delete(c.key))}catch(e){}}
+/* load a card's photo as an <img> a canvas can draw (fetching it first keeps the canvas saveable) */
+async function cardImg(c){if(IMG[c.id])return IMG[c.id];let src=c.url;try{if(!src.startsWith('blob:')){const r=await fetch(src);if(r.ok)src=URL.createObjectURL(await r.blob())}}catch(e){}
+ return IMG[c.id]=await new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src=src})}
+const cardById=id=>CARDS.find(c=>c.id===id);
+function drawPhoto(x,img,X,Y,S,seed){const h=S*.94,w=h*55/85;x.save();x.translate(X+S/2,Y+S/2);x.rotate(((seed||0)%7-3)*.02);
+ x.shadowColor='rgba(40,10,80,.3)';x.shadowBlur=S*.04;x.shadowOffsetY=S*.012;x.fillStyle='#fff';rr(x,-w/2,-h/2,w,h,S*.05);x.fill();x.shadowColor='transparent';
+ const b=S*.025,iw=w-2*b,ih=h-2*b;x.save();rr(x,-iw/2,-ih/2,iw,ih,S*.035);x.clip();if(img){const k=Math.max(iw/img.width,ih/img.height);x.drawImage(img,-img.width*k/2,-ih/2-(img.height*k-ih)*.2,img.width*k,img.height*k)}else{x.fillStyle='#ddd0ff';x.fillRect(-iw/2,-ih/2,iw,ih)}x.restore();x.restore()}
+/* stickers and photocards share one id space: 'p-<cardId>' is a photo */
+function drawItem(x,id,X,Y,S){if(id.startsWith('p-')){const c=cardById(id.slice(2));drawPhoto(x,c?IMG[c.id]:null,X,Y,S,c?c.at:0)}else{const st=stById(id);if(st)drawSticker(x,st,X,Y,S)}}
+async function preload(ids){await Promise.all(ids.filter(i=>i&&i.startsWith('p-')).map(i=>{const c=cardById(i.slice(2));return c?cardImg(c):null}))}
+
+let bFilter='all',bPage=0;
+function binderList(){return CARDS.filter(c=>bFilter==='all'||(bFilter==='trade'?c.trade:c.member===bFilter)).sort((a,b)=>a.at-b.at)}
+function binderView(){const list=binderList();const pages=Math.max(1,Math.ceil((list.length+(bFilter==='trade'?0:1))/9));bPage=Math.min(bPage,pages-1);
+ const slice=list.slice(bPage*9,bPage*9+9);const canAdd=bFilter!=='trade';
+ const counts=MORDER.concat('ot7').map(k=>[k,CARDS.filter(c=>c.member===k).length]);const max=Math.max(1,...counts.map(c=>c[1]));const trades=CARDS.filter(c=>c.trade).length;
+ afterFns.push(newBQ);
+ return `<section><div class="secthead"><h2 style="font-size:30px;margin:0">📒 My Photocard Binder</h2><label class="btn pink" for="addCards">＋ Add photocards</label><input type="file" id="addCards" accept="image/*" multiple hidden></div>
+ <p class="muted">Take a photo of each photocard (or pick them from your photos) and slide them into your binder! ${store.mode==='db'?'They are saved privately to your account.':'They stay on this device, and they also show up in the Card Studio.'}</p>
+ <div class="chips" style="margin-bottom:14px"><button data-bf="all" class="${bFilter==='all'?'on':''}">All (${CARDS.length})</button>${MORDER.concat('ot7').map(k=>`<button data-bf="${k}" class="${bFilter===k?'on':''}">${MEM[k].e} ${esc(MEM[k].n)}</button>`).join('')}<button data-bf="trade" class="${bFilter==='trade'?'on':''}">🔁 For trade (${trades})</button></div>
+ <div class="binder"><div class="pockets">${Array.from({length:9},(_,i)=>{const c=slice[i];if(c)return `<button class="pocket" data-card="${c.id}" aria-label="${esc(MEM[c.member]?MEM[c.member].n:'')} photocard"><img src="${esc(c.url)}" alt="" loading="lazy"><span class="tag">${MEM[c.member]?MEM[c.member].e:'💜'}</span>${c.trade?'<span class="trd">TRADE</span>':''}</button>`;
+   return canAdd&&i===slice.length?`<label class="pocket empty" for="addCards">＋</label>`:`<div class="pocket empty" style="cursor:default;opacity:.6"></div>`}).join('')}</div>
+  <div class="bnav"><button data-bpage="-1" ${bPage===0?'disabled':''}>← Page</button><span>Page ${bPage+1} of ${pages}</span><button data-bpage="1" ${bPage>=pages-1?'disabled':''}>Page →</button></div></div>
+ <div class="mathwrap" style="margin-top:18px"><div class="card"><h3>🧮 Binder math</h3><div id="bq"></div></div>
+ <div class="card"><h3>💜 My collection</h3>${counts.map(([k,n])=>`<div class="mbar"><span style="font-size:22px">${MEM[k].e}</span><span class="tr"><i style="width:${n/max*100}%"></i></span><span>${n}</span></div>`).join('')}<p class="muted" style="margin:8px 0 0;font-size:15px">Tap a card to change who's on it, mark it as a double for trading, or take it out.</p></div></div></section>`}
+let bq=null;
+function newBQ(){const box=$('#bq');if(!box)return;const n=CARDS.length;const qs=[];
+ if(n>=1)qs.push(()=>{const a=Math.ceil(n/9);return {q:`You have ${n} photocard${n>1?'s':''}. Each binder page holds 9. How many pages do you need?`,a,why:`${n} ÷ 9 → ${Math.floor(n/9)} full page${Math.floor(n/9)===1?'':'s'}${n%9?` and ${n%9} more card${n%9>1?'s':''} on the next page`:''}, so ${a} page${a>1?'s':''}.`}});
+ const have=MORDER.filter(k=>CARDS.some(c=>c.member===k));
+ if(have.length>=2)qs.push(()=>{const [k1,k2]=shuffle(have).slice(0,2);const a1=CARDS.filter(c=>c.member===k1).length,a2=CARDS.filter(c=>c.member===k2).length;return {q:`You have ${a1} ${MEM[k1].n} card${a1>1?'s':''} ${MEM[k1].e} and ${a2} ${MEM[k2].n} card${a2>1?'s':''} ${MEM[k2].e}. How many is that altogether?`,a:a1+a2,why:`${a1} + ${a2} = ${a1+a2}`}});
+ qs.push(()=>{const p=rnd(2,9);return {q:`A binder page holds 9 photocards. How many cards fit on ${p} pages?`,a:9*p,why:`${p} × 9 = ${9*p}`}});
+ qs.push(()=>{const f=rnd(2,6),e=rnd(2,5);return {q:`You want to give ${f} friends ${e} photocards each. How many cards do you need?`,a:f*e,why:`${f} × ${e} = ${f*e}`}});
+ bq=pickOne(qs)();bq.done=false;const opts=new Set([bq.a]);while(opts.size<4){const v=bq.a+rnd(-6,6);if(v>0)opts.add(v)}bq.opts=shuffle([...opts]);
+ box.innerHTML=`<div class="problem" style="font-size:19px">${esc(bq.q)}</div><div class="opts">${bq.opts.map(o=>`<button data-bqa="${o}">${o}</button>`).join('')}</div><div class="feedback" id="bqfb"></div>`}
+function answerBQ(v){if(!bq||bq.done)return;bq.done=true;const ok=v===bq.a;document.querySelectorAll('[data-bqa]').forEach(b=>{const k=+b.dataset.bqa;if(k===bq.a)b.classList.add('right');else if(k===v)b.classList.add('wrong')});
+ if(ok){state.mathRight++;state.sinceSticker.math++;save();updateHeader();if(state.sinceSticker.math>=5){state.sinceSticker.math=0;save();giveSticker(randomSticker(['member','fun']),'5 math missions solved!')}}
+ $('#bqfb').innerHTML=(ok?'<span class="ok">대박! </span>':'<span class="no">Almost! </span>')+esc(bq.why);setTimeout(newBQ,ok?2200:3500)}
+function cardModal(id){const c=cardById(id);if(!c)return;modal(`<img class="bigcard" src="${esc(c.url)}" alt="Photocard">
+ <p style="font-weight:800;margin:0 0 6px">Who's on this card?</p><div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-cm="${id}|${k}" class="${c.member===k?'on':''}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px"><button class="btn ${c.trade?'':'ghost'}" data-ctrade="${id}">🔁 ${c.trade?'Marked for trade':'It\'s a double, for trade'}</button><button class="btn ghost" data-cdel="${id}">🗑 Take it out</button><button class="btn pink" onclick="closeModal()">Done</button></div>`)}
+function addCardsModal(files){modal(`<div style="font-size:54px">📒</div><h2 style="margin:4px 0">${files.length} new photocard${files.length>1?'s':''}!</h2><p style="margin-top:0">Who's on ${files.length>1?'these cards':'this card'}? (You can change each one later.)</p>
+ <div class="moods" style="justify-content:center">${MORDER.concat('ot7').map(k=>`<button data-addm="${k}">${MEM[k].e}<small>${esc(MEM[k].n)}</small></button>`).join('')}</div><button class="btn ghost small" style="margin-top:12px" onclick="closeModal()">Cancel</button>`);pendingFiles=files}
+let pendingFiles=null;
+
 /* ======================= MAMA'S SECRET CODE ======================= */
 const OUT_LINKS=[['🌐','BT21 website','https://www.bt21.com/'],['▶️','BT21 on YouTube','https://www.youtube.com/@BT21_official']];
 function pinHash(code){let h=2166136261;for(const ch of 'little-dj-studio:'+code){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0).toString(36)}
@@ -847,9 +930,10 @@ function journalForm(){const songs=[...new Set([...Object.keys(allSongs()),...SE
  <label>My scrapbook page</label>
  <div class="pagewrap"><div><canvas class="page" id="pad" width="1200" height="900"></canvas>
   <div class="tools">${COLORS.map(c=>`<button class="sw ${c===jd.color?'on':''}" data-color="${c}" style="background:${c}" aria-label="color"></button>`).join('')}</div>
-  <div class="tools"><button class="tool on" data-tool="pen">✏️ Pen</button><button class="tool" data-tool="fat">🖍️ Marker</button><button class="tool" data-tool="erase">🧽 Eraser</button><button class="tool" data-tool="sticker">⭐ Sticker stamp</button><button class="tool" data-undo>↩️ Undo</button><button class="tool" data-clear>🗑 Clear</button></div>
+  <div class="tools"><button class="tool on" data-tool="pen">✏️ Pen</button><button class="tool" data-tool="fat">🖍️ Marker</button><button class="tool" data-tool="erase">🧽 Eraser</button><button class="tool" data-tool="sticker">⭐ Stamp</button><button class="tool" data-undo>↩️ Undo</button><button class="tool" data-clear>🗑 Clear</button></div>
   <div class="tools" id="stampsize" style="display:none"><span style="font-weight:800">Sticker size:</span><button class="tool" data-ss="70">S</button><button class="tool on" data-ss="110">M</button><button class="tool" data-ss="170">L</button><span class="muted" style="font-size:14px">Pick a sticker, then tap the page to stick it!</span></div></div>
-  <div><b style="font-size:15px">My stickers</b>${owned.length?`<div class="spal">${owned.map(s=>`<button data-stamp="${s.id}" aria-label="${esc(s.label)}"><canvas data-st="${s.id}" width="120" height="120"></canvas></button>`).join('')}</div>`:`<p class="muted" style="font-size:15px">Earn stickers in the Tour, Korean, Math, and BT21 tabs, and they'll show up here!</p>`}</div></div>
+  <div><b style="font-size:15px">My stickers</b>${owned.length?`<div class="spal">${owned.map(s=>`<button data-stamp="${s.id}" aria-label="${esc(s.label)}"><canvas data-st="${s.id}" width="120" height="120"></canvas></button>`).join('')}</div>`:`<p class="muted" style="font-size:15px">Earn stickers in the Tour, Korean, Math, and BT21 tabs, and they'll show up here!</p>`}
+  ${CARDS.length?`<b style="font-size:15px;display:block;margin-top:10px">My photocards</b><div class="spal">${CARDS.map(c=>`<button data-stamp="p-${c.id}" aria-label="Photocard"><img src="${esc(c.url)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}</div></div>
  <label for="jsong">🎵 Song of the day</label><select id="jsong"><option value="">Pick a song…</option>${songs.map(s=>`<option>${esc(s)}</option>`).join('')}</select>
  <label for="jword">🇰🇷 A Korean word I used</label><select id="jword"><option value="">Pick a word…</option>${WORDS.map(w=>`<option value="${esc(w[0])} (${esc(w[1])})">${esc(w[0])} · ${esc(w[2].replace(/ \(.*\)/,''))}</option>`).join('')}</select>
  <label for="jtext">📝 What I want to remember</label><textarea id="jtext" placeholder="Today I listened to… It made me feel…"></textarea>
@@ -861,7 +945,7 @@ function initPad(){const c=$('#pad');if(!c)return;const x=c.getContext('2d');x.f
  padHist=[c.toDataURL()];let drawing=false,last=null;
  const pos=e=>{const r=c.getBoundingClientRect();return [(e.clientX-r.left)*c.width/r.width,(e.clientY-r.top)*c.height/r.height]};
  c.addEventListener('pointerdown',e=>{e.preventDefault();const p=pos(e);
-  if(jd.tool==='sticker'){if(!jd.stamp){toast('Pick a sticker from "My stickers" first!');return}const S=jd.stampSize*2;drawSticker(x,stById(jd.stamp),p[0]-S/2,p[1]-S/2,S);pushHist();return}
+  if(jd.tool==='sticker'){if(!jd.stamp){toast('Pick a sticker or photocard first!');return}const S=jd.stampSize*2*(jd.stamp.startsWith('p-')?1.5:1);drawItem(x,jd.stamp,p[0]-S/2,p[1]-S/2,S);pushHist();return}
   drawing=true;last=p;c.setPointerCapture(e.pointerId);dot(p)});
  c.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);x.lineCap='round';x.lineJoin='round';x.strokeStyle=jd.tool==='erase'?'#fffdf7':jd.color;x.lineWidth=jd.tool==='erase'?40:jd.tool==='fat'?22:7;x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p});
  const end=()=>{if(drawing){drawing=false;pushHist()}};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
@@ -878,19 +962,19 @@ function saveEntry(){const today=new Date();const e={id:'j'+Date.now(),created:D
 /* ======================= STICKERS & FREEBIES ======================= */
 let sSub='book',fm={tpl:'sheet',sel:[],msg:'Borahae 💜',from:''};
 const MSGS=['Borahae 💜','Thank you, ARMY!','Let\'s be friends! 🫰','화이팅! You can do it!','사랑해 💜','From one ARMY to another'];
-function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const owned=STICKERS.filter(s=>state.stickers[s.id]);
+function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const owned=STICKERS.filter(s=>state.stickers[s.id]);const canMake=owned.length||CARDS.length;fm.sel=fm.sel.filter(i=>!i.startsWith('p-')||cardById(i.slice(2)));
  if(!fm.from)fm.from=state.name||'';
  const book=`<p class="muted" style="margin-top:0">You have <b>${owned.length}</b> of ${STICKERS.length} stickers. Gray ones are still waiting for you!</p>
   <div class="tip" style="margin-bottom:14px"><b>How to earn stickers:</b> 🎫 pass a city quiz · ✖️ every 5 math answers · 🇰🇷 every 5 Korean answers · 🌟 each BT21 buddy · 📓 your first journal page each day</div>
   ${sets.map(set=>`<h3 style="margin-top:16px">${esc(set)}</h3><div class="sbook">${STICKERS.filter(s=>s.set===set).map(s=>`<div class="sb ${state.stickers[s.id]?'':'locked'}"><canvas data-st="${s.id}" width="200" height="200"></canvas><small>${state.stickers[s.id]?esc(s.label):'???'}</small>${state.stickers[s.id]>1?`<span class="cnt">×${state.stickers[s.id]}</span>`:''}</div>`).join('')}</div>`).join('')}`;
- const maker=owned.length?`<div class="fmwrap"><div>
+ const maker=canMake?`<div class="fmwrap"><div>
    <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button></div>
-   <h3 style="margin-top:14px">2. Tap your stickers <span class="muted" style="font-size:16px">(${fm.sel.length}/${tplMax()})</span></h3><div class="sbook">${owned.map(s=>`<button class="sb ${fm.sel.includes(s.id)?'sel':''}" data-fsel="${s.id}"><canvas data-st="${s.id}" width="160" height="160"></canvas><small>${esc(s.label)}</small></button>`).join('')}</div>
+   <h3 style="margin-top:14px">2. Tap your stickers <span class="muted" style="font-size:16px">(${fm.sel.length}/${tplMax()})</span></h3><div class="sbook">${owned.map(s=>`<button class="sb ${fm.sel.includes(s.id)?'sel':''}" data-fsel="${s.id}"><canvas data-st="${s.id}" width="160" height="160"></canvas><small>${esc(s.label)}</small></button>`).join('')}${CARDS.map(c=>`<button class="sb ${fm.sel.includes('p-'+c.id)?'sel':''}" data-fsel="p-${c.id}"><img class="ph" src="${esc(c.url)}" alt="" loading="lazy"><small>${MEM[c.member]?MEM[c.member].e+' '+esc(MEM[c.member].n):'Photocard'}</small></button>`).join('')}</div>
    <h3 style="margin-top:14px">3. Pick a message</h3><div class="chips">${MSGS.map((m,i)=>`<button data-msg="${i}" class="${fm.msg===m?'on':''}" style="font-size:16px">${esc(m)}</button>`).join('')}</div>
    <div class="form"><label for="ffrom">From (your ARMY name)</label><input type="text" id="ffrom" maxlength="16" value="${esc(fm.from)}" placeholder="Your ARMY name"></div></div>
   <div><div class="card preview"><canvas id="fcv" width="1200" height="1800"></canvas><div style="display:grid;gap:10px;margin-top:14px"><button class="btn pink" data-fsave>💾 Save / AirDrop / Print</button><p class="muted" style="margin:0;font-size:14px;text-align:center">Prints nicely as a 4×6 photo. Cut out the stickers with a grown-up!</p></div></div></div></div>`
-  :`<div class="card" style="text-align:center"><div style="font-size:60px">🎨</div><p>Earn some stickers first, then come back to make freebies for your ARMY friends!</p></div>`;
- if(sSub==='maker'&&owned.length)afterFns.push(drawFreebie);
+  :`<div class="card" style="text-align:center"><div style="font-size:60px">🎨</div><p>Earn some stickers or add photocards to your binder, then come back to make freebies for your ARMY friends!</p></div>`;
+ if(sSub==='maker'&&canMake)afterFns.push(drawFreebie);
  return `<section><h2 style="font-size:30px">🎨 Stickers &amp; Freebies</h2><div class="subtabs"><button data-ssub="book" class="${sSub==='book'?'on':''}">📒 My sticker book</button><button data-ssub="maker" class="${sSub==='maker'?'on':''}">✂️ Freebie maker</button></div>${sSub==='book'?book:maker}
  <p style="margin-top:20px"><button class="btn ghost" data-gotab="cards">💳 Make a photocard in the Card Studio →</button></p></section>`}
 function tplMax(){return fm.tpl==='sheet'?6:fm.tpl==='bookmark'?3:1}
@@ -900,21 +984,21 @@ function bgArt(x,W,H){const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'
  x.strokeStyle='#a78bfa';x.lineWidth=10;x.setLineDash([24,16]);rr(x,30,30,W-60,H-60,50);x.stroke();x.setLineDash([])}
 async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.fonts.load("700 40px Fredoka");await document.fonts.load("900 40px 'Noto Sans KR'")}catch(e){}
  const [W,H]=freebieSize();c.width=W;c.height=H;const x=c.getContext('2d');bgArt(x,W,H);x.textAlign='center';x.textBaseline='middle';
- const sel=fm.sel.map(stById).filter(Boolean);const from=(($('#ffrom')||{}).value||fm.from||'').slice(0,16);
+ await preload(fm.sel);const sel=fm.sel;const from=(($('#ffrom')||{}).value||fm.from||'').slice(0,16);
  x.fillStyle='#5b21b6';
  if(fm.tpl==='sheet'){x.font="700 78px Fredoka,sans-serif";x.fillText('A little ARMY freebie',W/2,140);x.font='60px '+EMOJI;x.fillText('💜',W/2,225);
-  const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawSticker(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
+  const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawItem(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1690-(from?50:0));
   if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1700)}}
- else if(fm.tpl==='card'){const s=sel[0];x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,170);if(s)drawSticker(x,s,150,260,900);
+ else if(fm.tpl==='card'){const s=sel[0];x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,170);if(s)drawItem(x,s,150,260,900);
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,84);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1300);
   x.font="900 52px 'Noto Sans KR',sans-serif";x.fillStyle='#db2777';x.fillText('보라해',W/2,1420);
   if(from){x.font="800 50px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1560)}x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜',W/2,1690)}
  else{x.font="900 64px 'Noto Sans KR',sans-serif";x.fillText('아미',W/2,150);x.font="800 32px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('ARMY',W/2,210);
-  for(let i=0;i<3;i++){const s=sel[i];if(s)drawSticker(x,s,90,270+i*420,420)}
+  for(let i=0;i<3;i++){const s=sel[i];if(s)drawItem(x,s,90,270+i*420,420)}
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-110,46);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1580);
   if(from){x.font="800 34px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1660)}}}
-async function saveFreebie(){const c=$('#fcv');if(!c)return;await drawFreebie();c.toBlob(blob=>offerFile(blob,'my-army-freebie.png','My ARMY freebie 💜'),'image/png')}
+async function saveFreebie(){const c=$('#fcv');if(!c)return;await drawFreebie();try{c.toBlob(blob=>{if(blob)offerFile(blob,'my-army-freebie.png','My ARMY freebie 💜');else toast('That freebie could not be saved.')},'image/png')}catch(e){toast('That photo can\'t be saved in a freebie here. Try stickers instead.')}}
 
 /* ======================= CARD STUDIO (embedded) ======================= */
 function cardsView(){return `<section><h2 style="font-size:30px">💳 Little ARMY Card Studio</h2><p class="muted" style="margin-top:0">Make a photocard for a new ARMY friend. They scan the QR code to keep it!</p>
@@ -943,6 +1027,8 @@ function badgeList(){const n=o=>Object.keys(o).length;const owned=Object.values(
   {ic:'🌟',t:'BT21 Best Friend',d:'Meet all 8 BT21 buddies',got:n(state.bt21)>=BT21.length},
   {ic:'📓',t:'Journal Writer',d:'Make your first journal page',got:state.journal.length>=1},
   {ic:'📚',t:'Scrapbook Star',d:'Make 7 journal pages',got:state.journal.length>=7},
+  {ic:'📒',t:'Photocard Collector',d:'Put 10 photocards in your binder',got:CARDS.length>=10},
+  {ic:'🔁',t:'Trade Ready',d:'Mark 3 doubles for trading',got:CARDS.filter(c=>c.trade).length>=3},
   {ic:'🎨',t:'Sticker Collector',d:'Collect 25 different stickers',got:owned>=25},
   {ic:'👑',t:'전설 Legend',d:'Reach the top rank',got:points()>=RANKS[3].min}
  ]}
@@ -983,6 +1069,14 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
  if(d.ko)return answerK(+d.ko);
  if(d.cq){const [id,i]=d.cq.split(':');const c=CULTURE.find(x=>x.id===id);if(+i===c.q.a){state.culture[id]=1;save();toast('✓ Collected! +3 💜');render()}else{t.classList.add('wrong');toast('Read the card again and try another answer!')}return}
  if(d.k)return mathKey(d.k);
+ if(d.bf){bFilter=d.bf;bPage=0;return render()}
+ if(d.bpage){bPage+=+d.bpage;return render()}
+ if(d.bqa)return answerBQ(+d.bqa);
+ if(d.card)return cardModal(d.card);
+ if(d.cm){const [id,k]=d.cm.split('|');const c=cardById(id);updateCard(c,{member:k});document.querySelectorAll('[data-cm]').forEach(b=>b.classList.toggle('on',b===t));return render()}
+ if(d.ctrade){const c=cardById(d.ctrade);updateCard(c,{trade:!c.trade});cardModal(c.id);return render()}
+ if(d.cdel){const c=cardById(d.cdel);if(c&&confirm('Take this photocard out of your binder?')){deleteCard(c);closeModal();render()}return}
+ if(d.addm){const f=pendingFiles;pendingFiles=null;closeModal();if(f&&f.length)addCards(f,d.addm);return}
  if(d.pin)return pinKey(d.pin);
  if(d.gate!==undefined)return gateModal('open');
  if(d.setpin!==undefined)return gateModal(state.pin?'old':'new');
@@ -994,7 +1088,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
  if(d.mood){jd.mood=d.mood;document.querySelectorAll('[data-mood]').forEach(b=>b.classList.toggle('on',b===t));return}
  if(d.color){jd.color=d.color;if(jd.tool==='erase'||jd.tool==='sticker')setTool('pen');document.querySelectorAll('[data-color]').forEach(b=>b.classList.toggle('on',b===t));return}
  if(d.tool)return setTool(d.tool);
- if(d.stamp){jd.stamp=d.stamp;setTool('sticker');document.querySelectorAll('[data-stamp]').forEach(b=>b.classList.toggle('on',b===t));return}
+ if(d.stamp){jd.stamp=d.stamp;preload([d.stamp]);setTool('sticker');document.querySelectorAll('[data-stamp]').forEach(b=>b.classList.toggle('on',b===t));return}
  if(d.ss){jd.stampSize=+d.ss;document.querySelectorAll('[data-ss]').forEach(b=>b.classList.toggle('on',b===t));return}
  if(d.undo!==undefined)return padUndo();
  if(d.clear!==undefined){if(confirm('Clear the whole page?'))initPad();return}
@@ -1015,7 +1109,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
 document.addEventListener('click',e=>{const g=e.target.closest('g.stop');if(g){tab='tour';go({city:g.dataset.city})}});
 document.addEventListener('keydown',e=>{if($('#pinbox')){if(/^[0-9]$/.test(e.key))pinKey(e.key);else if(e.key==='Backspace')pinKey('del');else if(e.key==='Enter')pinKey('go');return}if($('#mq')&&tab==='math'&&!$('#modal')){if(/^[0-9]$/.test(e.key))mathKey(e.key);else if(e.key==='Backspace')mathKey('del');else if(e.key==='Enter')mathKey('go')}});
 document.addEventListener('input',e=>{if(e.target.id==='ffrom'){fm.from=e.target.value;drawFreebie()}});
-document.addEventListener('change',e=>{if(e.target.id==='restore'&&e.target.files[0])restore(e.target.files[0])});
+document.addEventListener('change',e=>{if(e.target.id==='restore'&&e.target.files[0])restore(e.target.files[0]);if(e.target.id==='addCards'&&e.target.files.length){addCardsModal([...e.target.files]);e.target.value=''}});
 function setTool(t){jd.tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));const ss=$('#stampsize');if(ss)ss.style.display=t==='sticker'?'flex':'none'}
 function saveM(){try{localStorage.setItem('little-army-math',JSON.stringify(mset))}catch(e){}}
 
@@ -1029,6 +1123,7 @@ async function start(){const local=lsLoad();if(local)state=Object.assign(FRESH()
  try{const r=await fetch(DATA_BASE+'/shows.json',{cache:'no-cache'});const d=await r.json();if(d.shows&&d.shows.length)sh=d.shows}catch(e){}
  try{const r=await fetch(DATA_BASE+'/setlist.json',{cache:'no-cache'});const d=await r.json();if(d.acts)acts=d.acts}catch(e){}
  SHOWS=sh.slice().sort((a,b)=>(a.order||0)-(b.order||0)||a.date.localeCompare(b.date));SETLIST_SONGS=acts.flatMap(a=>a.songs).filter(s=>s&&s!=='*');
+ await loadLocalCards();
  STOPS=[];SHOWS.forEach(s=>{if(!STOPS.includes(s.city))STOPS.push(s.city)});if(!STOPS.length)STOPS=Object.keys(CITIES);
  lastRank=rankFor(points()).en;render();if(local)setSave('· saved ✓');
  const willConnect=!!(window.claude&&typeof window.claude.use==='function');
