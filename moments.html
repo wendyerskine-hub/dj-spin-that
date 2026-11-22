@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -16,550 +16,256 @@
 <meta name="twitter:image" content="https://djspinthat.net/og-moments.jpg">
 <title>Moments Board · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
-/* page share button */
-header.hero{position:relative}
-.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
-.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
-.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
-.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);z-index:50;background:var(--ink);color:var(--night);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);text-align:center}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-@media (min-width:761px){.toast{bottom:28px}}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Black+Han+Sans&display=swap">
 <style>
-/* Layout: full-bleed concert backdrop (video or ambient canvas), three stacked "stations" on glass: Spin, My City, My Bias. Deliberately single dark stage look. */
-:root{
-  --night:#110a1d;        /* deep aubergine stage */
-  --ink:#f4efff;          /* lilac-white text */
-  --muted:#b8a9d6;        /* dusty lavender */
-  --violet:#b48cff;       /* borahae violet */
-  --jade:#d9c2ff;         /* pale lilac labels */
-  --gold:#c77dff;         /* bright orchid accent */
-  --glass:rgba(28,14,48,.62);
-  --line:rgba(243,237,226,.14);
-  --f-display:"Gowun Batang","Nanum Myeongjo",Georgia,serif;
-  --f-body:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
-  color-scheme:dark;
-}
-html,body{min-height:100%}
-body{background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden}
-#stage{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--night)}
-#stage canvas,#stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#stage .photo{position:absolute;inset:-3%;background:url(stage.jpg?v=2) center 30%/cover no-repeat;filter:saturate(.7) brightness(.85);animation:drift 40s ease-in-out infinite alternate}
-#stage .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(120,60,220,.55),rgba(60,20,110,.45));mix-blend-mode:color}
-#stage canvas{opacity:.35}
-#stage .yt{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.5s}
-#stage .yt.on{opacity:1}
-#stage .yt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-
-@keyframes drift{from{transform:scale(1) translate(0,0)}to{transform:scale(1.06) translate(-1%,-1%)}}
-#stage.has-video .photo{opacity:0}
-#stage video{opacity:0;transition:opacity 1.2s}
-#stage.has-video video{opacity:1}
-#stage.has-video canvas{opacity:0}
-#stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,10,29,.25),rgba(17,10,29,.7) 55%,rgba(17,10,29,.9))}
-main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
-
-header.hero{display:grid;gap:10px;padding-block:20px 6px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade)}
-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(44px,9vw,104px);line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
-h1 .kicker{display:block;font-family:var(--f-mono);font-size:.22em;font-weight:600;color:var(--gold);letter-spacing:.4em;margin-bottom:.5em}
-.lede{max-width:60ch;color:var(--muted);margin:0;font-size:17px}
-.bg-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
-.bg-controls a{color:var(--violet)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
-section.station{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
-section.spin,section.disco,section.units{grid-column:1/-1}
-.station h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.1;text-wrap:balance}
-.station h2 small{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);margin-bottom:6px}
-.station p.help{margin:0;color:var(--muted);font-size:14px}
-
-button,select,input{font:inherit}
-.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:12px 22px;font-weight:600;background:var(--gold);color:#1a0b2e;letter-spacing:.02em;transition:transform .15s, box-shadow .2s}
-.btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(199,125,255,.45)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.btn:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible,.seg button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-label{font-size:12px;font-family:var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-select{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
-select option{background:#22123a;color:var(--ink)}
-.row{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
-.row>.field{flex:1 1 180px;display:grid;gap:6px;min-width:0}
-.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:center;gap:4px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:rgba(17,10,29,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.tabbar a{display:inline-flex;align-items:center;gap:7px;background:none;border:0;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:999px;cursor:pointer}
-.tabbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tabbar a[aria-current="page"]{background:var(--gold);color:#1a0b2e}
-.tabbar a:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-@media (max-width:760px){
-  .tabbar{position:fixed;top:auto;bottom:0;left:0;right:0;justify-content:space-around;gap:0;padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));border-bottom:0;border-top:1px solid var(--line)}
-  .tabbar a{flex-direction:column;gap:3px;font-size:11px;padding:6px 4px;border-radius:12px;flex:1;min-width:0}
-  .tabbar a[aria-current="page"]{background:rgba(199,125,255,.22);color:var(--ink)}
-  .tabbar a[aria-current="page"] svg{stroke:var(--gold)}
-  main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-  footer{margin-bottom:8px}
-}
-@media (max-width:760px){.tabbar a span{font-size:10.5px;line-height:1.1;text-align:center;white-space:normal;max-width:72px}}
-/* responsive polish: tablets + touch */
-@media (min-width:761px) and (max-width:1100px){
-  .tabbar{gap:2px;padding-left:12px;padding-right:12px}
-  .tabbar a{flex:1;flex-direction:column;gap:4px;padding:8px 4px;font-size:12.5px;border-radius:14px;min-width:0;line-height:1.15;text-align:center}
-  .tabbar a span{white-space:nowrap}
-}
-@media (min-width:761px) and (max-width:860px){.tabbar a{font-size:11.5px}}
-footer a.kofi,a.kofi{max-width:100%;text-align:left;line-height:1.3;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
-footer a.kofi:hover{filter:brightness(1.08)}
-.follow-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}.follow-row>span{font-weight:600;flex-basis:100%}.follow{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:inherit;font-weight:600;font-size:14px;text-decoration:none}.follow:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.12)}.follow i{font-style:normal;font-family:var(--f-mono,monospace);font-size:12px;opacity:.75}
-
-footer{color:var(--muted);font-size:12px;max-width:80ch;display:grid;gap:6px}
-footer a{color:var(--violet)}
-footer a.kofi,a.kofi{max-width:100%;text-align:left;line-height:1.3;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--gold);color:#1a0b2e;font-weight:700;font-size:14px;text-decoration:none}
-footer a.kofi:hover{filter:brightness(1.08)}
-.live{display:flex;gap:8px;align-items:center;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:6px}
-#liveDot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
-#liveDot[data-state="live"]{background:var(--jade);box-shadow:0 0 0 0 rgba(217,194,255,.6);animation:pulse 2s infinite}
-#liveDot[data-state="off"]{background:var(--gold)}
-.pshare{position:absolute;top:20px;right:0;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .3s,background-color .5s}
-.pshare:hover,.pshare:focus-visible{border-color:var(--gold)}
-.pshare svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:760px){.pshare{top:4px;width:44px;height:44px;padding:0;justify-content:center}.pshare span{display:none}header.hero h1,header.hero .eyebrow{padding-right:54px}}
-.tabbar .tl,.tabbar .ts{font-weight:inherit}
-.tabbar .ts{display:none}
-@media (max-width:1100px){.tabbar .tl{display:none}.tabbar .ts{display:inline}}
-.tabbar a,.btn,.chip,.seg button,.cr-filter button{transition:background-color .5s ease,border-color .5s ease,color .3s ease}
-@media (max-width:760px){.tabbar a[aria-current="page"]{background:color-mix(in srgb,var(--gold) 24%,transparent)}}
-  .pc-preview:not(.show-back) #pcBack,.pc-preview.show-back #pcFront{display:none}
-}
-/* bigger phone tab bar */
-@media (max-width:760px){
-  .tabbar{padding:5px max(2px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(2px,env(safe-area-inset-left,0px))}
-  .tabbar a{gap:4px;padding:8px 0 7px;min-height:62px;border-radius:14px}
-  .tabbar svg{width:26px;height:26px;stroke-width:1.8}
-  .tabbar a span{font-size:12.5px;line-height:1.1;letter-spacing:-.01em;white-space:nowrap;max-width:none}
-  main{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
-  .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-}
-@media (max-width:389px){.tabbar a span{font-size:11.5px}.tabbar svg{width:24px;height:24px}}
-/* holiday theme (draft): open the site with ?holiday=1 to preview. Snow + fairy lights from the holiday TikToks. */
-.tabbar a{text-decoration:none}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,194,255,.6)}70%{box-shadow:0 0 0 10px rgba(217,194,255,0)}100%{box-shadow:0 0 0 0 rgba(217,194,255,0)}}
-
-/* ---------- Moments board (same DJ hardware look as the Spin station) ---------- */
-:root{--red:#FF2A4B;--purple:#A855F7;--first:#ffd166;--hw1:#232938;--hw2:#0E111A}
-.board-wrap{display:grid;gap:14px}
-.console{border-radius:22px;padding:clamp(10px,2vw,18px);background:linear-gradient(180deg,#232938 0%,#141824 3%,#0E111A 97%,#05060A 100%);border:1px solid #273145;box-shadow:0 18px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
-.monitor{border-radius:14px;background:#06070b;border:1px solid #273145;padding:14px 16px;box-shadow:inset 0 0 40px rgba(168,85,247,.10);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px}
-@media (max-width:760px){.monitor{grid-template-columns:1fr}}
-.mon-k{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:#9aa3b8;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
-.mon-t{font-family:var(--f-display);font-size:clamp(24px,3.4vw,32px);line-height:1.1;margin:4px 0 2px}
-.mon-s{font-size:15px;color:var(--muted)}
-.mon-s b{color:var(--ink);font-weight:600}
-.mon-list{margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
-.mi{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.03)}
-.mi.solo{background:rgba(168,85,247,.16)}
-.mi .dot{flex:none;width:12px;height:12px;margin-top:4px;border-radius:3px;background:#1b2130;border:1px solid #2b3447}
-.mi .dot.on{border-color:rgba(255,255,255,.35)}
-.mi .nm{font-size:15px;font-weight:600;line-height:1.25}
-.mi .sub{font-size:13px;color:var(--muted)}
-.mi a,.mi button.lnk{font-size:14px}
-button.lnk{white-space:nowrap;background:none;border:0;padding:0;color:var(--violet);text-decoration:underline;cursor:pointer;font:inherit;font-size:14px;text-align:left}
-.solo-pane{border-left:1px dashed #2b3447;padding-left:16px}
-@media (max-width:760px){.solo-pane{border-left:0;border-top:1px dashed #2b3447;padding:12px 0 0}}
-.solo-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid #161b27;font-size:15px}
-.solo-row span{min-width:0}
-.pager{display:flex;flex-wrap:wrap;gap:10px;align-items:end;justify-content:space-between}
-.pager .field{display:grid;gap:6px;flex:1 1 240px;max-width:380px}
-.pager .btns{display:flex;gap:8px}
-.pg{min-width:48px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-weight:600;cursor:pointer;padding:0 14px}
-.pg:disabled{opacity:.35;cursor:default}
-.board{overflow-x:auto;padding:4px 2px 8px}
-.brow{display:grid;gap:6px;align-items:center}
-.brow.solo{background:rgba(168,85,247,.13);box-shadow:inset 0 0 0 1px rgba(168,85,247,.45);border-radius:8px}
-.rlabel{display:flex;align-items:center;gap:8px;min-height:36px;padding:2px 8px;border:0;background:none;color:var(--ink);cursor:pointer;text-align:left;font:inherit;border-radius:8px}
-.rlabel .s{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;font-family:var(--f-mono);font-size:12px;font-weight:600;background:#1b2130;color:#9aa3b8;border:1px solid #2b3447}
-.brow.solo .rlabel .s{background:var(--purple);color:#0b0710;border-color:var(--purple);box-shadow:0 0 10px rgba(168,85,247,.7)}
-.rlabel .t{font-size:14px;line-height:1.15}
-.cell{display:flex;justify-content:center}
-.led{width:28px;height:22px;padding:0;border-radius:5px;cursor:pointer;background:#1b2130;border:1px solid #2b3447}
-.led.on{border-color:rgba(255,255,255,.4)}
-.led.sel{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-.led.up{background:transparent;border:1px dashed #2b3447;cursor:default}
-.tape{border-radius:6px;padding:7px 6px 5px;text-align:center;color:#1a1422;background:#efe9f6;box-shadow:0 1px 0 rgba(0,0,0,.4);min-width:0}
-.tape.now{background:#ffe1ea}
-.tape.up{background:#1b2130;color:#9aa3b8;border:1px dashed #2b3447;box-shadow:none}
-.tape.sel{outline:3px solid var(--red);outline-offset:2px}
-.tape .ch{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;opacity:.7}
-.tape .d{font-family:var(--f-mono);font-weight:600;font-size:14px;line-height:1.1}
-.tape .c{font-size:13px;font-weight:600;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tape .n{font-size:11px;opacity:.75}
-.strip-foot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 2px}
-.vu{display:flex;flex-direction:column-reverse;gap:2px}
-.vu i{display:block;width:12px;height:6px;border-radius:2px;background:#1b2130}
-.cnt{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.sel-btn{min-width:60px;min-height:40px;border-radius:8px;cursor:pointer;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;background:#1b2130;color:var(--ink);border:1px solid #2b3447}
-.sel-btn[aria-pressed="true"]{background:var(--red);color:#0b0710;border-color:var(--red);box-shadow:0 0 12px rgba(255,42,75,.6)}
-.sel-btn:disabled{opacity:.5;cursor:default}
-.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:8px}
-.legend i{display:inline-block;width:16px;height:14px;border-radius:4px}
-.led:focus-visible,.rlabel:focus-visible,.sel-btn:focus-visible,.pg:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-/* send form */
-.send .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px 16px}
-.send .field{display:grid;gap:6px;min-width:0}
-.send input[type=url],.send input[type=text]{width:100%;background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px}
-.send input::placeholder{color:var(--muted);opacity:.7}
-.okline{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--f-body)}
-.okline input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--gold);flex:none}
-a.btn{text-decoration:none;display:inline-block}
-a.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
-.msg{font-size:14px;color:var(--jade)}
-@media (max-width:760px){.rlabel .t{font-size:13px}.led{width:24px;height:20px}
-  .board-wrap>.console:first-child{order:4}.pager{order:1}#board{order:2}.legend{order:3}
-  .mon-list{grid-template-columns:1fr 1fr}.mi{padding:6px 8px;gap:6px}.mi .nm{font-size:14px}.mi .sub{font-size:12px}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-/* ARMY of the week */
-.feat{border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,42,75,.18),rgba(168,85,247,.22));display:grid;gap:8px;margin-bottom:14px}
-.feat .fk{font-family:var(--f-mono,monospace);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-.feat h3{margin:0;font-size:22px;line-height:1.2}.feat p{margin:0}.feat q{font-style:italic}
-.feat .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.feat .row a,.feat .row button{display:inline-flex;align-items:center;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:inherit;font:600 14px inherit;font-family:inherit;text-decoration:none;cursor:pointer}
-.okline{display:flex;gap:10px;align-items:flex-start;font-size:14px}.okline input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
-.find{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:12px;color:var(--muted);margin:2px 0}.find .fl{flex-basis:auto}.find a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}.solo-find{display:inline-flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;text-align:right}
-
-/* moments view */
-.vtabs{display:flex;gap:6px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--glass);width:max-content;max-width:100%}
-.vtabs button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 15px var(--f-body);padding:10px 18px;border-radius:999px;cursor:pointer;min-height:44px}
-.vtabs button[aria-selected="true"]{background:linear-gradient(90deg,var(--red),var(--purple));color:#fff}
-.vtabs button:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-.prog{display:grid;gap:6px}.prog .pt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--muted)}.prog .pt b{color:var(--ink);font-variant-numeric:tabular-nums}
-.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--red),var(--purple))}
-.wanted{border:1px solid rgba(255,209,102,.45);border-radius:16px;padding:16px;background:linear-gradient(135deg,rgba(255,209,102,.10),rgba(168,85,247,.12));display:grid;gap:10px}
-.wanted h3{margin:0;font-size:20px}.wanted h3 small{display:block;font:600 11px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--first);margin-bottom:4px}
-.wanted p{margin:0;color:var(--muted);font-size:14px}
-.wlist{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-.wi{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:rgba(0,0,0,.25);display:grid;gap:4px;min-width:0}
-.wi b{font-size:15px}.wi .w2{font-size:13px;color:var(--muted)}
-.wi .lnk,.mc .lnk{justify-self:start}
-.act{display:grid;gap:12px;margin-top:8px}
-.act h3{margin:6px 0 0;font:600 12px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--jade)}
-.mcards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-.mc{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:rgba(0,0,0,.22);display:grid;gap:8px;align-content:start;min-width:0}
-.mc h4{margin:0;font-size:18px;line-height:1.2}.mc .ms{font-size:13px;color:var(--muted)}
-.mc .chips{display:flex;flex-wrap:wrap;gap:6px}
-.mc .chips a{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:rgba(255,255,255,.05)}
-.mc .chips a:hover,.mc .chips a:focus-visible{border-color:var(--violet)}
-.mc .acts{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
-.mc .watch{display:inline-flex;align-items:center;min-height:40px;padding:6px 16px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--purple));color:#fff;font-weight:700;text-decoration:none}
-.mc.zero{border-style:dashed}.mc.zero .first{color:var(--first);font-size:14px;margin:0}
-.lnk.plain{background:none;border:0;color:var(--violet);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
-
-.myhead{display:grid;gap:10px;border:1px solid var(--line);border-radius:16px;padding:16px;background:rgba(0,0,0,.22)}
-.myhead h3{margin:0;font-family:var(--f-display);font-size:clamp(26px,5vw,36px);line-height:1.05}.myhead .ms{color:var(--muted);font-size:14px}
-.myhead .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.cbtn{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font:600 14px var(--f-body);cursor:pointer;text-decoration:none}
-.cbtn.main{background:linear-gradient(90deg,var(--red),var(--purple));border:0;color:#fff}
-.cbtn:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-.clist{display:grid;gap:8px}
-.ci{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2)}
-.ci .ck{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;border:2px solid rgba(255,255,255,.25);color:transparent;margin-top:2px}
-.ci.on .ck{background:linear-gradient(135deg,var(--red),var(--purple));border-color:transparent;color:#fff}
-.ci b{font-size:16px}.ci .ms{font-size:13px;color:var(--muted)}.ci .cr{font-size:12px;color:var(--muted)}
-.ci .wl{display:inline-flex;margin-top:4px;font-weight:700;color:var(--violet)}
-.mc .share{background:none;border:0;color:var(--muted);font:600 13px var(--f-body);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+:root{--bg:#110a1d;--card:rgba(26,17,41,.82);--line:rgba(255,255,255,.10);--ink:#f4efff;--muted:#b3a6cc;--coral:#ff5468;--vio:#b48cff;--gold:#ff5c7f;
+ --sans:"Geist",system-ui,-apple-system,sans-serif;--mono:"Geist Mono",ui-monospace,monospace;--hfont:"Black Han Sans","Geist",system-ui,sans-serif;--hweight:400;--hcase:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;
+ background-image:radial-gradient(800px 400px at 0% -10%,rgba(255,84,104,.14),transparent 70%),radial-gradient(800px 400px at 100% -10%,rgba(180,140,255,.12),transparent 70%)}
+a{color:inherit}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));background:rgba(17,10,29,.92);border-bottom:1px solid var(--line)}
+.logo{display:inline-flex;flex-direction:column;gap:4px;text-decoration:none;color:#fff;line-height:1}
+.logo .w{font-family:var(--hfont);font-weight:var(--hweight);font-size:19px;text-transform:uppercase;white-space:nowrap}
+.logo .c{color:var(--coral)}.logo .v{color:var(--vio)}.logo b{font-weight:inherit}
+.logo .x{position:relative;height:3px;border-radius:2px;background:linear-gradient(90deg,#ff2a4b,#ff63a9 50%,#a855f7)}
+.logo .x i{position:absolute;top:-4px;left:58%;width:7px;height:11px;border-radius:2px;background:#fff;transform:translateX(-50%)}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav a{padding:7px 12px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500;font-size:14px}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.05)}
+@media (max-width:700px){.nav a:not(.home){display:none}}
+main{max-width:920px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 80px max(16px,env(safe-area-inset-left));display:grid;gap:22px}
+.kick{margin:0;font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{margin:6px 0 6px;font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);font-size:clamp(28px,5vw,40px);line-height:1.05;letter-spacing:-.01em}
+.lede{margin:0;color:var(--muted);max-width:60ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.picker{display:flex;gap:8px;align-items:center}
+.picker select{flex:1;min-width:0;background:rgba(255,255,255,.04);color:var(--ink);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px 12px;font:600 15px var(--sans)}
+.picker select option{background:#22123a}
+.nb{all:unset;cursor:pointer;display:grid;place-items:center;width:42px;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.16);font-size:14px}
+.nb:disabled{opacity:.35;cursor:default}
+.nb:focus-visible,select:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.sum{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--muted)}
+.sum b{color:#fff}
+.meter{display:flex;gap:3px;align-items:center}
+.meter i{width:10px;height:10px;border-radius:3px;background:rgba(255,255,255,.08)}
+.meter i.on{background:linear-gradient(135deg,#ff5468,#ff63a9,#a855f7)}
+.chbox{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.chbox p{margin:4px 0 0}.chbox .kick{margin:0}
+.names{font-family:var(--hfont);font-weight:var(--hweight);font-size:19px;line-height:1.45;color:#fff}
+.names b{color:var(--coral)}
+.chlinks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.chlinks a{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);text-decoration:none;background:rgba(255,255,255,.02)}
+.chlinks a:hover{border-color:rgba(255,255,255,.35)}
+.chlinks b{font-weight:600;font-size:16px}.chlinks small{grid-column:1;font-size:14px;color:var(--muted)}.chlinks span{grid-row:1/span 2;grid-column:2;font-size:14px;color:var(--muted)}
+@media (max-width:620px){.chlinks{grid-template-columns:1fr}}
+.acthd{margin:22px 0 4px;padding:14px 16px;border-radius:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 22%,transparent),transparent 80%);border-left:4px solid var(--ac);display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:center}
+.acthd:first-child{margin-top:0}
+.acthd .ko{grid-row:span 2;font-family:"Black Han Sans",var(--hfont);font-size:34px;line-height:1;color:var(--ac)}
+.acthd b{font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);font-size:19px;letter-spacing:.01em}
+.acthd small{font-size:15px;color:var(--muted)}
+.act{margin:18px 0 6px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.act:first-child{margin-top:0}
+.mo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.mo:first-of-type{border-top:0}
+.mo h3{margin:0;font:600 16px/1.25 var(--sans)}
+.mo .s{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.mo .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.03);text-decoration:none;font:500 13px var(--sans);color:#fff;cursor:pointer;white-space:nowrap}
+.pill.watch{border-color:rgba(180,140,255,.55);background:rgba(180,140,255,.14)}
+.pill.watch::before{content:"";width:0;height:0;border-left:7px solid var(--vio);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.pill.ghost{color:var(--muted)}
+.pill:hover{border-color:rgba(255,255,255,.4)}
+.find{grid-column:1/-1;display:none;flex-wrap:wrap;gap:6px;font-size:13px}
+.mo.open .find{display:flex}
+.find a{color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:5px 9px}
+.find a:hover{color:#fff}
+@media (max-width:560px){.mo{grid-template-columns:1fr}.mo .acts{justify-content:flex-start}}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 18px;border-radius:10px;border:0;background:var(--coral);color:#1a0b14;font:600 15px var(--sans);text-decoration:none;cursor:pointer}
+.btn.ghost{background:rgba(255,255,255,.03);color:#fff;border:1px solid rgba(255,255,255,.16)}
+.btn[aria-disabled="true"]{opacity:.5;pointer-events:none}
+details.card>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary h2{margin:0;font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);font-size:20px}
+details.card>summary::after{content:"Open ▾";font:500 12px var(--mono);color:var(--muted)}
+details.card[open]>summary::after{content:"Close ▴"}
+.tally{display:grid;gap:8px;margin-top:14px}
+.tr{display:grid;grid-template-columns:minmax(0,190px) 1fr auto;gap:10px;align-items:center;font-size:13px}
+.tr .bar{height:8px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden}
+.tr .bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--coral),var(--vio))}
+.tr span:last-child{color:var(--muted);font-family:var(--mono);font-size:12px}
+form{display:grid;gap:12px;margin-top:14px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.f2{grid-template-columns:1fr}}
+label{display:grid;gap:6px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+input,select{width:100%;background:rgba(255,255,255,.04);color:var(--ink);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px 12px;font:15px var(--sans);text-transform:none;letter-spacing:0}
+.ok{display:flex;gap:10px;align-items:flex-start;font:400 14px var(--sans);letter-spacing:0;text-transform:none;color:var(--ink)}
+.ok input{width:auto;margin-top:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.msg{font-size:13px;color:var(--muted)}
+.feat{display:grid;gap:6px}
+.feat h3{margin:0;font-family:var(--hfont);font-weight:var(--hweight);font-size:22px}
+.feat p{margin:0;color:var(--muted);font-size:14px}
+@media (hover:hover) and (pointer:fine) and (min-width:1024px){html{zoom:1.12}}
+@media (hover:hover) and (pointer:fine) and (min-width:1500px){html{zoom:1.22}}
+body{font-size:17px}.mo h3{font-size:17px}.mo .s{font-size:15px}.pill{font-size:15px;height:40px}.kick{font-size:13px}.msg,.sum{font-size:15px}.find{font-size:15px}
+footer{max-width:920px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:13px}
 </style>
-<script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
-<div id="stage" aria-hidden="true"><div class="photo"></div></div>
-<nav class="tabbar" id="tabbar" aria-label="Sections">
-  <a href="./#spin" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></a>
-  <a href="./#tour" data-tab="tour" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">Tour &amp; My Show</b><b class="ts">Tour</b></span></a>
-  <a href="./#music" data-tab="music"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">Music &amp; Vault</b><b class="ts">Music</b></span></a>
-  <a href="./#army" data-tab="army"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></a>
-  <a href="./#tv" data-tab="tv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 3l4 4 4-4"/></svg><span><b class="tl">DJ Spin TV</b><b class="ts">DJ Spin TV</b></span></a>
-</nav>
+<header class="top">
+  <a class="logo" href="./#spin" aria-label="DJ Spin That home"><span class="w"><b class="c">DJ</b> <b>SPIN</b> <b class="v">THAT</b></span><span class="x" aria-hidden="true"><i></i></span></a>
+  <nav class="nav" aria-label="Site"><a class="home" href="./#tour">← Tour</a><a href="./#music">Music</a><a href="./#army">ARMY</a><a href="./#tv">DJ Spin TV</a></nav>
+</header>
 <main>
-  <header class="hero">
-    <div class="eyebrow">BTS World Tour · 2026 · Moments Board</div>
-    <h1><span class="kicker">ARIRANG</span>The Moments Board</h1>
-    <button class="pshare" id="pageShare" type="button" aria-label="Share this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button>
-    <p class="lede">The moments ARMY waits for at every ARIRANG show, with fan videos from each city. Watch them, or help find the ones still missing.</p>
-    <div class="live"><span id="liveDot" data-state="wait"></span><span id="liveText">Loading the board…</span></div>
-  </header>
-
-  <div class="vtabs" role="tablist" aria-label="Board views">
-    <button type="button" role="tab" id="tabMom" aria-selected="true" aria-controls="momView">Moments</button>
-    <button type="button" role="tab" id="tabShow" aria-selected="false" aria-controls="showView">My show</button>
-    <button type="button" role="tab" id="tabBoard" aria-selected="false" aria-controls="boardStation">Full board</button>
+  <div>
+    <p class="kick">Station 4 · Moments board</p>
+    <h1>Every show, every moment</h1>
+    <p class="lede">The show is told in three acts: <b>BTS</b> (han, deep emotion), <b>KOREA</b> (heung, joy) and <b>ARIRANG</b> (love, where the two meet). Pick a show to see each act's moments and the fancams fans shared. Missing one? Send yours.</p>
   </div>
 
-  <section class="station" id="momView" role="tabpanel" aria-labelledby="tabMom">
-    <div id="featured" hidden></div>
-    <div class="wanted" id="wanted" aria-labelledby="wantedH"></div>
-    <div id="momGroups"></div>
-  </section>
+  <div id="featured" hidden></div>
 
-  <section class="station" id="showView" role="tabpanel" aria-labelledby="tabShow" hidden>
-    <div class="field" style="max-width:420px"><label for="myShow">Pick your show</label><select id="myShow"></select></div>
-    <div id="myHead"></div>
-    <div id="myList"></div>
-  </section>
-
-  <section class="station" id="boardStation" aria-labelledby="boardH" role="tabpanel" hidden>
-    <h2 id="boardH"><small>Station · Moments mixer</small>Tap a light to see the moment</h2>
-    <div class="board-wrap">
-      <div class="console">
-        <div class="monitor" role="region" aria-live="polite" aria-label="Moments monitor">
-          <div id="monShow"></div>
-          <div class="solo-pane" id="monSolo"></div>
-        </div>
-      </div>
-      <div class="pager">
-        <div class="field"><label for="jumpSel">Jump to a show</label><select id="jumpSel"></select></div>
-        <div class="btns"><button type="button" class="pg" id="pgPrev" aria-label="Earlier shows">◀ Earlier</button><button type="button" class="pg" id="pgNext" aria-label="Later shows">Later ▶</button></div>
-      </div>
-      <div class="console board" id="board" role="group" aria-label="Moments board: shows across, moments down"></div>
-      <div class="legend">
-        <span><i style="background:var(--red);box-shadow:0 0 8px var(--red)"></i>Fancam logged</span>
-        <span><i style="background:var(--first);box-shadow:0 0 8px var(--first)"></i>First time at this show</span>
-        <span><i style="background:#1b2130;border:1px solid #2b3447"></i>Not spotted yet</span>
-        <span><i style="border:1px dashed #2b3447"></i>Up next</span>
-      </div>
+  <section class="card" aria-labelledby="pickH">
+    <h2 id="pickH" class="kick" style="margin:0 0 10px">Which show?</h2>
+    <div class="picker">
+      <button type="button" class="nb" id="prev" aria-label="Earlier show">◀</button>
+      <select id="showSel" aria-label="Show"></select>
+      <button type="button" class="nb" id="next" aria-label="Later show">▶</button>
     </div>
+    <div class="sum" id="sum"></div>
   </section>
 
-  <section class="station send" id="send" aria-labelledby="sendH">
-    <h2 id="sendH"><small>Station · Send a fancam</small>Light up a moment</h2>
-    <p class="help">Found a fan video of a moment? Send it in with a quick form: no account needed. It goes up on the board with credit after a quick check. Links only, so the video stays on the filmer's account.</p>
-    <form id="sendForm" novalidate>
-      <div class="grid2">
-        <div class="field"><label for="sShow">Show</label><select id="sShow"></select></div>
-        <div class="field"><label for="sMoment">Moment</label><select id="sMoment"></select></div>
+  <section class="card" id="list" aria-live="polite"><p class="msg">Loading the moments…</p></section>
+
+  <details class="card" id="chants">
+    <summary><h2>📣 Learn the fan chants</h2></summary>
+    <div class="chant">
+      <p class="msg" style="margin:12px 0">Fan chants are the parts ARMY shout together during a song. Learn them before your show and you're part of the stage.</p>
+      <div class="chbox">
+        <p class="kick">The one everyone knows · before the song starts</p>
+        <p class="names">Kim Namjoon! Kim Seokjin! Min Yoongi! Jung Hoseok! Park Jimin! Kim Taehyung! Jeon Jungkook! <b>BTS!</b></p>
       </div>
-      <div class="row" style="margin-top:14px;align-items:center">
-        <a class="btn" id="sSend" href="https://forms.gle/GKrh4T2VazNmBMRo8" target="_blank" rel="noopener">Send it with the form ↗</a>
-        <button class="btn ghost" id="sCopy" type="button">Copy show + moment</button>
-        <span class="msg" id="sMsg" aria-live="polite"></span>
+      <div class="chbox">
+        <p class="kick">New on this tour · Body to Body</p>
+        <p>At the end of Body to Body, ARMY sing the <b>Arirang</b> melody back to BTS. If you know "Arirang, arirang, arariyo," you're ready.</p>
       </div>
-      <p class="help small" style="margin-top:10px">The form opens with this show and moment filled in. Just add the video link and who filmed it. Rather DM? Send the link to @djspinthat0 on TikTok or @djspinthat0613 on Instagram.</p>
+      <p class="kick" style="margin:16px 0 8px">Where to learn them</p>
+      <div class="chlinks">
+        <a href="https://weverse.io/bts" target="_blank" rel="noopener" data-chant="weverse"><b>Weverse · BTS official</b><small>The official fan chant guides for newer songs are posted here</small><span>Open ↗</span></a>
+        <a href="https://doshielasol.notion.site/BTS-Official-Fanchant-Directory-FAQs-1fbe0b213aa84f939054f00dd35eaf00" target="_blank" rel="noopener" data-chant="doshielasol"><b>doshielasol · Fanchant Directory</b><small>A fan's audio guides to the official chants, song by song</small><span>Open ↗</span></a>
+        <a href="https://www.usbtsarmy.com/fanchants" target="_blank" rel="noopener" data-chant="usbtsarmy"><b>US BTS ARMY · Fanchants</b><small>Written chant sheets with romanized lyrics</small><span>Open ↗</span></a>
+        <a href="https://www.tiktok.com/search/video?q=BTS%20ARIRANG%20fanchant" target="_blank" rel="noopener" data-chant="tiktok"><b>TikTok · ARIRANG fanchants</b><small>Short how-to clips from ARMY</small><span>Search ↗</span></a>
+      </div>
+      <p class="kick" style="margin:16px 0 8px">Find the chant for a song on the setlist</p>
+      <div class="row"><select id="chSong" aria-label="Song" style="flex:1;min-width:0"></select><a class="btn" id="chGo" href="#" target="_blank" rel="noopener">Find on YouTube ↗</a></div>
+      <p class="msg" style="margin-top:10px">Weverse is BTS’s official app. The others are fan-made and not affiliated with BTS or BIGHIT MUSIC.</p>
+    </div>
+  </details>
+
+  <details class="card" id="tallyBox">
+    <summary><h2>Across the whole tour</h2></summary>
+    <p class="msg" style="margin:10px 0 0">How many shows have a fancam for each moment so far.</p>
+    <div class="tally" id="tally"></div>
+  </details>
+
+  <details class="card" id="send">
+    <summary><h2>Send a fancam</h2></summary>
+    <form id="sendForm" onsubmit="return false">
+      <div class="f2">
+        <label>Show<select id="sShow"></select></label>
+        <label>Moment<select id="sMoment"></select></label>
+      </div>
+      <label>Link to your clip<input id="sLink" type="url" inputmode="url" placeholder="https://www.tiktok.com/@you/video/…"></label>
+      <label>Your handle (for credit)<input id="sWho" placeholder="@yourhandle"></label>
+      <label class="ok"><input type="checkbox" id="sOk"> I filmed this clip (or have the filmer's OK) and it's fine to link it here with credit.</label>
+      <div class="row"><a class="btn" id="sSend" aria-disabled="true" target="_blank" rel="noopener" href="#">Send it ↗</a><button type="button" class="btn ghost" id="sCopy">Copy as text</button></div>
+      <p class="msg" id="sMsg">Opens a short form on GitHub (free account). No account? Copy as text and DM it to @djspinthat0 on TikTok. Every clip is checked before it shows up.</p>
     </form>
-  </section>
-
-  <footer>
-    <div><a href="/s/">Every surprise song, city by city →</a></div>
-    <div class="follow-row"><span>Follow DJ Spin That</span><a class="follow" href="https://www.tiktok.com/@djspinthat0" target="_blank" rel="noopener me">TikTok <i>@djspinthat0</i></a><a class="follow" href="https://www.instagram.com/djspinthat0613/" target="_blank" rel="noopener me">Instagram <i>@djspinthat0613</i></a><a class="follow" href="https://www.threads.com/@djspinthat0613" target="_blank" rel="noopener me">Threads <i>@djspinthat0613</i></a></div>
-    <div class="kofi-row"><a class="kofi" href="https://ko-fi.com/djspinthat0613" target="_blank" rel="noopener"><span aria-hidden="true">☕</span> Love the tracker? Send a spin to keep it free &amp; updating 💜</a></div>
-    <div>Clips link to the fans who filmed them; nothing is re-uploaded. Ask and we'll take a link down. Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC.</div>
-  </footer>
+  </details>
 </main>
-<script src="share-card.js?v=2"></script>
+<footer>Fan-made · not affiliated with BTS, HYBE or BIGHIT MUSIC. Clips belong to the fans who filmed them: we only link to their posts.</footer>
+
 <script>
-(function(){
+(()=>{
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ISSUES="https://github.com/wendyerskine-hub/dj-spin-that/issues/new";
-const MON=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-const fmtD=d=>{if(!d)return"";const[y,m,dd]=d.split("-");return MON[+m-1]+" "+(+dd)};
-const fmtLong=d=>{if(!d)return"";const[y,m,dd]=d.split("-");return MON[+m-1].charAt(0)+MON[+m-1].slice(1).toLowerCase()+" "+(+dd)+", "+y};
-const lerp=(a,b,t)=>Math.round(a+(b-a)*t);
-let SHOWS=[],PLAYED=[],UPNEXT=[],MOM=[],CLIPS=[],CH=[];
-let sel=null,solo=0,start=0,win=8;
-
-function rowColor(i){const t=MOM.length>1?i/(MOM.length-1):0;return`rgb(${lerp(255,168,t)},${lerp(42,85,t)},${lerp(75,247,t)})`}
-function clipsFor(showId,mi){const id=MOM[mi].id;return CLIPS.filter(c=>c.show===showId&&c.moment===id&&c.url)}
-function has(showId,mi){return clipsFor(showId,mi).length>0}
-function first(showId,mi){return clipsFor(showId,mi).some(c=>c.first)}
-function count(showId){let n=0;for(let i=0;i<MOM.length;i++)if(has(showId,i))n++;return n}
-function findQ(S,mi){const m=MOM[mi];const songs=(S.songs||[]).map(x=>x.title);let q=m.q;if(m.id==="who-says-dj-spin-that")q=songs.length?songs[0]:"surprise song";return q||m.label}
-function findLinks(S,mi){const q=findQ(S,mi),d=(S.date||"").replace(/-/g,"").slice(2),n=(S.night.match(/\d+/)||["1"])[0];
-  const tag="BTS_WORLDTOUR_ARIRANG_"+S.city.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
-  const yt="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${S.city} ${d} ${q} fancam`);
-  const tt="https://www.tiktok.com/search/video?q="+encodeURIComponent(`#${tag} ${q} day ${n}`);
-  const th="https://www.threads.com/search?q="+encodeURIComponent(`BTS ${S.city} ${q} day ${n}`)+"&serp_type=default";
-  const ig="https://www.instagram.com/explore/tags/"+encodeURIComponent(tag.toLowerCase())+"/";
-  const L=(h,k,t)=>`<a href="${esc(h)}" target="_blank" rel="noopener" data-find="${k}">${t} ↗</a>`;
-  return `<span class="find"><span class="fl">Find it:</span>${L(tt,"tiktok","TikTok")}${L(ig,"instagram","Reels")}${L(th,"threads","Threads")}${L(yt,"youtube","YouTube")}</span>`}
-function host(u){try{return new URL(u).hostname.replace(/^www\./,"").replace(/\.com$/,"")}catch(e){return"clip"}}
-
-async function load(){
-  const get=(u,fb)=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>fb);
-  const [s,m]=await Promise.all([get("shows.json",window.__SHOWS||null),get("moments.json",window.__MOMENTS||null)]);
-  if(!s||!m){$("#liveDot").dataset.state="off";$("#liveText").textContent="The board couldn't load. Reload the page to try again.";return}
-  SHOWS=(s.shows||[]).slice().sort((a,b)=>a.order-b.order);
-  PLAYED=SHOWS.filter(x=>x.status==="played");UPNEXT=SHOWS.filter(x=>x.status!=="played").slice(0,2);
-  CH=PLAYED.concat(UPNEXT);
-  MOM=m.moments||[];CLIPS=m.clips||[];
-  try{const f=(m.featured||[])[0];const mo=f&&MOM.find(x=>x.id===f.moment),sh=f&&SHOWS.find(x=>x.id===f.show);
-    if(f&&f.url&&f.credit&&mo){const where=sh?`${sh.city} ${sh.night.replace(" (FESTA)","")}`:"";const box=$("#featured");
-      box.innerHTML=`<div class="feat"><div class="fk">Moment of the Week${f.week?" · "+esc(f.week):""}</div><h3>${esc(mo.label)}${where?" · "+esc(where):""}</h3><p>Filmed by ${esc(f.credit)}${f.note?" · "+esc(f.note):""}</p><div class="row"><a href="${esc(f.url)}" target="_blank" rel="noopener">Watch on ${esc(host(f.url))} ↗</a><button type="button" id="featCard">📸 Save this card</button></div></div>`;box.hidden=false;
-      $("#featCard").addEventListener("click",e=>{if(!window.DJCard)return;DJCard.share({kicker:"Moment of the Week",headline:mo.label,sub:where+(mo.song?" · "+mo.song:""),label:"Filmed by",lines:[f.credit],cta:"Light up your moment 👇",url:"djspinthat.net/moments",file:"moment-of-the-week",text:`${mo.label}${where?" ("+where+")":""} filmed by ${f.credit} is Moment of the Week on DJ Spin That 🎥 https://djspinthat.net/moments.html`,track:"feature/moment"},e.currentTarget)})}}catch(e){}
-  solo=Math.max(0,MOM.findIndex(x=>x.id==="who-says-dj-spin-that"));
-  const h=(location.hash||"").slice(1);const hs=PLAYED.find(x=>x.id===h);
-  sel=hs?hs.id:(PLAYED.length?PLAYED[PLAYED.length-1].id:null);
-  $("#liveDot").dataset.state="live";
-  const logged=CLIPS.filter(c=>c.url).length;
-  $("#liveText").textContent=`${PLAYED.length} shows · ${logged} fancam${logged===1?"":"s"} on the board · updated ${fmtLong(m.updated||s.updated)}`;
-  fillSelects();measure();focusSel();render();renderMoments();
-  fillMy();
-  const mh=(location.hash||"").match(/^#my-(.+)$/);if(mh&&PLAYED.some(x=>x.id===mh[1])){myId=mh[1];$("#myShow").value=myId;setView("my")}
-  else if(hs||location.hash==="#board")setView("board");
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmt=d=>{if(!d)return"";const[y,m,dd]=d.split("-");return MON[+m-1]+" "+(+dd)};
+const tr=p=>{try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(p).slice(0,200),title:String(p),event:true})}catch(e){}};
+let SHOWS=[],PLAYED=[],MOM=[],CLIPS=[],cur=0;
+const nm=S=>`${S.city} ${String(S.night||"").replace(" (FESTA)","")}`;
+const clipsFor=(sid,mid)=>CLIPS.filter(c=>c.show===sid&&c.moment===mid&&c.url);
+function host(u){try{const h=new URL(u).hostname.replace(/^www\./,"");return /tiktok/.test(h)?"TikTok":/instagram/.test(h)?"Instagram":/youtu/.test(h)?"YouTube":/threads/.test(h)?"Threads":/x\.com|twitter/.test(h)?"X":h}catch(e){return"clip"}}
+function findLinks(S,m){let q=m.q||m.label;if(m.id==="who-says-dj-spin-that")q=(S.songs||[])[0]?.title||"surprise song";
+  const d=(S.date||"").replace(/-/g,"").slice(2),n=(String(S.night).match(/\d+/)||["1"])[0];
+  const tag="BTS_WORLDTOUR_ARIRANG_"+S.city.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  const L=(h,t,k)=>`<a href="${esc(h)}" target="_blank" rel="noopener" data-find="${k}">${t} ↗</a>`;
+  return L("https://www.tiktok.com/search/video?q="+encodeURIComponent(`#${tag} ${q} day ${n}`),"TikTok","tiktok")+
+    L("https://www.instagram.com/explore/tags/"+encodeURIComponent(tag.toLowerCase())+"/","Reels","instagram")+
+    L("https://www.threads.com/search?q="+encodeURIComponent(`BTS ${S.city} ${q} day ${n}`)+"&serp_type=default","Threads","threads")+
+    L("https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${S.city} ${d} ${q} fancam`),"YouTube","youtube")}
+function render(){
+  const S=PLAYED[cur];if(!S)return;
+  $("#showSel").value=String(cur);$("#prev").disabled=cur>=PLAYED.length-1;$("#next").disabled=cur<=0;
+  const lit=MOM.filter(m=>clipsFor(S.id,m.id).length).length;
+  $("#sum").innerHTML=`<span><b>${esc(nm(S))}</b> · ${esc(fmt(S.date))}${S.songs&&S.songs.length?` · surprise songs: ${esc(S.songs.map(x=>x.title).join(" × "))}`:""}</span><span class="meter" aria-label="${lit} of ${MOM.length} moments have a fancam">${MOM.map(m=>`<i class="${clipsFor(S.id,m.id).length?"on":""}"></i>`).join("")}<span style="margin-left:8px">${lit}/${MOM.length}</span></span>`;
+  let h="",act="";
+  const ACT={"Act 1":["한","Act 1 · BTS","Han · deep emotion","#ff5468"],"Act 2":["흥","Act 2 · KOREA","Heung · joy and excitement","#ff63a9"],"Encore":["사랑","Act 3 · ARIRANG","Love · where the two meet","#b48cff"],"Act 3":["사랑","Act 3 · ARIRANG","Love · where the two meet","#b48cff"],"Anytime":["✦","All night","Moments that can happen anytime","#dc74f0"]};
+  MOM.forEach((m,i)=>{if(m.act&&m.act!==act){act=m.act;const a=ACT[act];h+=a?`<div class="acthd" style="--ac:${a[3]}"><span class="ko" aria-hidden="true">${a[0]}</span><b>${a[1]}</b><small>${a[2]}</small></div>`:`<p class="act">${esc(act)}</p>`}
+    const cl=clipsFor(S.id,m.id);
+    const watch=cl.slice(0,3).map(c=>`<a class="pill watch" href="${esc(c.url)}" target="_blank" rel="noopener" data-clip="${esc(m.id)}" title="${esc(c.credit||"")}">Watch${cl.length>1?"":" on "+esc(host(c.url))}</a>`).join("");
+    h+=`<div class="mo" data-i="${i}"><div><h3>${esc(m.label)}</h3><p class="s">${esc([m.song,m.note].filter(Boolean).join(" · "))}</p></div>
+      <div class="acts">${m.id==="fan-chants"?`<button type="button" class="pill watch" data-learn="1">Learn them</button>`:""}${watch||`<button type="button" class="pill ghost" data-findt="${i}">Find it</button>`}<button type="button" class="pill ghost" data-send="${i}" aria-label="Send a fancam of ${esc(m.label)}">+ Send</button></div>
+      <div class="find">${findLinks(S,m)}</div></div>`});
+  $("#list").innerHTML=h;
+  try{history.replaceState(null,"","#"+S.id)}catch(e){}
 }
-/* ---- Moments view: one card per moment, grouped by act; no empty boxes ---- */
-const ACTS=["Act 1","Act 2","Encore","Anytime"];
-const ACT_NOTE={"Act 1":"Hooligan to Merry Go Round","Act 2":"2.0 to IDOL","Encore":"Come Over to the fireworks","Anytime":"Live moments and the crowd"};
-const shortN=S=>`${S.city} N${(S.night.match(/\d+/)||["1"])[0]}`;
-function showsWith(mi){return PLAYED.filter(S=>has(S.id,mi))}
-function renderMoments(){
-  const P=PLAYED.length,total=P*MOM.length;let lit=0;PLAYED.forEach(S=>{lit+=count(S.id)});
-  // most wanted: popular moments missing at the newest shows, rotating daily
-  const PRI=["fireworks-finale","jk-sings-arirang","who-says-dj-spin-that","fire-monitor-spin","idol-walk","butter-trio","swim-wave","hooligan-outfits","dynamite-dance-break","jimin-hip-rolls","ot7-camera-fya","into-the-sun-adlibs","yoongi-jk-come-over","hobi-mic-drop-intro","opening-film","army-bomb-ocean"];
-  const gaps=[];PLAYED.slice(-8).reverse().forEach((S,si)=>PRI.forEach((id,pi)=>{const mi=MOM.findIndex(m=>m.id===id);if(mi>=0&&!has(S.id,mi))gaps.push({S,mi,score:si*3+pi})}));
-  gaps.sort((a,b)=>a.score-b.score);const day=Math.floor(Date.now()/864e5);const pickW=[];const usedM=new Set(),usedS={};
-  for(let k=0;k<gaps.length&&pickW.length<6;k++){const g=gaps[(k+day)%gaps.length];if(usedM.has(g.mi)||(usedS[g.S.id]||0)>=2)continue;usedM.add(g.mi);usedS[g.S.id]=(usedS[g.S.id]||0)+1;pickW.push(g)}
-  $("#wanted").innerHTML=`<h3 id="wantedH"><small>🔍 Most wanted this week</small>Help us find these</h3>
-    <div class="prog"><div class="pt"><span><b>${lit}</b> of ${total.toLocaleString()} moments found across ${P} shows</span><span><b>${Math.round(lit/total*100)}%</b> lit</span></div><div class="bar"><i style="width:${Math.max(1,lit/total*100).toFixed(1)}%"></i></div></div>
-    <p>Were you there, or did you see a video? Tap a link to search, then send it in.</p>
-    <div class="wlist">${pickW.map(g=>`<div class="wi"><b>${esc(MOM[g.mi].label)}</b><span class="w2">${esc(shortN(g.S))} · ${esc(fmtLong(g.S.date))}</span>${findLinks(g.S,g.mi)}<button type="button" class="lnk plain" data-send="${esc(g.S.id)}|${g.mi}">Send it</button></div>`).join("")}</div>`;
-  // cards by act
-  $("#momGroups").innerHTML=ACTS.map(act=>{const ids=MOM.map((m,i)=>[m,i]).filter(([m])=>(m.act||"Anytime")===act);if(!ids.length)return"";
-    return `<section class="act" aria-label="${esc(act)}"><h3>${esc(act)} · ${esc(ACT_NOTE[act]||"")}</h3><div class="mcards">${ids.map(([m,i])=>{
-      const ws=showsWith(i),n=ws.length;const isFull=c=>/Full show/i.test(c.credit||"");let latest=null,lc=null;for(let k=ws.length-1;k>=0&&!lc;k--){const c=clipsFor(ws[k].id,i).find(x=>!isFull(x));if(c){latest=ws[k];lc=c}}if(!lc&&n){latest=ws[n-1];lc=clipsFor(latest.id,i)[0]}
-      const chips=ws.slice().reverse().slice(0,6).map(S=>`<a href="${esc(clipsFor(S.id,i)[0].url)}" target="_blank" rel="noopener">${esc(shortN(S))}</a>`).join("")+(n>6?`<a href="#board" data-follow="${i}">+${n-6} more</a>`:"");
-      const target=PLAYED[PLAYED.length-1];
-      return n?`<article class="mc"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div>
-        <div class="prog"><div class="pt"><span>Found at <b>${n}</b> of ${P} shows</span></div><div class="bar"><i style="width:${Math.max(2,n/P*100).toFixed(1)}%"></i></div></div>
-        <div class="chips">${chips}</div>
-        <div class="acts"><a class="watch" href="${esc(lc.url)}" target="_blank" rel="noopener">▶ Watch ${esc(shortN(latest))}</a><button type="button" class="lnk plain" data-follow="${i}">Follow it city to city</button><button type="button" class="share" data-mcard="${i}">📸 Share</button></div></article>`
-      :`<article class="mc zero"><div><h4>${esc(m.label)}</h4><div class="ms">${esc(m.song||"")}</div></div><p class="first">Not found yet. Be the first to light it up ✨</p>${target?findLinks(target,i):""}<div class="acts"><button type="button" class="lnk plain" data-send="${esc(target?target.id:"")}|${i}">Send a clip</button><button type="button" class="share" data-mcard="${i}">📸 Share</button></div></article>`}).join("")}</div></section>`}).join("");
-}
-/* ---- My show: one night's checklist ---- */
-let myId=null;
-function fillMy(){const rev=PLAYED.slice().reverse();$("#myShow").innerHTML=rev.map(S=>`<option value="${esc(S.id)}">${esc(fmtD(S.date))} · ${esc(S.city)} ${esc(S.night)}</option>`).join("");
-  let saved=null;try{saved=localStorage.getItem("my-show")}catch(e){}myId=PLAYED.some(x=>x.id===saved)?saved:(rev[0]&&rev[0].id);$("#myShow").value=myId}
-function renderMy(){const S=PLAYED.find(x=>x.id===myId);if(!S)return;const n=count(S.id),T=MOM.length,missing=MOM.map((m,i)=>[m,i]).filter(([m,i])=>!has(S.id,i));
-  $("#myHead").innerHTML=`<div class="myhead"><div><h3>${esc(S.city)} ${esc(S.night.replace(" (FESTA)",""))}</h3><div class="ms">${esc(fmtLong(S.date))}${S.venue?" · "+esc(S.venue):""}${(S.songs||[]).length?" · Surprise songs: "+esc(S.songs.map(x=>x.title).join(" × ")):""}</div></div>
-    <div class="prog"><div class="pt"><span><b>${n}</b> of ${T} moments found</span><span><b>${Math.round(n/T*100)}%</b></span></div><div class="bar"><i style="width:${Math.max(2,n/T*100).toFixed(1)}%"></i></div></div>
-    <div class="row"><button type="button" class="cbtn main" id="myCard">📸 Save this night's card</button><button type="button" class="cbtn" id="myShare">Share this checklist</button></div></div>`;
-  $("#myList").innerHTML=ACTS.map(act=>{const ids=MOM.map((m,i)=>[m,i]).filter(([m])=>(m.act||"Anytime")===act);if(!ids.length)return"";
-    return `<section class="act" aria-label="${esc(act)}"><h3>${esc(act)}</h3><div class="clist">${ids.map(([m,i])=>{const cs=clipsFor(S.id,i);const on=cs.length>0;
-      return `<div class="ci${on?" on":""}"><span class="ck" aria-hidden="true">✓</span><div style="min-width:0"><b>${esc(m.label)}</b> <span class="ms">· ${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a class="wl" href="${esc(c.url)}" target="_blank" rel="noopener">${k?"Angle "+(k+1):"▶ Watch"} ↗</a>${c.credit?` <span class="cr">${esc(c.credit)}</span>`:""}`).join("<br>"):`${findLinks(S,i)}<button type="button" class="lnk plain" data-send="${esc(S.id)}|${i}">Send it</button>`}</div></div>`}).join("")}</div></section>`}).join("");
-  const night=S.night.replace(" (FESTA)",""),url="https://djspinthat.net/moments.html#my-"+S.id;
-  $("#myCard").addEventListener("click",e=>{if(!window.DJCard)return;DJCard.share({kicker:"ARIRANG Moments Board",headline:`${S.city}\n${night}`,sub:`${n} of ${T} moments found`,label:missing.length?"Still missing":"",lines:missing.length?missing.slice(0,8).map(([m])=>m.label).concat(missing.length>8?[`+ ${missing.length-8} more`]:[]):["Every moment found 💜"],cta:missing.length?"Were you there? Help finish it 👇":"Fully lit 🎆",url:"djspinthat.net/moments",file:"moments-"+S.id,text:`${S.city} ${night} on the ARIRANG Moments Board: ${n}/${T} found. Help finish it 🎥 ${url}`,track:"moments-show/"+S.id},e.currentTarget)});
-  $("#myShare").addEventListener("click",()=>{const t=`${S.city} ${night}: ${n}/${T} moments found on the ARIRANG Moments Board 🎥`;if(navigator.share)navigator.share({title:"DJ Spin That",text:t,url}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>{$("#myShare").textContent="Link copied"}).catch(()=>{})});
-}
-function momentCard(i,btn){if(!window.DJCard)return;const m=MOM[i],ws=showsWith(i),n=ws.length;
-  DJCard.share({kicker:"ARIRANG Moments Board",headline:m.label,sub:(m.song||"")+(n?` · found at ${n} shows`:""),label:n?"Caught in":"",lines:n?ws.slice().reverse().slice(0,10).map(shortN).concat(n>10?[`+ ${n-10} more`]:[]):["Not found yet 👀"],cta:n?"Which city did it best? 👀":"Be the first to find it 👇",url:"djspinthat.net/moments",file:"moment-"+m.id,text:`${m.label}${n?`: caught at ${n} ARIRANG shows. Which city did it best? 👀`:": nobody's found it yet 👀"} https://djspinthat.net/moments.html`,track:"moment-card/"+m.id},btn)}
-function setView(v){const b=v==="board",my=v==="my",mo=!b&&!my;$("#tabMom").setAttribute("aria-selected",String(mo));$("#tabShow").setAttribute("aria-selected",String(my));$("#tabBoard").setAttribute("aria-selected",String(b));$("#momView").hidden=!mo;$("#showView").hidden=!my;$("#boardStation").hidden=!b;
-  if(b){measure();focusSel();render()}if(my)renderMy()}
-$("#tabMom").addEventListener("click",()=>{setView("mom");if(history.replaceState)history.replaceState(null,"",location.pathname)});
-$("#tabShow").addEventListener("click",()=>{setView("my");if(history.replaceState&&myId)history.replaceState(null,"","#my-"+myId)});
-$("#myShow").addEventListener("change",e=>{myId=e.target.value;try{localStorage.setItem("my-show",myId)}catch(x){}renderMy();if(history.replaceState)history.replaceState(null,"","#my-"+myId)});
-$("#tabBoard").addEventListener("click",()=>{setView("board");if(history.replaceState)history.replaceState(null,"","#board")});
-document.addEventListener("click",e=>{const mc=e.target.closest("[data-mcard]");if(mc){momentCard(+mc.dataset.mcard,mc);return}});
-document.addEventListener("click",e=>{const f=e.target.closest("[data-follow]");if(!f)return;e.preventDefault();setView("board");pick(null,+f.dataset.follow);$("#boardStation").scrollIntoView({behavior:"smooth",block:"start"})});
-function measure(){
-  const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cw=w<560?62:96;
-  win=Math.max(3,Math.min(CH.length,Math.floor((w-lab-12)/(cw+6))));
-}
-function focusSel(){const i=CH.findIndex(x=>x.id===sel);if(i<0)return;if(i<start||i>=start+win)start=Math.max(0,Math.min(CH.length-win,i-win+2))}
-function render(){renderBoard();renderMonitor();$("#pgPrev").disabled=start<=0;$("#pgNext").disabled=start+win>=CH.length;$("#jumpSel").value=sel||""}
-function renderBoard(){
-  const w=$("#board").clientWidth||900;const lab=w<560?128:220;const cols=`${lab}px repeat(${win},minmax(${w<560?58:88}px,1fr))`;
-  const vis=CH.slice(start,start+win);const live=PLAYED.length?PLAYED[PLAYED.length-1].id:null;
-  let html=`<div class="brow" style="grid-template-columns:${cols}"><div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#9aa3b8;align-self:end;padding:0 8px 6px">MOMENT · S = SOLO</div>`;
-  vis.forEach(s=>{const up=s.status!=="played",idx=CH.indexOf(s)+1;
-    html+=`<div class="tape${up?" up":""}${s.id===live?" now":""}${s.id===sel?" sel":""}"><div class="ch">CH ${String(idx).padStart(2,"0")}</div><div class="d">${esc(fmtD(s.date))}</div><div class="c" title="${esc(s.city)}">${esc(s.city)}</div><div class="n">${esc(s.night)}</div></div>`});
-  html+=`</div>`;
-  MOM.forEach((m,i)=>{const so=i===solo;
-    html+=`<div class="brow${so?" solo":""}" style="grid-template-columns:${cols}"><button type="button" class="rlabel" data-solo="${i}" aria-pressed="${so}"><span class="s">S</span><span class="t">${esc(m.label)}</span></button>`;
-    vis.forEach(s=>{const up=s.status!=="played",on=!up&&has(s.id,i),f=on&&first(s.id,i);const col=f?"var(--first)":rowColor(i);
-      const lbl=`${s.city} ${s.night}: ${m.label} — ${up?"up next":on?(f?"first time, fancam logged":"fancam logged"):"not spotted yet"}`;
-      html+=`<div class="cell"><button type="button" class="led${on?" on":""}${up?" up":""}${s.id===sel&&!up?" sel":""}" ${up?"disabled":""} data-show="${esc(s.id)}" data-m="${i}" aria-label="${esc(lbl)}" title="${esc(lbl)}" style="${on?`background:${col};box-shadow:0 0 10px ${col}`:""}"></button></div>`});
-    html+=`</div>`});
-  html+=`<div class="brow" style="grid-template-columns:${cols}"><div style="font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:#9aa3b8;padding-left:8px">LOGGED</div>`;
-  vis.forEach(s=>{const up=s.status!=="played",n=up?0:count(s.id),lit=Math.round(n/Math.max(1,MOM.length)*10);
-    let vu="";for(let k=0;k<10;k++)vu+=`<i style="${k<lit?`background:${k>=8?"var(--first)":rowColor(MOM.length-1-Math.round(k*(MOM.length-1)/9))}`:""}"></i>`;
-    html+=`<div class="strip-foot"><div class="vu" aria-hidden="true">${vu}</div><span class="cnt">${up?"UP NEXT":n+"/"+MOM.length}</span><button type="button" class="sel-btn" data-sel="${esc(s.id)}" aria-pressed="${s.id===sel}" ${up?"disabled":""} aria-label="Show ${esc(s.city)} ${esc(s.night)} on the monitor">${s.id===sel?"SEL ●":"SEL"}</button></div>`});
-  html+=`</div>`;
-  $("#board").innerHTML=html;
-}
-function renderMonitor(){
-  const S=PLAYED.find(x=>x.id===sel);
-  if(!S){$("#monShow").innerHTML=`<div class="mon-t">No shows yet</div>`;$("#monSolo").innerHTML="";return}
-  const songs=(S.songs||[]).map(x=>x.title).filter(Boolean);
-  let h=`<div class="mon-k"><span>SEL · ${esc(fmtD(S.date))} · ${esc(S.city.toUpperCase())}</span><span>${count(S.id)}/${MOM.length} LOGGED</span></div>
-  <div class="mon-t">${esc(S.city)} · ${esc(S.night)}</div>
-  <div class="mon-s">${esc(fmtLong(S.date))}${S.venue?" · "+esc(S.venue):""}${songs.length?` · Surprise songs: <b>${esc(songs.join(" & "))}</b>`:""}</div><div class="mon-list">`;
-  MOM.forEach((m,i)=>{const cs=clipsFor(S.id,i),on=cs.length>0,f=on&&first(S.id,i);
-    h+=`<div class="mi${i===solo?" solo":""}"><span class="dot${on?" on":""}" style="${on?`background:${f?"var(--first)":rowColor(i)}`:""}"></span><span style="min-width:0"><span class="nm">${esc(m.label)}${f?` <span style="font-family:var(--f-mono);font-size:11px;color:var(--first)">FIRST</span>`:""}</span><br><span class="sub">${esc(m.song||"")}</span><br>${on?cs.map((c,k)=>`<a href="${esc(c.url)}" target="_blank" rel="noopener">${k?"angle "+(k+1):"Watch"} ↗</a>${c.credit?` <span class="sub">${esc(c.credit)}</span>`:""}`).join(" · "):`${findLinks(S,i)}<button type="button" class="lnk" data-send="${esc(S.id)}|${i}">Send a clip</button>`}</span></div>`});
-  h+=`</div>`;$("#monShow").innerHTML=h;
-  const m=MOM[solo];const rows=PLAYED.slice().reverse();const n=rows.filter(s=>has(s.id,solo)).length;
-  let o=`<div class="mon-k"><span style="color:var(--purple)">SOLO · ${String(solo+1).padStart(2,"0")}</span></div><div class="mon-t" style="font-size:clamp(22px,3vw,28px)">${esc(m.label)}</div><div class="mon-s">${esc(m.song||"")} · spotted at <b>${n}</b> of ${rows.length} shows</div><div style="margin-top:8px;max-height:420px;overflow:auto">`;
-  rows.forEach(s=>{const cs=clipsFor(s.id,solo);o+=`<div class="solo-row"><span>${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</span>${cs.length?`<a href="${esc(cs[0].url)}" target="_blank" rel="noopener">Watch ↗</a>`:`<span class="solo-find">${findLinks(s,solo)}<button type="button" class="lnk" data-send="${esc(s.id)}|${solo}">Send a clip</button></span>`}</div>`});
-  o+=`</div>`;$("#monSolo").innerHTML=o;
-}
-function fillSelects(){
-  const rev=PLAYED.slice().reverse();
-  const opt=s=>`<option value="${esc(s.id)}">${esc(fmtD(s.date))} · ${esc(s.city)} ${esc(s.night)}</option>`;
-  $("#jumpSel").innerHTML=rev.map(opt).join("");$("#sShow").innerHTML=rev.map(opt).join("");
-  $("#sMoment").innerHTML=MOM.map((m,i)=>`<option value="${i}">${String(i+1).padStart(2,"0")} · ${esc(m.label)}</option>`).join("");
-  $("#sShow").value=sel;$("#sMoment").value=String(solo);updSend();
-}
-function pick(showId,mi){if(showId)sel=showId;if(mi!=null)solo=mi;focusSel();render();if(showId&&history.replaceState)history.replaceState(null,"","#"+showId)}
+function tally(){const n=PLAYED.length||1;
+  $("#tally").innerHTML=MOM.map(m=>{const k=PLAYED.filter(S=>clipsFor(S.id,m.id).length).length;
+    return `<div class="tr"><span>${esc(m.label)}</span><span class="bar"><i style="width:${Math.round(100*k/n)}%"></i></span><span>${k}/${PLAYED.length}</span></div>`}).join("")}
+function sendText(){const S=SHOWS.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];
+  const link=$("#sLink").value.trim(),who=$("#sWho").value.trim();
+  return{title:`Fancam: ${m.label} · ${S?nm(S):""}`,body:`Show: ${S?nm(S)+" ("+S.id+")":""}\nMoment: ${m.label} (${m.id})\nLink: ${link}\nCredit: ${who}\nI filmed this or have the filmer's OK: ${$("#sOk").checked?"yes":"no"}`}}
+function upd(){const ok=/^https?:\/\/\S+$/.test($("#sLink").value.trim())&&$("#sOk").checked;const a=$("#sSend");a.setAttribute("aria-disabled",ok?"false":"true");
+  const t=sendText();a.href=ISSUES+"?labels=fancam&title="+encodeURIComponent(t.title)+"&body="+encodeURIComponent(t.body)}
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-solo],[data-show],[data-sel],[data-send]");if(!t)return;
-  if(t.dataset.send){const[sid,mi]=t.dataset.send.split("|");$("#sShow").value=sid;$("#sMoment").value=mi;updSend();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sSend").focus({preventScroll:true}),400);return}
-  if(t.dataset.sel){pick(t.dataset.sel,null);return}
-  if(t.dataset.show){pick(t.dataset.show,+t.dataset.m);return}
-  if(t.dataset.solo!=null){pick(null,+t.dataset.solo)}
+  const f=e.target.closest("[data-findt]");if(f){const row=f.closest(".mo");row.classList.toggle("open");tr("moments/find-open");return}
+  const s=e.target.closest("[data-send]");if(s){$("#sShow").value=PLAYED[cur].id;$("#sMoment").value=s.dataset.send;$("#send").open=true;upd();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sLink").focus(),400);tr("moments/send-open");return}
+  const ln=e.target.closest("[data-learn]");if(ln){$("#chants").open=true;$("#chants").scrollIntoView({behavior:"smooth",block:"start"});tr("moments/learn-chants");return}
+  const ch=e.target.closest("[data-chant]");if(ch){tr("moments/chants/"+ch.dataset.chant);return}
+  if(e.target.closest("#chGo"))tr("moments/chants/song/"+$("#chSong").value);
+  const c=e.target.closest("[data-clip]");if(c){tr("moments/watch/"+c.dataset.clip);return}
+  const k=e.target.closest("[data-find]");if(k){tr("moments/find/"+k.dataset.find);return}
+  if(e.target.closest("#sSend"))tr("moments/send-fancam");
 });
-$("#jumpSel").addEventListener("change",e=>pick(e.target.value,null));
-$("#pgPrev").addEventListener("click",()=>{start=Math.max(0,start-win);render()});
-$("#pgNext").addEventListener("click",()=>{start=Math.min(CH.length-win,start+win);render()});
-let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{const w0=win;measure();if(w0!==win){focusSel();render()}},150)});
-addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(PLAYED.some(x=>x.id===h))pick(h,null)});
-
-/* send a fancam: Google Form (no account needed) */
-const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSc7ZDBHO15l9jXwl_WVmlEbe8KX88l32AksdJzL3iVMlDULVw/viewform";
-const F_SHOW="entry.2095451885",F_MOMENT="entry.469094475";
-const formOpt=t=>String(t).replace(/[“”]/g,'"').replace(/[‘’]/g,"'");
-function formUrl(){const p=sendPair();return FORM_URL+"?usp=pp_url&"+F_SHOW+"="+encodeURIComponent(p.show)+"&"+F_MOMENT+"="+encodeURIComponent(formOpt(p.moment))}
-function sendPair(){const S=PLAYED.find(x=>x.id===$("#sShow").value),m=MOM[+$("#sMoment").value]||MOM[0];return{show:S?`${S.city} ${S.night.replace(" (FESTA)","")} (${fmtLong(S.date)})`:"",moment:m.label}}
-function updSend(){$("#sMsg").textContent="";$("#sSend").href=formUrl()}
-["#sShow","#sMoment"].forEach(id=>$(id).addEventListener("change",updSend));
-$("#sSend").addEventListener("click",()=>{setTimeout(()=>{$("#sMsg").textContent="Thank you! Your clip is waiting for review 💜"},300)});
-$("#sCopy").addEventListener("click",()=>{const p=sendPair();const text=`Show: ${p.show}\nMoment: ${p.moment}`;
-  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(()=>{$("#sMsg").textContent="Copied. Now open the form and paste."}).catch(()=>{$("#sMsg").textContent=`Show: ${p.show} · Moment: ${p.moment}`})});
-$("#sSend").addEventListener("click",()=>{try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"moments/open-form",event:true})}catch(e){}});
-load();
+$("#showSel").onchange=()=>{cur=+$("#showSel").value;render();tr("moments/show/"+PLAYED[cur].id)};
+$("#prev").onclick=()=>{if(cur<PLAYED.length-1){cur++;render()}};
+$("#next").onclick=()=>{if(cur>0){cur--;render()}};
+["#sShow","#sMoment","#sLink","#sWho","#sOk"].forEach(id=>$(id).addEventListener("input",upd));
+$("#sCopy").onclick=async()=>{const t=sendText();const txt=t.title+"\n"+t.body;try{await navigator.clipboard.writeText(txt);$("#sMsg").textContent="Copied. Paste it in a DM to @djspinthat0 on TikTok."}catch(e){$("#sMsg").textContent=txt}tr("moments/copy-as-text")};
+(async()=>{
+  const get=u=>fetch(u,{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  const [s,m]=await Promise.all([get("shows.json"),get("moments.json")]);
+  if(!s||!m){$("#list").innerHTML='<p class="msg">The board couldn\'t load. Reload the page to try again.</p>';return}
+  SHOWS=(s.shows||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));
+  PLAYED=SHOWS.filter(x=>x.status==="played").reverse();
+  MOM=m.moments||[];CLIPS=m.clips||[];
+  $("#showSel").innerHTML=PLAYED.map((S,i)=>`<option value="${i}">${esc(nm(S))} · ${esc(fmt(S.date))}</option>`).join("");
+  $("#sShow").innerHTML=PLAYED.map(S=>`<option value="${esc(S.id)}">${esc(nm(S))} · ${esc(fmt(S.date))}</option>`).join("");
+  $("#sMoment").innerHTML=MOM.map((x,i)=>`<option value="${i}">${esc(x.label)}</option>`).join("");
+  const f=(m.featured||[])[0];const fm=f&&MOM.find(x=>x.id===f.moment),fs=f&&SHOWS.find(x=>x.id===f.show);
+  if(f&&f.url&&f.credit&&fm){const b=$("#featured");b.className="card";b.hidden=false;b.innerHTML=`<div class="feat"><p class="kick">Moment of the week${f.week?" · "+esc(f.week):""}</p><h3>${esc(fm.label)}${fs?" · "+esc(nm(fs)):""}</h3><p>Filmed by ${esc(f.credit)}</p><div class="row"><a class="btn ghost" href="${esc(f.url)}" target="_blank" rel="noopener">Watch on ${esc(host(f.url))} ↗</a></div></div>`}
+  const h=(location.hash||"").slice(1);const hi=PLAYED.findIndex(x=>x.id===h);const withClips=PLAYED.findIndex(S=>CLIPS.some(c=>c.show===S.id&&c.url));cur=hi>=0?hi:(withClips>=0?withClips:0);
+  fetch("setlist.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;const songs=(j.acts||[]).flatMap(a=>a.songs||[]).filter(x=>x!=="*");
+    const sel=$("#chSong");sel.innerHTML=songs.map(x=>`<option>${esc(x)}</option>`).join("");const go=()=>{$("#chGo").href="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${sel.value} fanchant guide`)};sel.onchange=go;go()}).catch(()=>{});
+  if(h==="chants"){$("#chants").open=true;setTimeout(()=>$("#chants").scrollIntoView(),300)}
+  render();tally();upd();
+  if(h==="send"){$("#send").open=true;$("#send").scrollIntoView()}
+})();
 })();
 </script>
-<script>
-/* GoatCounter events (same account as the home page) */
-(()=>{const tr=(p)=>{try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:String(p).slice(0,200),title:String(p),event:true})}catch(e){}};
-document.addEventListener("click",e=>{const a=e.target.closest("a,button");if(!a)return;const h=a.getAttribute("href")||"";
-if(a.id==="sSend")tr("moments/send-fancam");
- else if(a.id==="sCopy")tr("moments/copy-as-text");
- else if(a.dataset.sel)tr("moments/show/"+a.dataset.sel);
- else if(a.dataset.solo!==undefined)tr("moments/solo/"+a.dataset.solo);
- else if(a.dataset.show)tr("moments/light/"+a.dataset.show);
- else if(a.id==="pgPrev"||a.id==="pgNext")tr("moments/page");
- else if(/open\.spotify\.com/.test(h))tr("moments/play/spotify");
- else if(/music\.apple\.com/.test(h))tr("moments/play/apple-music");
- else if(/soundcloud\.com/.test(h))tr("moments/play/soundcloud");
- else if(/youtube\.com|youtu\.be|tiktok\.com|instagram\.com/.test(h))tr("moments/watch/"+(h.match(/\/\/(?:www\.)?([^/]+)/)||[,""])[1]);
- else if(a.closest(".tabbar"))tr("moments/tab/"+(a.dataset.tab||""));
- else if(/ko-fi\.com/.test(h))tr("kofi/moments");
-},true);})();
-</script>
-<script>(function(){var b=document.getElementById("pageShare");if(!b)return;
-function toast(m){var t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on")},2400)}
-b.addEventListener("click",function(){var url="https://djspinthat.net/moments.html",text="The BTS ARIRANG Moments Board: the moments ARMY waits for at every show, with fancams 🎥";try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"share-page/moments",event:true})}catch(e){}
-var copy=function(){(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){toast("Link copied. Paste it anywhere 💜")}).catch(function(){toast(url)})};
-if(navigator.share)navigator.share({title:"DJ Spin That",text:text,url:url}).catch(function(e){if(e&&e.name!=="AbortError")copy()});else copy()})})();</script>
-<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("[data-find]");if(!a)return;try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:"moments/find-"+a.dataset.find,event:true})}catch(x){}});</script>
+<script data-goatcounter="https://djspinthat.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
