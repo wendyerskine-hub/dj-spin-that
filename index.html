@@ -1062,6 +1062,10 @@ footer{font-size:15px!important;line-height:1.55}
 .h2-disc::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--lab) 22%,transparent) 55%,transparent 72%);z-index:-1}
 .h2-dl{box-shadow:0 0 0 4px #1a1724,0 0 0 6px rgba(255,255,255,.25)!important}
 
+
+/* Discography: an open album spans the whole row so there are no big gaps beside it */
+
+.disco-list>details.alb[open]{grid-column:1/-1}
 /* keep the tabs clear of the logo and the Share/Support buttons */
 @media (min-width:761px){.tabbar{padding-left:180px!important;padding-right:170px!important;box-sizing:border-box}}
 @media (min-width:761px) and (max-width:1100px){.tabbar{padding-left:70px!important;padding-right:150px!important}.v2don{padding:0 10px}}
