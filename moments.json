@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21",
+ "updated": "2026-11-22",
  "about": "Moments to watch for at every ARIRANG show, in concert order (live moments and all-night ones last). Add a clip to clips: show = the show id from shows.json, moment = a moment id below, url = link to the fan's own post, credit = their handle, first = true if it happened for the first time at that show.",
  "moments": [
   {
@@ -1704,6 +1704,13 @@
    "url": "https://www.threads.com/@escuadron_arirang_by_bts/video/DYOS8FkDTs1",
    "credit": "@escuadron_arirang_by_bts on Threads · Surprise song: We Are Bulletproof Pt.2 (SUGA focus)",
    "found": "2026-11-21"
+  },
+  {
+   "show": "2026-0550-kaohsiung-n3",
+   "moment": "who-says-dj-spin-that",
+   "url": "https://www.tiktok.com/t/ZTPXEF2eB/",
+   "credit": "@armystreamfinder on TikTok · Surprise songs (Blanket Kick / Boy With Luv)",
+   "found": "2026-11-22"
   }
  ],
  "featured": [],
