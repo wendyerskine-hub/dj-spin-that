@@ -758,6 +758,8 @@ main{padding-top:26px!important}
 #home2>.h2-next{justify-self:center;margin-top:-44px;border:0;background:none;padding:4px 6px;color:var(--v2muted)}
 #home2>.h2-next .go{background:none;padding:0;color:#fff;text-decoration:underline;text-underline-offset:3px}
 .h2-res>.h2-t{min-height:2.16em;display:flex;align-items:center;justify-content:center}
+/* the empty decks stay quiet: the placeholder line is for screen readers only (the headline already says what to do) */
+.h2-res .h2-wait{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .h2-wait{margin:0;font:500 12px var(--v2mono);letter-spacing:.1em;text-transform:uppercase;color:#6f7488}
 .h2-t{margin:0;font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);font-size:26px;line-height:1.08;letter-spacing:-.01em;color:#fff;max-width:100%;overflow-wrap:anywhere}
 .a .h2-t{text-shadow:0 0 16px rgba(255,84,104,.55)}.b .h2-t{text-shadow:0 0 16px rgba(180,140,255,.6)}
