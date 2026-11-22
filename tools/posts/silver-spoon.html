@@ -1,35 +1,35 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=540">
 <title>Silver Spoon · Tampa Night 3</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>html{font-synthesis:none}
 :root{--ink:#f4efff;--muted:#cdbfe8;--silver:#d6dae3;--red:#ff4d5e;--purple:#b48cff}
 *{box-sizing:border-box;margin:0}
 html,body{width:540px;height:960px;overflow:hidden;background:#0d0718}
-#v{position:relative;width:540px;height:960px;overflow:hidden;font-family:Outfit,sans-serif;color:var(--ink);
+#v{position:relative;width:540px;height:960px;overflow:hidden;font-family:Geist,sans-serif;color:var(--ink);
   background:radial-gradient(120% 70% at 50% 0%,#3d1024 0%,#1a0b2e 55%,#0b0614 100%)}
 #spark{position:absolute;inset:0;z-index:5;pointer-events:none}
 .scene{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;text-align:center;padding:0 40px;opacity:0;z-index:3}
-.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--silver)}
-h1{font-family:"Gowun Batang",serif;font-weight:700;font-size:50px;line-height:1.06;margin-top:14px}
-h2{font-family:"Gowun Batang",serif;font-weight:700;font-size:38px;line-height:1.12}
+.eyebrow{font-family:"Geist Mono",monospace;font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--silver)}
+h1{font-family:"Black Han Sans",serif;font-weight:700;font-size:50px;line-height:1.06;margin-top:14px}
+h2{font-family:"Black Han Sans",serif;font-weight:700;font-size:38px;line-height:1.12}
 p.sub{font-size:21px;line-height:1.42;color:var(--muted);margin-top:16px;max-width:450px}
 p.sub b{color:var(--ink)}
-.fan{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(244,239,255,.55);z-index:6}
+.fan{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:"Geist Mono",monospace;font-size:12px;color:rgba(244,239,255,.55);z-index:6}
 .decks{display:flex;gap:18px;margin-top:30px}
 .deck{display:grid;justify-items:center;align-content:start;gap:12px;width:220px}
 .rec{position:relative;width:200px;height:200px;border-radius:50%;background:repeating-radial-gradient(circle,#0a0510 0 4px,#17101f 5px 6px);box-shadow:0 0 0 5px #2a1530,0 16px 40px rgba(0,0,0,.6)}
 .rec i{position:absolute;inset:31%;border-radius:50%}
 .rec i::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#0a0510}
-.dl{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--muted)}
-.dt{font-family:"Gowun Batang",serif;font-weight:700;font-size:22px;line-height:1.15}
+.dl{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--muted)}
+.dt{font-family:Geist,sans-serif;font-weight:700;font-size:22px;line-height:1.15}
 .bird{font-size:96px;margin:20px 0 6px}
 .cities{display:grid;gap:12px;margin-top:24px;width:440px}
 .city{display:flex;justify-content:space-between;align-items:baseline;padding:14px 20px;border-radius:16px;background:rgba(214,218,227,.08);border:1.5px solid rgba(214,218,227,.3);font-size:24px;font-weight:600}
-.city span{font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--muted);font-weight:400}
+.city span{font-family:"Geist Mono",monospace;font-size:15px;color:var(--muted);font-weight:400}
 .city.first{border-color:var(--red);background:rgba(255,77,94,.14)}
 .badge{display:inline-block;margin-top:18px;background:var(--silver);color:#1a0b2e;font-weight:800;font-size:22px;padding:8px 20px;border-radius:999px}
-.url{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;color:var(--silver);margin-top:22px}
+.url{font-family:"Geist Mono",monospace;font-size:30px;font-weight:600;color:var(--silver);margin-top:22px}
 .big{font-size:84px;margin-bottom:6px}
 .zh{font-family:"Noto Sans TC","WenQuanYi Zen Hei","PingFang TC",sans-serif;font-weight:700;font-size:26px;color:var(--ink);margin-top:18px}
 .chips7{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px;max-width:460px}
@@ -39,8 +39,8 @@ p.sub b{color:var(--ink)}
 .polas{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin-top:22px}
 .pola{width:200px;padding:10px 10px 12px;background:#f4f1ea;border-radius:6px;box-shadow:0 14px 30px rgba(0,0,0,.55);color:#1a0b2e;text-align:center}
 .pola .ph{height:150px;border-radius:3px;background:linear-gradient(160deg,#2a1530,#120a1f);display:grid;place-items:center;font-size:40px}
-.pola b{display:block;margin-top:8px;font-family:"Gowun Batang",serif;font-size:22px}
-.pola span{font-family:"JetBrains Mono",monospace;font-size:12px;color:#5b4a75}
+.pola b{display:block;margin-top:8px;font-family:Geist,sans-serif;font-size:22px}
+.pola span{font-family:"Geist Mono",monospace;font-size:12px;color:#5b4a75}
 html.r45 .polas{gap:12px}html.r45 .pola .ph{height:96px}html.r45 .pola{width:180px}
 </style></head>
 <body><div id="v">
