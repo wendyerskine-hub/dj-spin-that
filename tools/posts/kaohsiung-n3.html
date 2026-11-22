@@ -1,5 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8">
-<!-- Kaohsiung Night 3 (closing night): Blanket Kick + Boy With Luv. 540x960 CSS px, rendered at 2x by render-html.js -->
+<!-- Kaohsiung Night 3 (closing night): Blanket Kick + Boy With Luv. 540x960 CSS px, rendered at 2x by render-html.js
+     ?story=1  IG Story cut: no URL pill, leaves room for the link sticker.  ?poll=1  still poll slide (room for a Poll sticker). -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@600&family=Noto+Sans+TC:wght@700&family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0}
@@ -35,6 +36,13 @@ html,body{width:540px;height:960px;overflow:hidden;background:#0b0912}
 .vinyl{position:absolute;left:50%;top:480px;width:230px;height:230px;margin-left:-115px;border-radius:50%;background:repeating-radial-gradient(circle,#07060b 0 4px,#16121f 5px 7px);box-shadow:0 0 0 3px #2d374d,0 0 60px rgba(255,99,169,.35);opacity:0}
 .vinyl b{position:absolute;inset:34%;border-radius:50%;background:conic-gradient(#ff2a4b 0 33%,#ff63a9 0 66%,#a855f7 0)}
 .vinyl b::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#07060b}
+.tap{display:none;font-size:22px;font-weight:800;color:#ffc2e1;margin-top:10px}
+body.story #s4 .url,body.story #s4 .small{display:none}body.story .tap{display:block}
+body.story #s4{top:190px}
+#poll{top:250px;padding:0 40px;display:none}
+#poll .big{font-size:84px;margin-top:12px}#poll .sub{font-size:26px;font-weight:700;color:#e6dbff;margin-top:20px;line-height:1.35}
+#poll .hint{margin-top:28px;font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.14em;color:#ffc2e1}
+body.poll #poll{display:block;opacity:1}
 .foot{position:absolute;bottom:180px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;color:rgba(255,255,255,.7)}
 </style></head><body>
 <canvas id="bg" width="1080" height="1920"></canvas>
@@ -48,10 +56,12 @@ html,body{width:540px;height:960px;overflow:hidden;background:#0b0912}
  <div class="night"><b>NIGHT 2</b>Sea 🌊 × Boy In Luv</div>
  <div class="night now"><b>NIGHT 3</b>Blanket Kick × Boy With Luv</div>
  <div class="tc">謝謝高雄 ARMY 💜 Bangkok 下一站！</div>
- <div class="url">djspinthat.net</div><div class="small">Every night's surprise songs</div></div>
+ <div class="url">djspinthat.net</div><div class="small">Every night's surprise songs</div><div class="tap">All 3 nights + every surprise song 👇</div></div>
+<div class="layer" id="poll"><div class="kick">Kaohsiung · Nov 19, 21 &amp; 22</div><div class="big song">Best<br>night?</div><div class="sub">N1 · DNA × Answer: Love Myself<br>N2 · Sea 🌊 × Boy In Luv<br>N3 · Blanket Kick × Boy With Luv</div><div class="hint">VOTE 👇</div></div>
 <div class="foot">FAN-MADE · NOT AFFILIATED WITH BTS / HYBE</div>
 <script>
 window.DUR=13;
+const Q=new URLSearchParams(location.search);if(Q.get('story'))document.body.classList.add('story');if(Q.get('poll')){document.body.classList.add('poll');window.DUR=1}
 const cv=document.getElementById('bg'),cx=cv.getContext('2d'),W=1080,H=1920;
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 const fade=(t,a,b,f=.45)=>Math.min(ease((t-a)/f),ease((b-t)/f));
@@ -67,6 +77,7 @@ function draw(t){
 }
 window.setFrame=function(t){
   draw(t);
+  if(Q.get('poll'))return;
   document.getElementById('s1').style.opacity=fade(t,.2,2.6);
   const v=document.getElementById('vin');v.style.opacity=fade(t,.4,3.0);v.style.transform=`rotate(${t*140}deg)`;
   const pop=(id,a,b)=>{const el=document.getElementById(id);el.style.opacity=fade(t,a,b);const s=el.querySelector('.song');const k=ease((t-a)/.6);s.style.transform=`translateY(${(1-k)*90}px) scale(${1+.04*Math.sin(t*2.4)})`};
