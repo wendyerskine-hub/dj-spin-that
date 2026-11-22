@@ -34,6 +34,11 @@ h1 .r{color:var(--red)}h1 .p{color:var(--violet)}
 .ph.editing .pick .x{display:grid}
 .big.small{min-height:60px;font-size:24px;padding:10px 22px;display:inline-flex;align-items:center;cursor:pointer}
 .stk{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}.stk .pick{min-height:84px;font-size:44px}
+.stk .pick.ld{padding:4px}.stk .pick.ld img{width:100%;max-width:120px;aspect-ratio:1;display:block}
+.stk.ldset{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.brand{display:flex;align-items:center;gap:16px}.ldlogo{width:120px;height:120px;flex:none;filter:drop-shadow(0 6px 18px rgba(168,85,247,.45))}
+.by{display:inline-block;margin-left:6px;padding:2px 12px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--violet));color:#fff;font-weight:800;font-size:16px}
+@media (max-width:520px){.ldlogo{width:84px;height:84px}}
 input[type=text]{width:100%;min-height:68px;padding:12px 18px;border-radius:20px;border:3px solid var(--line);background:rgba(0,0,0,.35);color:var(--ink);font:800 30px Outfit,sans-serif}
 input:focus-visible,.pick:focus-visible,.big:focus-visible{outline:4px solid #ffd166;outline-offset:3px}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -57,9 +62,12 @@ input:focus-visible,.pick:focus-visible,.big:focus-visible{outline:4px solid #ff
 </head>
 <body>
 <main id="maker">
-  <header>
-    <h1><span class="r">Little ARMY</span> <span class="p">Card Studio</span></h1>
-    <p class="sub">Make a DJ Spin That card for a new ARMY friend 💜</p>
+  <header class="brand">
+    <img class="ldlogo" src="stickers/logo.png" width="120" height="120" alt="Little DJ logo">
+    <div>
+      <h1><span class="r">Little ARMY</span> <span class="p">Card Studio</span></h1>
+      <p class="sub">Make a DJ Spin That card for a new ARMY friend 💜 <span class="by">Stickers by Little DJ</span></p>
+    </div>
   </header>
 
   <section class="step" aria-labelledby="s1"><h2 id="s1"><span class="n">1</span>Who is their bias?</h2><div class="grid" id="members" role="group" aria-labelledby="s1"></div></section>
@@ -68,7 +76,11 @@ input:focus-visible,.pick:focus-visible,.big:focus-visible{outline:4px solid #ff
     <div class="row"><label class="big alt small" for="addPh" id="addLbl">＋ Add photos</label><input id="addPh" type="file" accept="image/*" multiple hidden><button type="button" class="big alt small" id="editPh">🗑 Remove photos</button></div>
     <p class="lbl" style="margin:0">Photos stay on this iPad only. They never go on the website.</p>
   </section>
-  <section class="step" aria-labelledby="s2"><h2 id="s2"><span class="n">3</span>Pick a sticker</h2><div class="grid stk" id="stickers" role="group" aria-labelledby="s2"></div></section>
+  <section class="step" aria-labelledby="s2"><h2 id="s2"><span class="n">3</span>Pick a sticker</h2>
+    <p class="lbl" style="margin:0">💜 Little DJ's stickers</p>
+    <div class="grid stk ldset" id="ldStickers" role="group" aria-label="Little DJ stickers"></div>
+    <p class="lbl" style="margin:0">Or an emoji</p>
+    <div class="grid stk" id="stickers" role="group" aria-labelledby="s2"></div></section>
   <section class="step" aria-labelledby="s3"><h2 id="s3"><span class="n">4</span>Their name</h2>
     <input type="text" id="to" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="Friend's first name">
     <label class="lbl" for="from">From (your ARMY name):</label>
@@ -106,6 +118,13 @@ const M={
 };
 const ORDER=['rm','jin','suga','jhope','jimin','v','jk','ot7'];
 const STICKERS=['💜','⭐','🎧','🌊','🐨','🐹','🐱','🐿️','🐥','🐯','🐰','🌸','🦋','🌙'];
+/* Little DJ's own sticker art (little-army/stickers/<name>.png). Sticker key is 'ld-<name>'. */
+const LD=[['logo','Little DJ'],['mikrokosmos','Now spinning: Mikrokosmos'],['whalien','Now spinning: Whalien 52'],['sea','Now spinning: Sea'],['whale-cut','Lavender whale with the Big Dipper'],['whale','Whale hello there'],['dipper','Big Dipper: 7 stars, 1 sky'],['butterfly','Heart butterfly'],['butterfly-line','Heart butterfly drawing'],['cat-cut','Black kitten with a tuna'],['cat','Super tuna time']];
+const LDKEYS=LD.map(([n])=>'ld-'+n);
+const isLD=s=>LDKEYS.includes(s);
+const imgCache={};
+function loadImg(src){if(!imgCache[src])imgCache[src]=new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src});return imgCache[src]}
+const ldSrc=s=>'stickers/'+s.slice(3)+'.png';
 const clean=s=>String(s||'').replace(/[<>]/g,'').replace(/\s+/g,' ').trim().slice(0,14);
 let pick='jk',sticker='💜',photoId=null,editing=false;
 /* photos: saved in this browser's IndexedDB only, never uploaded */
@@ -128,6 +147,7 @@ loadPhotos();
 try{const f=localStorage.getItem('la-from');if(f)$('#from').value=f}catch(e){}
 
 $('#members').innerHTML=ORDER.map(k=>{const d=M[k];return `<button type="button" class="pick" data-m="${k}" aria-pressed="${k===pick}" style="--c:${d.c}"><span class="dot" style="background:${k==='ot7'?'conic-gradient(#c9ced8,#ff8fc8,#c9ced8,#f4f4f8,#2a2a33,#ff4d5e,#e8c46a,#c9ced8)':k==='jimin'?'#15151b':d.c}"></span>${d.n}<small>${d.kr}</small></button>`}).join('');
+$('#ldStickers').innerHTML=LD.map(([n,label])=>`<button type="button" class="pick ld" data-s="ld-${n}" aria-pressed="false" aria-label="${label}"><img src="stickers/${n}.png" alt="" loading="lazy"></button>`).join('');
 $('#stickers').innerHTML=STICKERS.map(s=>`<button type="button" class="pick" data-s="${s}" aria-pressed="${s===sticker}" aria-label="Sticker ${s}">${s}</button>`).join('');
 document.addEventListener('click',e=>{const b=e.target.closest('[data-m],[data-s]');if(!b)return;
   if(b.dataset.m){pick=b.dataset.m;photoId=null;drawTray();document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(sticker==='💜'||Object.values(M).some(d=>d.e===sticker)){sticker=M[pick].e;document.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===sticker)))}}
@@ -139,7 +159,7 @@ function rr(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);
 function ground(x){x.fillStyle='#0b0912';x.fillRect(0,0,W,H);let g=x.createRadialGradient(80,60,0,80,60,700);g.addColorStop(0,'rgba(255,42,75,.42)');g.addColorStop(1,'rgba(255,42,75,0)');x.fillStyle=g;x.fillRect(0,0,W,H);g=x.createRadialGradient(W-60,H-60,0,W-60,H-60,760);g.addColorStop(0,'rgba(168,85,247,.5)');g.addColorStop(1,'rgba(168,85,247,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
 function frame(x,c){x.save();x.shadowColor=c;x.shadowBlur=26;x.lineWidth=5;x.strokeStyle=c;rr(x,22,22,W-44,H-44,32);x.stroke();x.restore()}
 function fit(x,txt,font,max,size){let s=size;do{x.font=font.replace('{s}',s);s-=2}while(x.measureText(txt).width>max&&s>20);return s+2}
-function drawFront(x,m,stk,to,img){const d=M[m];ground(x);frame(x,d.c);
+function drawFront(x,m,stk,to,img,stkImg){const d=M[m];ground(x);frame(x,d.c);
   x.textAlign='center';x.fillStyle='#e6dbff';x.font="600 20px 'JetBrains Mono',monospace";x.fillText('ARIRANG',120,72);x.fillText('2026',W-110,72);
   x.font="900 40px 'Barlow Condensed',sans-serif";const a='DJ SPIN ',b='THAT',wa=x.measureText(a).width,wb=x.measureText(b).width,sx=W/2-(wa+wb)/2;x.textAlign='left';x.fillStyle='#ff2a4b';x.fillText(a,sx,128);x.fillStyle='#a855f7';x.fillText(b,sx+wa,128);x.textAlign='center';
   if(img){// photo window, cover-cropped toward the top (faces)
@@ -154,13 +174,14 @@ function drawFront(x,m,stk,to,img){const d=M[m];ground(x);frame(x,d.c);
   else{const g=x.createLinearGradient(cx-lr,cy-lr,cx+lr,cy+lr);g.addColorStop(0,d.l[0]);g.addColorStop(1,d.l[1]);x.beginPath();x.arc(cx,cy,lr,0,7);x.fillStyle=g;x.fill();if(!img){x.fillStyle=d.ink;x.font="900 30px 'Barlow Condensed',sans-serif";x.fillText('BTS',cx,cy-22)}}
   x.beginPath();x.arc(cx,cy,img?5:8,0,7);x.fillStyle='#08070c';x.fill();
   // sticker
-  x.font='96px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';x.fillText(stk,W-128,img?620:560);
+  if(stkImg){const S=img?150:190,cy2=(img?620:560)-34;x.save();x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=18;x.drawImage(stkImg,W-128-S/2,cy2-S/2,S,S);x.restore()}
+  else{x.font='96px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';x.fillText(stk,W-128,img?620:560)}
   // name
   const nm=d.lower?d.n:d.n.toUpperCase();const s=fit(x,nm,"900 {s}px 'Barlow Condensed',sans-serif",W-120,120);x.font=`900 ${s}px 'Barlow Condensed',sans-serif`;x.save();x.shadowColor=d.c;x.shadowBlur=24;x.fillStyle=d.c;x.fillText(nm,W/2,690);x.restore();
   x.fillStyle='#fff';x.font="700 40px 'Noto Sans KR',sans-serif";x.fillText(d.kr,W/2,752);
   if(to){x.font="800 44px Outfit,sans-serif";const t='For '+to+' 💜';const ts=fit(x,t,"800 {s}px Outfit,sans-serif",W-120,44);x.font=`800 ${ts}px Outfit,sans-serif`;x.fillText(t,W/2,840)}
-  x.fillStyle='#e6dbff';x.font="600 19px 'JetBrains Mono',monospace";x.fillText('A LITTLE ARMY FREEBIE 💜',W/2,H-62)}
-function drawBack(x,from){ground(x);frame(x,'#a855f7');x.textAlign='center';
+  x.fillStyle='#e6dbff';x.font="600 19px 'JetBrains Mono',monospace";x.fillText('A LITTLE DJ FREEBIE 💜',W/2,H-62)}
+function drawBack(x,from,badge){ground(x);frame(x,'#a855f7');x.textAlign='center';
   const UM=[[0,1.0,17],[1.6,.6,15],[2.9,.9,17],[4.2,1.4,11],[4.5,2.9,14],[6.4,3.0,15],[6.6,1.2,18]],ux=v=>130+v*58,uy=v=>110+v*58;
   x.strokeStyle='rgba(230,219,255,.55)';x.lineWidth=3;x.beginPath();[0,1,2,3,4,5,6,3].forEach((i,k)=>{const X=ux(UM[i][0]),Y=uy(UM[i][1]);k?x.lineTo(X,Y):x.moveTo(X,Y)});x.stroke();
   UM.forEach(([a,b,r])=>{const X=ux(a),Y=uy(b),R=r*1.5;x.save();x.shadowColor='#b48cff';x.shadowBlur=14;x.beginPath();for(let k=0;k<10;k++){const an=-Math.PI/2+k*Math.PI/5,rr2=k%2?R*.45:R;x.lineTo(X+Math.cos(an)*rr2,Y+Math.sin(an)*rr2)}x.closePath();x.fillStyle='#fff';x.fill();x.restore()});
@@ -168,11 +189,14 @@ function drawBack(x,from){ground(x);frame(x,'#a855f7');x.textAlign='center';
   x.fillStyle='#e6dbff';x.font="800 42px Outfit,sans-serif";x.fillText('Borahae 💜',W/2,505);
   x.fillStyle='#fff';x.font="800 34px Outfit,sans-serif";x.fillText('We met at the',W/2,610);x.fillText('BTS live viewing! 🎬',W/2,656);
   if(from){x.fillStyle='#e6dbff';x.font="800 36px Outfit,sans-serif";const t='From '+from;const s=fit(x,t,"800 {s}px Outfit,sans-serif",W-120,36);x.font=`800 ${s}px Outfit,sans-serif`;x.fillText(t,W/2,750)}
-  x.fillStyle='#fff';x.font="800 26px Outfit,sans-serif";x.fillText('Every BTS surprise song 🎧',W/2,850);
-  x.fillStyle='#e6dbff';x.font="600 26px 'JetBrains Mono',monospace";x.fillText('djspinthat.net',W/2,892)}
+  x.fillStyle='#fff';x.font="800 26px Outfit,sans-serif";x.fillText('Every BTS surprise song 🎧',W/2-80,850);
+  x.fillStyle='#e6dbff';x.font="600 26px 'JetBrains Mono',monospace";x.fillText('djspinthat.net',W/2-80,892);
+  // "Made by Little DJ" badge (its QR opens djspinthat.net)
+  if(badge){x.save();x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=16;x.drawImage(badge,W-196,H-226,150,150);x.restore()}}
 
 async function render(m,stk,to,from,img){try{await document.fonts.load("900 40px 'Barlow Condensed'");await document.fonts.load("800 40px Outfit");await document.fonts.load("700 40px 'Noto Sans KR'")}catch(e){}
-  drawFront($('#cvF').getContext('2d'),m,stk,to,img);drawBack($('#cvB').getContext('2d'),from)}
+  const [stkImg,badge]=await Promise.all([isLD(stk)?loadImg(ldSrc(stk)):null,loadImg('stickers/sticker.png')]);
+  drawFront($('#cvF').getContext('2d'),m,stk,to,img,stkImg);drawBack($('#cvB').getContext('2d'),from,badge)}
 function link(m,stk,to,from){const u=new URL(location.origin+location.pathname);u.searchParams.set('m',m);u.searchParams.set('s',stk);if(to)u.searchParams.set('to',to);if(from)u.searchParams.set('from',from);return u.toString()}
 function cardBlob(){return new Promise(res=>{const c=document.createElement('canvas');c.width=W*2+40;c.height=H;const x=c.getContext('2d');x.fillStyle='#0b0912';x.fillRect(0,0,c.width,c.height);x.drawImage($('#cvF'),0,0);x.drawImage($('#cvB'),W+40,0);c.toBlob(res,'image/png')})}
 let current=null;
@@ -191,7 +215,7 @@ $('#save').addEventListener('click',async()=>{const blob=await cardBlob();const 
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'My ARMY card 💜'});return}catch(e){if(e&&e.name==='AbortError')return}}
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-army-card.png';document.body.appendChild(a);a.click();a.remove()});
 // opened from a QR: show the friend's card
-const P=new URLSearchParams(location.search);if(P.get('m')&&M[P.get('m')]){const stk=STICKERS.includes(P.get('s'))?P.get('s'):M[P.get('m')].e;show(P.get('m'),stk,clean(P.get('to')),clean(P.get('from')),true)}
+const P=new URLSearchParams(location.search);if(P.get('m')&&M[P.get('m')]){const stk=STICKERS.includes(P.get('s'))||isLD(P.get('s'))?P.get('s'):M[P.get('m')].e;show(P.get('m'),stk,clean(P.get('to')),clean(P.get('from')),true)}
 })();
 </script>
 </body>
