@@ -1,0 +1,1286 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#110a1d"><meta name="apple-mobile-web-app-title" content="Flip Studio"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>DJ Spin That Flip Studio</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+/* Layout: the DJ Spin That look. Left: the live card on a stage. Right: numbered steps (load, frame, back, make). Single dark look on purpose.
+   Space Grotesk stays loaded only because the cards themselves are drawn with it. */
+:root {
+  --bg: #110a1d; --panel: #1a1129; --panel2: #24183a; --line: #3a2a52;
+  --text: #f4efff; --muted: #c2b4dc; --accent: #ff5468; --accent2: #b48cff; --on-accent: #1a0b14;
+  --ok: #4ade80; --warn: #fbbf24; --err: #ff8a8a;
+  --grad: linear-gradient(90deg, #ff2a4b, #ff63a9, #a855f7);
+  --f: "Geist", system-ui, -apple-system, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  --display: "Black Han Sans", "Geist", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font: 15px/1.5 var(--f);
+  padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
+header { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid var(--line);
+  padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header h1 { margin: 0; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-weight: 400; }
+/* Crossfader logo */
+.xf { display: inline-grid; gap: 5px; }
+.xf-word { font-family: var(--display); font-size: 28px; line-height: 1; letter-spacing: .5px; text-transform: uppercase; color: var(--text); white-space: nowrap; }
+.xf-word .dj { color: #ff2a4b; }
+.xf-word .that { background: linear-gradient(90deg, #ff63a9, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.xf-bar { position: relative; height: 3px; border-radius: 3px; background: var(--grad); }
+.xf-bar i { position: absolute; top: 50%; left: 58%; width: 12px; height: 9px; margin: -4.5px 0 0 -6px; border-radius: 3px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.tool { font-family: var(--display); font-size: 22px; line-height: 1; color: var(--text); white-space: nowrap; }
+.tag { font-family: var(--mono); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 2px 10px; }
+header a { margin-left: auto; color: var(--muted); font-size: 14px; text-decoration: none; }
+header a:hover { color: var(--text); }
+main { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 1fr); gap: 18px; max-width: 1240px; margin: 0 auto;
+  padding-block: 18px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 860px) { main { grid-template-columns: minmax(0, 1fr); } }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-bottom: 14px; min-width: 0; }
+.box h2 { font-family: var(--mono); font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin: 0 0 12px; display: flex; gap: 10px; align-items: center; }
+.box h2 b { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--grad); color: #fff; font-size: 14px; font-weight: 600; }
+.sticky { position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 860px) { .sticky { position: static; } }
+.stageWrap { display: grid; place-items: center; background: #0c0715; border-radius: 12px; padding: 8px; }
+#stage { max-width: 100%; max-height: 66vh; display: block; touch-action: none; cursor: grab; border-radius: 6px; }
+#stage.dragging { cursor: grabbing; }
+@media (max-width: 600px) { #stage { max-height: 52vh; } }
+#drop { border: 2px dashed var(--line); border-radius: 12px; padding: 22px; text-align: center; color: var(--muted); cursor: pointer; transition: .15s; }
+#drop:hover, #drop.over { border-color: var(--accent); color: var(--text); background: #ff546812; }
+#drop strong { color: var(--text); }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.row:last-child { margin-bottom: 0; }
+.label { font-family: var(--mono); font-size: 14px; color: var(--muted); margin: 2px 0 6px; }
+button { font: inherit; font-size: 15px; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); padding: 9px 14px; }
+button:hover { border-color: var(--accent2); }
+button:focus-visible, #drop:focus-visible, input:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary { background: var(--grad); border: 0; color: #fff; font-weight: 700; font-size: 16px; padding: 13px 16px; flex: 1; min-width: 140px; text-shadow: 0 1px 2px rgba(40,0,20,.45); }
+button.primary:hover { filter: brightness(1.08); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 7px 14px; font-size: 14px; border-radius: 99px; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.slider { display: grid; grid-template-columns: 64px 1fr 56px; gap: 8px; align-items: center; margin-bottom: 8px; font-size: 14px; color: var(--muted); }
+.slider output { font-family: var(--mono); text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.backs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; max-height: 440px; overflow-y: auto; padding: 2px; }
+.backOpt { padding: 6px; display: grid; gap: 6px; justify-items: center; font-size: 14px; line-height: 1.25; color: var(--muted); }
+.backOpt img, .backOpt .ph { width: 100%; aspect-ratio: 4 / 7; object-fit: cover; border-radius: 6px; background: var(--bg); display: grid; place-items: center; color: var(--muted); font-size: 22px; }
+.backOpt[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); color: var(--text); }
+.info { font-size: 14px; color: var(--muted); }
+.info b { color: var(--text); font-weight: 600; }
+.hint { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.ok { color: var(--ok); } .warn { color: var(--warn); } .err { color: var(--err); }
+.bar { height: 8px; background: var(--panel2); border-radius: 99px; overflow: hidden; margin: 10px 0 4px; }
+.bar i { display: block; height: 100%; width: 0; background: var(--grad); transition: width .1s; }
+.results { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 12px; }
+.results figure { margin: 0; background: var(--panel2); border-radius: 12px; padding: 8px; font-size: 14px; color: var(--muted); display: grid; gap: 6px; min-width: 0; }
+.results img, .results video { width: 100%; border-radius: 6px; display: block; background: #000; }
+.results .name { color: var(--text); word-break: break-all; }
+.results .for { justify-self: start; font-size: 14px; color: var(--on-accent); background: var(--accent2); border-radius: 99px; padding: 1px 10px; }
+.field { display: grid; gap: 4px; margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+.field input[type=text], .field input[type=url], textarea.msg { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
+.field input:focus, textarea.msg:focus { outline: 2px solid var(--accent2); outline-offset: 0; border-color: transparent; }
+#linkPanel { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 12px; background: var(--panel2); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 420px) { .two { grid-template-columns: 1fr; } }
+.check { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--text); margin-top: 12px; }
+.check input[type=checkbox] { width: 18px; height: 18px; flex: none; accent-color: var(--accent); }
+.check input[type=text] { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; width: 150px; }
+#sendBox { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+textarea.msg { resize: vertical; min-height: 64px; font-size: 16px; }
+.results .btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.results .btns button { flex: 1; padding: 8px 6px; font-size: 14px; }
+.slides { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
+.slideOpt { position: relative; flex: none; width: 64px; padding: 0; border-radius: 10px; overflow: hidden; border: 2px solid var(--line); background: var(--bg); }
+.slideOpt img { width: 100%; aspect-ratio: 4 / 7; object-fit: cover; display: block; }
+.slideOpt[aria-pressed="true"] { border-color: var(--accent); }
+.slideOpt .n { position: absolute; left: 4px; top: 4px; font-family: var(--mono); font-size: 14px; line-height: 1.3; background: #000b; color: #fff; border-radius: 99px; padding: 0 6px; }
+.slideOpt .x { position: absolute; right: 2px; top: 2px; width: 22px; height: 22px; line-height: 21px; font-size: 16px; text-align: center; border-radius: 50%; background: #000b; color: #fff; }
+#timing { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 12px; background: var(--panel2); }
+.slider.wide { grid-template-columns: 136px 1fr 56px; }
+@media (max-width: 420px) { .slider.wide { grid-template-columns: 1fr 56px; } .slider.wide > span { grid-column: 1 / -1; } }
+.slideAdd { flex: none; width: 64px; aspect-ratio: 4 / 7; display: grid; place-items: center; font-size: 22px; color: var(--muted); border-style: dashed; }
+kbd { font-family: var(--mono); background: var(--panel2); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 aria-label="DJ Spin That Flip Studio">
+    <span class="xf" aria-hidden="true"><span class="xf-word"><span class="dj">DJ</span> SPIN <span class="that">THAT</span></span><span class="xf-bar"><i></i></span></span>
+    <span class="tool" aria-hidden="true">Flip Studio</span>
+  </h1>
+  <a href="/">djspinthat.net ↗</a>
+</header>
+
+<main>
+  <section>
+    <div class="box sticky">
+      <h2>Live card <span class="info" id="dims" style="text-transform:none;letter-spacing:0"></span></h2>
+      <div class="stageWrap"><canvas id="stage" width="440" height="730" aria-label="Photocard preview. Drag to move the photo."></canvas></div>
+      <div class="row" style="margin-top:10px">
+        <button id="playFlip" type="button">▶ Play flip</button>
+        <button id="showSide" type="button">Show back</button>
+        <span class="info" id="dragHint">Drag the photo to move it.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="box">
+      <h2><b>1</b>Load the front</h2>
+      <div id="drop" tabindex="0" role="button"><strong>Drop a photo, a video clip, or several photos</strong> or tap to choose<br><span class="info">Pick 2 or more photos for a slideshow or a collage. Nothing gets uploaded; it all stays on your device.</span></div>
+      <input id="file" type="file" accept="image/*,video/*" multiple hidden>
+      <input id="addFile" type="file" accept="image/*" multiple hidden>
+      <div id="srcInfo" class="info" style="margin-top:8px"></div>
+      <div id="slidePanel" hidden>
+        <div class="label" style="margin-top:10px">Show the photos as</div>
+        <div class="chips row" id="layoutPick">
+          <button class="chip" type="button" data-v="slideshow" aria-pressed="true">Slideshow (fade one to the next)</button>
+          <button class="chip" type="button" data-v="collage" aria-pressed="false">Collage (all at once)</button>
+        </div>
+        <div class="label">Tap a photo to frame it, then drag on the card to move it</div>
+        <div class="slides" id="slides"></div>
+        <div class="row"><button id="slideEarlier" type="button">◀ Earlier</button><button id="slideLater" type="button">Later ▶</button></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2><b>2</b>Frame it</h2>
+      <div class="label">Card shape</div>
+      <div class="chips row" id="orient">
+        <button class="chip" type="button" data-v="portrait" aria-pressed="true">Portrait</button>
+        <button class="chip" type="button" data-v="landscape" aria-pressed="false">Landscape (group shots)</button>
+      </div>
+      <div class="label">Photo</div>
+      <div class="chips row" id="fitMode">
+        <button class="chip" type="button" data-v="fill" aria-pressed="true">Fill the card</button>
+        <button class="chip" type="button" data-v="fit" aria-pressed="false">Show whole photo</button>
+      </div>
+      <div class="slider">Zoom <input id="zoom" type="range" min="100" max="300" value="100"><output id="zoomV">100%</output></div>
+      <div class="row"><button id="recenter" type="button">Re-center</button><span class="hint" style="margin:0">"Show whole photo" keeps everyone in frame and fills the edges with a soft blur.</span></div>
+      <label class="check"><input id="frameOn" type="checkbox" checked> DJ Spin That logo on the front (logo, DJSPINTHAT.NET and a slow-spinning record). Off = plain full photo.</label>
+      <label class="check"><input id="creditOn" type="checkbox"> Photo credit line <input id="creditText" type="text" maxlength="60" style="width:auto;flex:1;min-width:0"></label>
+      <div class="hint">Keep any fan photographer's watermark visible in the photo. The credit line adds a small note in the corner.</div>
+    </div>
+
+    <div class="box">
+      <h2><b>3</b>Pick the back</h2>
+      <div class="backs" id="backs">
+        <button class="backOpt" type="button" data-v="link" aria-pressed="false"><span class="ph">🔗</span>Link + QR</button>
+        <button class="backOpt" type="button" data-v="custom" aria-pressed="false"><span class="ph" id="customThumb">+</span>Upload one</button>
+      </div>
+      <input id="backFile" type="file" accept="image/*" hidden>
+      <div id="linkPanel" hidden>
+        <label class="field">Link (Stationhead, playlist, voting page…)<input id="lkUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://share.stationhead.com/…"></label>
+        <label class="field">Big title<input id="lkTitle" type="text" maxlength="28" placeholder="HYUNG LINE"></label>
+        <div class="two">
+          <label class="field">Line under the title<input id="lkSub" type="text" maxlength="40" placeholder="Road to 1B streams"></label>
+          <label class="field">Button text<input id="lkBtn" type="text" maxlength="30" placeholder="Scan · Tap · Stream"></label>
+        </div>
+        <label class="field">Small text at the bottom (optional)<input id="lkFoot" type="text" maxlength="50" placeholder="live on Stationhead · @yourstation"></label>
+        <div class="label">Style</div>
+        <div class="chips row" id="lkStyle">
+          <button class="chip" type="button" data-v="night" aria-pressed="true">Night</button>
+          <button class="chip" type="button" data-v="lilac" aria-pressed="false">Lilac</button>
+        </div>
+        <label class="check" style="margin-top:0"><input id="lkPhoto" type="checkbox" checked> Put a small circle of the front photo on the back</label>
+        <div id="lkInfo" class="hint"></div>
+      </div>
+      <div class="label" style="margin-top:12px">Background around the card</div>
+      <div class="chips" id="bgPick">
+        <button class="chip" type="button" data-v="lilac" aria-pressed="true">Lilac</button>
+        <button class="chip" type="button" data-v="white" aria-pressed="false">White</button>
+        <button class="chip" type="button" data-v="night" aria-pressed="false">Night</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2><b>4</b>Who's it for?</h2>
+      <div class="chips row" id="forPick">
+        <button class="chip" type="button" data-v="me" aria-pressed="true">Me</button>
+        <button class="chip" type="button" data-v="other" aria-pressed="false">Someone else</button>
+      </div>
+      <label class="field" id="forField" hidden>Their name or @handle<input id="forName" type="text" maxlength="30" autocomplete="off" placeholder="@minabtshyung"></label>
+      <label class="field">Your credit (always on the back)<input id="wmText" type="text" maxlength="30" value="@djspinthat"></label>
+      <label class="check" style="margin-top:4px"><input id="wmOn" type="checkbox" checked> Also sign the front corner</label>
+      <div class="hint" id="creditPreview"></div>
+    </div>
+
+    <div class="box">
+      <h2><b>5</b>Make it</h2>
+      <div id="timing">
+        <div class="label">Timing</div>
+        <div class="slider wide"><span>Front stays up</span><input id="holdF" type="range" min="15" max="60" step="5" value="30"><output id="holdFV">3.0s</output></div>
+        <div class="slider wide" id="perRow"><span>Each slideshow photo</span><input id="per" type="range" min="15" max="50" value="25"><output id="perV">2.5s</output></div>
+        <div class="slider wide"><span>Back stays up</span><input id="holdB" type="range" min="20" max="100" step="5" value="40"><output id="holdBV">4.0s</output></div>
+        <div class="label">Flip speed</div>
+        <div class="chips row" id="flipPick">
+          <button class="chip" type="button" data-v="0.8" aria-pressed="false">Quick</button>
+          <button class="chip" type="button" data-v="1.3" aria-pressed="true">Smooth</button>
+          <button class="chip" type="button" data-v="2" aria-pressed="false">Slow</button>
+        </div>
+        <div class="label">GIF size</div>
+        <div class="chips row" id="gifSize">
+          <button class="chip" type="button" data-v="large" aria-pressed="true">Large (easiest to read)</button>
+          <button class="chip" type="button" data-v="small" aria-pressed="false">Small (smaller file)</button>
+        </div>
+      </div>
+      <div class="row">
+        <button class="primary" id="makeGif" type="button">Make GIF</button>
+        <button class="primary" id="makeVid" type="button">Make MP4</button>
+      </div>
+      <div class="row"><button id="makePng" type="button" style="flex:1">Save print PNGs (front + back)</button></div>
+      <label class="check"><input id="endOn" type="checkbox" checked> End with a still card (2.5s): big logo, DJSPINTHAT.NET, "Link in bio"</label>
+      <label class="check" style="margin-top:6px"><input id="endQR" type="checkbox" checked> Put a QR to djspinthat.net on the end card</label>
+      <div id="lenInfo" class="hint"></div>
+      <div class="hint">GIF: plays in email and every texting app. MP4: sharper, best for iPhone texts and stories. Both use the whole slideshow, or up to 15 seconds of a video. The back and the end card hold still so the QR codes are easy to scan; give a QR back at least 4 seconds. The MP4 records in real time, so keep this tab open while it runs. Print PNGs are 2 × 3.5 in at 300 dpi, like your printed cards.</div>
+      <div class="bar" id="bar" hidden><i></i></div>
+      <div id="status" class="info"></div>
+      <div class="results" id="results"></div>
+      <div id="sendBox" hidden>
+        <div class="label">A GIF or video can't hold a tappable link, so send this text with it:</div>
+        <textarea class="msg" id="msg" rows="3"></textarea>
+        <div class="row" style="margin-top:8px"><button id="copyMsg" type="button">Copy text</button><span class="info" id="copyInfo"></span></div>
+      </div>
+    </div>
+    <div class="hint">Tip: name your photo file after the member (like <kbd>jimin-vogue.jpg</kbd>) and the saved card keeps that name.</div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const stage = $("#stage"), sctx = stage.getContext("2d");
+
+// ---------- state ----------
+const st = { orient: "portrait", fit: "fill", zoom: 1, px: 0, py: 0, back: "standard", bg: "lilac", side: "front", wm: true, wmText: "@djspinthat", forWho: "me", forName: "",
+  frame: true, credit: false, creditText: "Photos: fan photographers · fan-made", endCard: true, endQR: true, per: 2.5,
+  layout: "slideshow", holdF: 3, holdB: 4, flip: "1.3", gifSize: "large" };
+// the "Link + QR" back
+const lk = { url: "", title: "", sub: "", btn: "Scan · Tap · Stream", foot: "", style: "night", photo: true };
+let frontThumb = null, thumbVer = 0;
+let front = null;           // {kind:'image'|'video', el, w, h}
+let fileName = "card";
+let customBack = null;      // Image
+let playing = null;         // flip preview animation
+let busy = false;
+// Card backs built into the page. `wide` is an optional landscape layout; without one, the back turns sideways on landscape cards.
+const BACK_LIST = [
+  { id: "standard", label: "Logo + QR", src: "back-standard.jpg", wide: "back-standard-wide.jpg" },
+  { id: "dj", label: "DJ Spin That", src: "back-dj.jpg" },
+  { id: "dipper", label: "Big Dipper", src: "back-dipper.jpg" },
+  { id: "sevens", label: "Seven Sevens", src: "back-sevens.jpg" },
+  { id: "names-kr", label: "Names (Korean)", src: "back-names-kr.jpg", wide: "back-names-kr-wide.jpg" },
+  { id: "names-en", label: "Names (English)", src: "back-names-en.jpg", wide: "back-names-en-wide.jpg" },
+  { id: "red", label: "Red logo", src: "back-red.jpg", wide: "back-red-wide.jpg" },
+  { id: "logo-bts", label: "Logo + BTS", src: "back-logo-bts.jpg", wide: "back-logo-bts-wide.jpg" },
+  { id: "emboss", label: "Embossed logo", src: "back-emboss.jpg", wide: "back-emboss-wide.jpg" },
+  { id: "suits", label: "Emoji suits", src: "back-suits.jpg", wide: "back-suits-wide.jpg" },
+  { id: "surprise", label: "Surprise Song", src: "back-surprise.jpg" },
+  { id: "arirang", label: "Arirang logo", src: "back-arirang.jpg", wide: "back-arirang-wide.jpg" },
+  { id: "arirang-tape", label: "Arirang tape", src: "back-arirang-tape.jpg", wide: "back-arirang-tape-wide.jpg" },
+  { id: "arirang-poster", label: "Arirang tour poster", src: "back-arirang-poster.jpg" },
+];
+const BACKS = {};
+function loadImg(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+{
+  const holder = $("#backs"), custom = holder.querySelector('[data-v="custom"]');
+  BACK_LIST.forEach(b => {
+    const btn = document.createElement("button");
+    btn.className = "backOpt"; btn.type = "button"; btn.dataset.v = b.id; btn.setAttribute("aria-pressed", "false");
+    btn.innerHTML = `<img src="${b.src}" alt="">${b.label}`;
+    holder.insertBefore(btn, custom);
+  });
+}
+Promise.all(BACK_LIST.map(b => Promise.all([loadImg(b.src), b.wide ? loadImg(b.wide) : null]).then(([img, wide]) => { BACKS[b.id] = { img, wide }; })))
+  .then(() => draw())
+  .catch(() => { $("#status").innerHTML = '<span class="err">Some card backs didn\'t load. Reload the page to try again.</span>'; });
+
+try {
+  const s = JSON.parse(localStorage.getItem("flipstudio") || "null");
+  if (s) {
+    st.back = s.back === "custom" ? "standard" : (s.back || "standard"); st.bg = s.bg || "lilac";
+    if (typeof s.wm === "boolean") st.wm = s.wm;
+    if (typeof s.wmText === "string") st.wmText = s.wmText;
+    if (s.forWho === "me" || s.forWho === "other") st.forWho = s.forWho;
+    if (typeof s.forName === "string") st.forName = s.forName;
+    if (s.lk && typeof s.lk === "object") for (const k of Object.keys(lk)) if (typeof s.lk[k] === typeof lk[k]) lk[k] = s.lk[k];
+    for (const k of ["frame", "credit", "endCard", "endQR"]) if (typeof s[k] === "boolean") st[k] = s[k];
+    if (typeof s.creditText === "string" && s.creditText.trim()) st.creditText = s.creditText;
+    if (typeof s.per === "number" && s.per >= 1.5 && s.per <= 5) st.per = s.per;
+    if (s.layout === "slideshow" || s.layout === "collage") st.layout = s.layout;
+    if (typeof s.holdF === "number" && s.holdF >= 1.5 && s.holdF <= 6) st.holdF = s.holdF;
+    if (typeof s.holdB === "number" && s.holdB >= 2 && s.holdB <= 10) st.holdB = s.holdB;
+    if (["0.8", "1.3", "2"].includes(s.flip)) st.flip = s.flip;
+    if (s.gifSize === "large" || s.gifSize === "small") st.gifSize = s.gifSize;
+  }
+} catch (e) {}
+const remember = () => { try { localStorage.setItem("flipstudio", JSON.stringify({ back: st.back, bg: st.bg, wm: st.wm, wmText: st.wmText, forWho: st.forWho, forName: st.forName, lk,
+  frame: st.frame, credit: st.credit, creditText: st.creditText, endCard: st.endCard, endQR: st.endQR, per: st.per,
+  layout: st.layout, holdF: st.holdF, holdB: st.holdB, flip: st.flip, gifSize: st.gifSize })); } catch (e) {} };
+
+// ---------- geometry ----------
+// small = preview; big = MP4
+// "gif" = a bigger GIF so the card is easy to see on a phone
+function dims(big) {
+  const p = big === "gif" ? { cw: 520, ch: 910, W: 600, H: 1000, r: 30 } : big ? { cw: 600, ch: 1050, W: 720, H: 1200, r: 34 } : { cw: 360, ch: 630, W: 440, H: 730, r: 22 };
+  return st.orient === "portrait" ? p : { cw: p.ch, ch: p.cw, W: p.H, H: p.W, r: p.r };
+}
+
+// ---------- face rendering ----------
+const tiny = document.createElement("canvas"), tctx = tiny.getContext("2d");
+const PINK = "#ff2e63", PURPLE = "#a855f7", TURN = 4; // the record turns once every 4 seconds
+// what the photo controls (zoom, drag) act on: the photo, the video, or the slide being framed
+function srcOf(k) {
+  if (!front) return null;
+  if (front.kind === "slides") { const s = front.slides[k == null ? front.idx : k]; return s ? { el: s.el, w: s.w, h: s.h, pos: s } : null; }
+  const el = front.el;
+  return front.kind === "video" ? { el, w: el.videoWidth, h: el.videoHeight, pos: st } : { el, w: el.naturalWidth, h: el.naturalHeight, pos: st };
+}
+function srcSize() { const s = srcOf(); return s ? [s.w, s.h] : [0, 0]; }
+function placementFor(src, W, H) {
+  const base = st.fit === "fill" ? Math.max(W / src.w, H / src.h) : Math.min(W / src.w, H / src.h);
+  const sc = base * st.zoom, dw = src.w * sc, dh = src.h * sc;
+  return { x: (W - dw) / 2 + src.pos.px * Math.abs(dw - W) / 2, y: (H - dh) / 2 + src.pos.py * Math.abs(dh - H) / 2, dw, dh };
+}
+function placement(W, H) { const s = srcOf(); return s ? placementFor(s, W, H) : { x: 0, y: 0, dw: W, dh: H }; }
+function roundRect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+// the photo window on the front (smaller when the DJ Spin That frame is on)
+function footH(W, H) { return st.orient === "portrait" ? H * 0.165 : H * 0.2; }
+function photoRect(W, H) {
+  if (!st.frame) return { x: 0, y: 0, w: W, h: H, r: 0 };
+  const m = Math.round(Math.min(W, H) * 0.035), fh = footH(W, H);
+  return { x: m, y: m, w: W - 2 * m, h: H - fh - m, r: Math.round(Math.min(W, H) * 0.04) };
+}
+// collage: rows of cells inside the photo window (a lone photo on a row gets a bit more height)
+const isCollage = () => front && front.kind === "slides" && st.layout === "collage" && front.slides.length > 1;
+function collageCells(R, n) {
+  const tall = R.h >= R.w;
+  const ROWS = tall ? { 2: [1, 1], 3: [1, 2], 4: [2, 2], 5: [1, 2, 2], 6: [2, 2, 2], 7: [1, 2, 2, 2], 8: [2, 2, 2, 2], 9: [3, 3, 3], 10: [2, 3, 3, 2] }
+                    : { 2: [2], 3: [3], 4: [2, 2], 5: [2, 3], 6: [3, 3], 7: [3, 4], 8: [4, 4], 9: [3, 3, 3], 10: [3, 4, 3] };
+  const rows = ROWS[n] || [n], g = Math.max(2, Math.round(Math.min(R.w, R.h) * 0.018));
+  const wts = rows.map(k => (k === 1 && rows.length > 1 ? 1.4 : 1)), wsum = wts.reduce((a, b) => a + b, 0);
+  const avail = R.h - g * (rows.length - 1), cells = [], cr = Math.max(2, Math.round(Math.min(R.w, R.h) * 0.02));
+  let y = R.y;
+  rows.forEach((k, ri) => {
+    const h = Math.round(avail * wts[ri] / wsum), w = (R.w - g * (k - 1)) / k;
+    for (let j = 0; j < k; j++) cells.push({ x: Math.round(R.x + j * (w + g)), y, w: Math.round(w), h: ri === rows.length - 1 ? R.y + R.h - y : h, r: cr });
+    y += h + g;
+  });
+  return cells;
+}
+// the rectangle the selected photo sits in (its collage cell, or the whole photo window)
+function activeRect(W, H) { const R = photoRect(W, H); return isCollage() ? collageCells(R, front.slides.length)[front.idx] : R; }
+// slideshow timing: which slide shows at time t, and how far the fade to the next one is
+function slideAt(t) {
+  const n = front.slides.length, per = st.per, fade = Math.min(0.7, per / 3);
+  if (t == null) return { i: front.idx, a: 0 };
+  const i = Math.min(n - 1, Math.floor(t / per)), local = t - i * per;
+  return { i, a: i < n - 1 && local > per - fade ? (local - (per - fade)) / fade : 0 };
+}
+function drawSrc(c, src, R, alpha) {
+  if (!src || !src.w) return;
+  c.save(); c.globalAlpha = alpha;
+  if (st.fit === "fit") {
+    const tw = 24, th = Math.max(2, Math.round(24 * R.h / R.w));
+    tiny.width = tw; tiny.height = th;
+    const cs = Math.max(tw / src.w, th / src.h);
+    tctx.drawImage(src.el, (tw - src.w * cs) / 2, (th - src.h * cs) / 2, src.w * cs, src.h * cs);
+    c.imageSmoothingEnabled = true; c.imageSmoothingQuality = "high";
+    c.drawImage(tiny, R.x, R.y, R.w, R.h);
+    c.fillStyle = "rgba(20,14,26,.28)"; c.fillRect(R.x, R.y, R.w, R.h);
+  }
+  const p = placementFor(src, R.w, R.h);
+  c.drawImage(src.el, R.x + p.x, R.y + p.y, p.dw, p.dh);
+  c.restore();
+}
+function drawPhoto(c, R, ft) {
+  c.save(); roundRect(c, R.x, R.y, R.w, R.h, R.r); c.clip();
+  if (!front || !srcSize()[0]) {
+    const g = c.createLinearGradient(R.x, R.y, R.x + R.w, R.y + R.h); g.addColorStop(0, "#2a2036"); g.addColorStop(1, "#1a1424");
+    c.fillStyle = g; c.fillRect(R.x, R.y, R.w, R.h);
+    c.fillStyle = "#a79bb5"; c.font = `500 ${Math.round(R.w * .055)}px "Space Grotesk", sans-serif`; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText("Your photo goes here", R.x + R.w / 2, R.y + R.h / 2);
+  } else {
+    c.fillStyle = "#120d18"; c.fillRect(R.x, R.y, R.w, R.h);
+    if (isCollage()) {
+      collageCells(R, front.slides.length).forEach((cell, k) => {
+        c.save(); roundRect(c, cell.x, cell.y, cell.w, cell.h, cell.r); c.clip();
+        c.fillStyle = "#1c1426"; c.fillRect(cell.x, cell.y, cell.w, cell.h);
+        drawSrc(c, srcOf(k), cell, 1); c.restore();
+      });
+    } else if (front.kind === "slides") {
+      const { i, a } = slideAt(ft);
+      drawSrc(c, srcOf(i), R, 1);
+      if (a > 0) drawSrc(c, srcOf(i + 1), R, a);
+    } else drawSrc(c, srcOf(), R, 1);
+    c.translate(R.x, R.y);
+    photoCredit(c, R.w, R.h);
+    watermark(c, R.w, R.h);
+  }
+  c.restore();
+  if (st.frame) { c.save(); c.strokeStyle = "rgba(168,85,247,.75)"; c.lineWidth = Math.max(1.5, R.w * 0.004); roundRect(c, R.x, R.y, R.w, R.h, R.r); c.stroke(); c.restore(); }
+}
+// a little vinyl record; the two-colour label shows it turning
+function record(c, cx, cy, R, rot) {
+  c.save();
+  c.fillStyle = "#0b0910"; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill();
+  c.strokeStyle = "rgba(255,255,255,.16)"; c.lineWidth = Math.max(1, R * 0.03); c.beginPath(); c.arc(cx, cy, R - c.lineWidth / 2, 0, Math.PI * 2); c.stroke();
+  c.strokeStyle = "rgba(255,255,255,.07)"; c.lineWidth = Math.max(1, R * 0.02);
+  for (const f of [0.82, 0.7, 0.58]) { c.beginPath(); c.arc(cx, cy, R * f, 0, Math.PI * 2); c.stroke(); }
+  const L = R * 0.38;
+  c.translate(cx, cy); c.rotate(rot);
+  c.fillStyle = PINK; c.beginPath(); c.arc(0, 0, L, -Math.PI / 2, Math.PI / 2); c.fill();
+  c.fillStyle = PURPLE; c.beginPath(); c.arc(0, 0, L, Math.PI / 2, Math.PI * 1.5); c.fill();
+  c.fillStyle = "#0b0910"; c.beginPath(); c.arc(0, 0, Math.max(1.5, R * 0.07), 0, Math.PI * 2); c.fill();
+  c.restore();
+}
+function logoText(c, x, y, size, align) {
+  c.save(); c.font = SG(700, size); c.textBaseline = "middle"; c.textAlign = "left";
+  const a = "DJ SPIN ", b = "THAT", wa = c.measureText(a).width, wb = c.measureText(b).width;
+  const x0 = align === "center" ? x - (wa + wb) / 2 : x;
+  c.fillStyle = PINK; c.fillText(a, x0, y); c.fillStyle = PURPLE; c.fillText(b, x0 + wa, y);
+  c.restore(); return wa + wb;
+}
+function paintFront(c, W, H, r, ft = null, rot = 0) {
+  c.clearRect(0, 0, W, H);
+  c.save(); roundRect(c, 0, 0, W, H, r); c.clip();
+  if (st.frame) {
+    const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#130d1d"); g.addColorStop(0.7, "#1d1230"); g.addColorStop(1, "#33195a");
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+  }
+  const R = photoRect(W, H);
+  drawPhoto(c, R, ft);
+  if (st.frame) {
+    const fh = footH(W, H), fy = H - fh / 2 - Math.min(W, H) * 0.005, m = R.x;
+    const rr = fh * 0.33, rx = m + rr + fh * 0.08;
+    c.save(); c.strokeStyle = "rgba(255,255,255,.12)"; c.lineWidth = Math.max(1, rr * 0.06); c.beginPath(); c.arc(rx, fy, rr * 1.12, 0, Math.PI * 2); c.stroke(); c.restore();
+    record(c, rx, fy, rr, rot);
+    const tx = rx + rr * 1.12 + fh * 0.16, maxW = W - tx - m;
+    let size = Math.round(fh * 0.3); c.font = SG(700, size);
+    while (size > 8 && c.measureText("DJ SPIN THAT").width > maxW) { size--; c.font = SG(700, size); }
+    logoText(c, tx, fy - fh * 0.1, size, "left");
+    c.save(); c.font = SG(500, Math.round(fh * 0.135)); c.fillStyle = "#e9e0f7"; c.textBaseline = "middle";
+    if ("letterSpacing" in c) c.letterSpacing = Math.round(fh * 0.02) + "px";
+    c.fillText("DJSPINTHAT.NET", tx, fy + fh * 0.17, maxW);
+    c.restore();
+  }
+  c.restore();
+}
+// fan photographer credit, small, bottom right of the photo
+function photoCredit(c, W, H) {
+  const t = st.credit ? st.creditText.trim() : ""; if (!t) return;
+  const fs = Math.max(7, Math.round(Math.min(W, H) * 0.024));
+  c.save(); c.font = SG(500, fs); c.textAlign = "right"; c.textBaseline = "alphabetic";
+  if ("letterSpacing" in c) c.letterSpacing = Math.round(fs * 0.08) + "px";
+  c.shadowColor = "rgba(0,0,0,.75)"; c.shadowBlur = fs * 0.6; c.fillStyle = "rgba(255,255,255,.9)";
+  c.fillText(t.toUpperCase(), W - fs * 1.2, H - fs * 1.1, W * 0.9);
+  c.restore();
+}
+// the still card at the end: big logo, website, "Link in bio" (and a QR)
+const END_URL = "https://djspinthat.net";
+function paintEnd(c, W, H, r) {
+  c.clearRect(0, 0, W, H);
+  c.save(); roundRect(c, 0, 0, W, H, r); c.clip();
+  c.fillStyle = "#0c0912"; c.fillRect(0, 0, W, H);
+  const glow = (x, y, rad, col) => { const g = c.createRadialGradient(x, y, 0, x, y, rad); g.addColorStop(0, col); g.addColorStop(1, "rgba(0,0,0,0)"); c.fillStyle = g; c.fillRect(0, 0, W, H); };
+  glow(W * 0.1, H * 0.15, Math.max(W, H) * 0.6, "rgba(255,46,99,.22)");
+  glow(W * 0.95, H * 0.9, Math.max(W, H) * 0.7, "rgba(168,85,247,.28)");
+  const land = W > H, S = Math.min(W, H);
+  const col = land ? { x: W * 0.36, w: W * 0.6 } : { x: W / 2, w: W * 0.86 };
+  const qr = st.endQR, items = [];
+  items.push({ h: S * 0.26, draw: y => { record(c, col.x, y + S * 0.13, S * 0.13, -0.6); c.save(); c.strokeStyle = "rgba(255,255,255,.14)"; c.lineWidth = 2; c.beginPath(); c.arc(col.x, y + S * 0.13, S * 0.146, 0, Math.PI * 2); c.stroke(); c.restore(); } });
+  let big = Math.round(S * 0.2); c.font = SG(700, big); while (big > 10 && c.measureText("DJ SPIN").width > col.w) { big--; c.font = SG(700, big); }
+  items.push({ h: big * 1.02, gap: 0, draw: y => { c.save(); c.font = SG(700, big); c.textAlign = "center"; c.textBaseline = "middle"; c.shadowColor = "rgba(255,46,99,.55)"; c.shadowBlur = big * 0.25; c.fillStyle = PINK; c.fillText("DJ SPIN", col.x, y + big / 2); c.restore(); } });
+  items.push({ h: big * 1.05, draw: y => { c.save(); c.font = SG(700, big); c.textAlign = "center"; c.textBaseline = "middle"; c.shadowColor = "rgba(168,85,247,.55)"; c.shadowBlur = big * 0.25; c.fillStyle = PURPLE; c.fillText("THAT", col.x, y + big / 2); c.restore(); } });
+  const pill = S * 0.075;
+  items.push({ h: pill, gap: S * 0.035, draw: y => {
+    c.save(); c.font = SG(600, Math.round(pill * 0.42)); if ("letterSpacing" in c) c.letterSpacing = Math.round(pill * 0.06) + "px";
+    const tw = c.measureText("DJSPINTHAT.NET").width, pw = tw + pill * 1.2;
+    c.fillStyle = "rgba(255,255,255,.06)"; c.strokeStyle = "rgba(255,255,255,.28)"; c.lineWidth = 1.5;
+    roundRect(c, col.x - pw / 2, y, pw, pill, pill / 2); c.fill(); c.stroke();
+    c.fillStyle = "#ffffff"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("DJSPINTHAT.NET", col.x + pill * 0.03, y + pill / 2 + 1); c.restore(); } });
+  items.push({ h: S * 0.06, draw: y => { c.save(); c.font = SG(700, Math.round(S * 0.05)); if ("letterSpacing" in c) c.letterSpacing = Math.round(S * 0.012) + "px"; c.fillStyle = "#f2eef7"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("LINK IN BIO", col.x, y + S * 0.03); c.restore(); } });
+  const Q = land ? H * 0.52 : S * 0.42;
+  if (qr && !land) items.push({ h: Q, draw: y => drawQR(c, END_URL, col.x - Q / 2, y, Q, "#140c24") });
+  const gapDefault = S * 0.04;
+  const total = items.reduce((a, it, i) => a + it.h + (i < items.length - 1 ? (it.gap != null ? it.gap : gapDefault) : 0), 0);
+  let y = (H - total) / 2;
+  for (const it of items) { it.draw(y); y += it.h + (it.gap != null ? it.gap : gapDefault); }
+  if (qr && land) drawQR(c, END_URL, W * 0.72, (H - Q) / 2, Q, "#140c24");
+  c.restore();
+}
+// credit: who made it (always on the back) and who it's for
+const creditName = () => st.wmText.trim() || "@djspinthat";
+const recipient = () => st.forWho === "other" ? st.forName.trim() : "";
+const creditLine = () => recipient() ? `made for ${recipient()} · by ${creditName()}` : `made by ${creditName()}`;
+const forSlug = () => { const r = recipient().replace(/^@/, "").replace(/[^\w\-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30); return r ? `for-${r}-` : ""; };
+// small credit pill along the bottom of any back
+function creditPill(c, W, H) {
+  const t = creditLine(), fs = Math.max(8, Math.round(Math.min(W, H) * 0.026));
+  c.save();
+  c.font = SG(500, fs); c.textAlign = "center"; c.textBaseline = "middle";
+  const tw = Math.min(c.measureText(t).width, W * 0.8), ph = fs * 1.8, pw = tw + fs * 1.6, y = H - ph - fs * 0.9;
+  c.fillStyle = "rgba(20,12,32,.62)"; roundRect(c, (W - pw) / 2, y, pw, ph, ph / 2); c.fill();
+  c.fillStyle = "rgba(255,255,255,.95)"; c.fillText(t, W / 2, y + ph / 2 + 0.5, W * 0.8);
+  c.restore();
+}
+// small signature in the bottom corner of the front
+function watermark(c, W, H) {
+  const t = st.wm ? creditName() : ""; if (!t) return;
+  const fs = Math.max(8, Math.round(Math.min(W, H) * 0.027));
+  c.save();
+  c.font = `500 ${fs}px "Space Grotesk", sans-serif`; c.textAlign = "right"; c.textBaseline = "alphabetic";
+  c.shadowColor = "rgba(0,0,0,.6)"; c.shadowBlur = fs * 0.5; c.fillStyle = "rgba(255,255,255,.85)";
+  c.fillText(t, W - fs * 1.7, H - fs * 1.6 - (st.credit && st.creditText.trim() ? fs * 1.9 : 0));
+  c.restore();
+}
+
+// ---------- Link + QR back ----------
+const SG = (w, px) => `${w} ${px}px "Space Grotesk", sans-serif`;
+function normUrl(u) { u = u.trim(); if (!u) return ""; return /^[a-z][a-z0-9+.-]*:/i.test(u) ? u : "https://" + u; }
+function shortUrl(u) { return u.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, ""); }
+function fitText(c, text, weight, maxPx, maxW, spacing) {
+  let s = maxPx;
+  for (; s > 9; s--) { c.font = SG(weight, s); if (c.measureText(text).width + spacing * text.length <= maxW) break; }
+  return s;
+}
+function text(c, s, x, y, weight, maxPx, maxW, color, spacing = 0, align = "center") {
+  if (!s) return;
+  const size = fitText(c, s, weight, maxPx, maxW, spacing);
+  c.font = SG(weight, size); c.fillStyle = color; c.textAlign = align; c.textBaseline = "middle";
+  if ("letterSpacing" in c) c.letterSpacing = spacing + "px";
+  c.fillText(s, align === "center" ? x + spacing / 2 : x, y);
+  if ("letterSpacing" in c) c.letterSpacing = "0px";
+}
+function drawQR(c, url, x, y, size, ink) {
+  // white rounded tile with the code inside
+  const pad = Math.round(size * 0.075);
+  c.fillStyle = "#fff"; roundRect(c, x, y, size, size, size * 0.085); c.fill();
+  const inner = size - 2 * pad;
+  if (!url) {
+    c.save(); c.strokeStyle = "#c9bde0"; c.setLineDash([10, 8]); c.lineWidth = 3; roundRect(c, x + pad, y + pad, inner, inner, 12); c.stroke(); c.restore();
+    text(c, "Add your link", x + size / 2, y + size / 2, 500, Math.round(size * 0.075), inner - 20, "#8a7aa6");
+    return true;
+  }
+  if (typeof qrcode !== "function") { text(c, "QR code didn't load", x + size / 2, y + size / 2, 500, Math.round(size * 0.06), inner - 20, "#b04a4a"); return false; }
+  let q;
+  try { q = qrcode(0, "M"); q.addData(url); q.make(); }
+  catch (e) { text(c, "Link too long for a QR", x + size / 2, y + size / 2, 500, Math.round(size * 0.06), inner - 20, "#b04a4a"); return false; }
+  const n = q.getModuleCount(), m = Math.floor(inner / n), off = Math.round((size - m * n) / 2);
+  c.fillStyle = ink;
+  for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (q.isDark(r, k)) c.fillRect(x + off + k * m, y + off + r * m, m, m);
+  return true;
+}
+function circlePhoto(c, cx, cy, d, ring) {
+  if (!frontThumb) return;
+  c.save();
+  c.fillStyle = ring; c.beginPath(); c.arc(cx, cy, d / 2 + 6, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx, cy, d / 2, 0, Math.PI * 2); c.clip();
+  c.drawImage(frontThumb, cx - d / 2, cy - d / 2, d, d);
+  c.restore();
+}
+const LK_STYLE = {
+  night: { bg: ["#0e0a1a", "#2e1654"], title: "#ffffff", sub: "#cdb4ff", btn: "#764cff", btnText: "#ffffff", url: "#ebe4ff", foot: "#a091c8", wm: "#8a76bd", qr: "#140c24", ring: "#ffffff" },
+  lilac: { bg: ["#fcf0f6", "#e8e0fc"], title: "#342254", sub: "#8a5cdc", btn: "#8a5cdc", btnText: "#ffffff", url: "#8a5cdc", foot: "#6e5c96", wm: "#9a84c8", qr: "#342254", ring: "#c8b4f0" },
+};
+const linkCv = document.createElement("canvas"); let linkKey = "";
+function linkBack() {
+  const land = st.orient === "landscape", W = land ? 1050 : 600, H = land ? 600 : 1050;
+  const key = JSON.stringify([lk, land, creditLine(), thumbVer, typeof qrcode]);
+  if (key === linkKey) return linkCv;
+  linkKey = key; linkCv.width = W; linkCv.height = H;
+  const c = linkCv.getContext("2d"), S = LK_STYLE[lk.style] || LK_STYLE.night, url = normUrl(lk.url);
+  const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, S.bg[0]); g.addColorStop(1, S.bg[1]); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  const photo = lk.photo && frontThumb, wmT = creditLine();
+  const title = lk.title.trim(), sub = lk.sub.trim().toUpperCase(), btn = lk.btn.trim().toUpperCase(), foot = lk.foot.trim();
+  // left/main column items, stacked and centred
+  const colW = land ? 500 : W, colX = land ? 40 : 0, cx = colX + colW / 2;
+  const Q = land ? 420 : (photo ? 314 : 390);
+  const items = [];
+  if (photo) items.push({ h: land ? 170 : 208, gap: land ? 18 : 22, draw: y => circlePhoto(c, cx, y + (land ? 85 : 104), land ? 158 : 196, S.ring) });
+  if (title) items.push({ h: 70, gap: 2, draw: y => text(c, title, cx, y + 38, 700, 66, colW - 70, S.title, 2) });
+  if (sub) items.push({ h: 32, gap: 20, draw: y => text(c, sub, cx, y + 16, 500, 25, colW - 80, S.sub, 3) });
+  if (!land) items.push({ h: Q, gap: 26, draw: y => drawQR(c, url, (W - Q) / 2, y, Q, S.qr) });
+  if (btn) items.push({ h: 56, gap: 20, draw: y => { const bw = Math.min(colW - 120, 400); c.fillStyle = S.btn; roundRect(c, cx - bw / 2, y, bw, 56, 28); c.fill(); text(c, btn, cx, y + 29, 600, 24, bw - 40, S.btnText, 2); } });
+  if (url) items.push({ h: 28, gap: 8, draw: y => text(c, shortUrl(url), cx, y + 14, 600, 25, colW - 60, S.url) });
+  if (foot) items.push({ h: 22, gap: 0, draw: y => text(c, foot, cx, y + 11, 400, 18, colW - 60, S.foot) });
+  const total = items.reduce((a, it, i) => a + it.h + (i < items.length - 1 ? it.gap : 0), 0);
+  let y = Math.max(30, (H - 36 - total) / 2);
+  if (lk.style === "lilac") { c.strokeStyle = "#c8b4f0"; c.lineWidth = 3; roundRect(c, 24, 24, W - 48, H - 48, 30); c.stroke(); }
+  for (const it of items) { it.draw(y); y += it.h + it.gap; }
+  if (land) drawQR(c, url, W - Q - 70, (H - Q) / 2 - 8, Q, S.qr);
+  if (wmT) text(c, wmT, W / 2, H - (lk.style === "lilac" ? 46 : 30), 600, 17, W - 100, S.foot, 1);
+  return linkCv;
+}
+function backImage() {
+  if (st.back === "link") return linkBack();
+  if (st.back === "custom" && customBack) return customBack;
+  const b = BACKS[st.back] || BACKS.standard; if (!b) return null;
+  return st.orient === "landscape" && b.wide ? b.wide : b.img;
+}
+function paintBack(c, W, H, r) {
+  c.clearRect(0, 0, W, H);
+  const img = backImage(); if (!img) return;
+  c.save(); roundRect(c, 0, 0, W, H, r); c.clip();
+  c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
+  let iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height, rotate = false;
+  if ((W > H) !== (iw > ih)) rotate = true; // no matching layout: turn the back sideways
+  c.save();
+  if (rotate) { c.translate(W / 2, H / 2); c.rotate(-Math.PI / 2); const s = Math.max(H / iw, W / ih); c.drawImage(img, -iw * s / 2, -ih * s / 2, iw * s, ih * s); }
+  else { const s = Math.max(W / iw, H / ih); c.drawImage(img, (W - iw * s) / 2, (H - ih * s) / 2, iw * s, ih * s); }
+  c.restore();
+  if (st.back !== "link") creditPill(c, W, H); // the Link + QR back has its own credit line
+  c.restore();
+}
+
+// ---------- the flip (perspective by vertical slices) ----------
+const BG = { lilac: ["#fcf0f6", "#eee8fc"], white: ["#ffffff", "#ffffff"], night: ["#1c1526", "#0f0b16"] };
+const cardLayer = document.createElement("canvas"), lctx = cardLayer.getContext("2d");
+function composite(ctx, D, theta, fc, bc) {
+  const { W, H, cw, ch } = D, cx = W / 2, cy = H / 2;
+  const g = ctx.createLinearGradient(0, 0, 0, H); const [a, b] = BG[st.bg]; g.addColorStop(0, a); g.addColorStop(1, b);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  let th = theta % (2 * Math.PI); if (th < 0) th += 2 * Math.PI;
+  const isFront = th < Math.PI / 2 || th > 3 * Math.PI / 2;
+  let c = Math.cos(th), s = Math.sin(th); if (!isFront) { c = -c; s = -s; }
+  const width = Math.abs(c);
+  // shadow (drawn off-canvas, only the shadow lands)
+  ctx.save();
+  ctx.shadowColor = st.bg === "night" ? "rgba(0,0,0,.55)" : "rgba(60,30,90,.30)";
+  ctx.shadowBlur = 26; ctx.shadowOffsetX = 10000 + 6; ctx.shadowOffsetY = 14;
+  const sw = Math.max(cw * width, 4);
+  ctx.fillStyle = "#000"; roundRect(ctx, cx - sw / 2 - 10000, cy - ch / 2, sw, ch, 20); ctx.fill();
+  ctx.restore();
+  if (width < 0.02) return;
+  const face = isFront ? fc : bc, d = cw * 3.2, step = 2;
+  if (cardLayer.width !== W || cardLayer.height !== H) { cardLayer.width = W; cardLayer.height = H; }
+  lctx.clearRect(0, 0, W, H);
+  for (let u = 0; u < cw; u += step) {
+    const x0 = u - cw / 2, x1 = Math.min(u + step, cw) - cw / 2;
+    const k0 = d / (d + x0 * s), k1 = d / (d + x1 * s), k = (k0 + k1) / 2;
+    const X0 = cx + x0 * c * k0, X1 = cx + x1 * c * k1, h = ch * k;
+    lctx.drawImage(face, u, 0, Math.min(step, cw - u), ch, X0, cy - h / 2, X1 - X0 + 0.6, h);
+  }
+  const shade = 0.43 * Math.pow(1 - width, 1.5);
+  if (shade > 0.005) { lctx.globalCompositeOperation = "source-atop"; lctx.fillStyle = `rgba(20,10,30,${shade})`; lctx.fillRect(0, 0, W, H); lctx.globalCompositeOperation = "source-over"; }
+  ctx.drawImage(cardLayer, 0, 0);
+}
+// face canvases are reused; the back and end card only repaint when something about them changes
+const faces = { f: document.createElement("canvas"), b: document.createElement("canvas"), e: document.createElement("canvas"), bKey: "", eKey: "" };
+function faceCanvases(D, ft = null, rot = 0) {
+  const { f, b, e } = faces;
+  for (const cv of [f, b, e]) if (cv.width !== D.cw || cv.height !== D.ch) { cv.width = D.cw; cv.height = D.ch; faces.bKey = faces.eKey = ""; }
+  paintFront(f.getContext("2d"), D.cw, D.ch, D.r, ft, rot);
+  const bKey = JSON.stringify([st.back, st.orient, creditLine(), lk, thumbVer, !!backImage(), customBack ? customBack.src : ""]);
+  if (bKey !== faces.bKey || st.back === "link") { paintBack(b.getContext("2d"), D.cw, D.ch, D.r); faces.bKey = bKey; }
+  const eKey = JSON.stringify([st.endQR, D.cw, D.ch, typeof qrcode]);
+  if (eKey !== faces.eKey) { paintEnd(e.getContext("2d"), D.cw, D.ch, D.r); faces.eKey = eKey; }
+  return [f, b, e];
+}
+
+// ---------- timeline ----------
+// front (photo / slideshow / video) → flip → back holds still (scan the QR) → flip → still end card, or back to the front
+const ease = t => 0.5 - 0.5 * Math.cos(Math.PI * t);
+// slow 1.3s flips; the back holds 3s so its QR is easy to scan
+let FLIP = 1.3, BACK_HOLD = 4, PHOTO_HOLD = 3;
+const END_HOLD = 2.5, VIDEO_MAX = 15;
+function applyTiming() { FLIP = +st.flip || 1.3; BACK_HOLD = st.holdB; PHOTO_HOLD = st.holdF; }
+applyTiming();
+function frontLen() {
+  if (!front) return PHOTO_HOLD;
+  if (front.kind === "video") return Math.max(0.5, Math.min(VIDEO_MAX, front.el.duration || 4));
+  if (front.kind === "slides") return isCollage() ? PHOTO_HOLD : front.slides.length * st.per;
+  return PHOTO_HOLD;
+}
+function timeline() {
+  const F = frontLen(), end = st.endCard;
+  const total = F + FLIP + BACK_HOLD + FLIP + (end ? END_HOLD : 0);
+  // th: card angle; ft: time on the front (null = still); face: what the "front side" shows during the second flip
+  const at = t => {
+    if (t < F) return { th: 0, ft: t, seg: "front" };
+    t -= F; if (t < FLIP) return { th: Math.PI * ease(t / FLIP), ft: F, seg: "flip1" };
+    t -= FLIP; if (t < BACK_HOLD) return { th: Math.PI, ft: F, seg: "back" };
+    t -= BACK_HOLD; if (t < FLIP) return { th: Math.PI + Math.PI * ease(t / FLIP), ft: 0, seg: "flip2", toEnd: end };
+    return { th: 0, ft: 0, seg: end ? "end" : "front", toEnd: end };
+  };
+  return { F, total, end, at };
+}
+const rotAt = t => (t * 2 * Math.PI) / TURN;
+function updateLen() {
+  applyTiming();
+  const tl = timeline(), sl = front && front.kind === "slides", show = sl && !isCollage();
+  $("#perRow").hidden = !show; $("#holdF").disabled = !!(front && front.kind === "video") || show;
+  $("#holdFV").textContent = st.holdF.toFixed(1) + "s"; $("#holdBV").textContent = st.holdB.toFixed(1) + "s"; $("#perV").textContent = st.per.toFixed(1) + "s";
+  $("#lenInfo").innerHTML = front ? `Each GIF/MP4 runs <b>${tl.total.toFixed(1)}s</b>: front ${tl.F.toFixed(1)}s, flip, back holds ${BACK_HOLD.toFixed(1)}s` + (tl.end ? `, flip, end card holds ${END_HOLD}s.` : ", then flips back.") : "";
+}
+
+// ---------- preview ----------
+let pD;
+function drawAt(ctx, D, t, tl) {
+  const s = tl.at(t), [f, b, e] = faceCanvases(D, s.seg === "front" || s.seg === "flip1" || s.seg === "back" ? s.ft : 0, rotAt(t));
+  composite(ctx, D, s.th, (s.seg === "flip2" || s.seg === "end") && s.toEnd ? e : f, b);
+}
+function draw() {
+  pD = dims(false);
+  if (stage.width !== pD.W || stage.height !== pD.H) { stage.width = pD.W; stage.height = pD.H; }
+  const [f, b, e] = faceCanvases(pD, null, 0);
+  if (st.side === "end") composite(sctx, pD, 0, e, b);
+  else composite(sctx, pD, st.side === "back" ? Math.PI : 0, f, b);
+  $("#dims").textContent = st.orient === "portrait" ? "portrait card" : "landscape card";
+  updateLen();
+}
+function liveVideoLoop() {
+  if (front && front.kind === "video" && !playing && !busy && st.side === "front") draw();
+  requestAnimationFrame(liveVideoLoop);
+}
+requestAnimationFrame(liveVideoLoop);
+
+$("#playFlip").onclick = () => {
+  if (playing) { cancelAnimationFrame(playing); playing = null; $("#playFlip").textContent = "▶ Play"; if (front && front.kind === "video") front.el.play().catch(() => {}); draw(); return; }
+  const tl = timeline(), t0 = performance.now(), vid = front && front.kind === "video" ? front.el : null;
+  if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); }
+  $("#playFlip").textContent = "■ Stop";
+  let lastLoop = 0;
+  const tick = now => {
+    const T = (now - t0) / 1000, loop = Math.floor(T / tl.total), t = T - loop * tl.total;
+    if (vid) { if (loop !== lastLoop) { vid.currentTime = 0; lastLoop = loop; } if (t < tl.F) { if (vid.paused) vid.play().catch(() => {}); } else if (!vid.paused) vid.pause(); }
+    const D = dims(false); drawAt(sctx, D, t, tl);
+    playing = requestAnimationFrame(tick);
+  };
+  playing = requestAnimationFrame(tick);
+};
+const SIDES = () => st.endCard ? ["front", "back", "end"] : ["front", "back"];
+const SIDE_LABEL = { front: "Show front", back: "Show back", end: "Show end card" };
+function syncSideBtn() { const s = SIDES(), nx = s[(s.indexOf(st.side) + 1) % s.length] || "front"; $("#showSide").textContent = SIDE_LABEL[nx]; }
+$("#showSide").onclick = () => { const s = SIDES(); st.side = s[(s.indexOf(st.side) + 1) % s.length] || "front"; syncSideBtn(); draw(); };
+$("#playFlip").textContent = "▶ Play";
+
+// ---------- drag to pan ----------
+let drag = null;
+stage.addEventListener("pointerdown", e => {
+  if (!front || st.side !== "front" || playing) return;
+  if (isCollage()) {
+    const b = stage.getBoundingClientRect(), k = stage.width / b.width, D = dims(false);
+    const x = (e.clientX - b.left) * k - (D.W - D.cw) / 2, y = (e.clientY - b.top) * k - (D.H - D.ch) / 2;
+    const hit = collageCells(photoRect(D.cw, D.ch), front.slides.length).findIndex(r => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h);
+    if (hit >= 0 && hit !== front.idx) { front.idx = hit; renderSlides(); draw(); }
+  }
+  const pos = srcOf().pos;
+  drag = { x: e.clientX, y: e.clientY, px: pos.px, py: pos.py, pos };
+  stage.setPointerCapture(e.pointerId); stage.classList.add("dragging");
+});
+stage.addEventListener("pointermove", e => {
+  if (!drag) return;
+  const scale = stage.width / stage.getBoundingClientRect().width;
+  const D = dims(false), R = activeRect(D.cw, D.ch), p = placement(R.w, R.h);
+  const rx = Math.abs(p.dw - R.w) / 2, ry = Math.abs(p.dh - R.h) / 2;
+  const dx = (e.clientX - drag.x) * scale, dy = (e.clientY - drag.y) * scale;
+  drag.pos.px = rx > 0.5 ? Math.max(-1, Math.min(1, drag.px + dx / rx)) : 0;
+  drag.pos.py = ry > 0.5 ? Math.max(-1, Math.min(1, drag.py + dy / ry)) : 0;
+  draw();
+});
+const endDrag = () => { drag = null; stage.classList.remove("dragging"); };
+stage.addEventListener("pointerup", endDrag); stage.addEventListener("pointercancel", endDrag);
+
+// ---------- controls ----------
+function chipGroup(sel, key, after) {
+  document.querySelectorAll(sel + " [data-v]").forEach(b => {
+    b.setAttribute("aria-pressed", String(b.dataset.v === st[key]));
+    b.onclick = () => {
+      if (key === "back" && b.dataset.v === "custom" && !customBack) { $("#backFile").click(); return; }
+      st[key] = b.dataset.v;
+      document.querySelectorAll(sel + " [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      after && after(); remember(); draw();
+    };
+  });
+}
+const resetPos = () => { st.px = st.py = 0; if (front && front.kind === "slides") front.slides.forEach(s => { s.px = s.py = 0; }); };
+chipGroup("#orient", "orient", resetPos);
+chipGroup("#fitMode", "fit", resetPos);
+chipGroup("#backs", "back", () => syncLinkUi());
+chipGroup("#bgPick", "bg");
+
+// Link + QR panel, watermark, and the text to send with the card
+const LK_FIELDS = { lkUrl: "url", lkTitle: "title", lkSub: "sub", lkBtn: "btn", lkFoot: "foot" };
+for (const [id, k] of Object.entries(LK_FIELDS)) {
+  const el = document.getElementById(id); el.value = lk[k];
+  el.oninput = () => { lk[k] = el.value; remember(); syncLinkUi(true); draw(); };
+}
+document.querySelectorAll("#lkStyle [data-v]").forEach(b => {
+  b.setAttribute("aria-pressed", String(b.dataset.v === lk.style));
+  b.onclick = () => { lk.style = b.dataset.v; document.querySelectorAll("#lkStyle [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x === b))); remember(); draw(); };
+});
+$("#lkPhoto").checked = lk.photo;
+$("#lkPhoto").onchange = () => { lk.photo = $("#lkPhoto").checked; remember(); draw(); };
+$("#wmOn").checked = st.wm; $("#wmText").value = st.wmText; $("#forName").value = st.forName;
+function syncCredit() {
+  document.querySelectorAll("#forPick [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === st.forWho)));
+  $("#forField").hidden = st.forWho !== "other";
+  $("#creditPreview").innerHTML = "On the back: <b>" + escapeHtml(creditLine()) + "</b>" +
+    (st.forWho === "other" && !recipient() ? ' <span class="warn">Add their name to show who it\'s for.</span>' : "");
+  if (!msgEdited) $("#msg").value = sendText();
+}
+const creditChanged = () => { remember(); syncCredit(); draw(); };
+document.querySelectorAll("#forPick [data-v]").forEach(b => b.onclick = () => { st.forWho = b.dataset.v; creditChanged(); if (st.forWho === "other" && !st.forName) $("#forName").focus(); });
+$("#forName").oninput = () => { st.forName = $("#forName").value; creditChanged(); };
+$("#wmOn").onchange = () => { st.wm = $("#wmOn").checked; creditChanged(); };
+$("#wmText").oninput = () => { st.wmText = $("#wmText").value; creditChanged(); };
+function sendText() {
+  const url = normUrl(lk.url); if (!url) return "";
+  const lead = [lk.title.trim(), lk.sub.trim()].filter(Boolean).join(" · ");
+  const credit = recipient() ? `Made for ${recipient()} by ${creditName()} 💜` : `Card by ${creditName()} 💜`;
+  return (lead ? lead + "\n" : "") + "Tap to join 👉 " + url + "\n" + credit;
+}
+let msgEdited = false;
+$("#msg").oninput = () => { msgEdited = true; };
+function syncLinkUi(fromField) {
+  const on = st.back === "link";
+  $("#linkPanel").hidden = !on;
+  const url = normUrl(lk.url);
+  $("#sendBox").hidden = !(on && url);
+  if (fromField || !msgEdited) { $("#msg").value = sendText(); msgEdited = false; }
+  $("#lkInfo").innerHTML = !on ? "" : !url ? "Paste the link to make the QR code." :
+    typeof qrcode !== "function" ? '<span class="err">The QR maker didn\'t load. Check your connection and reload.</span>' :
+    '<span class="ok">QR ready.</span> It opens ' + escapeHtml(shortUrl(url)) + ".";
+}
+syncLinkUi(); syncCredit();
+$("#copyMsg").onclick = async () => {
+  const t = $("#msg").value;
+  try { await navigator.clipboard.writeText(t); $("#copyInfo").innerHTML = '<span class="ok">Copied ✓</span>'; return; } catch (e) {}
+  const ta = $("#msg"); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+  let ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+  $("#copyInfo").innerHTML = ok ? '<span class="ok">Copied ✓</span>' : "Text is selected. Press and hold it, then tap Copy.";
+};
+function makeThumb(el, w, h) {
+  const cv = document.createElement("canvas"); cv.width = cv.height = 320;
+  const s = Math.max(320 / w, 320 / h);
+  try { cv.getContext("2d").drawImage(el, (320 - w * s) / 2, (320 - h * s) / 2, w * s, h * s); } catch (e) { return; }
+  frontThumb = cv; thumbVer++;
+}
+$("#zoom").oninput = () => { st.zoom = $("#zoom").value / 100; $("#zoomV").textContent = $("#zoom").value + "%"; draw(); };
+$("#recenter").onclick = () => { const p = srcOf() ? srcOf().pos : st; p.px = p.py = 0; st.zoom = 1; $("#zoom").value = 100; $("#zoomV").textContent = "100%"; draw(); };
+$("#backFile").onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const url = URL.createObjectURL(f);
+  loadImg(url).then(img => {
+    customBack = img; st.back = "custom";
+    $("#customThumb").outerHTML = `<img src="${url}" alt="" id="customThumb">`;
+    document.querySelectorAll("#backs [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === "custom")));
+    draw();
+  }).catch(() => { $("#status").innerHTML = '<span class="err">That back image didn\'t open. Try a JPG or PNG.</span>'; });
+};
+
+// frame, photo credit, end card, slide length
+$("#frameOn").checked = st.frame; $("#creditOn").checked = st.credit; $("#creditText").value = st.creditText;
+$("#endOn").checked = st.endCard; $("#endQR").checked = st.endQR; $("#endQR").disabled = !st.endCard;
+$("#per").value = Math.round(st.per * 10); $("#perV").textContent = st.per.toFixed(1) + "s";
+$("#frameOn").onchange = () => { st.frame = $("#frameOn").checked; resetPos(); remember(); draw(); };
+$("#creditOn").onchange = () => { st.credit = $("#creditOn").checked; remember(); draw(); };
+$("#creditText").oninput = () => { st.creditText = $("#creditText").value; if (st.creditText.trim() && !st.credit) { st.credit = true; $("#creditOn").checked = true; } remember(); draw(); };
+$("#endOn").onchange = () => { st.endCard = $("#endOn").checked; $("#endQR").disabled = !st.endCard; if (!st.endCard && st.side === "end") st.side = "front"; syncSideBtn(); remember(); draw(); };
+$("#endQR").onchange = () => { st.endQR = $("#endQR").checked; remember(); st.side = "end"; syncSideBtn(); draw(); };
+$("#per").oninput = () => { st.per = $("#per").value / 10; $("#perV").textContent = st.per.toFixed(1) + "s"; remember(); updateLen(); };
+$("#holdF").value = Math.round(st.holdF * 10); $("#holdB").value = Math.round(st.holdB * 10);
+$("#holdF").oninput = () => { st.holdF = $("#holdF").value / 10; remember(); updateLen(); };
+$("#holdB").oninput = () => { st.holdB = $("#holdB").value / 10; remember(); updateLen(); };
+chipGroup("#flipPick", "flip");
+chipGroup("#gifSize", "gifSize");
+chipGroup("#layoutPick", "layout", () => { if (front && front.kind === "slides") slidesInfo([], false); });
+function moveSlide(d) {
+  if (!front || front.kind !== "slides") return;
+  const a = front.slides, k = front.idx, j = k + d; if (j < 0 || j >= a.length) return;
+  [a[k], a[j]] = [a[j], a[k]]; front.idx = j;
+  if (k === 0 || j === 0) makeThumb(a[0].el, a[0].w, a[0].h);
+  renderSlides(); draw();
+}
+$("#slideEarlier").onclick = () => moveSlide(-1);
+$("#slideLater").onclick = () => moveSlide(1);
+
+// ---------- loading the front ----------
+const drop = $("#drop");
+drop.onclick = () => $("#file").click();
+drop.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#file").click(); } };
+$("#file").onchange = e => { const fs = [...e.target.files]; if (fs.length) loadFiles(fs); e.target.value = ""; };
+$("#addFile").onchange = e => { const fs = [...e.target.files]; if (fs.length) addSlides(fs); e.target.value = ""; };
+["dragover", "dragenter"].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+document.addEventListener("drop", e => { const fs = e.dataTransfer ? [...e.dataTransfer.files] : []; if (fs.length) loadFiles(fs); });
+const isVid = f => f.type.startsWith("video/") || /\.(mp4|mov|webm|m4v)$/i.test(f.name);
+function loadFiles(fs) {
+  const imgs = fs.filter(f => !isVid(f));
+  if (imgs.length >= 2) return loadSlides(imgs, true);
+  loadFront(fs[0]);
+}
+const MAX_SLIDES = 10;
+function clearFront() { if (front) { (front.kind === "slides" ? front.slides : [front]).forEach(s => s.url && URL.revokeObjectURL(s.url)); if (front.kind === "video") front.el.pause(); } }
+async function readSlides(fs) {
+  const out = [], bad = [];
+  for (const f of fs) {
+    const url = URL.createObjectURL(f);
+    try { const img = await loadImg(url); out.push({ el: img, w: img.naturalWidth, h: img.naturalHeight, px: 0, py: 0, url, name: f.name }); }
+    catch (e) { URL.revokeObjectURL(url); bad.push(f.name); }
+  }
+  return { out, bad };
+}
+async function loadSlides(fs, fresh) {
+  const { out, bad } = await readSlides(fs.slice(0, MAX_SLIDES));
+  if (!out.length) { $("#srcInfo").innerHTML = '<span class="err">Those photos didn\'t open. HEIC photos from iPhone may need to be saved as JPG first.</span>'; return; }
+  clearFront();
+  front = { kind: "slides", slides: out, idx: 0 };
+  fileName = (out[0].name.replace(/\.[^.]+$/, "").replace(/[^\w\- ]+/g, "").trim().slice(0, 40) || "card") + "-slideshow";
+  autoShape(out[0].w, out[0].h);
+  makeThumb(out[0].el, out[0].w, out[0].h);
+  drop.innerHTML = `<strong>${out.length} photos</strong> · tap to start over`;
+  slidesInfo(bad, fs.length > MAX_SLIDES);
+  st.side = "front"; syncSideBtn(); renderSlides(); draw();
+}
+async function addSlides(fs) {
+  if (!front || front.kind !== "slides") {
+    // turning a single photo into a slideshow: keep it as slide 1
+    const keep = front && front.kind === "image" ? [{ el: front.el, w: front.el.naturalWidth, h: front.el.naturalHeight, px: st.px, py: st.py, url: front.url, name: fileName }] : [];
+    if (front && front.kind === "video") clearFront();
+    front = { kind: "slides", slides: keep, idx: 0 };
+  }
+  const room = MAX_SLIDES - front.slides.length;
+  const { out, bad } = await readSlides(fs.slice(0, Math.max(0, room)));
+  front.slides.push(...out);
+  if (!front.slides.length) { front = null; draw(); return; }
+  if (!frontThumb) makeThumb(front.slides[0].el, front.slides[0].w, front.slides[0].h);
+  if (fileName === "card" || !/-slideshow$/.test(fileName)) fileName = (fileName === "card" ? "card" : fileName) + "-slideshow";
+  drop.innerHTML = `<strong>${front.slides.length} photos</strong> · tap to start over`;
+  slidesInfo(bad, fs.length > room);
+  renderSlides(); draw();
+}
+function slidesInfo(bad, tooMany) {
+  $("#srcInfo").innerHTML = `<b>${st.layout === "collage" && front.slides.length > 1 ? "Collage" : "Slideshow"}</b> · ${front.slides.length} photo${front.slides.length > 1 ? "s" : ""}` +
+    (bad.length ? ` <span class="warn">Couldn't open ${bad.length} (HEIC? save as JPG).</span>` : "") +
+    (tooMany ? ` <span class="warn">Up to ${MAX_SLIDES} photos.</span>` : "");
+}
+function renderSlides() {
+  const on = front && front.kind === "slides";
+  $("#slidePanel").hidden = !on;
+  if (!on) return;
+  const box = $("#slides"); box.innerHTML = "";
+  front.slides.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "slideOpt"; b.setAttribute("aria-pressed", String(i === front.idx)); b.title = s.name || "";
+    b.innerHTML = `<img src="${s.url}" alt=""><span class="n">${i + 1}</span><span class="x" role="button" aria-label="Remove photo ${i + 1}">×</span>`;
+    b.onclick = ev => {
+      if (ev.target.closest(".x")) {
+        if (front.slides.length <= 1) return;
+        const [gone] = front.slides.splice(i, 1); if (gone.url && gone.url !== (front.slides[0] || {}).url) URL.revokeObjectURL(gone.url);
+        front.idx = Math.min(front.idx, front.slides.length - 1);
+        if (i === 0) makeThumb(front.slides[0].el, front.slides[0].w, front.slides[0].h);
+        slidesInfo([], false);
+      } else front.idx = i;
+      st.side = "front"; syncSideBtn(); renderSlides(); draw();
+    };
+    box.appendChild(b);
+  });
+  $("#slideEarlier").disabled = front.idx === 0; $("#slideLater").disabled = front.idx === front.slides.length - 1;
+  document.querySelectorAll("#layoutPick [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === st.layout)));
+  if (front.slides.length < MAX_SLIDES) {
+    const add = document.createElement("button"); add.type = "button"; add.className = "slideAdd"; add.textContent = "+"; add.title = "Add photos";
+    add.onclick = () => $("#addFile").click(); box.appendChild(add);
+  }
+}
+
+
+function loadFront(f) {
+  clearFront(); $("#slidePanel").hidden = true; st.side = "front"; syncSideBtn();
+  fileName = f.name.replace(/\.[^.]+$/, "").replace(/[^\w\- ]+/g, "").trim().slice(0, 50) || "card";
+  const url = URL.createObjectURL(f);
+  const isVideo = f.type.startsWith("video/") || /\.(mp4|mov|webm|m4v)$/i.test(f.name);
+  st.px = st.py = 0;
+  if (isVideo) {
+    const v = document.createElement("video");
+    v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto"; v.src = url;
+    v.onloadeddata = () => {
+      front = { kind: "video", el: v, url };
+      autoShape(v.videoWidth, v.videoHeight);
+      makeThumb(v, v.videoWidth, v.videoHeight);
+      v.play().catch(() => {});
+      $("#srcInfo").innerHTML = `<b>Video</b> · ${v.videoWidth}×${v.videoHeight} · ${v.duration.toFixed(1)}s. The front plays the clip, then the card flips.` + (v.duration > VIDEO_MAX ? ` <span class="warn">The GIF and MP4 use the first ${VIDEO_MAX} seconds.</span>` : "");
+      draw();
+    };
+    v.onerror = () => { $("#srcInfo").innerHTML = '<span class="err">This browser can\'t play that video. Try an MP4.</span>'; };
+  } else {
+    loadImg(url).then(img => {
+      front = { kind: "image", el: img, url };
+      autoShape(img.naturalWidth, img.naturalHeight);
+      makeThumb(img, img.naturalWidth, img.naturalHeight);
+      $("#srcInfo").innerHTML = `<b>Photo</b> · ${img.naturalWidth}×${img.naturalHeight} · <a href="#" id="toSlides" style="color:var(--accent)">add more photos for a slideshow</a>`;
+      $("#toSlides").onclick = ev => { ev.preventDefault(); $("#addFile").click(); };
+      draw();
+    }).catch(() => { $("#srcInfo").innerHTML = '<span class="err">That photo didn\'t open. HEIC photos from iPhone may need to be saved as JPG first.</span>'; });
+  }
+  drop.innerHTML = `<strong>${escapeHtml(f.name)}</strong> · tap to swap`;
+}
+function autoShape(w, h) {
+  // wide photos start as landscape cards; near-square multi-person shots keep the whole photo
+  st.orient = w > h * 1.2 ? "landscape" : "portrait";
+  const cardRatio = st.orient === "portrait" ? 4 / 7 : 7 / 4, r = w / h;
+  st.fit = Math.abs(Math.log(r / cardRatio)) > 0.45 ? "fit" : "fill";
+  ["orient", "fit"].forEach(k => document.querySelectorAll((k === "orient" ? "#orient" : "#fitMode") + " [data-v]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === st[k]))));
+}
+function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+// ---------- GIF encoder ----------
+class Bytes {
+  constructor(n) { this.b = new Uint8Array(n); this.n = 0; }
+  grow(k) { if (this.n + k > this.b.length) { const nb = new Uint8Array(Math.max(this.b.length * 2, this.n + k)); nb.set(this.b.subarray(0, this.n)); this.b = nb; } }
+  byte(v) { this.grow(1); this.b[this.n++] = v; }
+  u16(v) { this.byte(v & 255); this.byte(v >> 8 & 255); }
+  arr(a) { this.grow(a.length); this.b.set(a, this.n); this.n += a.length; }
+  str(s) { for (let i = 0; i < s.length; i++) this.byte(s.charCodeAt(i)); }
+  out() { return this.b.subarray(0, this.n); }
+}
+function palette(px) {
+  const n = px.length >> 2, step = Math.max(1, Math.floor(n / 30000)), cols = [];
+  for (let i = 0; i < n; i += step) { const o = i << 2; cols.push((px[o] << 16) | (px[o + 1] << 8) | px[o + 2]); }
+  let boxes = [cols];
+  const chan = (c, k) => (c >> (16 - 8 * k)) & 255;
+  while (boxes.length < 256) {
+    let bi = -1, best = -1, axis = 0;
+    boxes.forEach((bx, i) => {
+      if (bx.length < 2) return;
+      for (let k = 0; k < 3; k++) {
+        let lo = 255, hi = 0; for (const c of bx) { const v = chan(c, k); if (v < lo) lo = v; if (v > hi) hi = v; }
+        const sc = (hi - lo) * Math.sqrt(bx.length); if (sc > best) { best = sc; bi = i; axis = k; }
+      }
+    });
+    if (bi < 0 || best <= 0) break;
+    const bx = boxes[bi].sort((a, b) => chan(a, axis) - chan(b, axis)), mid = bx.length >> 1;
+    boxes.splice(bi, 1, bx.slice(0, mid), bx.slice(mid));
+  }
+  const pal = new Uint8Array(768);
+  boxes.forEach((bx, j) => { let r = 0, g = 0, b = 0; for (const c of bx) { r += c >> 16 & 255; g += c >> 8 & 255; b += c & 255; } const m = bx.length || 1; pal[j * 3] = r / m; pal[j * 3 + 1] = g / m; pal[j * 3 + 2] = b / m; });
+  return { pal, size: Math.max(2, boxes.length) };
+}
+const near = new Int16Array(1 << 18);
+function mapPixels(px, P) {
+  near.fill(-1);
+  const { pal, size } = P, n = px.length >> 2, out = new Uint8Array(n);
+  for (let i = 0; i < n; i++) {
+    const o = i << 2, r = px[o], g = px[o + 1], b = px[o + 2], key = (r >> 2) << 12 | (g >> 2) << 6 | (b >> 2);
+    let c = near[key];
+    if (c < 0) { let bd = 1e9; for (let j = 0; j < size; j++) { const dr = r - pal[j * 3], dg = g - pal[j * 3 + 1], db = b - pal[j * 3 + 2], dd = 2 * dr * dr + 4 * dg * dg + 3 * db * db; if (dd < bd) { bd = dd; c = j; } } near[key] = c; }
+    out[i] = c;
+  }
+  return out;
+}
+const dict = new Int16Array(4096 * 256);
+function lzw(ind, out) {
+  out.byte(8);
+  const t = new Bytes(ind.length + 1024);
+  let size = 9, next = 258, acc = 0, bits = 0;
+  const emit = code => { acc |= code << bits; bits += size; while (bits >= 8) { t.byte(acc & 255); acc >>>= 8; bits -= 8; } };
+  dict.fill(-1); emit(256);
+  let pre = ind[0];
+  for (let i = 1; i < ind.length; i++) {
+    const k = ind[i], key = pre << 8 | k, c = dict[key];
+    if (c >= 0) { pre = c; continue; }
+    emit(pre);
+    if (next === 4096) { emit(256); next = 258; size = 9; dict.fill(-1); }
+    else { if (next >= 1 << size) size++; dict[key] = next++; }
+    pre = k;
+  }
+  emit(pre); emit(257); if (bits > 0) t.byte(acc & 255);
+  const d = t.out();
+  for (let i = 0; i < d.length; i += 255) { const m = Math.min(255, d.length - i); out.byte(m); out.arr(d.subarray(i, i + m)); }
+  out.byte(0);
+}
+function gifStart(out, W, H) { out.str("GIF89a"); out.u16(W); out.u16(H); out.byte(0x70); out.byte(0); out.byte(0); out.byte(0x21); out.byte(0xFF); out.byte(11); out.str("NETSCAPE2.0"); out.byte(3); out.byte(1); out.u16(0); out.byte(0); }
+function gifAdd(out, ctx, W, H, delayCs) {
+  const px = ctx.getImageData(0, 0, W, H).data, P = palette(px), ind = mapPixels(px, P);
+  out.byte(0x21); out.byte(0xF9); out.byte(4); out.byte(0); out.u16(delayCs); out.byte(0); out.byte(0);
+  out.byte(0x2C); out.u16(0); out.u16(0); out.u16(W); out.u16(H); out.byte(0x87); out.arr(P.pal);
+  lzw(ind, out);
+}
+
+// ---------- exports ----------
+const yieldUI = () => new Promise(r => setTimeout(r, 0));
+function seekTo(v, t) {
+  return new Promise(res => {
+    if (Math.abs(v.currentTime - t) < 1e-3 && v.readyState >= 2) return res();
+    const done = () => { v.removeEventListener("seeked", done); clearTimeout(to); res(); };
+    const to = setTimeout(done, 3000);
+    v.addEventListener("seeked", done); v.currentTime = t;
+  });
+}
+function setBusy(on) {
+  busy = on; ["#makeGif", "#makeVid", "#makePng", "#playFlip"].forEach(s => $(s).disabled = on);
+  $("#bar").hidden = !on; if (on) $("#bar i").style.width = "0%";
+  if (playing) { cancelAnimationFrame(playing); playing = null; $("#playFlip").textContent = "▶ Play"; }
+}
+const progress = p => { $("#bar i").style.width = (p * 100).toFixed(1) + "%"; };
+const fmtSize = b => b < 1048576 ? Math.round(b / 1024) + " KB" : (b / 1048576).toFixed(1) + " MB";
+function needFront() { if (front) return false; $("#status").innerHTML = '<span class="warn">Load a photo or video first (step 1).</span>'; return true; }
+
+// GIF: 10 frames a second where something moves (slides, video, the record); one long frame where the card holds still
+$("#makeGif").onclick = async () => {
+  if (busy || needFront()) return;
+  setBusy(true);
+  applyTiming();
+  const D = dims(st.gifSize === "large" ? "gif" : false), cv = document.createElement("canvas"); cv.width = D.W; cv.height = D.H;
+  const ctx = cv.getContext("2d", { willReadFrequently: true }), out = new Bytes(1 << 23);
+  gifStart(out, D.W, D.H);
+  // flips in 5/100s steps
+  const tl = timeline(), vid = front.kind === "video" ? front.el : null, FPS = 10, NF = Math.max(8, Math.round(FLIP * 20)), FCS = Math.round(FLIP * 100 / NF);
+  const moving = st.frame || front.kind === "video" || (front.kind === "slides" && !isCollage());
+  const frames = []; // {t, cs}
+  if (moving) { const n = Math.max(1, Math.round(tl.F * FPS)); for (let i = 0; i < n; i++) frames.push({ t: i / FPS, cs: 10 }); }
+  else frames.push({ t: 0, cs: Math.round(tl.F * 100) });
+  const flip = t0 => { for (let i = 1; i < NF; i++) frames.push({ t: t0 + FLIP * i / NF, cs: FCS }); };
+  flip(tl.F);
+  frames.push({ t: tl.F + FLIP + 0.01, cs: Math.round(BACK_HOLD * 100) });
+  flip(tl.F + FLIP + BACK_HOLD);
+  if (tl.end) frames.push({ t: tl.total - 0.01, cs: END_HOLD * 100 });
+  const t0 = performance.now();
+  try {
+    if (vid) vid.pause();
+    for (let i = 0; i < frames.length; i++) {
+      const f = frames[i], s = tl.at(f.t);
+      if (vid && s.seg !== "end") await seekTo(vid, Math.min(s.seg === "front" ? s.ft : s.seg === "flip2" ? 0 : tl.F - 0.05, vid.duration - 0.05));
+      drawAt(ctx, D, f.t, tl);
+      gifAdd(out, ctx, D.W, D.H, f.cs);
+      progress((i + 1) / frames.length); $("#status").textContent = `Frame ${i + 1} of ${frames.length}…`;
+      if (i % 2 === 0) await yieldUI();
+    }
+    out.byte(0x3B);
+    const blob = new Blob([out.out()], { type: "image/gif" });
+    addResult(blob, `${forSlug()}flip-${fileName}.gif`, "gif");
+    $("#status").innerHTML = `<span class="ok">GIF ready</span> in ${((performance.now() - t0) / 1000).toFixed(1)}s · ${fmtSize(blob.size)} · ${tl.total.toFixed(1)}s long` + (blob.size > 15 * 1048576 ? ' <span class="warn">Big file. Fewer photos or a shorter "Each photo" makes it smaller.</span>' : "");
+  } catch (err) {
+    $("#status").innerHTML = '<span class="err">Something went wrong making the GIF: ' + escapeHtml(String(err && err.message || err)) + "</span>";
+  } finally {
+    setBusy(false); if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); } draw();
+  }
+};
+
+function pickMime() {
+  const opts = ["video/mp4;codecs=avc1.42E01E", "video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"];
+  return window.MediaRecorder ? opts.find(m => MediaRecorder.isTypeSupported(m)) : null;
+}
+$("#makeVid").onclick = async () => {
+  if (busy || needFront()) return;
+  const mime = pickMime();
+  if (!mime) { $("#status").innerHTML = '<span class="err">This browser can\'t record video. Use Make GIF, or open Flip Studio in Chrome or Safari.</span>'; return; }
+  setBusy(true);
+  const D = dims(true), cv = document.createElement("canvas"); cv.width = D.W; cv.height = D.H;
+  const ctx = cv.getContext("2d");
+  applyTiming();
+  const vid = front.kind === "video" ? front.el : null, tl = timeline(), total = tl.total + 0.3;
+  if (vid) { vid.pause(); await seekTo(vid, 0); }
+  drawAt(ctx, D, 0, tl);
+  const stream = cv.captureStream(30), chunks = [];
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6e6 });
+  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  const stopped = new Promise(r => rec.onstop = r);
+  rec.start(250);
+  const t0 = performance.now();
+  $("#status").textContent = `Recording… keep this tab open (${Math.ceil(total)}s)`;
+  let reset = false;
+  await new Promise(resolve => {
+    const tick = () => {
+      const t = (performance.now() - t0) / 1000, tt = Math.min(t, tl.total - 0.001);
+      if (vid) {
+        if (tt < tl.F) { if (vid.paused) vid.play().catch(() => {}); }
+        else { if (!vid.paused) vid.pause(); if (!reset && tt > tl.F + FLIP + BACK_HOLD) { vid.currentTime = 0; reset = true; } }
+      }
+      drawAt(ctx, D, tt, tl);
+      progress(Math.min(1, t / total));
+      if (t >= total) return resolve();
+      setTimeout(tick, 1000 / 30);
+    };
+    setTimeout(tick, 0);
+  });
+  rec.stop(); await stopped;
+  const ext = mime.includes("mp4") ? "mp4" : "webm";
+  const blob = new Blob(chunks, { type: mime.split(";")[0] });
+  addResult(blob, `${forSlug()}flip-${fileName}.${ext}`, "video");
+  $("#status").innerHTML = `<span class="ok">${ext.toUpperCase()} ready</span> · ${fmtSize(blob.size)} · ${tl.total.toFixed(1)}s long` + (ext === "webm" ? ' <span class="warn">This browser made a WebM, which iPhones won\'t play. Open Flip Studio in Safari or a recent Chrome for MP4, or send the GIF.</span>' : "");
+  setBusy(false); if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); } draw();
+};
+
+// ---------- results + saving ----------
+// saving: phones and iPads get the share sheet ("Save Image" / "Save Video" puts it in Photos); computers get a normal download
+const isTouch = matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 1;
+function downloadBlob(url, name) { const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+function addResult(blob, name, kind) {
+  const url = URL.createObjectURL(blob), fig = document.createElement("figure");
+  const mime = kind === "gif" ? "image/gif" : kind === "png" ? "image/png" : blob.type || "video/mp4";
+  let file = null; try { file = new File([blob], name, { type: mime }); } catch (e) {}
+  const canShare = !!(file && navigator.canShare && (() => { try { return navigator.canShare({ files: [file] }); } catch (e) { return false; } })());
+  fig.innerHTML = (kind === "video" ? `<video src="${url}" muted loop playsinline autoplay controls></video>` : `<img src="${url}" alt="">`) +
+    (recipient() ? `<span class="for">For ${escapeHtml(recipient())}</span>` : "") +
+    `<div class="name">${escapeHtml(name)}</div><div>${fmtSize(blob.size)}</div><div class="btns"><button type="button" data-a="save">${isTouch && canShare ? (kind === "video" ? "⬇ Save video" : "⬇ Save to Photos") : "⬇ Save"}</button>` +
+    (canShare ? `<button type="button" data-a="share">Share</button>` : "") + `</div><div class="hint"></div>`;
+  const hint = fig.querySelector(".hint");
+  const share = fig.querySelector('[data-a="share"]');
+  if (share) share.onclick = async () => {
+    const t = !$("#sendBox").hidden ? $("#msg").value : "";
+    try { await navigator.share(t ? { files: [file], text: t } : { files: [file] }); hint.innerHTML = '<span class="ok">Shared ✓</span>'; }
+    catch (e) { hint.textContent = e && e.name === "AbortError" ? "" : "Sharing isn't allowed here. Use Save, then send it from your Photos or Files."; }
+  };
+  fig.querySelector('[data-a="save"]').onclick = async () => {
+    // phone / iPad: the share sheet has "Save Image" / "Save Video" (into Photos) and "Save to Files"
+    if (isTouch && canShare) {
+      try { await navigator.share({ files: [file] }); hint.innerHTML = '<span class="ok">Done ✓</span> Pick "Save Image" or "Save Video" to put it in Photos.'; return; }
+      catch (e) { if (e && e.name === "AbortError") { hint.textContent = ""; return; } }
+    }
+    downloadBlob(url, name);
+    hint.innerHTML = isTouch ? 'Saving… on iPhone/iPad it goes to <b>Files › Downloads</b>. Or press and hold the picture above and choose Save.' : '<span class="ok">Downloaded ✓</span> Check your Downloads folder.';
+  };
+  $("#results").prepend(fig);
+}
+
+// ---------- print PNGs (2 x 3.5 in at 300 dpi, square corners for the printer) ----------
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+async function pngAt300(blob) {
+  // add a pHYs chunk (300 dpi) right after IHDR so printers use the right size
+  const src = new Uint8Array(await blob.arrayBuffer()), ppm = Math.round(300 / 0.0254);
+  const chunk = new Uint8Array(21), dv = new DataView(chunk.buffer);
+  dv.setUint32(0, 9); chunk.set([0x70, 0x48, 0x59, 0x73], 4); dv.setUint32(8, ppm); dv.setUint32(12, ppm); chunk[16] = 1;
+  dv.setUint32(17, crc32(chunk.subarray(4, 17)));
+  const sv = new DataView(src.buffer), parts = [src.subarray(0, 33), chunk];
+  for (let p = 33; p + 8 <= src.length;) {
+    const len = sv.getUint32(p), end = p + 12 + len;
+    const isPhys = src[p + 4] === 0x70 && src[p + 5] === 0x48 && src[p + 6] === 0x59 && src[p + 7] === 0x73;
+    if (!isPhys) parts.push(src.subarray(p, end));
+    p = end;
+  }
+  return new Blob(parts, { type: "image/png" });
+}
+$("#makePng").onclick = async () => {
+  if (busy || needFront()) return;
+  setBusy(true);
+  try {
+    const land = st.orient === "landscape", W = land ? 1050 : 600, H = land ? 600 : 1050;
+    const sl = front.kind === "slides" && !isCollage() && front.slides.length > 1, keep = sl ? front.idx : 0;
+    const sides = sl ? front.slides.map((_, k) => ["front-" + (k + 1), (c, W, H, r) => { front.idx = k; paintFront(c, W, H, r); front.idx = keep; }]) : [["front", paintFront]];
+    sides.push(["back", paintBack]);
+    if (st.endCard) sides.push(["end-card", paintEnd]);
+    for (const [side, paint] of sides) {
+      const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      paint(cv.getContext("2d"), W, H, 0);
+      const raw = await new Promise(r => cv.toBlob(r, "image/png"));
+      addResult(await pngAt300(raw), `${forSlug()}card-${fileName}-${side}.png`, "png");
+    }
+    $("#status").innerHTML = '<span class="ok">Print PNGs ready</span> · ' + (sl ? front.slides.length + " fronts" : "front") + ' and back' + (st.endCard ? " and end card" : "") + ', 2 × 3.5 in at 300 dpi';
+  } catch (err) {
+    $("#status").innerHTML = '<span class="err">Couldn\'t make the PNGs: ' + escapeHtml(String(err && err.message || err)) + "</span>";
+  } finally { setBusy(false); draw(); }
+};
+
+draw();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { linkKey = ""; draw(); });
+})();
+</script>
+
+</body></html>
