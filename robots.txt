@@ -5,5 +5,5 @@ Disallow: /komca-check.html
 Disallow: /gif-labeler.html
 Disallow: /tools/
 Disallow: /little-army/
-
+Disallow: /flip-studio/
 Sitemap: https://djspinthat.net/sitemap.xml
