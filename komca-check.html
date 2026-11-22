@@ -12,7 +12,34 @@ h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--viol
 .btns{grid-column:2;display:flex;flex-wrap:wrap;gap:6px}form{margin:0}
 button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}button.go{background:var(--gold);border-color:var(--gold);color:#140b24;font-weight:600}
 .ck input{width:22px;height:22px;accent-color:var(--gold)}.ck span{display:none}
-</style></head><body><main>
+
+/* ===== DJ Spin That · calmer design (Nov 2026) ===== */
+:root{--v2coral:#ff5468;--v2vio:#b48cff;--v2line:rgba(255,255,255,.12);--v2muted:#b8a9d6}
+body{font-family:"Geist",system-ui,-apple-system,sans-serif!important;font-size:17px!important;line-height:1.5!important;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Black Han Sans","Geist",sans-serif!important;font-weight:400!important;letter-spacing:-.005em}
+h1{font-size:clamp(28px,5vw,38px)!important;line-height:1.1!important}
+h2{font-size:22px!important}h3{font-size:19px!important}
+small,.eyebrow,.tag,label{font-family:"Geist Mono",ui-monospace,monospace!important;letter-spacing:.06em}
+label{font-size:13px!important}
+.card,.row,.msg,.note{border-radius:14px}
+.card{box-shadow:none!important}
+button,.btn,a.btn{font-family:"Geist",system-ui,sans-serif!important;font-size:16px!important;min-height:44px;border-radius:10px!important;box-shadow:none!important}
+.btn:not(.ghost),button.primary{background:var(--v2coral)!important;color:#1a0b14!important;border:0!important}
+.btn.ghost{background:rgba(255,255,255,.03)!important;color:#fff!important;border:1px solid rgba(255,255,255,.18)!important}
+input,select,textarea{font-family:"Geist",system-ui,sans-serif!important;font-size:16px!important;border-radius:10px!important;min-height:44px}
+.v2bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--v2line)}
+.v2logo{display:inline-flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;line-height:1}
+.v2logo .v2w{font-family:"Black Han Sans","Geist",sans-serif;font-size:19px;text-transform:uppercase;white-space:nowrap}
+.v2logo .v2c{color:#ff2a4b;font-weight:400}.v2logo .v2v{font-weight:400;background:linear-gradient(90deg,#ff63a9,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+.v2logo .v2x{position:relative;height:3px;border-radius:2px;background:linear-gradient(90deg,#ff2a4b,#ff63a9 50%,#a855f7)}
+.v2logo .v2x i{position:absolute;top:-4px;left:58%;width:7px;height:11px;border-radius:2px;background:currentColor;transform:translateX(-50%)}
+.v2bar .pv{font:500 12px "Geist Mono",monospace;letter-spacing:.12em;opacity:.75;border:1px solid var(--v2line);border-radius:999px;padding:5px 10px}
+@media (hover:hover) and (pointer:fine) and (min-width:1024px){html{zoom:1.1}}
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Black+Han+Sans&display=swap">
+</head><body><main>
+<div class="v2bar"><a class="v2logo" href="/" aria-label="DJ Spin That home"><span class="v2w"><b class="v2c">DJ</b> SPIN <b class="v2v">THAT</b></span><span class="v2x" aria-hidden="true"><i></i></span></a><span class="pv">PRIVATE TOOL</span></div>
+
 <h1>KOMCA credit check</h1>
 <p>A private helper for djspinthat.net. Each button opens KOMCA's search in a new tab with the title and 방탄소년단 (BTS) already filled in.</p>
 <ol><li>Tap <b>Search</b> for a song.</li><li>On KOMCA, find the result whose <b>앨범명</b> (album) matches.</li><li>Screenshot its <b>권리자 목록</b> (rights holders) box. A = lyrics, C = composition.</li><li>Tick the song here, then send Claude the screenshots.</li></ol>
