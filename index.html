@@ -1260,7 +1260,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
           <div class="crate-row">
             <button type="button" class="rec-s c1" data-go2="music:disco"><span class="disc" aria-hidden="true"></span><span class="slv"><em id="h2Check">Checklist</em><b>Song checklist</b><small>Played vs. still in the vault</small></span></button>
             <button type="button" class="rec-s c2" data-go2="tv:burrow"><span class="disc" aria-hidden="true"></span><span class="slv"><em>Watch</em><b>DJ Spin TV</b><small>Dance, shows &amp; behind the scenes</small></span></button>
-            <a class="rec-s c3" href="moments.html"><span class="disc" aria-hidden="true"></span><span class="slv"><em id="h2Shows">Every show</em><b>Moments board</b><small>Every show, with fancams</small></span></a>
+            <a class="rec-s c3" href="moments.html"><span class="disc" aria-hidden="true"></span><span class="slv"><em id="h2Shows">Every show</em><b>Scrapbook</b><small>Every show, with fancams</small></span></a>
             <button type="button" class="rec-s c4" data-go2="army:freebies"><span class="disc" aria-hidden="true"></span><span class="slv"><em>Free</em><b>Freebies</b><small>Photocards &amp; fan-made downloads</small></span></button>
           </div>
           <div class="crate-front" aria-hidden="true"><span class="crate-hole"></span><span class="crate-stamp">DJ SPIN THAT · CRATE 07</span></div>
@@ -1294,7 +1294,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
             <button type="button" class="dk-plat" data-go="tour:city" aria-label="Tour: find your show"><span class="dk-vinyl"><span class="dk-lbl"></span><span class="dk-hole"></span></span></button>
             <div class="dk-cap">TAP THE RECORD · MY SHOW</div>
             <div class="dk-pads">
-              <a class="dk-pad" href="moments.html"><small>HOT 1</small>Moments</a>
+              <a class="dk-pad" href="moments.html"><small>HOT 1</small>Scrapbook</a>
               <button type="button" class="dk-pad" data-go="tour:watch"><small>HOT 2</small>Watch</button>
               <button type="button" class="dk-pad" data-go="show:next"><small>LOOP</small>Next show</button>
               <button type="button" class="dk-pad" data-go="music:vault"><small>ROLL</small>Song vault</button>
@@ -1491,9 +1491,9 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
 
   <div class="burrow-wrap">
   <section class="station golinks" id="tourLinks" aria-labelledby="tourLinksH">
-    <h2 id="tourLinksH"><small>Station 4 · The moments board</small>Every show, every moment</h2>
+    <h2 id="tourLinksH"><small>Station 4 · The tour scrapbook</small>Every show, every moment</h2>
     <div class="gl">
-      <a class="glc" href="moments.html"><small>Moments board</small><b>Hooligan outfits to fireworks</b><span>The moments ARMY watches for at every show, city by city, with fancams.</span></a>
+      <a class="glc" href="moments.html"><small>Scrapbook</small><b>Hooligan outfits to fireworks</b><span>The moments ARMY watches for at every show, city by city, with fancams.</span></a>
       <a class="glc" href="moments.html#send"><small>Send a fancam</small><b>Light up a moment</b><span>Filmed a moment? Send the link to your post and get credited.</span></a>
     </div>
   </section>
@@ -2784,7 +2784,7 @@ function icons(title,artist){artist=artist||"BTS";const a=esc(artist),t=esc(titl
 /* share = the station you're looking at */
 const STN=[["home2","spin","DJ Spin That","Spin two surprise songs from BTS's ARIRANG tour 💜"],["h2bias","bias","Pick your bias","Pick your bias and get one of their songs 💜"],["h2remix","remix-the-set","Remix the ARIRANG set","Keep the setlist, add one BTS song. Make your remix 💿"],
  ["home2b","spin","DJ Spin That","Spin a surprise song from BTS's ARIRANG tour 💜"],
- ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["tourLinks","moments","Moments board","Every ARIRANG show, every moment, with fancams 🎥"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
+ ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["tourLinks","moments","Tour scrapbook","Every ARIRANG show, every moment, with fancams 📸"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
  ["disco","checklist","BTS song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault?"],["credits","credits","Liner notes","Who wrote and produced each BTS song"],["units","units","Subunit songs","BTS subunit songs played on the tour"],["vault","vault","Look up a song","Look up any BTS surprise song"],["fix","fix","Report a correction","Spot a mistake on DJ Spin That? Tell us"],
  ["armyLinks","be-the-dj","Be the DJ","Remix the setlist or add your fancam 🎧"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
 let lastTouch=null;document.addEventListener("pointerdown",e=>{const s=STN.find(x=>{const el=document.getElementById(x[0]);return el&&el.contains(e.target)&&x[0]!=="home2"&&x[0]!=="home2b"});if(s)lastTouch={s,t:Date.now()}},true);

@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="The ARIRANG tour moments board: the moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
+<meta name="description" content="The ARIRANG tour scrapbook: the moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://djspinthat.net/moments.html">
-<meta property="og:title" content="ARIRANG Moments Board · DJ Spin That">
+<meta property="og:title" content="ARIRANG Tour Scrapbook · DJ Spin That">
 <meta property="og:description" content="The moments ARMY watches for at every show, city by city, with fancams. Fan-made.">
 <meta property="og:image" content="https://djspinthat.net/og-moments.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://djspinthat.net/og-moments.jpg">
-<title>Moments Board · DJ Spin That</title>
+<title>Tour Scrapbook · DJ Spin That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Black+Han+Sans&display=swap">
 <style>
@@ -59,6 +59,11 @@ h1{margin:6px 0 6px;font-family:var(--hfont);font-weight:var(--hweight);text-tra
 .chlinks a:hover{border-color:rgba(255,255,255,.35)}
 .chlinks b{font-weight:600;font-size:16px}.chlinks small{grid-column:1;font-size:14px;color:var(--muted)}.chlinks span{grid-row:1/span 2;grid-column:2;font-size:14px;color:var(--muted)}
 @media (max-width:620px){.chlinks{grid-template-columns:1fr}}
+.topr{display:flex;align-items:center;gap:8px}
+.shr{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);color:#fff;font:500 15px var(--sans);cursor:pointer}
+.shr svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.shr:hover{border-color:rgba(255,255,255,.4)}.shr:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#22123a;border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;z-index:50}
 .acthd{margin:22px 0 4px;padding:14px 16px;border-radius:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 22%,transparent),transparent 80%);border-left:4px solid var(--ac);display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:center}
 .acthd:first-child{margin-top:0}
 .acthd .ko{grid-row:span 2;font-family:"Black Han Sans",var(--hfont);font-size:34px;line-height:1;color:var(--ac)}
@@ -115,12 +120,12 @@ footer{max-width:920px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font
 <body>
 <header class="top">
   <a class="logo" href="./#spin" aria-label="DJ Spin That home"><span class="w"><b class="c">DJ</b> <b>SPIN</b> <b class="v">THAT</b></span><span class="x" aria-hidden="true"><i></i></span></a>
-  <nav class="nav" aria-label="Site"><a class="home" href="./#tour">← Tour</a><a href="./#music">Music</a><a href="./#army">ARMY</a><a href="./#tv">DJ Spin TV</a></nav>
+  <div class="topr"><nav class="nav" aria-label="Site"><a class="home" href="./#tour">← Tour</a><a href="./#music">Music</a><a href="./#army">ARMY</a><a href="./#tv">DJ Spin TV</a></nav><button type="button" class="shr" id="shr" aria-label="Share this show's scrapbook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>Share</span></button></div>
 </header>
 <main>
   <div>
-    <p class="kick">Station 4 · Moments board</p>
-    <h1>Every show, every moment</h1>
+    <p class="kick">Station 4 · Every show, every moment</p>
+    <h1>Tour scrapbook</h1>
     <p class="lede">The show is told in three acts: <b>BTS</b> (han, deep emotion), <b>KOREA</b> (heung, joy) and <b>ARIRANG</b> (love, where the two meet). Pick a show to see each act's moments and the fancams fans shared. Missing one? Send yours.</p>
   </div>
 
@@ -240,6 +245,14 @@ document.addEventListener("click",e=>{
   const k=e.target.closest("[data-find]");if(k){tr("moments/find/"+k.dataset.find);return}
   if(e.target.closest("#sSend"))tr("moments/send-fancam");
 });
+$("#shr").onclick=async()=>{const S=PLAYED[cur];const url="https://djspinthat.net/moments.html"+(S?"#"+S.id:"");
+  const title=S?`${nm(S)} · Tour Scrapbook · DJ Spin That`:"Tour Scrapbook · DJ Spin That";
+  const lit=S?MOM.filter(m=>clipsFor(S.id,m.id).length).length:0;
+  const text=S?`Every moment from BTS ARIRANG ${nm(S)}, with fancams 📸 (${lit} of ${MOM.length} moments so far)`:"Every ARIRANG show, every moment, with fancams 📸";
+  tr("moments/share/"+(S?S.id:"page"));
+  if(navigator.share){try{await navigator.share({title,text,url});return}catch(e){if(e&&e.name==="AbortError")return}}
+  try{await navigator.clipboard.writeText(url);toast("Link copied. Paste it anywhere 💜")}catch(e){toast(url)}};
+function toast(t){const d=document.createElement("div");d.className="toast";d.setAttribute("role","status");d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
 $("#showSel").onchange=()=>{cur=+$("#showSel").value;render();tr("moments/show/"+PLAYED[cur].id)};
 $("#prev").onclick=()=>{if(cur<PLAYED.length-1){cur++;render()}};
 $("#next").onclick=()=>{if(cur>0){cur--;render()}};
@@ -248,7 +261,7 @@ $("#sCopy").onclick=async()=>{const t=sendText();const txt=t.title+"\n"+t.body;t
 (async()=>{
   const get=u=>fetch(u,{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
   const [s,m]=await Promise.all([get("shows.json"),get("moments.json")]);
-  if(!s||!m){$("#list").innerHTML='<p class="msg">The board couldn\'t load. Reload the page to try again.</p>';return}
+  if(!s||!m){$("#list").innerHTML='<p class="msg">The scrapbook couldn\'t load. Reload the page to try again.</p>';return}
   SHOWS=(s.shows||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));
   PLAYED=SHOWS.filter(x=>x.status==="played").reverse();
   MOM=m.moments||[];CLIPS=m.clips||[];

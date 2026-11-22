@@ -89,7 +89,7 @@ ${s.disputed?'<p class="warn">Reported live by ARMY at the show. We mark it conf
 <a class="btn" href="https://www.tiktok.com/search/video?q=${encodeURIComponent('#'+tag)}" target="_blank" rel="noopener">TikTok #${esc(tag)}</a>
 <a class="btn" href="https://www.instagram.com/explore/tags/${encodeURIComponent(tag.toLowerCase())}/" target="_blank" rel="noopener">Instagram #${esc(tag)}</a>
 <a class="btn" href="https://www.youtube.com/results?search_query=${encodeURIComponent(`BTS ${s.city} ${d6} ${titles[0]}`)}" target="_blank" rel="noopener">YouTube</a></div></section>
-<section><h3>More from the tour</h3><div class="row"><a class="btn" href="/remix.html">Remix the ARIRANG set</a><a class="btn" href="/#spin">Spin a surprise song</a><a class="btn" href="/moments.html">Moments board</a></div></section>
+<section><h3>More from the tour</h3><div class="row"><a class="btn" href="/remix.html">Remix the ARIRANG set</a><a class="btn" href="/#spin">Spin a surprise song</a><a class="btn" href="/moments.html">Tour scrapbook</a></div></section>
 <nav class="pn" aria-label="Other nights">${prev?`<a href="/s/${prev._slug}.html">← ${esc(prev.city)} ${esc(nightLabel(prev))}</a>`:'<span></span>'}<a href="/s/">All nights</a>${next?`<a href="/s/${next._slug}.html">${esc(next.city)} ${esc(nightLabel(next))} →</a>`:'<span></span>'}</nav>
 ${FOOT}
 <script src="/share-card.js?v=2"></script>
@@ -117,7 +117,7 @@ ${FOOT}</body></html>
  // preview images for the Remix and Moments pages
  if(ALL||!fs.existsSync(path.join(ROOT,'og-remix.jpg')))await shot(path.join(ROOT,'og-remix.jpg'),{kick:'BTS ARIRANG Tour · ARMY edition',city:'Remix the set',night:'Move any song · add one of your own',songs:['Your song','after Butter?'],note:'Spin the 2 surprise songs too'});
  if(ALL||!fs.existsSync(path.join(ROOT,'og-moments.jpg'))){let m=[];try{m=JSON.parse(fs.readFileSync(path.join(ROOT,'moments.json'),'utf8')).moments.map(x=>x.label)}catch(e){}
-  await shot(path.join(ROOT,'og-moments.jpg'),{kick:'BTS ARIRANG Tour · fancams',city:'Moments board',night:'The moments ARMY waits for, city by city',songs:m.slice(0,3).length?['Hooligan outfits','The monitor spin']:['Every show','every moment'],note:'Send your fancam'})}
+  await shot(path.join(ROOT,'og-moments.jpg'),{kick:'BTS ARIRANG Tour · fancams',city:'Tour scrapbook',night:'The moments ARMY waits for, city by city',songs:m.slice(0,3).length?['Hooligan outfits','The monitor spin']:['Every show','every moment'],note:'Send your fancam'})}
 
  // sitemap + robots
  const urls=[[`${SITE}/`,today,'daily','1.0'],[`${SITE}/s/`,today,'daily','0.9'],[`${SITE}/remix.html`,today,'weekly','0.7'],[`${SITE}/moments.html`,today,'weekly','0.7'],[`${SITE}/played/`,today,'daily','0.8'],...played.map(s=>[`${SITE}/s/${slugOf(s)}.html`,s.date,'monthly','0.8'])];
