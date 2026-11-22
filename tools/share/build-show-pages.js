@@ -122,5 +122,5 @@ ${FOOT}</body></html>
  // sitemap + robots
  const urls=[[`${SITE}/`,today,'daily','1.0'],[`${SITE}/s/`,today,'daily','0.9'],[`${SITE}/remix.html`,today,'weekly','0.7'],[`${SITE}/moments.html`,today,'weekly','0.7'],[`${SITE}/played/`,today,'daily','0.8'],...played.map(s=>[`${SITE}/s/${slugOf(s)}.html`,s.date,'monthly','0.8'])];
  fs.writeFileSync(path.join(ROOT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u,d,c,p])=>`  <url><loc>${u}</loc><lastmod>${d}</lastmod><changefreq>${c}</changefreq><priority>${p}</priority></url>`).join('\n')}\n</urlset>\n`);
- fs.writeFileSync(path.join(ROOT,'robots.txt'),`User-agent: *\nAllow: /\nDisallow: /post-kit.html\nDisallow: /komca-check.html\nDisallow: /gif-labeler.html\nDisallow: /tools/\nDisallow: /little-army/\n\nSitemap: ${SITE}/sitemap.xml\n`);
+ fs.writeFileSync(path.join(ROOT,'robots.txt'),`User-agent: *\nAllow: /\nDisallow: /post-kit.html\nDisallow: /komca-check.html\nDisallow: /gif-labeler.html\nDisallow: /tools/\nDisallow: /little-army/\nDisallow: /flip-studio/\nSitemap: ${SITE}/sitemap.xml\n`);
  if(b)await b.close();console.log(`${played.length} show pages, ${made} new images, sitemap ${urls.length} URLs`)})();
