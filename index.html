@@ -755,6 +755,9 @@ main{padding-top:26px!important}
 .h2-res{min-height:72px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
 /* even decks: fill the deck height and pin the play buttons to the bottom so both sides line up */
 .h2-res{flex:1;justify-content:flex-start}.h2-res:has(.h2-wait){justify-content:center}.h2-res>.h2-ic{margin-top:auto;padding-top:4px}
+#home2>.h2-next{justify-self:center;margin-top:-44px;border:0;background:none;padding:4px 6px;color:var(--v2muted)}
+#home2>.h2-next .go{background:none;padding:0;color:#fff;text-decoration:underline;text-underline-offset:3px}
+.h2-res>.h2-t{min-height:2.16em;display:flex;align-items:center;justify-content:center}
 .h2-wait{margin:0;font:500 12px var(--v2mono);letter-spacing:.1em;text-transform:uppercase;color:#6f7488}
 .h2-t{margin:0;font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);font-size:26px;line-height:1.08;letter-spacing:-.01em;color:#fff;max-width:100%;overflow-wrap:anywhere}
 .a .h2-t{text-shadow:0 0 16px rgba(255,84,104,.55)}.b .h2-t{text-shadow:0 0 16px rgba(180,140,255,.6)}
@@ -856,6 +859,7 @@ main{padding-top:26px!important}
 /* phone */
 @media (max-width:620px){
   #home2{gap:44px!important}
+  #home2>.h2-next{margin-top:-34px}
   .h2-intro{margin-bottom:-26px}
   .h2-promise{font-size:19px!important}
   .h2-console{grid-template-columns:1fr 1fr;gap:10px;padding:10px;border-radius:18px}
@@ -1202,9 +1206,8 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
       <div class="h2-intro">
         <div>
           <p class="h2-kick">BTS · ARIRANG World Tour · Surprise songs</p>
-          <h2 id="h2H" class="h2-promise">Spin it, ARMY. Two surprise songs from the vault, every time. 💜</h2>
+          <h2 id="h2H" class="h2-promise">Tap the button. Get two surprise songs BTS played on this tour. 💜</h2>
         </div>
-        <button type="button" class="h2-next" id="h2Next" hidden></button>
       </div>
 
       <div class="h2-console" id="h2Console">
@@ -1212,7 +1215,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
           <div class="h2-dtop"><span class="h2-bar"><i></i></span></div>
           <div class="h2-dlbl"><span>DECK A · SONG 1</span><b id="h2TempoA">TEMPO +0.0%</b></div>
           <div class="h2-plat"><div class="h2-vinyl" id="h2VinA"><span class="h2-lbl"><em id="h2LblA"></em></span></div></div>
-          <div class="h2-res" id="h2ResA" aria-live="polite"><p class="h2-wait">Press the pad to spin</p></div>
+          <div class="h2-res" id="h2ResA" aria-live="polite"><p class="h2-wait">Song 1 lands here</p></div>
         </div>
         <div class="h2-mix">
           <div class="h2-well"><button type="button" class="h2-pad" id="h2Spin"><span class="h2-pl">DJ, spin that!</span><span class="h2-ps">TWO SONGS</span></button></div>
@@ -1231,9 +1234,11 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
           <div class="h2-dtop"><span class="h2-bar"><i></i></span></div>
           <div class="h2-dlbl"><span>DECK B · SONG 2</span><b id="h2TempoB">TEMPO −0.0%</b></div>
           <div class="h2-plat"><div class="h2-vinyl" id="h2VinB"><span class="h2-lbl"><em id="h2LblB"></em></span></div></div>
-          <div class="h2-res" id="h2ResB" aria-live="polite"><p class="h2-wait">Two songs, one press</p></div>
+          <div class="h2-res" id="h2ResB" aria-live="polite"><p class="h2-wait">Song 2 lands here</p></div>
         </div>
       </div>
+
+      <button type="button" class="h2-next" id="h2Next" hidden></button>
 
       <div class="h2-duo">
       <div class="h2-sec" id="h2bias">
@@ -2840,7 +2845,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-go2]");if(
 function days(iso){if(!iso)return"";const d=Math.round((new Date(iso+"T12:00:00")-new Date(new Date().toDateString()+" 12:00"))/864e5);return d<=0?"today":d===1?"tomorrow":"in "+d+" days"}
 function renderInfo(){
   const nx=UPCOMING[0],nb=q("#h2Next");
-  if(nx&&nb){nb.hidden=false;nb.innerHTML=`<span class="dot"></span><span>Next: <b>${esc(nx.city)} ${esc(nx.night)}</b> · ${esc(days(nx.date))}</span><span class="go">Find your show →</span>`;nb.onclick=()=>{openShow(nx);track("v2/next")}}
+  if(nx&&nb){nb.hidden=false;nb.innerHTML=`<span class="dot"></span><span>Next show: <b>${esc(nx.city)} ${esc(nx.night)}</b> · ${esc(days(nx.date))}</span><span class="go">See every night →</span>`;nb.onclick=()=>{openShow(nx);track("v2/next")}}
   const last=SHOWS.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))||(a.order||0)-(b.order||0)).pop(),lb=q("#h2Last");
   if(last&&lb){lb.hidden=false;lb.setAttribute("role","button");lb.tabIndex=0;
     lb.innerHTML=`<span class="k">LAST NIGHT</span><span><b>${esc(last.city)} ${esc(last.night)}</b> · ${esc(last.songTitles.join(" × "))}</span><span class="r">Every surprise song, city by city →</span>`;
