@@ -1734,7 +1734,7 @@
    "city": "Kaohsiung",
    "country": "Taiwan",
    "date": "2026-11-22",
-   "disputed": true,
+   "disputed": false,
    "night": "Night 3",
    "notes": {
     "Embarrassed": "Also known as Blanket Kick (이불킥). Its first appearance as a surprise song on the ARIRANG tour, on the closing night in Kaohsiung."
@@ -1757,7 +1757,8 @@
    "sources": [
     "Fan tracker report on social media",
     "Fan report on Threads, shared by the site owner (Nov 22, 2026)",
-    "Reported by the site owner (Nov 22, 2026)"
+    "Reported by the site owner (Nov 22, 2026)",
+    "Fan report on TikTok (@armystreamfinder), shared by the site owner"
    ],
    "status": "played",
    "tentative": false,
