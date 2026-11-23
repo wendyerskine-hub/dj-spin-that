@@ -552,7 +552,12 @@ MORDER.concat('ot7').forEach(k=>STICKERS.push({id:'m-'+k,kind:'member',m:k,label
 Object.keys(CITIES).forEach(c=>STICKERS.push({id:'c-'+c,kind:'city',city:c,label:c,set:'Tour stamps'}));
 BT21.forEach(b=>STICKERS.push({id:'b-'+b.id,kind:'bt21',b,label:b.n,set:'BT21 buddies'}));
 [['💜','Borahae','#c4a8ff'],['🎧','DJ',"#ffd6e8"],['⭐','Star','#fff1c2'],['🌙','Moon','#d9e4ff'],['🌸','Spring','#ffe0ef'],['🦋','Butterfly','#d6f5ff'],['🌊','Sea','#cbf5ee'],['🎤','Mic','#ffe4cc'],['🎫','Ticket','#fff1c2'],['🌈','Rainbow','#f1e6ff'],['💌','Love letter','#ffd6e8'],['🫰','Finger heart','#ffe0ef']].forEach(([e,l,c],i)=>STICKERS.push({id:'f-'+i,kind:'fun',e,label:l,c,set:'Fun'}));
+STICKERS.push({id:'x-whale',kind:'img',src:'purple-whale.png',label:'Purple Whale',set:'Fan projects'});
 const stById=id=>STICKERS.find(s=>s.id===id);
+/* Fan-project images are only published with the private claude.ai version. If they are missing (website), hide those features. */
+const STIMG={};let WHALE_OK=false,POSTER_OK=false;
+function loadFanImages(){STICKERS.filter(s=>s.kind==='img').forEach(s=>{const im=new Image();im.onload=()=>{STIMG[s.id]=im;if(s.id==='x-whale'){WHALE_OK=true;render()}};im.onerror=()=>{const i=STICKERS.indexOf(s);if(i>=0)STICKERS.splice(i,1);render()};im.src=s.src});
+ const p=new Image();p.onload=()=>{POSTER_OK=true;if(tab==='tour'&&view&&view.city==='Munich')render()};p.src='purple-whales-munich.jpg'}
 
 const RANKS=[
  {min:0,kr:'연습생',en:'Trainee',rom:'yeon-seup-saeng',emo:'🌱'},
@@ -656,6 +661,7 @@ function drawSticker(x,s,X,Y,S){x.save();x.translate(X,Y);const k=S/400;x.scale(
   x.font="800 20px Nunito,sans-serif";x.fillStyle='#a87a00';x.fillText('ARIRANG TOUR ✓',200,282)}
  else if(s.kind==='bt21'){dieCut(x,()=>rr(x,16,16,368,368,90));rr(x,32,32,336,336,76);x.fillStyle=s.b.c;x.fill();
   x.font='170px '+EMOJI;x.fillText(s.b.e,200,175);x.fillStyle='#2a1650';x.font="700 46px Fredoka,sans-serif";x.fillText(s.b.n,200,318)}
+ else if(s.kind==='img'){const im=STIMG[s.id];if(im){const k=Math.min(390/im.width,390/im.height);x.save();x.shadowColor='rgba(40,10,80,.28)';x.shadowBlur=14;x.shadowOffsetY=5;x.drawImage(im,200-im.width*k/2,200-im.height*k/2,im.width*k,im.height*k);x.restore()}}
  else {dieCut(x,()=>star(x,200,205,196,120,6));star(x,200,205,176,108,6);x.fillStyle=s.c;x.fill();x.font='140px '+EMOJI;x.fillText(s.e,200,190);
   x.fillStyle='#2a1650';const fs=fitText(x,s.label,"700 {s}px Fredoka,sans-serif",200,38);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(s.label,200,300)}
  x.restore()}
@@ -723,9 +729,30 @@ function cityView(c){const d=CITIES[c];const st=stopStatus(c);const songs=surpri
  </div>
  <h3 style="margin-top:20px;font-size:23px">🔎 Did you know?</h3>
  <ul class="dyk">${d.facts.map(f=>`<li data-e="${f[0]}">${esc(f[1])}</li>`).join('')}${d.bts?`<li data-e="💜"><b>BTS connection:</b> ${esc(d.bts)}</li>`:''}</ul>
+ ${c==='Munich'?whaleMoment():''}
  <h3 style="margin-top:20px;font-size:23px">🎵 Surprise songs in ${esc(c)}</h3>
  ${songs.length?`<div class="songs">${songs.map(t=>songBtn(t,t.night)).join('')}</div>${notes.map(t=>`<div class="note">💜 <b>${esc(t.title)}:</b> ${esc(t.notes[t.title])}</div>`).join('')}<p class="muted" style="font-size:15px">Tap a song to learn more about it and see where else it was played.</p>`:`<p class="muted">BTS hasn't played here yet. After each show, the surprise songs will show up here! 🎧</p>`}
  <div class="card" style="margin-top:20px;background:linear-gradient(180deg,#fff,#faf6ff)" id="quizArea">${state.stamps[c]?`<h3>⭐ You already have the ${esc(c)} stamp!</h3><p style="margin:0">You can take the quiz again for practice.</p><button class="btn ghost" style="margin-top:10px" data-quiz="${esc(c)}">Practice quiz</button>`:`<h3>🎫 Earn the ${esc(c)} stamp!</h3><p style="margin:0">Answer 3 questions. Get 2 right to earn the stamp sticker.</p><button class="btn pink" style="margin-top:10px" data-quiz="${esc(c)}">Start the quiz</button>`}</div>`}
+
+function whaleMoment(){if(!POSTER_OK&&!WHALE_OK)return '';const got=state.stickers['x-whale'];
+ return `<div class="card" style="margin-top:20px;background:linear-gradient(160deg,#2e1065,#5b21b6 55%,#7c3aed);color:#fff;border-color:#5b21b6">
+  <h3 style="font-size:24px;margin-bottom:6px">🐋 Munich ARMY moment: #PurpleWhales4BTS</h3>
+  <div style="display:grid;grid-template-columns:${POSTER_OK?'minmax(0,1fr) minmax(0,1.3fr)':'1fr'};gap:16px;align-items:start">
+   ${POSTER_OK?`<button data-poster style="background:none;border:0;padding:0"><img src="purple-whales-munich.jpg" alt="#PurpleWhales4BTS fan project poster" style="width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.35);display:block"></button>`:''}
+   <div style="font-size:17px">
+    <p style="margin-top:0">During <b>Come Over</b> on July 11 and 12, about <b>30,000 ARMY</b> lifted up purple whale cutouts for BTS. The whole stadium turned into a purple ocean! 🌊</p>
+    <p>German ARMY (<b>GerARMY</b>) organized this fan project. Fans could decorate their whales any way they liked, and everyone was asked to take their whale home after the show, with no trash left behind.</p>
+    <p>💜 <b>Why whales?</b> Whales are a favorite ARMY symbol because of BTS's song <b>Whalien 52</b>. It's about a whale that sings at a sound no other whale can hear, so it feels alone. ARMY are the friends who hear it.</p>
+    ${WHALE_OK?`<button class="btn pink" data-liftwhale>🐋 Lift your whale!</button>${got?'<span style="margin-left:10px;font-weight:800">✓ Purple Whale sticker collected</span>':''}`:''}
+    <p style="font-size:13px;opacity:.85;margin:12px 0 0">Poster and whale art: Fanproject Munich by GerARMY.</p>
+   </div></div>
+  <div class="q" style="color:var(--ink);margin-bottom:0"><div class="qt">🧮 If 30,000 ARMY each lift 1 whale, and every whale has 2 flippers, how many whale flippers are in the stadium?</div><div class="choices">${['3,000','30,002','60,000','600,000'].map(o=>`<button data-wq="${o}">${o}</button>`).join('')}</div><div class="why" id="wqwhy"></div></div></div>`}
+function liftWhale(){const im=STIMG['x-whale'];const o=document.createElement('div');o.className='modal';o.id='modal';
+ o.innerHTML=`<div style="position:relative;width:100%;height:100%;overflow:hidden;pointer-events:none"><div id="wsea" style="position:absolute;inset:0"></div><div style="position:absolute;left:0;right:0;top:12%;text-align:center;color:#fff;font-family:Fredoka;font-size:clamp(26px,5vw,44px);font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.5)">#PurpleWhales4BTS 💜<br><span style="font-size:.55em">30,000 ARMY lifted their whales in Munich!</span></div></div>`;
+ o.style.background='radial-gradient(ellipse at 50% 120%,#7c3aed,#2e1065 70%)';o.addEventListener('click',closeModal);document.body.appendChild(o);
+ const sea=o.querySelector('#wsea');const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ for(let i=0;i<(reduce?6:26);i++){const w=document.createElement('img');w.src=im.src;w.alt='';const sz=50+Math.random()*90;w.style.cssText=`position:absolute;width:${sz}px;left:${Math.random()*95}%;bottom:-120px;transform:rotate(${(Math.random()-.5)*20}deg);transition:bottom ${reduce?0:2+Math.random()*1.5}s cubic-bezier(.2,.8,.3,1) ${reduce?0:Math.random()*1.2}s`;sea.appendChild(w);requestAnimationFrame(()=>requestAnimationFrame(()=>{w.style.bottom=(8+Math.random()*45)+'%'}))}
+ if(!state.stickers['x-whale'])setTimeout(()=>{closeModal();giveSticker('x-whale','You lifted your whale with ARMY in Munich!');render()},reduce?1500:4200)}
 
 function songsView(){const m=allSongs();const list=Object.values(m).sort((a,b)=>b.cities.length-a.cities.length||a.title.localeCompare(b.title));const max=list.length?list[0].cities.length:1;
  return `<button class="back" data-back>← Back to the map</button><h2 style="font-size:30px">🎵 Song Spotter</h2><p class="muted" style="margin-top:0">Every night BTS sings 2 surprise songs. Here are all of them so far, with the most-played at the top. Tap one to see where it was played.</p>
@@ -742,7 +769,7 @@ function songModal(title){const m=allSongs();const t=m[title];if(!t)return;const
   <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px">${cities.slice(0,4).map(c=>`<button class="btn small ghost" data-city="${esc(c)}">Visit ${esc(c)}</button>`).join('')}<button class="btn small" onclick="closeModal()">Close</button></div>`)}
 
 /* city quiz */
-let quiz=null;
+let quiz=null;const quizDone={};
 function buildCityQuiz(c){const d=CITIES[c];const qs=[];const st=stopStatus(c);
  qs.push({...d.q,why:''});
  const songs=surpriseSongsIn(c);
@@ -762,7 +789,7 @@ function answerQuiz(i){if(!quiz||quiz.answered)return;quiz.answered=true;const q
  const last=quiz.i===quiz.qs.length-1;$('#qnext').innerHTML=`<button class="btn" data-qnext>${last?'See my result':'Next question →'}</button>`}
 function nextQuiz(){if(quiz.i<quiz.qs.length-1){quiz.i++;quiz.answered=false;drawQuiz();return}
  const c=quiz.c,r=quiz.right;const box=$('#quizArea');const pass=r>=2;
- if(pass&&!state.stamps[c]){state.stamps[c]=1;save();box.innerHTML=`<h3>🎉 ${r}/3! You earned the ${esc(c)} stamp!</h3><button class="btn" data-back>Back to the map</button>`;updateHeader();giveSticker('c-'+c,`You visited ${c}!`)}
+ if(pass&&!state.stamps[c]){state.stamps[c]=1;save();box.innerHTML=`<h3>🎉 ${r}/3! You earned the ${esc(c)} stamp!</h3><button class="btn" data-back>Back to the map</button>`;updateHeader();giveSticker('c-'+c,`You visited ${c}!`);if(c==='Munich'&&WHALE_OK&&!state.stickers['x-whale'])setTimeout(()=>giveSticker('x-whale','Munich bonus: a purple whale!'),3200)}
  else box.innerHTML=`<h3>${pass?'🌟':'💪'} You got ${r} out of 3${pass?'!':'.'}</h3><p style="margin:0">${pass?'Great practice!':'Read the city facts again and try once more. You can do it! 화이팅!'}</p><button class="btn pink" style="margin-top:10px" data-quiz="${esc(c)}">Try again</button>`;
  quiz=null}
 
@@ -1149,6 +1176,9 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
  if(d.song)return songModal(d.song);
  if(d.back!==undefined){quiz=null;return go(null)}
  if(d.quiz)return startQuiz(d.quiz);
+ if(d.liftwhale!==undefined)return liftWhale();
+ if(d.poster!==undefined)return modal(`<img src="purple-whales-munich.jpg" alt="#PurpleWhales4BTS poster" style="width:100%;border-radius:14px;display:block"><p style="font-size:14px" class="muted">Fanproject Munich by GerARMY</p><button class="btn" onclick="closeModal()">Close</button>`);
+ if(d.wq){const ok=d.wq==='60,000';document.querySelectorAll('[data-wq]').forEach(b=>{if(b.dataset.wq==='60,000')b.classList.add('right');else if(b===t&&!ok)b.classList.add('wrong')});$('#wqwhy').innerHTML=ok?'<span class="ok">✅ Yes! 30,000 × 2 = 60,000 flippers! 🐋</span>':'<span class="no">Not quite. </span>30,000 × 2 = 60,000. Think 3 × 2 = 6, then add the zeros!';if(ok&&!quizDone.wq){quizDone.wq=1;state.mathRight++;save();updateHeader()}return}
  if(d.qa)return answerQuiz(+d.qa);
  if(d.qnext!==undefined)return nextQuiz();
  if(d.ksub){kSub=d.ksub;kgame=null;return render()}
@@ -1226,7 +1256,7 @@ async function start(){const local=lsLoad();if(local)state=Object.assign(FRESH()
  try{const r=await fetch(DATA_BASE+'/shows.json',{cache:'no-cache'});const d=await r.json();if(d.shows&&d.shows.length)sh=d.shows}catch(e){}
  try{const r=await fetch(DATA_BASE+'/setlist.json',{cache:'no-cache'});const d=await r.json();if(d.acts)acts=d.acts}catch(e){}
  SHOWS=sh.slice().sort((a,b)=>(a.order||0)-(b.order||0)||a.date.localeCompare(b.date));SETLIST_SONGS=acts.flatMap(a=>a.songs).filter(s=>s&&s!=='*');
- await loadLocalCards();
+ await loadLocalCards();loadFanImages();
  STOPS=[];SHOWS.forEach(s=>{if(!STOPS.includes(s.city))STOPS.push(s.city)});if(!STOPS.length)STOPS=Object.keys(CITIES);
  lastRank=rankFor(points()).en;render();if(local)setSave('· saved ✓');
  const willConnect=!!(window.claude&&typeof window.claude.use==='function');
