@@ -124,7 +124,7 @@ const LDKEYS=LD.map(([n])=>'ld-'+n);
 const isLD=s=>LDKEYS.includes(s);
 const imgCache={};
 function loadImg(src){if(!imgCache[src])imgCache[src]=new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src});return imgCache[src]}
-const ldSrc=s=>'stickers/'+s.slice(3)+'.png';
+const ldSrc=s=>'stickers/'+s.slice(3)+'.png?v=2';
 const clean=s=>String(s||'').replace(/[<>]/g,'').replace(/\s+/g,' ').trim().slice(0,14);
 let pick='jk',sticker='💜',photoId=null,editing=false;
 /* photos: saved in this browser's IndexedDB only, never uploaded */
@@ -147,7 +147,7 @@ loadPhotos();
 try{const f=localStorage.getItem('la-from');if(f)$('#from').value=f}catch(e){}
 
 $('#members').innerHTML=ORDER.map(k=>{const d=M[k];return `<button type="button" class="pick" data-m="${k}" aria-pressed="${k===pick}" style="--c:${d.c}"><span class="dot" style="background:${k==='ot7'?'conic-gradient(#c9ced8,#ff8fc8,#c9ced8,#f4f4f8,#2a2a33,#ff4d5e,#e8c46a,#c9ced8)':k==='jimin'?'#15151b':d.c}"></span>${d.n}<small>${d.kr}</small></button>`}).join('');
-$('#ldStickers').innerHTML=LD.map(([n,label])=>`<button type="button" class="pick ld" data-s="ld-${n}" aria-pressed="false" aria-label="${label}"><img src="stickers/${n}.png" alt="" loading="lazy"></button>`).join('');
+$('#ldStickers').innerHTML=LD.map(([n,label])=>`<button type="button" class="pick ld" data-s="ld-${n}" aria-pressed="false" aria-label="${label}"><img src="stickers/${n}.png?v=2" alt="" loading="lazy"></button>`).join('');
 $('#stickers').innerHTML=STICKERS.map(s=>`<button type="button" class="pick" data-s="${s}" aria-pressed="${s===sticker}" aria-label="Sticker ${s}">${s}</button>`).join('');
 document.addEventListener('click',e=>{const b=e.target.closest('[data-m],[data-s]');if(!b)return;
   if(b.dataset.m){pick=b.dataset.m;photoId=null;drawTray();document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(sticker==='💜'||Object.values(M).some(d=>d.e===sticker)){sticker=M[pick].e;document.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===sticker)))}}
