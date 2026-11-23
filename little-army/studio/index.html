@@ -11,7 +11,7 @@
 <title>Little DJ Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 /* Little DJ Studio: a kid-safe BTS learning journal for an iPad.
    Outside links sit behind a grown-up code. The Card Studio tab shows /little-army/ inside the page. Progress saves on this device only. */
@@ -1069,7 +1069,8 @@ function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const ow
   <div class="tip" style="margin-bottom:14px"><b>How to earn stickers:</b> 🎫 pass a city quiz · ✖️ every 5 math answers · 🇰🇷 every 5 Korean answers · 🌟 each BT21 buddy · 📓 your first journal page each day</div>
   ${sets.map(set=>`<h3 style="margin-top:16px">${esc(set)}</h3><div class="sbook">${STICKERS.filter(s=>s.set===set).map(s=>`<div class="sb ${state.stickers[s.id]?'':'locked'}"><canvas data-st="${s.id}" width="200" height="200"></canvas><small>${state.stickers[s.id]?esc(s.label):'???'}</small>${state.stickers[s.id]>1?`<span class="cnt">×${state.stickers[s.id]}</span>`:''}</div>`).join('')}</div>`).join('')}`;
  const maker=canMake?`<div class="fmwrap"><div>
-   <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button><button data-tpl="quote" class="${fm.tpl==='quote'?'on':''}">💬 Quote photocard</button></div>
+   <h3>1. Pick a freebie</h3><div class="chips"><button data-tpl="sheet" class="${fm.tpl==='sheet'?'on':''}">🧾 Sticker sheet (6)</button><button data-tpl="card" class="${fm.tpl==='card'?'on':''}">💌 Mini card (1 big sticker)</button><button data-tpl="bookmark" class="${fm.tpl==='bookmark'?'on':''}">🔖 Bookmark (3)</button><button data-tpl="quote" class="${fm.tpl==='quote'?'on':''}">💬 Quote photocard</button><button data-tpl="photo" class="${fm.tpl==='photo'?'on':''}">📸 Photocard</button></div>
+   ${(fm.tpl==='photo'||fm.tpl==='quote')&&WHALE_OK?`<div class="chips" style="margin-top:10px">${state.stickers['x-whale']?`<button data-fwhale class="${fm.whale?'on':''}">🐋 Purple whale on it</button>`:`<span class="pill" style="font-size:15px;padding:6px 12px">🐋 Lift your whale in Munich to unlock the purple whale!</span>`}</div>`:''}
    ${fm.tpl==='quote'?(state.quotes.length?`<h3 style="margin-top:14px">Pick a quote</h3><div class="chips">${state.quotes.map(q=>`<button data-fq="${q.id}" class="${fm.quote===q.id?'on':''}" style="font-size:15px;text-align:left;max-width:100%">${MEM[q.who]?MEM[q.who].e+' ':''}${esc(q.text.slice(0,60))}${q.text.length>60?'…':''}</button>`).join('')}</div>`:`<p class="tip" style="margin-top:12px">Type a quote in 📒 Binder → 💬 Quotes first!</p>`):''}
    <h3 style="margin-top:14px">2. Tap your stickers <span class="muted" style="font-size:16px">(${fm.sel.length}/${tplMax()})</span></h3><div class="sbook">${owned.map(s=>`<button class="sb ${fm.sel.includes(s.id)?'sel':''}" data-fsel="${s.id}"><canvas data-st="${s.id}" width="160" height="160"></canvas><small>${esc(s.label)}</small></button>`).join('')}${PCARDS().map(c=>`<button class="sb ${fm.sel.includes('p-'+c.id)?'sel':''}" data-fsel="p-${c.id}"><img class="ph" src="${esc(c.url)}" alt="" loading="lazy"><small>${MEM[c.member]?MEM[c.member].e+' '+esc(MEM[c.member].n):'Photocard'}</small></button>`).join('')}</div>
    <h3 style="margin-top:14px">3. Pick a message</h3><div class="chips">${MSGS.map((m,i)=>`<button data-msg="${i}" class="${fm.msg===m?'on':''}" style="font-size:16px">${esc(m)}</button>`).join('')}</div>
@@ -1081,11 +1082,13 @@ function stickersView(){const sets=[...new Set(STICKERS.map(s=>s.set))];const ow
  <p style="margin-top:20px"><button class="btn ghost" data-gotab="cards">💳 Make a photocard in the Card Studio →</button></p></section>`}
 function tplMax(){return fm.tpl==='sheet'?6:fm.tpl==='bookmark'?3:1}
 if(!('quote' in fm))fm.quote='';
-function freebieSize(){return fm.tpl==='bookmark'?[600,1800]:fm.tpl==='quote'?[1300,2008]:[1200,1800]}
+function freebieSize(){return fm.tpl==='bookmark'?[600,1800]:(fm.tpl==='quote'||fm.tpl==='photo')?[1300,2008]:[1200,1800]}
+function djLogo(x,cx,cy,size){x.save();x.font=`900 ${size}px 'Barlow Condensed',sans-serif`;x.textBaseline='middle';const a='DJ SPIN ',b='THAT',wa=x.measureText(a).width,wb=x.measureText(b).width,sx=cx-(wa+wb)/2;x.textAlign='left';x.fillStyle='#ff2a4b';x.fillText(a,sx,cy);x.fillStyle='#a855f7';x.fillText(b,sx+wa,cy);x.restore()}
+function drawWhale(x,X,Y,w,rot){const im=STIMG['x-whale'];if(!im||!fm.whale||!state.stickers['x-whale'])return;const h=w*im.height/im.width;x.save();x.translate(X+w/2,Y+h/2);x.rotate(rot||0);x.shadowColor='rgba(20,0,50,.45)';x.shadowBlur=30;x.shadowOffsetY=10;x.drawImage(im,-w/2,-h/2,w,h);x.restore()}
 function bgArt(x,W,H){const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f3e8ff');g.addColorStop(.55,'#fde2f0');g.addColorStop(1,'#e0e7ff');x.fillStyle=g;x.fillRect(0,0,W,H);
  x.globalAlpha=.35;x.fillStyle='#c4a8ff';for(let i=0;i<40;i++){const px=(i*137.5)%W,py=(i*251.3)%H;star(x,px,py,14,6,5);x.fill()}x.globalAlpha=1;
  x.strokeStyle='#a78bfa';x.lineWidth=10;x.setLineDash([24,16]);rr(x,30,30,W-60,H-60,50);x.stroke();x.setLineDash([])}
-async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.fonts.load("700 40px Fredoka");await document.fonts.load("900 40px 'Noto Sans KR'")}catch(e){}
+async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.fonts.load("900 40px 'Barlow Condensed'");await document.fonts.load("700 40px Fredoka");await document.fonts.load("900 40px 'Noto Sans KR'")}catch(e){}
  const [W,H]=freebieSize();c.width=W;c.height=H;const x=c.getContext('2d');bgArt(x,W,H);x.textAlign='center';x.textBaseline='middle';
  await preload(fm.sel);const sel=fm.sel;const from=(($('#ffrom')||{}).value||fm.from||'').slice(0,16);
  x.fillStyle='#5b21b6';
@@ -1093,10 +1096,27 @@ async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.f
   const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawItem(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1690-(from?50:0));
   if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1700)}}
+ else if(fm.tpl==='photo'){const s=sel[0];let mk='ot7';if(s&&s.startsWith('p-')){const c=cardById(s.slice(2));if(c&&MEM[c.member])mk=c.member}else if(s){const st=stById(s);if(st&&st.m)mk=st.m}const m=MEM[mk];
+  x.fillStyle='#120a20';x.fillRect(0,0,W,H);let g=x.createRadialGradient(150,120,0,150,120,1300);g.addColorStop(0,'rgba(255,42,75,.40)');g.addColorStop(1,'rgba(255,42,75,0)');x.fillStyle=g;x.fillRect(0,0,W,H);g=x.createRadialGradient(W-120,H-120,0,W-120,H-120,1400);g.addColorStop(0,'rgba(168,85,247,.55)');g.addColorStop(1,'rgba(168,85,247,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.globalAlpha=.6;x.fillStyle='#fff';for(let i=0;i<70;i++){x.beginPath();x.arc((i*197.3)%W,(i*331.7)%H,1.5+(i%3),0,7);x.fill()}x.globalAlpha=1;
+  const col=mk==='jimin'?'#c9ced8':m.c;x.save();x.shadowColor=col;x.shadowBlur=50;x.lineWidth=10;x.strokeStyle=col;rr(x,44,44,W-88,H-88,64);x.stroke();x.restore();
+  x.fillStyle='#e6dbff';x.font="800 38px Nunito,sans-serif";x.letterSpacing='4px';x.textAlign='left';x.fillText('ARIRANG',120,128);x.textAlign='right';x.fillText('2026',W-120,128);x.letterSpacing='0px';x.textAlign='center';djLogo(x,W/2,128,64);
+  const PX=110,PY=190,PW=W-220,PH=1250;
+  x.save();x.shadowColor=col;x.shadowBlur=60;x.fillStyle='#000';rr(x,PX,PY,PW,PH,50);x.fill();x.restore();
+  if(s&&s.startsWith('p-')){const c=cardById(s.slice(2));const im=c&&IMG[c.id];if(im){x.save();rr(x,PX,PY,PW,PH,50);x.clip();const k=Math.max(PW/im.width,PH/im.height);x.drawImage(im,PX+PW/2-im.width*k/2,PY-(im.height*k-PH)*.22,im.width*k,im.height*k);x.restore()}}
+  else{x.save();rr(x,PX,PY,PW,PH,50);x.clip();const gg=x.createLinearGradient(0,PY,0,PY+PH);gg.addColorStop(0,'#2e1065');gg.addColorStop(1,'#7c3aed');x.fillStyle=gg;x.fillRect(PX,PY,PW,PH);x.restore();if(s)drawItem(x,s,W/2-420,PY+180,840);else{x.font="700 56px Fredoka,sans-serif";x.fillStyle='#d6c8f5';x.fillText('Pick a photocard or sticker',W/2,PY+PH/2)}}
+  x.lineWidth=6;x.strokeStyle=col;rr(x,PX,PY,PW,PH,50);x.stroke();
+  drawWhale(x,80,PY+PH-370,640,0);
+  const nm2=mk==='jhope'?m.n:m.n.toUpperCase();const fs=fitText(x,nm2,"900 {s}px Fredoka,sans-serif",W-240,170);x.font=`700 ${fs}px Fredoka,sans-serif`;x.save();x.shadowColor=col;x.shadowBlur=30;x.fillStyle=col==='#3a3a46'?'#e6e8ee':col;x.fillText(nm2,W/2,1600);x.restore();
+  x.fillStyle='#fff';x.font="900 70px 'Noto Sans KR',sans-serif";x.fillText(m.kr,W/2,1730);
+  if(from){x.font="800 52px Nunito,sans-serif";x.fillStyle='#e6dbff';x.fillText('from '+from+' 💜',W/2,1830)}
+  x.font="800 30px Nunito,sans-serif";x.fillStyle='#d6c8f5';x.fillText('A LITTLE ARMY FREEBIE 💜',W/2,1925);
+  if(fm.whale&&state.stickers['x-whale']&&STIMG['x-whale']){x.font="800 34px Nunito,sans-serif";x.fillStyle='#c4b5fd';x.fillText('#PurpleWhales4BTS 🐋',W/2,1508)}}
  else if(fm.tpl==='quote'){const q=qById(fm.quote)||state.quotes[0];const s=sel[0];const m=q&&MEM[q.who];
   x.fillStyle='#fff';rr(x,60,60,W-120,1180,60);x.fill();
   if(s&&s.startsWith('p-')){const c=cardById(s.slice(2));const im=c&&IMG[c.id];if(im){x.save();rr(x,90,90,W-180,1120,44);x.clip();const k=Math.max((W-180)/im.width,1120/im.height);x.drawImage(im,W/2-im.width*k/2,90-(im.height*k-1120)*.2,im.width*k,im.height*k);x.restore()}}
   else if(s)drawItem(x,s,W/2-450,200,900);else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a photocard or sticker',W/2,650)}
+  drawWhale(x,W-620,900,540,0);
   if(q)drawBubble(x,q,W/2,1530,W-300,72,'up');else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a quote',W/2,1530)}
   x.textAlign='center';if(m){x.font="700 56px Fredoka,sans-serif";x.fillStyle='#2a1650';x.fillText('— '+m.e+' '+m.n,W/2,1810)}
   x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜'+(from?'  ·  from '+from:''),W/2,1915)}
@@ -1203,6 +1223,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('button,[data-cit
  if(d.qdel){if(confirm('Delete this quote?')){state.quotes=state.quotes.filter(q=>q.id!==d.qdel);save();closeModal();render()}return}
  if(d.qqa)return answerQQ(d.qqa);
  if(d.qpic){const c=cardById(d.qpic);modal(`<img class="bigart" src="${esc(c.url)}" alt="Quote picture"><div style="display:flex;gap:10px;justify-content:center"><button class="btn ghost" data-adel="${c.id}">🗑 Remove</button><button class="btn pink" onclick="closeModal()">Done</button></div>`);return}
+ if(d.fwhale!==undefined){fm.whale=!fm.whale;t.classList.toggle('on',fm.whale);return drawFreebie()}
  if(d.fq){fm.quote=d.fq;document.querySelectorAll('[data-fq]').forEach(b=>b.classList.toggle('on',b===t));return drawFreebie()}
  if(d.af){aFilter=d.af;return render()}
  if(d.art)return artModal(d.art);
