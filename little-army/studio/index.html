@@ -1092,10 +1092,10 @@ async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.f
  const [W,H]=freebieSize();c.width=W;c.height=H;const x=c.getContext('2d');bgArt(x,W,H);x.textAlign='center';x.textBaseline='middle';
  await preload(fm.sel);const sel=fm.sel;const from=(($('#ffrom')||{}).value||fm.from||'').slice(0,16);
  x.fillStyle='#5b21b6';
- if(fm.tpl==='sheet'){x.font="700 78px Fredoka,sans-serif";x.fillText('A little ARMY freebie',W/2,140);x.font='60px '+EMOJI;x.fillText('💜',W/2,225);
-  const S=420,gx=[150,630],gy=[300,760,1220];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawItem(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
-  x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1690-(from?50:0));
-  if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1700)}}
+ if(fm.tpl==='sheet'){djLogo(x,W/2,105,64);x.fillStyle='#5b21b6';x.font="700 72px Fredoka,sans-serif";x.fillText('A little ARMY freebie 💜',W/2,200);
+  const S=400,gx=[170,630],gy=[270,700,1130];for(let i=0;i<6;i++){const s=sel[i];const X=gx[i%2],Y=gy[Math.floor(i/2)];if(s)drawItem(x,s,X,Y,S);else{x.strokeStyle='#d8c8fb';x.lineWidth=6;x.setLineDash([14,12]);x.beginPath();x.arc(X+S/2,Y+S/2,S/2-20,0,7);x.stroke();x.setLineDash([])}}
+  x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,64);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1640);
+  if(from){x.font="800 44px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1715)}}
  else if(fm.tpl==='photo'){const s=sel[0];let mk='ot7';if(s&&s.startsWith('p-')){const c=cardById(s.slice(2));if(c&&MEM[c.member])mk=c.member}else if(s){const st=stById(s);if(st&&st.m)mk=st.m}const m=MEM[mk];
   x.fillStyle='#120a20';x.fillRect(0,0,W,H);let g=x.createRadialGradient(150,120,0,150,120,1300);g.addColorStop(0,'rgba(255,42,75,.40)');g.addColorStop(1,'rgba(255,42,75,0)');x.fillStyle=g;x.fillRect(0,0,W,H);g=x.createRadialGradient(W-120,H-120,0,W-120,H-120,1400);g.addColorStop(0,'rgba(168,85,247,.55)');g.addColorStop(1,'rgba(168,85,247,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
   x.globalAlpha=.6;x.fillStyle='#fff';for(let i=0;i<70;i++){x.beginPath();x.arc((i*197.3)%W,(i*331.7)%H,1.5+(i%3),0,7);x.fill()}x.globalAlpha=1;
@@ -1118,16 +1118,16 @@ async function drawFreebie(){const c=$('#fcv');if(!c)return;try{await document.f
   else if(s)drawItem(x,s,W/2-450,200,900);else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a photocard or sticker',W/2,650)}
   drawWhale(x,W-620,900,540,0);
   if(q)drawBubble(x,q,W/2,1530,W-300,72,'up');else{x.font="700 54px Fredoka,sans-serif";x.fillStyle='#a78bfa';x.fillText('Pick a quote',W/2,1530)}
-  x.textAlign='center';if(m){x.font="700 56px Fredoka,sans-serif";x.fillStyle='#2a1650';x.fillText('— '+m.e+' '+m.n,W/2,1810)}
-  x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜'+(from?'  ·  from '+from:''),W/2,1915)}
- else if(fm.tpl==='card'){const s=sel[0];x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,170);if(s)drawItem(x,s,150,260,900);
+  x.textAlign='center';if(m){x.font="700 56px Fredoka,sans-serif";x.fillStyle='#2a1650';x.fillText('— '+m.e+' '+m.n,W/2,1770)}
+  djLogo(x,W/2,1860,64);x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜'+(from?'  ·  from '+from:''),W/2,1935)}
+ else if(fm.tpl==='card'){const s=sel[0];djLogo(x,W/2,110,64);x.fillStyle='#5b21b6';x.font="700 80px Fredoka,sans-serif";x.fillText('For you!',W/2,205);if(s)drawItem(x,s,170,290,860);
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-160,84);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1300);
   x.font="900 52px 'Noto Sans KR',sans-serif";x.fillStyle='#db2777';x.fillText('보라해',W/2,1420);
   if(from){x.font="800 50px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1560)}x.font="800 30px Nunito,sans-serif";x.fillStyle='#5b4a82';x.fillText('A LITTLE ARMY FREEBIE 💜',W/2,1690)}
  else{x.font="900 64px 'Noto Sans KR',sans-serif";x.fillText('아미',W/2,150);x.font="800 32px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('ARMY',W/2,210);
   for(let i=0;i<3;i++){const s=sel[i];if(s)drawItem(x,s,90,270+i*420,420)}
   x.fillStyle='#2a1650';const fs=fitText(x,fm.msg,"700 {s}px Fredoka,sans-serif",W-110,46);x.font=`700 ${fs}px Fredoka,sans-serif`;x.fillText(fm.msg,W/2,1580);
-  if(from){x.font="800 34px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1660)}}}
+  if(from){x.font="800 34px Nunito,sans-serif";x.fillStyle='#7c3aed';x.fillText('from '+from,W/2,1650)}djLogo(x,W/2,1725,46)}}
 async function saveFreebie(){const c=$('#fcv');if(!c)return;await drawFreebie();try{c.toBlob(blob=>{if(blob)offerFile(blob,'my-army-freebie.png','My ARMY freebie 💜');else toast('That freebie could not be saved.')},'image/png')}catch(e){toast('That photo can\'t be saved in a freebie here. Try stickers instead.')}}
 
 /* ======================= CARD STUDIO (embedded) ======================= */
