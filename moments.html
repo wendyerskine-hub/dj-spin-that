@@ -59,6 +59,7 @@ h1{margin:6px 0 6px;font-family:var(--hfont);font-weight:var(--hweight);text-tra
 .chlinks a:hover{border-color:rgba(255,255,255,.35)}
 .chlinks b{font-weight:600;font-size:16px}.chlinks small{grid-column:1;font-size:14px;color:var(--muted)}.chlinks span{grid-row:1/span 2;grid-column:2;font-size:14px;color:var(--muted)}
 @media (max-width:620px){.chlinks{grid-template-columns:1fr}}
+#chTT[hidden]{display:none}.chbox a{color:var(--coral);font-weight:600;text-decoration:none}
 .topr{display:flex;align-items:center;gap:8px}
 .shr{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);color:#fff;font:500 15px var(--sans);cursor:pointer}
 .shr svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -150,20 +151,22 @@ footer{max-width:920px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font
       <div class="chbox">
         <p class="kick">The one everyone knows · before the song starts</p>
         <p class="names">Kim Namjoon! Kim Seokjin! Min Yoongi! Jung Hoseok! Park Jimin! Kim Taehyung! Jeon Jungkook! <b>BTS!</b></p>
+        <p><a href="https://www.tiktok.com/@missnotright/video/7607433457735716126" target="_blank" rel="noopener" data-chant="erica-names">Practice it with erica⁷ on TikTok ↗</a></p>
       </div>
       <div class="chbox">
         <p class="kick">New on this tour · Body to Body</p>
         <p>At the end of Body to Body, ARMY sing the <b>Arirang</b> melody back to BTS. If you know "Arirang, arirang, arariyo," you're ready.</p>
+        <p><a href="https://www.tiktok.com/@missnotright/video/7624664067868724510" target="_blank" rel="noopener" data-chant="erica-b2b">Body to Body intro chant with erica⁷ ↗</a></p>
       </div>
       <p class="kick" style="margin:16px 0 8px">Where to learn them</p>
       <div class="chlinks">
         <a href="https://weverse.io/bts" target="_blank" rel="noopener" data-chant="weverse"><b>Weverse · BTS official</b><small>The official fan chant guides for newer songs are posted here</small><span>Open ↗</span></a>
         <a href="https://doshielasol.notion.site/BTS-Official-Fanchant-Directory-FAQs-1fbe0b213aa84f939054f00dd35eaf00" target="_blank" rel="noopener" data-chant="doshielasol"><b>doshielasol · Fanchant Directory</b><small>A fan's audio guides to the official chants, song by song</small><span>Open ↗</span></a>
         <a href="https://www.usbtsarmy.com/fanchants" target="_blank" rel="noopener" data-chant="usbtsarmy"><b>US BTS ARMY · Fanchants</b><small>Written chant sheets with romanized lyrics</small><span>Open ↗</span></a>
-        <a href="https://www.tiktok.com/search/video?q=BTS%20ARIRANG%20fanchant" target="_blank" rel="noopener" data-chant="tiktok"><b>TikTok · ARIRANG fanchants</b><small>Short how-to clips from ARMY</small><span>Search ↗</span></a>
+        <a href="https://www.tiktok.com/@missnotright/playlist/Fanchant%20Practice-7622474905434573598" target="_blank" rel="noopener" data-chant="erica"><b>erica⁷ · Fanchant Practice</b><small>Song-by-song TikTok tutorials, beginner to advanced</small><span>Open ↗</span></a>
       </div>
       <p class="kick" style="margin:16px 0 8px">Find the chant for a song on the setlist</p>
-      <div class="row"><select id="chSong" aria-label="Song" style="flex:1;min-width:0"></select><a class="btn" id="chGo" href="#" target="_blank" rel="noopener">Find on YouTube ↗</a></div>
+      <div class="row"><select id="chSong" aria-label="Song" style="flex:1;min-width:0"></select><a class="btn" id="chTT" href="#" target="_blank" rel="noopener" hidden>erica⁷ on TikTok ↗</a><a class="btn" id="chGo" href="#" target="_blank" rel="noopener">Find on YouTube ↗</a></div>
       <p class="msg" style="margin-top:10px">Weverse is BTS’s official app. The others are fan-made and not affiliated with BTS or BIGHIT MUSIC.</p>
     </div>
   </details>
@@ -240,7 +243,7 @@ document.addEventListener("click",e=>{
   const s=e.target.closest("[data-send]");if(s){$("#sShow").value=PLAYED[cur].id;$("#sMoment").value=s.dataset.send;$("#send").open=true;upd();$("#send").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#sLink").focus(),400);tr("moments/send-open");return}
   const ln=e.target.closest("[data-learn]");if(ln){$("#chants").open=true;$("#chants").scrollIntoView({behavior:"smooth",block:"start"});tr("moments/learn-chants");return}
   const ch=e.target.closest("[data-chant]");if(ch){tr("moments/chants/"+ch.dataset.chant);return}
-  if(e.target.closest("#chGo"))tr("moments/chants/song/"+$("#chSong").value);
+  if(e.target.closest("#chGo"))tr("moments/chants/song/"+$("#chSong").value);if(e.target.closest("#chTT"))tr("moments/chants/erica/"+$("#chSong").value);
   const c=e.target.closest("[data-clip]");if(c){tr("moments/watch/"+c.dataset.clip);return}
   const k=e.target.closest("[data-find]");if(k){tr("moments/find/"+k.dataset.find);return}
   if(e.target.closest("#sSend"))tr("moments/send-fancam");
@@ -272,7 +275,7 @@ $("#sCopy").onclick=async()=>{const t=sendText();const txt=t.title+"\n"+t.body;t
   if(f&&f.url&&f.credit&&fm){const b=$("#featured");b.className="card";b.hidden=false;b.innerHTML=`<div class="feat"><p class="kick">Moment of the week${f.week?" · "+esc(f.week):""}</p><h3>${esc(fm.label)}${fs?" · "+esc(nm(fs)):""}</h3><p>Filmed by ${esc(f.credit)}</p><div class="row"><a class="btn ghost" href="${esc(f.url)}" target="_blank" rel="noopener">Watch on ${esc(host(f.url))} ↗</a></div></div>`}
   const h=(location.hash||"").slice(1);const hi=PLAYED.findIndex(x=>x.id===h);const withClips=PLAYED.findIndex(S=>CLIPS.some(c=>c.show===S.id&&c.url));cur=hi>=0?hi:(withClips>=0?withClips:0);
   fetch("setlist.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;const songs=(j.acts||[]).flatMap(a=>a.songs||[]).filter(x=>x!=="*");
-    const sel=$("#chSong");sel.innerHTML=songs.map(x=>`<option>${esc(x)}</option>`).join("");const go=()=>{$("#chGo").href="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${sel.value} fanchant guide`)};sel.onchange=go;go()}).catch(()=>{});
+    const sel=$("#chSong");sel.innerHTML=songs.map(x=>`<option>${esc(x)}</option>`).join("");const ERICA={"hooligan":"7624219075991899422","normal":"7624721870289505567","mic drop":"7607806954970320159","body to body":"7624664067868724510","idol":"7613003410039770399","boy with luv":"7608359240217922847","save me":"7611360800053153054","airplane pt. 2":"7610786822616026398","euphoria":"7613912223446076702","dna":"7615215194809142558","killin' it":"7616916692915981599","no. 29":"7625032088713973022"};const go=()=>{$("#chGo").href="https://www.youtube.com/results?search_query="+encodeURIComponent(`BTS ${sel.value} fanchant guide`);const v=ERICA[sel.value.toLowerCase()],t=$("#chTT");t.hidden=!v;if(v)t.href="https://www.tiktok.com/@missnotright/video/"+v};sel.onchange=go;go()}).catch(()=>{});
   if(h==="chants"){$("#chants").open=true;setTimeout(()=>$("#chants").scrollIntoView(),300)}
   render();tally();upd();
   if(h==="send"){$("#send").open=true;$("#send").scrollIntoView()}
