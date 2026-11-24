@@ -692,6 +692,10 @@ section.golinks{grid-column:1/-1}
 @media (max-width:700px){.dj2.solo .chn{display:flex}.ls-glow{left:6%;top:8px}.lstick{left:calc(6% + 41px);top:20px}.ticker{left:40%;bottom:auto;top:50%;margin-top:-14px}.cpads button{font-size:0}.cpads button b{font-size:16px}}
 .chant-nudge{margin:14px 0 0}.chant-nudge a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:#ff92aa;text-decoration:none}.chant-nudge a:hover{text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.lstick,.ls-glow,.ticker span{animation:none}}
+/* first station on each tab fits the screen; its content scrolls inside */
+.station.fit{max-height:var(--fitH,calc(100svh - 160px));overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(199,125,255,.45) transparent}
+.station.fit>h2{position:sticky;top:-1px;z-index:5;margin-top:-4px!important;padding:4px 0 10px;background:linear-gradient(180deg,#1a1129 82%,rgba(26,17,41,0))}
+.station.fit::-webkit-scrollbar{width:6px}.station.fit::-webkit-scrollbar-thumb{background:rgba(199,125,255,.45);border-radius:3px}
 @media (prefers-reduced-motion:reduce){.dj2disc,.dj2set li.you{animation:none}.dj2c{transition:none}}
 /* DJ Spin TV: DJ Spin That video booth */
 #burrow .bgroup[id]{scroll-margin-top:84px}
@@ -3090,6 +3094,16 @@ let tries=0;(function ready(){if(typeof playedTitles!=="undefined"&&playedTitles
  const show=i=>{pads.forEach((p,j)=>p.setAttribute("aria-selected",i===j));const c=C[i];box.innerHTML=`<p class="np">▶ Pad ${i+1} · ${c[0]}</p><h4>${c[1]}</h4>${c[2]}`};
  pads.forEach((p,i)=>p.addEventListener("click",()=>show(i)));show(0);
  document.addEventListener("click",e=>{const a=e.target.closest(".chant-nudge a");if(!a)return;e.preventDefault();if(typeof setTab==="function")setTab("army");setTimeout(()=>{const x=document.getElementById("chantsSt");if(x)x.scrollIntoView({behavior:"smooth"})},60)});
+})();
+
+/* ---------- Fit the first station of each tab to the screen ---------- */
+(()=>{const FIT=["city","disco","burrow"];
+ FIT.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add("fit")});
+ const size=()=>{const vh=window.visualViewport?window.visualViewport.height:innerHeight;let top=0,bot=0;
+  for(const id of ["v2head","tabbar"]){const e=document.getElementById(id);if(!e)continue;const cs=getComputedStyle(e);if(cs.display==="none")continue;const r=e.getBoundingClientRect();
+   if(cs.position==="fixed"&&r.top>vh/2)bot=Math.max(bot,vh-r.top);else if(cs.position==="fixed"||cs.position==="sticky")top=Math.max(top,r.bottom)}
+  const z=parseFloat(getComputedStyle(document.documentElement).zoom)||1;document.documentElement.style.setProperty("--fitH",Math.max(300,Math.round((vh-top-bot-36)/z))+"px")};
+ size();addEventListener("resize",size);if(window.visualViewport)visualViewport.addEventListener("resize",size);setTimeout(size,600);
 })();
 </script>
 </body>
