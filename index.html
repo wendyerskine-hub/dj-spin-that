@@ -618,6 +618,51 @@ section.golinks{grid-column:1/-1}
 .golinks .glc small{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--jade)}
 .golinks .glc b{font-family:var(--f-display);font-size:24px;font-weight:700}
 .golinks .glc span{color:var(--muted);font-size:15px}
+.golinks .dj2{gap:14px}
+.dj2c{position:relative;display:flex;flex-direction:column;gap:6px;padding:0 0 18px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid var(--line);transition:border-color .2s,transform .2s}
+.dj2c:hover,.dj2c:focus-within{border-color:#c77dff;transform:translateY(-2px)}
+.dj2c>small,.dj2c>b,.dj2c>span,.dj2c>em,.dj2c>.dj2send{margin:0 20px}
+.dj2c small{font-family:var(--v2mono);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--v2muted);margin-top:14px!important}
+.dj2c b{font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);letter-spacing:-.01em;font-size:clamp(24px,3.2vw,30px);line-height:1.08;text-wrap:balance}
+.dj2a{color:var(--ink);text-decoration:none}
+.dj2a::after{content:"";position:absolute;inset:0;z-index:1}
+.dj2a:focus-visible{outline:none}.dj2c:has(.dj2a:focus-visible){outline:3px solid #fff;outline-offset:2px}
+.dj2c>span{font-family:var(--v2sans);color:var(--v2muted);font-size:16px;line-height:1.5}
+.dj2go{font-family:var(--v2sans);font-style:normal;font-weight:600;color:#fff;margin-top:4px!important}
+.dj2send{position:relative;z-index:2;align-self:flex-start;font-family:var(--v2sans);font-weight:600;color:#ff92aa;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.dj2send:hover{text-decoration:underline}
+.dj2v{position:relative;height:150px;overflow:hidden}
+.rmx .dj2v{background:radial-gradient(circle at 22% 50%,rgba(255,84,104,.35),transparent 55%),linear-gradient(135deg,#2a1238,#1a0f28)}
+.dj2disc{position:absolute;left:-40px;top:50%;width:190px;aspect-ratio:1;margin-top:-95px;border-radius:50%;background:radial-gradient(circle,#fff 0 3%,#ff5468 3.5% 18%,#111 18.5% 19.5%,transparent 20%),repeating-radial-gradient(circle,#1b1724 0 2px,#2a2636 2px 4px);box-shadow:0 0 0 2px rgba(255,84,104,.5),0 0 30px rgba(255,84,104,.35);animation:dj2spin 6s linear infinite}
+@keyframes dj2spin{to{transform:rotate(360deg)}}
+.dj2set{position:absolute;left:170px;right:18px;top:16px;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.dj2set li{height:14px;border-radius:4px;background:rgba(255,255,255,.12)}
+.dj2set li:nth-child(2n){width:82%}.dj2set li:nth-child(3n){width:68%}
+.dj2set li.you{height:auto;padding:3px 8px;white-space:nowrap;background:linear-gradient(90deg,#ff2a4b,#ff63a9);color:#fff;font:700 12px var(--v2mono);letter-spacing:.04em;width:auto;align-self:flex-start;transform:translateX(14px);box-shadow:0 6px 16px rgba(255,42,75,.45);animation:dj2drop 2.4s cubic-bezier(.2,.9,.3,1.2) infinite alternate}
+@keyframes dj2drop{0%,25%{transform:translateX(28px)}100%{transform:translateX(0)}}
+.scr .dj2v{background:radial-gradient(circle at 70% 30%,rgba(199,125,255,.35),transparent 60%),linear-gradient(135deg,#1c1030,#24123a)}
+.dj2pol{position:absolute;top:18px;width:108px;padding:6px 6px 8px;background:#f4efe4;border-radius:3px;box-shadow:0 8px 18px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:5px}
+.dj2pol i{display:grid;place-items:center;height:68px;border-radius:2px;font-style:normal;color:#fff;font-size:18px}
+.dj2pol u{text-decoration:none;font:600 11px/1.2 var(--v2mono);color:#2a1f38}
+.dj2pol::before{content:"";position:absolute;top:-7px;left:50%;width:40px;height:14px;margin-left:-20px;background:rgba(227,217,191,.85);transform:rotate(-4deg)}
+.p1{left:16px;transform:rotate(-6deg)}.p1 i{background:linear-gradient(150deg,#ff2a4b,#ff63a9)}
+.p2{left:calc(50% - 54px);top:10px;transform:rotate(3deg);z-index:1}.p2 i{background:linear-gradient(150deg,#c77dff,#8b5cf6)}
+.p3{right:16px;transform:rotate(-2deg)}.p3 i{background:linear-gradient(150deg,#f26ad0,#a855f7)}
+@media (max-width:480px){.dj2pol{width:92px}.dj2pol i{height:56px}.p1{left:8px}.p2{left:calc(50% - 46px)}.p3{right:8px}.dj2disc{left:-70px}.dj2set{left:130px}}
+.cam .dj2v{background:radial-gradient(circle at 50% 120%,rgba(255,84,104,.35),transparent 60%),linear-gradient(135deg,#140c20,#22102e)}
+.vf{position:absolute;inset:16px 22px;border-radius:6px;background:linear-gradient(160deg,rgba(199,125,255,.25),rgba(255,84,104,.18)),repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.03) 22px 23px)}
+.vf i{position:absolute;width:18px;height:18px;border:2.5px solid #fff;opacity:.85}
+.vf .c1{left:8px;top:8px;border-right:0;border-bottom:0}.vf .c2{right:8px;top:8px;border-left:0;border-bottom:0}.vf .c3{left:8px;bottom:8px;border-right:0;border-top:0}.vf .c4{right:8px;bottom:8px;border-left:0;border-top:0}
+.vf .rec{position:absolute;left:34px;top:12px;font:700 12px var(--v2mono);color:#ff5468;animation:dj2blink 1.2s steps(2) infinite}
+@keyframes dj2blink{50%{opacity:.25}}
+.vf .tc{position:absolute;right:34px;top:12px;font:600 12px var(--v2mono);color:#fff;opacity:.8}
+.vf .cred{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) rotate(-2deg);white-space:nowrap;background:#f4efe4;color:#2a1f38;font:700 12px var(--v2mono);padding:5px 10px;border-radius:4px;box-shadow:0 6px 14px rgba(0,0,0,.4)}
+@media (prefers-reduced-motion:reduce){.vf .rec{animation:none}}
+.dj2.solo .dj2c{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:0;padding:0}
+.dj2.solo .dj2v{grid-row:1/span 5;height:100%;min-height:220px}
+.dj2.solo .dj2c>small{margin-top:22px!important}.dj2.solo .dj2c>em{margin-bottom:22px!important}
+@media (max-width:700px){.dj2.solo .dj2c{display:flex;padding-bottom:18px}.dj2.solo .dj2v{height:150px;min-height:0}}
+@media (prefers-reduced-motion:reduce){.dj2disc,.dj2set li.you{animation:none}.dj2c{transition:none}}
 /* DJ Spin TV: DJ Spin That video booth */
 #burrow .bgroup[id]{scroll-margin-top:84px}
 .vj{background:linear-gradient(180deg,#232938 0%,#141824 3%,#0E111A 100%);border:1px solid #2D374D;border-radius:18px;padding:14px;display:grid;gap:12px;box-shadow:0 18px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)}
@@ -1496,18 +1541,47 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
 
   <section class="station golinks" id="armyLinks" aria-labelledby="armyLinksH">
     <h2 id="armyLinksH"><small>Station 11 · Your turn on the decks</small>Be the DJ</h2>
-    <div class="gl">
-      <a class="glc" href="remix.html"><small>Remix the setlist</small><b>Drop one track into the set</b><span>The whole ARIRANG show stays. You add one BTS song, wherever you want it.</span></a>
-      <a class="glc" href="moments.html#send"><small>Fancams</small><b>Add your clip to the board</b><span>Send a link to your fancam of a moment and light it up.</span></a>
+    <div class="gl dj2 solo">
+      <div class="dj2c rmx">
+        <div class="dj2v" aria-hidden="true">
+          <span class="dj2disc"></span>
+          <ol class="dj2set"><li></li><li></li><li></li><li class="you">+ your track</li><li></li><li></li></ol>
+        </div>
+        <small>ARMY remix</small>
+        <b><a class="dj2a" href="remix.html">Remix the ARIRANG setlist</a></b>
+        <span>Shuffle the whole show, dig the crate for one BTS song and drop it in anywhere. Then save your remix as a card to share.</span>
+        <em class="dj2go">Start my remix →</em>
+      </div>
     </div>
+  </section>
   </section>
 
   <div class="burrow-wrap">
   <section class="station golinks" id="tourLinks" aria-labelledby="tourLinksH">
     <h2 id="tourLinksH"><small>Station 4 · Scrapbook</small>Every show, every moment</h2>
-    <div class="gl">
-      <a class="glc" href="moments.html"><small>Scrapbook</small><b>Hooligan outfits to fireworks</b><span>The moments ARMY watches for at every show, city by city, with fancams.</span></a>
-      <a class="glc" href="moments.html#send"><small>Send a fancam</small><b>Light up a moment</b><span>Filmed a moment? Send the link to your post and get credited.</span></a>
+    <div class="gl dj2">
+      <div class="dj2c scr">
+        <div class="dj2v" aria-hidden="true">
+          <span class="dj2pol p1"><i>▶</i><u>The SWIM wave</u></span>
+          <span class="dj2pol p2"><i>▶</i><u>JK sings Arirang</u></span>
+          <span class="dj2pol p3"><i>▶</i><u>The monitor spin</u></span>
+        </div>
+        <small>Scrapbook</small>
+        <b><a class="dj2a" href="moments.html">Relive every night, moment by moment</a></b>
+        <span>Pick your show and watch it back in fans' fancams, from the opening film to the fireworks.</span>
+        <em class="dj2go">Open the scrapbook →</em>
+      </div>
+      <div class="dj2c cam">
+        <div class="dj2v" aria-hidden="true">
+          <span class="vf"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i>
+          <span class="rec">● REC</span><span class="tc">00:03:17</span>
+          <span class="cred">📌 pinned by @you · Busan N2</span></span>
+        </div>
+        <small>Pin a moment</small>
+        <b><a class="dj2a" href="moments.html#send">Pin your favorite moments of the tour</a></b>
+        <span>ARMY, every city gave us moments we'll never forget. Help fill the scrapbook: send your favorite fancam and pin it to your city's page.</span>
+        <em class="dj2go">Pin my fancam →</em>
+      </div>
     </div>
   </section>
 
@@ -2822,7 +2896,7 @@ const STN=[["home2","spin","DJ Spin That","Spin two surprise songs from BTS's AR
  ["home2b","spin","DJ Spin That","Spin a surprise song from BTS's ARIRANG tour 💜"],
  ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["tourLinks","moments","Tour scrapbook","Every ARIRANG show, every moment, with fancams 📸"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
  ["disco","checklist","BTS song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault?"],["credits","credits","Liner notes","Who wrote and produced each BTS song"],["units","units","Subunit songs","BTS subunit songs played on the tour"],["vault","vault","Look up a song","Look up any BTS surprise song"],["fix","fix","Report a correction","Spot a mistake on DJ Spin That? Tell us"],
- ["armyLinks","be-the-dj","Be the DJ","Remix the setlist or add your fancam 🎧"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
+ ["armyLinks","be-the-dj","Be the DJ","Remix the ARIRANG setlist 🎧"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
 let lastTouch=null;document.addEventListener("pointerdown",e=>{const s=STN.find(x=>{const el=document.getElementById(x[0]);return el&&el.contains(e.target)&&x[0]!=="home2"&&x[0]!=="home2b"});if(s)lastTouch={s,t:Date.now()}},true);
 function stationNow(){const vis=STN.filter(s=>{const el=document.getElementById(s[0]);return el&&el.offsetParent});
   const rect=s=>document.getElementById(s[0]).getBoundingClientRect();
