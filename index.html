@@ -673,8 +673,14 @@ section.golinks{grid-column:1/-1}
 .ticker{position:absolute;left:0;right:0;bottom:28px;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .ticker span{display:inline-block;font:400 22px/28px var(--hfont);color:#fff;text-shadow:0 0 12px rgba(199,125,255,.7);animation:tick 22s linear infinite}
 @keyframes tick{to{transform:translateX(-50%)}}
-.dj2.solo .chn{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
-.dj2.solo .chn .dj2v{grid-row:1/span 6}
+.dj2.solo .chn{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"v v" "k s" "h s" "t s" "p s";align-items:start;padding-bottom:18px}
+.dj2.solo .chn .dj2v{grid-area:v;grid-row:auto;height:96px;min-height:0}
+.chn>small{grid-area:k}.chn>b{grid-area:h}.chn>span{grid-area:t}.chn .cpads{grid-area:p}.chn .cscreen{grid-area:s;margin:16px 20px 0 0!important;min-height:0}
+.chn .ls-glow{left:28px;top:-14px;width:110px;height:110px}
+.chn .lstick{left:62px;top:10px;transform:scale(.62);transform-origin:50% 0}
+.chn .lstick{animation:lsWave2 1.6s ease-in-out infinite alternate}
+@keyframes lsWave2{from{transform:scale(.62) rotate(-12deg)}to{transform:scale(.62) rotate(12deg)}}
+.chn .ticker{left:150px;right:0;top:50%;bottom:auto;margin-top:-14px}
 .cpads{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:6px 20px 0}
 .cpads button{appearance:none;cursor:pointer;min-height:58px;border:0;border-radius:10px;color:#fff;font:600 11.5px/1.15 var(--v2sans);padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:0 3px 0 #0b0712,inset 0 0 0 1px rgba(255,255,255,.14)}
 .cpads button b{font:600 14px var(--v2mono)}
@@ -689,7 +695,7 @@ section.golinks{grid-column:1/-1}
 .cscreen a{color:#ff92aa;font-weight:600;text-decoration:none}.cscreen a:hover{text-decoration:underline}
 .cscreen ul{list-style:none;margin:4px 0 0;padding:0}.cscreen li{padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}.cscreen li small{display:block;color:var(--v2muted);font-size:13px}
 .cscreen .np{font:600 11px var(--v2mono);letter-spacing:.1em;color:#c77dff;text-transform:uppercase;margin:0 0 4px}
-@media (max-width:700px){.dj2.solo .chn{display:flex}.ls-glow{left:6%;top:8px}.lstick{left:calc(6% + 41px);top:20px}.ticker{left:40%;bottom:auto;top:50%;margin-top:-14px}.cpads button{font-size:0}.cpads button b{font-size:16px}}
+@media (max-width:700px){.dj2.solo .chn{display:flex;align-items:stretch}.chn .dj2v{height:84px!important}.chn .ls-glow{left:2px}.chn .lstick{left:36px;top:6px}.chn .ticker{left:110px}.chn .cscreen{margin:10px 20px 0!important}.cpads button{font-size:0}.cpads button b{font-size:16px}}
 .chant-nudge{margin:14px 0 0}.chant-nudge a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:#ff92aa;text-decoration:none}.chant-nudge a:hover{text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.lstick,.ls-glow,.ticker span{animation:none}}
 /* first station on each tab fits the screen; its content scrolls inside */
@@ -1270,8 +1276,8 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
   <button type="button" data-tab="spin"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg><span><b class="tl">DJ Spin</b><b class="ts">DJ Spin</b></span></button>
   <button type="button" data-tab="tour"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b class="tl">Tour &amp; My Show</b><b class="ts">Tour</b></span></button>
   <button type="button" data-tab="music"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg><span><b class="tl">Music &amp; Vault</b><b class="ts">Music</b></span></button>
-  <button type="button" data-tab="army"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></button>
   <button type="button" data-tab="tv"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 3l4 4 4-4"/></svg><span><b class="tl">DJ Spin TV</b><b class="ts">DJ Spin TV</b></span></button>
+  <button type="button" data-tab="army"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span><b class="tl">ARMY Zone</b><b class="ts">ARMY</b></span></button>
 </nav>
 <main>
   <header class="hero">
@@ -1575,7 +1581,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
   </section>
 
   <section class="station golinks" id="armyLinks" aria-labelledby="armyLinksH">
-    <h2 id="armyLinksH"><small>Station 11 · Your turn on the decks</small>Be the DJ</h2>
+    <h2 id="armyLinksH"><small>Station 12 · Your turn on the decks</small>Be the DJ</h2>
     <div class="gl dj2 solo">
       <div class="dj2c rmx">
         <div class="dj2v" aria-hidden="true">
@@ -1591,7 +1597,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
   </section>
 
   <section class="station golinks" id="chantsSt" aria-labelledby="chantsStH">
-    <h2 id="chantsStH"><small>Station 12 · Your part of the show</small>Be the crowd</h2>
+    <h2 id="chantsStH"><small>Station 13 · Your part of the show</small>Be the crowd</h2>
     <div class="gl dj2 solo">
       <div class="dj2c chn">
         <div class="dj2v" aria-hidden="true">
@@ -1679,7 +1685,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
     </details>
   </section>
   <section class="station burrow" id="burrow">
-    <h2><small>Station 14 · DJ Spin TV</small>Dance, shows and behind the scenes</h2>
+    <h2><small>Station 11 · DJ Spin TV</small>Dance, shows and behind the scenes</h2>
     <p class="help">Learn the dances, then keep watching: official channels, BTS's own shows, behind the scenes and reaction videos. Concert footage from this tour is in Watch it again.</p>
     <div class="vj" id="vj">
       <div class="vj-top">
@@ -1733,7 +1739,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
   </div>
 
   <section class="station freebies" id="freebies">
-    <h2><small>Station 12 · Freebies, for ARMY by ARMY</small>Photocards, freebies and trading</h2>
+    <h2><small>Station 14 · Freebies, for ARMY by ARMY</small>Photocards, freebies and trading</h2>
     <p class="help">Make a photocard for your night, learn to design and print your own, and find freebie ideas and trading groups. Everything here is free and fan-made.</p>
 
     <div class="bgroup" id="pcMaker"><div class="bhead"><h3>Digital photocards</h3><span>Your night, as a DJ Spin That photocard</span></div>
@@ -1841,7 +1847,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
   </section>
 
   <section class="station gifs" id="gifs">
-    <h2><small>Station 13 · GIF corner</small>GIFs to share</h2>
+    <h2><small>Station 15 · GIF corner</small>GIFs to share</h2>
     <p class="help">Grab a GIF for your posts and group chats, share one you made, or ask for one you'd love to see.</p>
     <div class="row"><a class="btn ghost giphy-follow" href="https://giphy.com/channel/djspinthat" target="_blank" rel="noopener"><span class="gdot" aria-hidden="true"></span>Follow @djspinthat on GIPHY ↗</a></div>
     <div class="seg" role="group" aria-label="Which GIFs" id="gifSeg">
@@ -3097,7 +3103,7 @@ let tries=0;(function ready(){if(typeof playedTitles!=="undefined"&&playedTitles
 })();
 
 /* ---------- Fit the first station of each tab to the screen ---------- */
-(()=>{const FIT=["city","disco","burrow"];
+(()=>{const FIT=["city","disco","burrow","chantsSt","freebies"];
  FIT.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add("fit")});
  const size=()=>{const vh=window.visualViewport?window.visualViewport.height:innerHeight;let top=0,bot=0;
   for(const id of ["v2head","tabbar"]){const e=document.getElementById(id);if(!e)continue;const cs=getComputedStyle(e);if(cs.display==="none")continue;const r=e.getBoundingClientRect();
