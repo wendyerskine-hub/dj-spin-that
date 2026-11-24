@@ -623,7 +623,7 @@ section.golinks{grid-column:1/-1}
 .dj2c:hover,.dj2c:focus-within{border-color:#c77dff;transform:translateY(-2px)}
 .dj2c>small,.dj2c>b,.dj2c>span,.dj2c>em,.dj2c>.dj2send{margin:0 20px}
 .dj2c small{font-family:var(--v2mono);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--v2muted);margin-top:14px!important}
-.dj2c b{font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);letter-spacing:-.01em;font-size:clamp(24px,3.2vw,30px);line-height:1.08;text-wrap:balance}
+.dj2c>b{font-family:var(--hfont);font-weight:var(--hweight);text-transform:var(--hcase);letter-spacing:-.01em;font-size:clamp(24px,3.2vw,30px);line-height:1.08;text-wrap:balance}
 .dj2a{color:var(--ink);text-decoration:none}
 .dj2a::after{content:"";position:absolute;inset:0;z-index:1}
 .dj2a:focus-visible{outline:none}.dj2c:has(.dj2a:focus-visible){outline:3px solid #fff;outline-offset:2px}
@@ -662,6 +662,36 @@ section.golinks{grid-column:1/-1}
 .dj2.solo .dj2v{grid-row:1/span 5;height:100%;min-height:220px}
 .dj2.solo .dj2c>small{margin-top:22px!important}.dj2.solo .dj2c>em{margin-bottom:22px!important}
 @media (max-width:700px){.dj2.solo .dj2c{display:flex;padding-bottom:18px}.dj2.solo .dj2v{height:150px;min-height:0}}
+.chn .dj2v{background:radial-gradient(circle at 26% 40%,rgba(199,125,255,.45),transparent 55%),linear-gradient(135deg,#1c0f30,#120a1f)}
+.ls-glow{position:absolute;left:calc(50% - 65px);top:calc(50% - 110px);width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(233,226,255,.55),rgba(199,125,255,.15) 50%,transparent 70%);animation:lsPulse 2.4s ease-in-out infinite}
+.lstick{position:absolute;left:calc(50% - 24px);top:calc(50% - 96px);display:flex;flex-direction:column;align-items:center;transform-origin:50% 100%;animation:lsWave 1.6s ease-in-out infinite alternate}
+.lstick .bulb{display:block;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#fff,#efe6ff 35%,#c9a8ff 75%);box-shadow:0 0 18px #d9c2ff,0 0 40px rgba(199,125,255,.7)}
+.lstick .neck{display:block;width:20px;height:8px;border-radius:0 0 6px 6px;background:#d9d3e6}
+.lstick .grip{display:block;width:12px;height:62px;border-radius:3px 3px 6px 6px;background:linear-gradient(90deg,#16121f,#3b3548 50%,#16121f)}
+@keyframes lsWave{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+@keyframes lsPulse{50%{opacity:.6;transform:scale(.92)}}
+.ticker{position:absolute;left:0;right:0;bottom:28px;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ticker span{display:inline-block;font:400 22px/28px var(--hfont);color:#fff;text-shadow:0 0 12px rgba(199,125,255,.7);animation:tick 22s linear infinite}
+@keyframes tick{to{transform:translateX(-50%)}}
+.dj2.solo .chn{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.dj2.solo .chn .dj2v{grid-row:1/span 6}
+.cpads{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:6px 20px 0}
+.cpads button{appearance:none;cursor:pointer;min-height:58px;border:0;border-radius:10px;color:#fff;font:600 11.5px/1.15 var(--v2sans);padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:0 3px 0 #0b0712,inset 0 0 0 1px rgba(255,255,255,.14)}
+.cpads button b{font:600 14px var(--v2mono)}
+.cpads button:nth-child(1){background:#ff5468}.cpads button:nth-child(2){background:#ff63a9}.cpads button:nth-child(3){background:#f26ad0}.cpads button:nth-child(4){background:#c77dff}.cpads button:nth-child(5){background:#8b5cf6}
+.cpads button[aria-selected=false]{filter:saturate(.55) brightness(.7)}
+.cpads button[aria-selected=true]{transform:translateY(2px);box-shadow:0 1px 0 #0b0712,0 0 0 2px #fff,0 0 18px rgba(255,255,255,.35)}
+.cpads button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cscreen{margin:10px 20px 20px;padding:14px 16px;border-radius:12px;background:#0b0812;border:1px solid rgba(199,125,255,.25);box-shadow:inset 0 3px 10px rgba(0,0,0,.7);min-height:150px}
+.cscreen h4{font:400 22px/1.1 var(--hfont);margin:0 0 6px;color:#fff}
+.cscreen p{margin:6px 0;color:var(--v2muted);font-size:15px}
+.cscreen .big{font:400 19px/1.3 var(--hfont);color:#fff}
+.cscreen a{color:#ff92aa;font-weight:600;text-decoration:none}.cscreen a:hover{text-decoration:underline}
+.cscreen ul{list-style:none;margin:4px 0 0;padding:0}.cscreen li{padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}.cscreen li small{display:block;color:var(--v2muted);font-size:13px}
+.cscreen .np{font:600 11px var(--v2mono);letter-spacing:.1em;color:#c77dff;text-transform:uppercase;margin:0 0 4px}
+@media (max-width:700px){.dj2.solo .chn{display:flex}.ls-glow{left:6%;top:8px}.lstick{left:calc(6% + 41px);top:20px}.ticker{left:40%;bottom:auto;top:50%;margin-top:-14px}.cpads button{font-size:0}.cpads button b{font-size:16px}}
+.chant-nudge{margin:14px 0 0}.chant-nudge a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:#ff92aa;text-decoration:none}.chant-nudge a:hover{text-decoration:underline}
+@media (prefers-reduced-motion:reduce){.lstick,.ls-glow,.ticker span{animation:none}}
 @media (prefers-reduced-motion:reduce){.dj2disc,.dj2set li.you{animation:none}.dj2c{transition:none}}
 /* DJ Spin TV: DJ Spin That video booth */
 #burrow .bgroup[id]{scroll-margin-top:84px}
@@ -1501,6 +1531,7 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
         <div class="field"><label for="nightSel">Night</label><select id="nightSel"></select></div>
       </div>
       <div class="night-songs" id="cityResult" aria-live="polite"></div>
+      <p class="chant-nudge"><a href="#chantsSt">📣 Going to a show? Learn the fan chants →</a></p>
     </section>
 
     <section class="station" id="bias" hidden>
@@ -1554,6 +1585,31 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
       </div>
     </div>
   </section>
+
+  <section class="station golinks" id="chantsSt" aria-labelledby="chantsStH">
+    <h2 id="chantsStH"><small>Station 12 · Your part of the show</small>Be the crowd</h2>
+    <div class="gl dj2 solo">
+      <div class="dj2c chn">
+        <div class="dj2v" aria-hidden="true">
+          <span class="ls-glow"></span>
+          <span class="lstick"><i class="bulb"></i><i class="neck"></i><i class="grip"></i></span>
+          <span class="ticker"><span>Kim Namjoon! Kim Seokjin! Min Yoongi! Jung Hoseok! Park Jimin! Kim Taehyung! Jeon Jungkook! BTS! &nbsp; Kim Namjoon! Kim Seokjin! Min Yoongi! Jung Hoseok! Park Jimin! Kim Taehyung! Jeon Jungkook! BTS! &nbsp;</span></span>
+        </div>
+        <small>Fan chants</small>
+        <b>Learn your part of the show</b>
+        <span>Fan chants are the lines ARMY shout together during a song. Tap a pad, learn the chant, and you're part of the stage.</span>
+        <div class="cpads" role="tablist" aria-label="Fan chants">
+          <button role="tab" data-c="0" aria-selected="true"><b>1</b>Everyone</button>
+          <button role="tab" data-c="1" aria-selected="false"><b>2</b>Body to Body</button>
+          <button role="tab" data-c="2" aria-selected="false"><b>3</b>The 3 to know</button>
+          <button role="tab" data-c="3" aria-selected="false"><b>4</b>Any song</button>
+          <button role="tab" data-c="4" aria-selected="false"><b>5</b>Guides</button>
+        </div>
+        <div class="cscreen" id="chantScreen" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
   </section>
 
   <div class="burrow-wrap">
@@ -2663,7 +2719,7 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["home2"],tour:["city","tourLinks","watch"],music:["disco","credits","units","vault","fix"],army:["armyLinks","freebies","gifs"],tv:["burrow"]};
+const TAB_SECTIONS={spin:["home2"],tour:["city","tourLinks","watch"],music:["disco","credits","units","vault","fix"],army:["armyLinks","chantsSt","freebies","gifs"],tv:["burrow"]};
 // old tab links keep working: #show, #bias, #list, #burrow, #freebies go to their new home
 const TAB_ALIAS={show:["tour"],list:["music"],bias:["spin","h2bias"],city:["tour","city"],disco:["music","disco"],checklist:["music","disco"],"remix-the-set":["spin","h2remix"],"be-the-dj":["army","armyLinks"],burrow:["tv","burrow"],more:["music","vault"],fix:["music","fix"],freebies:["army","freebies"],gifs:["army","gifs"],watch:["tour","watch"],vault:["music","vault"],credits:["music","credits"],units:["music","units"],moments:["tour","tourLinks"],remix:["army","armyLinks"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
@@ -2896,7 +2952,7 @@ const STN=[["home2","spin","DJ Spin That","Spin two surprise songs from BTS's AR
  ["home2b","spin","DJ Spin That","Spin a surprise song from BTS's ARIRANG tour 💜"],
  ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["tourLinks","moments","Tour scrapbook","Every ARIRANG show, every moment, with fancams 📸"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
  ["disco","checklist","BTS song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault?"],["credits","credits","Liner notes","Who wrote and produced each BTS song"],["units","units","Subunit songs","BTS subunit songs played on the tour"],["vault","vault","Look up a song","Look up any BTS surprise song"],["fix","fix","Report a correction","Spot a mistake on DJ Spin That? Tell us"],
- ["armyLinks","be-the-dj","Be the DJ","Remix the ARIRANG setlist 🎧"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
+ ["armyLinks","be-the-dj","Be the DJ","Remix the ARIRANG setlist 🎧"],["chantsSt","fan-chants","Be the crowd","Learn the fan chants for the ARIRANG tour 📣"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
 let lastTouch=null;document.addEventListener("pointerdown",e=>{const s=STN.find(x=>{const el=document.getElementById(x[0]);return el&&el.contains(e.target)&&x[0]!=="home2"&&x[0]!=="home2b"});if(s)lastTouch={s,t:Date.now()}},true);
 function stationNow(){const vis=STN.filter(s=>{const el=document.getElementById(s[0]);return el&&el.offsetParent});
   const rect=s=>document.getElementById(s[0]).getBoundingClientRect();
@@ -3020,6 +3076,21 @@ let tries=0;(function ready(){if(typeof playedTitles!=="undefined"&&playedTitles
 })();
 
 
+
+/* ---------- Station 12: Be the crowd (fan chant pads) ---------- */
+(()=>{const box=document.getElementById("chantScreen");if(!box)return;
+ const L=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`;
+ const C=[
+  ["The one everyone knows · before the song starts","Kim Namjoon!",`<p class="big">Kim Namjoon! Kim Seokjin! Min Yoongi! Jung Hoseok! Park Jimin! Kim Taehyung! Jeon Jungkook! BTS!</p><p>${L("https://www.tiktok.com/@missnotright/video/7607433457735716126","Practice it with @missnotright")}</p>`],
+  ["New on this tour","Body to Body",`<p>At the end of the song, ARMY sing the <b>Arirang</b> melody back to BTS. If you know "Arirang, arirang, arariyo," you're ready.</p><p>${L("https://www.tiktok.com/@missnotright/video/7624664067868724510","Body to Body intro chant")}</p><p>${L("https://www.tiktok.com/@missnotright/video/7626502883529248030","Learn the Arirang sing-along")}</p>`],
+  ["Short on time","The 3 to know",`<p>The chants that matter most, in one short video.</p><p>${L("https://www.tiktok.com/@missnotright/video/7671809609828486430","The 3 chants to know (@missnotright)")}</p>`],
+  ["Song by song","Find a chant",`<p>Pick any song on the setlist and jump to its chant on TikTok or YouTube.</p><p><a href="moments.html#chants">Open the song picker →</a></p>`],
+  ["Guides","Where to learn them",`<ul><li>${L("https://weverse.io/bts","Weverse · BTS official")}<small>Official guides for newer songs</small></li><li>${L("https://doshielasol.notion.site/BTS-Official-Fanchant-Directory-FAQs-1fbe0b213aa84f939054f00dd35eaf00","doshielasol · Fanchant Directory")}<small>Audio guides, song by song</small></li><li>${L("https://www.usbtsarmy.com/fanchants","US BTS ARMY · Fanchants")}<small>Written sheets, romanized lyrics</small></li><li>${L("https://www.tiktok.com/@missnotright/playlist/Fanchant%20Practice-7622474905434573598","@missnotright · Fanchant Practice")}<small>TikTok tutorials, beginner to advanced</small></li></ul><p><small>Weverse is BTS's official app. The others are fan-made and not affiliated with BTS or BIGHIT MUSIC.</small></p>`]];
+ const pads=[...document.querySelectorAll("#chantsSt .cpads button")];
+ const show=i=>{pads.forEach((p,j)=>p.setAttribute("aria-selected",i===j));const c=C[i];box.innerHTML=`<p class="np">▶ Pad ${i+1} · ${c[0]}</p><h4>${c[1]}</h4>${c[2]}`};
+ pads.forEach((p,i)=>p.addEventListener("click",()=>show(i)));show(0);
+ document.addEventListener("click",e=>{const a=e.target.closest(".chant-nudge a");if(!a)return;e.preventDefault();if(typeof setTab==="function")setTab("army");setTimeout(()=>{const x=document.getElementById("chantsSt");if(x)x.scrollIntoView({behavior:"smooth"})},60)});
+})();
 </script>
 </body>
 </html>
