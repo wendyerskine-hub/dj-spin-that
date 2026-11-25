@@ -2272,7 +2272,7 @@ const DISCO=[
  ["ARIRANG",2026,[["Body to Body"],["Hooligan"],["Aliens"],["FYA"],["2.0"],["No. 29 (Interlude)"],["SWIM"],["Merry Go Round"],["NORMAL"],["NORMAL (Korean Ver.)"],["Like Animals"],["they don't know 'bout us"],["One More Night"],["Please"],["Into the Sun"],["Come Over"]]],
  ["ARIRANG · SWIM member remixes",2026,[["SWIM with RM (Chill Hip Hop Remix)"],["SWIM with Jin (Alternative Rock Remix)"],["SWIM with SUGA (Melodic Techno Remix)"],["SWIM with j-hope (Afrobeat Remix)"],["SWIM with Jimin (Slow Jam R&B Remix)"],["SWIM with V (Electronic Remix)"],["SWIM with Jung Kook (Acoustic Lofi Remix)"]]]
 ];
-const MAIN_SET=new Set(["dynamite","bodytobody","hooligan","aliens","fya","20","swim","merrygoround","normal","likeanimals","theydontknowboutus","please","intothesun","comeover"]);
+const MAIN_SET=new Set(["dynamite","butter","fire","nottoday","micdrop","fakelove","idol","bodytobody","hooligan","aliens","fya","20","swim","merrygoround","normal","likeanimals","theydontknowboutus","please","intothesun","comeover"]);
 const SUBUNITS=new Set(["Rap line","Vocal line","Jin, j-hope & Jung Kook","Jimin & V","RM & SUGA"]);
 const UNIT_WHO={"Rap line":"Rap line · RM, SUGA, j-hope","Vocal line":"Vocal line · Jin, Jimin, V, Jung Kook"};
 const nk=t=>String(t).toLowerCase().replace(/[^a-z0-9]/g,"");
@@ -2288,7 +2288,7 @@ function renderDisco(){
   const P=playsByKey();const known=new Set();let played=0,total=0;
   const groups=DISCO.map(([alb,yr,tracks])=>{
     const items=tracks.map(([t,unit])=>{const k=nk(t);known.add(k);const pl=P[k]||[];const main=MAIN_SET.has(k);if(!main){total++;if(pl.length)played++}
-      const tip=main?`<b>Main set</b>Played every night before the surprise songs.`:pl.length?`<b>Played ${pl.length}×</b>${esc(placesText(pl))}`:`<b>Still in the vault</b>Not played yet on the ARIRANG tour.`;
+      const tip=main?`<b>Main set</b>Part of the regular setlist, played every night.`:pl.length?`<b>Played ${pl.length}×</b>${esc(placesText(pl))}`:`<b>Still in the vault</b>Not played yet on the ARIRANG tour.`;
       return `<li><button type="button" class="dsong${pl.length&&!main?" on":""}${main?" main":""}" aria-label="${esc(t)}: ${pl.length?"played "+pl.length+(pl.length===1?" time":" times"):"not played yet"}"><span class="box" aria-hidden="true"></span><span>${esc(t)}${pl.length>1?`<span class="n">${pl.length}×</span>`:""}</span>${unit?`<span class="tag">${esc(unit.replace("Solo · ",""))}</span>`:""}<span class="tip" role="tooltip">${tip}</span></button></li>`}).join("");
     const pc=tracks.filter(([t])=>!MAIN_SET.has(nk(t))&&(P[nk(t)]||[]).length).length,tc=tracks.filter(([t])=>!MAIN_SET.has(nk(t))).length;
     return `<details class="alb" data-alb="${esc(alb)}"><summary><span class="an">${esc(alb)}</span><span class="ay">${yr}</span><span class="ac">${pc}/${tc}</span></summary><ul>${items}</ul></details>`});
