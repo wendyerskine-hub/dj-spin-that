@@ -6,4 +6,5 @@ Disallow: /gif-labeler.html
 Disallow: /tools/
 Disallow: /little-army/
 Disallow: /flip-studio/
+Disallow: /booth/
 Sitemap: https://djspinthat.net/sitemap.xml

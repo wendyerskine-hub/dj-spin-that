@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>document.documentElement.classList.add("inbooth")</script><style>html.inbooth body>header,html.inbooth .wrap>header{display:none!important}html.inbooth .card:has(#ytUrl){display:none!important}
+#boothBar{position:sticky;top:0;z-index:50;background:rgba(17,10,29,.97);border-bottom:1px solid #3a2a52;padding:8px max(12px,2vw) 0;font-family:"Geist",system-ui,sans-serif;color:#f4efff}
+#boothBar .bt{display:flex;align-items:flex-end;gap:12px;padding-bottom:8px}
+#boothBar .bw{font-family:"Black Han Sans","Geist",sans-serif;font-size:20px;line-height:1;text-transform:uppercase;white-space:nowrap}
+#boothBar .bw .d{color:#ff2a4b}#boothBar .bw .t{background:linear-gradient(90deg,#ff63a9,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+#boothBar .bb{font-family:"Black Han Sans","Geist",sans-serif;font-size:18px;color:#b48cff}
+#boothBar nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#boothBar nav a{display:block;text-decoration:none;color:#f4efff;padding:8px 10px;border:1px solid #3a2a52;border-bottom:0;border-radius:10px 10px 0 0;background:#1a1129;font-family:"Black Han Sans","Geist",sans-serif;font-size:17px;line-height:1.1;min-height:44px;box-sizing:border-box}
+#boothBar nav a small{display:block;font-family:"Geist Mono",monospace;font-size:12px;color:#b48cff}
+#boothBar nav a[aria-current=page]{background:#24183a;border-color:#ff5468;box-shadow:inset 0 3px 0 #ff5468}
+@media(max-width:600px){#boothBar nav a{font-size:14px;padding:6px 6px}#boothBar .bw{font-size:17px}}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>DJ Spin That Gif Maker Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f0d14; --panel:#1a1622; --panel2:#231d2e; --line:#33293f;
+    --text:#f2eef7; --muted:#a79bb5; --accent:#e94fa8; --accent2:#8b5cf6; --ok:#4ade80; --warn:#fbbf24;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 "Space Grotesk",system-ui,sans-serif}
+  header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+  header h1{font-size:20px;margin:0;letter-spacing:.3px}
+  header h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 8px}
+  main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr);gap:18px;padding:18px 20px;max-width:1400px;margin:0 auto}
+  @media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+  main>*{min-width:0}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 10px;display:flex;gap:8px;align-items:center}
+  .card h2 b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px}
+  #drop{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);color:var(--text);background:#e94fa810}
+  #drop strong{color:var(--text)}
+  video{width:100%;border-radius:10px;background:#000;display:none;max-height:52vh}
+  .stage{display:flex;flex-direction:column;gap:10px}
+  .previewWrap{background:repeating-conic-gradient(#1d1826 0 25%,#16121d 0 50%) 0 0/20px 20px;border-radius:10px;display:grid;place-items:center;padding:10px;min-height:120px}
+  #preview{max-width:100%;max-height:44vh;border-radius:4px;display:block}
+  .label{font-size:12px;color:var(--muted);margin:2px 0 4px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .row:last-child{margin-bottom:0}
+  input[type=text],select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font:inherit}
+  input[type=text]:focus,select:focus{outline:2px solid var(--accent2);outline-offset:0}
+  .time{width:100px;font-variant-numeric:tabular-nums;font-size:16px}
+  button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:8px 11px}
+  button:hover{border-color:var(--accent2)}
+  button.sm{padding:6px 9px;font-size:13px}
+  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;font-weight:700;padding:12px 18px;font-size:16px;width:100%}
+  button.primary:disabled{opacity:.45;cursor:not-allowed}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{padding:6px 11px;font-size:13px;border-radius:99px}
+  .chip.on{background:var(--accent);border-color:var(--accent)}
+  .slider{display:grid;grid-template-columns:70px 1fr 46px;gap:8px;align-items:center;margin-bottom:6px;font-size:13px;color:var(--muted)}
+  .slider output{text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid2 select{width:100%}
+  .info{font-size:13px;color:var(--muted)}
+  .info b{color:var(--text);font-weight:500}
+  .warn{color:var(--warn)}
+  .err{color:#f87171}
+  .bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:10px 0 4px;display:none}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .1s}
+  #result{display:none;margin-top:12px}
+  #result img{max-width:100%;border-radius:8px;display:block;margin:0 auto 10px;background:#000}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--accent);width:16px;height:16px}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  #capText{width:100%}
+  textarea{width:100%;min-height:86px;margin-top:8px;background:#0b0910;color:#d8ccff;border:1px solid var(--line);border-radius:8px;padding:8px;font:12px/1.4 ui-monospace,Menlo,monospace;resize:vertical}
+  details{margin-top:10px;font-size:13px;color:var(--muted)}
+  details summary{cursor:pointer;color:var(--text)}
+  details ol{padding-left:20px;margin:8px 0}
+  details li{margin-bottom:6px}
+  code{display:block;background:#0b0910;color:#d8ccff;border:1px solid var(--line);border-radius:6px;padding:6px 8px;margin-top:4px;font:12px/1.4 ui-monospace,Menlo,monospace;word-break:break-all;user-select:all}
+  .ok{color:var(--ok)}
+  .seggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:10px 0;max-height:70vh;overflow:auto;padding:2px}
+  .seg{background:var(--panel2);border:2px solid var(--line);border-radius:10px;overflow:hidden;font-size:12px;cursor:pointer;position:relative}
+  .seg.on{border-color:var(--accent)}
+  .seg img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
+  .seg .meta{padding:6px 8px 4px;display:flex;justify-content:space-between;color:var(--muted)}
+  .seg .long{color:var(--warn)}
+  .seg .acts{display:flex;gap:4px;padding:0 6px 6px}
+  .seg .acts button{flex:1;padding:4px;font-size:11px}
+  .seg input.lbl{width:calc(100% - 12px);margin:0 6px 6px;padding:4px 6px;font-size:12px;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:6px}
+  .seg .check{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;background:#0008;border:2px solid #fff;display:grid;place-items:center;font-size:12px;color:transparent}
+  .seg.on .check{background:var(--accent);border-color:var(--accent);color:#fff}
+  .batchout{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+  .batchout figure{margin:0;background:var(--panel2);border-radius:8px;padding:6px;font-size:12px;color:var(--muted);word-break:break-all}
+  .batchout img{width:100%;border-radius:4px;display:block;margin-bottom:4px}
+  .batchout button{margin-top:4px;width:100%}
+  .batchout figure.flag{outline:2px solid var(--warn);outline-offset:1px}
+  .batchout .why{margin:6px 0;padding-left:16px;color:var(--warn);font-size:13px;line-height:1.35}
+  .batchout .okk{color:var(--ok);font-size:13px;margin:4px 0}
+  .batchout .redo{margin-top:4px}
+  .batchout.onlyflag figure:not(.flag){display:none}
+  kbd{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12px}
+  /* ===== DJ Spin That · new look (Nov 2026) ===== */
+  :root{--bg:#110a1d;--panel:#1a1129;--panel2:#22163a;--line:rgba(255,255,255,.12);--accent:#ff5468;--accent2:#b48cff;--muted:#b8a9d6}
+  body{font:16px/1.5 "Geist",system-ui,-apple-system,sans-serif;background:radial-gradient(900px 380px at 50% -10%,rgba(255,84,104,.12),transparent 70%),var(--bg)}
+  header{position:sticky;top:0;z-index:10;background:rgba(17,10,29,.94);gap:14px}
+  .brand{display:inline-flex;flex-direction:column;gap:4px;line-height:1;color:#fff}
+  .brand .w{font-family:"Black Han Sans","Geist",sans-serif;font-size:21px;text-transform:uppercase;white-space:nowrap}
+  .brand .c{color:#ff2a4b}.brand .v{background:linear-gradient(90deg,#ff63a9,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand .x{position:relative;height:3px;border-radius:2px;background:linear-gradient(90deg,#ff2a4b,#ff63a9 50%,#a855f7)}
+  .brand .x i{position:absolute;top:-4px;left:58%;width:7px;height:11px;border-radius:2px;background:#fff;transform:translateX(-50%)}
+  header h1{font-family:"Black Han Sans","Geist",sans-serif;font-weight:400;font-size:21px;letter-spacing:0;margin:0}
+  .tag{font-family:"Geist Mono",monospace;font-size:12px}
+  .card{border-radius:16px;background:rgba(26,17,41,.85)}
+  .card h2{font-family:"Geist Mono",monospace;font-size:13px;font-weight:500}
+  .card h2 b{background:linear-gradient(135deg,#ff2a4b,#ff63a9);color:#1a0b14}
+  .label,.info,.hint,details{font-size:14px}
+  button{border-radius:10px;min-height:40px}
+  button.primary{background:linear-gradient(90deg,#ff2a4b,#ff63a9 50%,#a855f7);color:#fff;border-radius:12px;min-height:48px}
+  .chip.on,.seg.on .check{background:var(--accent);border-color:var(--accent);color:#1a0b14}
+  input[type=text],select{border-radius:10px;min-height:40px;font-size:16px}
+  /* phone + iPad: bigger touch targets, no Mac-only steps */
+  input[type=range]{height:34px}
+  html.touch .macOnly{display:none}
+  html.touch button{min-height:44px}
+  html.touch .slider{grid-template-columns:72px 1fr 54px;font-size:15px}
+  html.touch .time{width:110px;min-height:44px}
+  html.touch #drop{padding:30px 16px}
+  html.touch .phoneOnly{display:block}
+  .phoneOnly{display:none}
+  /* phones: never wider than the screen, even with the wide Black Han Sans logo */
+  html,body{max-width:100%;overflow-x:clip}
+  header{flex-wrap:wrap;row-gap:6px;min-width:0}
+  header h1,.brand .w{white-space:nowrap}
+  .info,.hint,code,#ytInfo,#cmdHint,#clipLen,#vidInfo,#status,#batchStatus,#scanStatus{overflow-wrap:anywhere}
+  textarea,input[type=text],select,video,canvas,img{max-width:100%}
+  .row>*{min-width:0}
+  @media (max-width:430px){.brand .w{font-size:17px}header h1{font-size:17px}.tag{font-size:10px;padding:2px 6px}header{gap:10px}#ytUrl{min-width:0!important}}
+  /* ===== crop + preview editor ===== */
+  .sheet{position:fixed;inset:0;z-index:60;background:#0c0716;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .sheet .in{max-width:760px;margin:0 auto;padding:0 12px 110px}
+  .sheet .top{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 0;background:#0c0716;border-bottom:1px solid var(--line);margin-bottom:12px}
+  .sheet .top h2{font-family:"Black Han Sans","Geist",sans-serif;font-weight:400;font-size:22px;margin:0;flex:1;letter-spacing:.3px}
+  .sheet .bot{position:fixed;left:0;right:0;bottom:0;z-index:3;background:#0c0716;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+  .sheet .bot .in2{max-width:760px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .sheet .bot .primary{flex:1 1 220px;width:auto}
+  .sheet .bot #edStatus{flex:1 1 100%;font-size:15px}
+  .cropWrap{position:relative;background:#000;border-radius:12px;padding:16px;touch-action:none;cursor:move}
+  #cropView{display:block;width:100%;height:auto;touch-action:none;cursor:move}
+  .edHint{font-size:15px;color:var(--muted);margin:8px 0 12px}
+  .edRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+  .edRow button{font-size:16px;min-height:46px}
+  .sheet .card{margin-bottom:12px}
+  .sheet #preview{max-height:34vh}
+  body.editing{overflow:hidden}
+  .sheet #openEd{display:none}
+  .openEd{width:100%;margin-top:10px;font-size:16px;min-height:46px;font-weight:600}
+  @media (max-width:600px){header{padding:12px 14px}main{padding:12px}.card{padding:14px}.seggrid,.batchout{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body><div id="boothBar"><div class="bt"><span class="bw"><span class="d">DJ</span> SPIN <span class="t">THAT</span></span><span class="bb">Booth</span></div><nav><a href="gif.html" aria-current=page><small>Mix it</small>GIF</a><a href="flip.html"><small>Mix it</small>Photocard</a><a href="https://claude.ai/artifact/DR6od5wXY6J6YRSuLGgSy7" target="_blank" rel="noopener"><small>In Claude ↗</small>Dig · Drop</a></nav></div>
+<header>
+  <span class="brand" aria-label="DJ Spin That"><span class="w"><span class="c">DJ</span> SPIN <span class="v">THAT</span></span><span class="x" aria-hidden="true"><i></i></span></span>
+  <h1>GIF Maker</h1>
+  <span class="tag">Private</span>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="card">
+      <h2><b>★</b>Start from a YouTube link</h2>
+      <div class="row"><input id="ytUrl" type="text" placeholder="Paste a YouTube link (a ?t= timestamp fills the start time)" style="flex:1;min-width:220px"></div>
+      <div id="ytInfo" class="info"></div>
+      <div class="hint">Set Start and End in step 2 (they're shared with this), then get the video one of two ways:</div>
+      <div class="row" style="margin-top:8px">
+        <button id="copyCmd" disabled>📋 Copy clip-download command</button>
+        <button id="copyFull" disabled title="For long compilation videos you'll scan for snippets">📋 Copy full-video command</button>
+        <a href="https://app.ytdown.to/en38/" target="_blank" rel="noopener" class="info">or get the full video on ytdown ↗</a>
+      </div>
+      <textarea id="cmdOut" readonly hidden></textarea>
+      <div id="cmdHint" class="hint"></div>
+      <div class="hint phoneOnly">Saving a GIF on iPhone or iPad: tap <b>Download</b>, then open it in the Files app, tap the share button and choose <b>Save Image</b> to put it in Photos (ready for TikTok and Instagram).</div>
+      <div class="hint macOnly">Next: paste the command into <b>Terminal</b> and press Return. Then drop the new "spin-…" clip from <b>Videos for Social → Spin Studio Gifs</b> into step 1 below. (Any GIFs you saved to Downloads get moved into that folder too, each time you run it.) Make GIF works once the clip is loaded.</div>
+    </div>
+    <div class="card">
+      <h2><b>1</b>Load your video</h2>
+      <div id="drop"><strong>Drop a video here</strong> or tap to choose a file<br><span class="info">Your downloaded YouTube MP4/WebM works. Nothing gets uploaded; it all stays on your computer.</span></div>
+      <input id="file" type="file" accept="video/*" hidden>
+      <video id="video" controls playsinline muted preload="auto"></video>
+      <div id="vidInfo" class="info" style="margin-top:6px"></div>
+    </div>
+    <div class="card" id="previewCard">
+      <h2>Live preview <span class="info" id="dims" style="text-transform:none;letter-spacing:0"></span></h2>
+      <div class="previewWrap"><canvas id="preview" width="480" height="270"></canvas></div>
+      <div class="hint">This is exactly what each GIF frame will look like: crop, size, and caption included.</div>
+    </div>
+    <div class="card" id="scanCard">
+      <h2><b>✂</b>Long video? Find the snippets</h2>
+      <div class="hint">Scans the whole video for scene cuts and shows each snippet below. Tap the ones you want and make them all at once. Each GIF uses your crop, size and smoothness from step 3.</div>
+      <div class="row" style="margin-top:8px"><button id="scanBtn">🔎 Scan video</button><button id="scanCancel" hidden>Stop</button><span id="scanStatus" class="info"></span></div>
+      <div id="scanControls" hidden>
+        <div class="slider">Cuts <input id="sens" type="range" min="0" max="100" value="50"><output id="sensV">Normal</output></div>
+        <div class="row"><span class="info">Shortest snippet</span>
+          <select id="minLen"><option value="1">1s</option><option value="2">2s</option><option value="3">3s</option><option value="4" selected>4s</option><option value="6">6s</option><option value="8">8s</option></select>
+          <button class="sm" id="selAll">Tick all</button><button class="sm" id="selNone">Clear</button></div>
+        <div class="hint">Too many tiny pieces? Slide toward "Fewer", raise the shortest snippet, or tap "Join ↓" to glue a piece to the next one.</div>
+        <div id="segGrid" class="seggrid"></div>
+        <button id="batchBtn" class="primary" disabled>Tick snippets to make GIFs</button>
+        <div class="bar" id="bbar"><i></i></div>
+        <div id="batchStatus" class="info"></div>
+        <div id="batchOut" class="batchout"></div>
+        <div class="row" id="batchSaveRow" hidden style="margin-top:10px"><button id="saveZip">⬇ Download all (.zip)</button><span id="zipHint" class="hint"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card" id="clipCard">
+      <h2><b>2</b>Pick the clip</h2>
+      <div class="label">Start (like 1:23.5 · on a phone type 123.5 or 1.23.5)</div>
+      <div class="row">
+        <input id="start" class="time" type="text" value="0:00.00" inputmode="decimal">
+        <button class="sm" data-nudge="start" data-d="-0.1">−0.1s</button>
+        <button class="sm" data-nudge="start" data-d="0.1">+0.1s</button>
+        <button class="sm" id="setStart">Use playhead</button>
+      </div>
+      <div class="label">End</div>
+      <div class="row">
+        <input id="end" class="time" type="text" value="0:03.00" inputmode="decimal">
+        <button class="sm" data-nudge="end" data-d="-0.1">−0.1s</button>
+        <button class="sm" data-nudge="end" data-d="0.1">+0.1s</button>
+        <button class="sm" id="setEnd">Use playhead</button>
+      </div>
+      <div class="row">
+        <button id="playRange">▶ Loop this clip</button>
+        <span id="clipLen" class="info"></span>
+      </div>
+    </div>
+
+    <div class="card" id="frameCard">
+      <h2><b>3</b>Frame it</h2>
+      <div class="label">Crop shape</div>
+      <div class="chips" id="aspects" style="margin-bottom:10px">
+        <button class="chip on" data-a="orig">Original</button>
+        <button class="chip" data-a="1">1:1 Square</button>
+        <button class="chip" data-a="0.8">4:5</button>
+        <button class="chip" data-a="1.7778">16:9</button>
+        <button class="chip" data-a="0.5625">9:16</button>
+        <button class="chip" data-a="free">Free</button>
+      </div>
+      <div class="slider">Zoom <input id="zoom" type="range" min="100" max="1000" step="any" value="100"><output id="zoomV">100%</output></div>
+      <div class="slider">Left ↔ Right <input id="px" type="range" min="0" max="100" step="any" value="50"><output id="pxV">50</output></div>
+      <div class="slider">Up ↕ Down <input id="py" type="range" min="0" max="100" step="any" value="50"><output id="pyV">50</output></div>
+      <div class="grid2" style="margin-top:8px">
+        <div><div class="label">Width</div>
+          <select id="width"><option>320</option><option selected>480</option><option>540</option><option>640</option><option>800</option></select></div>
+        <div><div class="label">Smoothness (frames/sec)</div>
+          <select id="fps"><option>10</option><option>12</option><option selected>15</option><option>20</option><option>24</option></select></div>
+      </div>
+      <button class="openEd" id="openEd">✂ Crop on the picture + play preview</button>
+    </div>
+
+    <div class="card" id="capCard">
+      <h2><b>4</b>Caption <span class="info" style="text-transform:none;letter-spacing:0">(optional)</span></h2>
+      <div class="row"><input id="capText" type="text" placeholder="Type a caption…"></div>
+      <div class="grid2">
+        <div><div class="label">Position</div><select id="capPos"><option value="bottom">Bottom</option><option value="top">Top</option></select></div>
+        <div><div class="label">Size</div><select id="capSize"><option value="s">Small</option><option value="m" selected>Medium</option><option value="l">Large</option></select></div>
+      </div>
+    </div>
+    <div class="card" id="stickerCard">
+      <h2><b>★</b>Stickers &amp; logos <span class="info" style="text-transform:none;letter-spacing:0">(optional)</span></h2>
+      <div id="stickerPanel"></div>
+    </div>
+
+    <div class="card">
+      <h2><b>5</b>Make it</h2>
+      <label class="toggle" style="margin-bottom:10px"><input id="dither" type="checkbox" checked> Smooth colors (dithering): better gradients, slightly bigger file</label>
+      <button id="make" class="primary">Make GIF</button>
+      <div class="bar" id="bar"><i></i></div>
+      <div id="status" class="info"></div>
+      <div id="result">
+        <img id="out" alt="Your GIF">
+        <div class="row" style="justify-content:space-between">
+          <span id="outInfo" class="info"></span>
+          <button id="save">⬇ Download GIF</button>
+        </div>
+        <div id="saveHint" class="hint"></div>
+      </div>
+    </div>
+    <div class="hint">Tips: <kbd>Space</kbd> plays/pauses the video. Start/End take times exactly as YouTube shows them (1:23 or 1:23.5).</div>
+  </section>
+</main>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Edit GIF">
+  <div class="in">
+    <div class="top"><h2 id="edTitle">Edit GIF</h2><button id="edClose" aria-label="Close editor">✕ Close</button></div>
+    <div class="cropWrap"><canvas id="cropView" width="640" height="360"></canvas></div>
+    <div class="edHint">Drag the pink box to move it. Drag a corner to make it bigger or smaller. Pick <b>Free</b> below to crop any shape.</div>
+    <div class="edRow"><button id="edPlay">❚❚ Pause</button><button id="edReset">↺ Reset crop</button></div>
+    <div id="edSlot"></div>
+  </div>
+  <div class="bot"><div class="in2">
+    <button class="primary" id="edGo">Make this GIF</button>
+    <div id="edStatus" class="info"></div>
+  </div></div>
+</div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const video = $('#video'), prev = $('#preview'), pctx = prev.getContext('2d');
+let fileName = 'clip', aspect = 'orig', freeA = 1, loopRange = false, gifBlob = null, busy = false;
+
+// ---------- settings memory ----------
+const KEY = 'spinstudio-settings';
+function saveSettings(){
+  try{ localStorage.setItem(KEY, JSON.stringify({minLen:$('#minLen').value,width:$('#width').value,fps:$('#fps').value,dither:$('#dither').checked,aspect,freeA,capSize:$('#capSize').value,capPos:$('#capPos').value})); }catch(e){}
+}
+try{
+  const s = JSON.parse(localStorage.getItem(KEY)||'null');
+  if(s){ $('#width').value=s.width||'480'; $('#fps').value=s.fps||'15'; $('#dither').checked=s.dither!==false;
+    $('#capSize').value=s.capSize||'m'; $('#capPos').value=s.capPos||'bottom'; if(s.freeA > 0) freeA = s.freeA; if(s.aspect) setAspect(s.aspect,true); if(s.minLen) $('#minLen').value = s.minLen; }
+}catch(e){}
+
+// ---------- time helpers ----------
+function parseTime(s){
+  s = String(s).trim().replace(/,/g, '.').replace(/\s+/g, ''); if(!s) return NaN;
+  if((s.match(/\./g) || []).length === 2) s = s.replace('.', ':');
+  // Phone number pads have no colon, so plain digits work too:
+  // 83 = 83s, 134 or 0134 = 1:34, 13450 = 1:34:50, 134.5 = 1:34.5
+  if(/^\d+(\.\d*)?$/.test(s)){
+    const [whole, frac = ''] = s.split('.');
+    if(whole.length < 3) return parseFloat(s);
+    const d = whole.padStart(whole.length > 4 ? 6 : 4, '0');
+    const hrs = d.length === 6 ? +d.slice(0, -4) : 0, mins = +d.slice(-4, -2), secs = +(d.slice(-2) + (frac ? '.' + frac : ''));
+    if(secs >= 60 || (hrs && mins >= 60)) return NaN;
+    return hrs * 3600 + mins * 60 + secs;
+  }
+  const parts = s.split(':').map(Number);
+  if(parts.some(p => isNaN(p) || p < 0)) return NaN;
+  return parts.reduce((a,p) => a*60 + p, 0);
+}
+const toFile = T => T - clipOffset, toYT = t => t + clipOffset;
+const getSt = () => toFile(parseTime($('#start').value)), getEn = () => toFile(parseTime($('#end').value));
+const setSt = t => { $('#start').value = fmtTime(toYT(t)); }, setEn = t => { $('#end').value = fmtTime(toYT(t)); };
+function fmtTime(t){
+  if(!isFinite(t)) t = 0;
+  const m = Math.floor(t/60), s = t - m*60;
+  return m + ':' + s.toFixed(2).padStart(5,'0');
+}
+
+// ---------- loading ----------
+const drop = $('#drop');
+drop.onclick = () => $('#file').click();
+$('#file').onchange = e => { if(e.target.files[0]) loadFile(e.target.files[0]); };
+['dragover','dragenter'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+document.addEventListener('drop', e => { const f = e.dataTransfer?.files?.[0]; if(f) loadFile(f); });
+
+// ---------- YouTube link + clip command ----------
+let clipOffset = 0; // seconds into the original YouTube video where the loaded file starts
+const isPhone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent)); // iPad Safari says "Macintosh"
+if(isPhone){ document.documentElement.classList.add('touch'); }
+function parseYouTube(u){
+  u = String(u || '').trim(); if(!u) return null;
+  let url; try{ url = new URL(/^https?:/i.test(u) ? u : 'https://' + u); }catch(e){ return null; }
+  const h = url.hostname.replace(/^(www|m|music)\./, '');
+  let id = null;
+  if(h === 'youtu.be') id = url.pathname.slice(1, 12);
+  else if(/(^|\.)youtube\.com$/.test(h)){
+    id = url.searchParams.get('v');
+    if(!id){ const m = url.pathname.match(/\/(shorts|embed|live)\/([\w-]{11})/); if(m) id = m[2]; }
+  }
+  if(!id || !/^[\w-]{11}$/.test(id)) return null;
+  const t = url.searchParams.get('t') || url.searchParams.get('start');
+  let start = null;
+  if(t){ const m = t.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s?)?$/); if(m && (m[1]||m[2]||m[3])) start = (+m[1]||0)*3600 + (+m[2]||0)*60 + (+m[3]||0); }
+  return {id, start};
+}
+function onLink(fromUser){
+  const p = parseYouTube($('#ytUrl').value), info = $('#ytInfo');
+  $('#copyCmd').disabled = !p; $('#copyFull').disabled = !p;
+  if(!$('#ytUrl').value.trim()){ info.textContent = ''; return; }
+  if(!p){ info.innerHTML = '<span class="err">That doesn\'t look like a YouTube video link.</span>'; return; }
+  if(fromUser){
+    clipOffset = 0;
+    if(p.start != null){
+      $('#start').value = fmtTime(p.start);
+      const en = parseTime($('#end').value);
+      if(!(en > p.start)) $('#end').value = fmtTime(p.start + 3);
+    }
+    updateClipInfo();
+  }
+  info.innerHTML = '<span class="ok">✓ Link ready</span>' + (p.start != null ? ` · start time ${fmtTime(p.start)} pulled from the link` : ' · no timestamp in the link, so type the times in step 2');
+  try{ localStorage.setItem(KEY + '-link', $('#ytUrl').value); }catch(e){}
+}
+$('#ytUrl').addEventListener('input', () => onLink(true));
+if(isPhone) $('#cmdHint').textContent = 'On iPhone and iPad the commands are for the a-Shell app (one-time setup is on your To-Do page). No a-Shell? Use ytdown to save the full video instead. Your times from the link still line up.';
+
+const dest = '$HOME/Videos for Social/Spin Studio Gifs';
+const buildCmdPhone = (p, sections, name) => `yt-dlp -f "bv*[vcodec^=avc1][height<=1080]/bv*[height<=1080]/b" ${sections ? `--download-sections "${sections}" --force-keyframes-at-cuts ` : ''}--remux-video mp4 -P "~/Documents/SpinStudio" -o "${name}.%(ext)s" "https://www.youtube.com/watch?v=${p.id}"`;
+const buildCmd = (p, sections, name) => isPhone ? buildCmdPhone(p, sections, name) : buildCmdMac(p, sections, name);
+const buildCmdMac = (p, sections, name) => `mkdir -p "${dest}"; find "$HOME/Downloads" -maxdepth 1 -name 'spin-*.gif' -exec mv -n {} "${dest}/" \\; ; find "$HOME/Downloads" -maxdepth 1 -name 'spin-*.zip' -exec sh -c 'unzip -o -q "$0" -d "$1" && rm "$0"' {} "${dest}" \\; ; yt-dlp -f "bv*[vcodec^=avc1][height<=1080]/bv*[height<=1080]/b" ${sections ? `--download-sections "${sections}" --force-keyframes-at-cuts ` : ''}--remux-video mp4 -o "${dest}/${name}.%(ext)s" "https://www.youtube.com/watch?v=${p.id}"`;;
+
+$('#copyFull').onclick = async () => {
+  const p = parseYouTube($('#ytUrl').value); if(!p) return;
+  const cmd = buildCmd(p, null, 'spin-full-%(id)s'), ta = $('#cmdOut'), hint = $('#cmdHint');
+  ta.value = cmd; ta.hidden = false;
+  try{ await navigator.clipboard.writeText(cmd); hint.innerHTML = isPhone ? '<span class="ok">Copied ✓</span> Open a-Shell, paste, and tap Return. Then load it in step 1 from On My iPhone → a-Shell → SpinStudio, and use "Find the snippets".' : '<span class="ok">Copied ✓</span> Paste it into Terminal and press Return. The whole video downloads to Videos for Social → Spin Studio Gifs (big videos take a few minutes). Load it in step 1, then use "Find the snippets".'; }
+  catch(err){ ta.focus(); ta.select(); hint.textContent = 'Press ⌘C to copy the command above, then paste it into Terminal.'; }
+};
+$('#copyCmd').onclick = async () => {
+  const p = parseYouTube($('#ytUrl').value); if(!p) return;
+  const s = parseTime($('#start').value), e = parseTime($('#end').value);
+  const hint = $('#cmdHint'), ta = $('#cmdOut');
+  if(isNaN(s) || isNaN(e) || e <= s){ hint.innerHTML = '<span class="err">Set a Start and End first (step 2).</span>'; return; }
+  const S = s.toFixed(2), E = e.toFixed(2);
+  const cmd = buildCmd(p, `*${S}-${E}`, `spin-%(id)s-s${S}-e${E}`);
+  ta.value = cmd; ta.hidden = false;
+  try{ await navigator.clipboard.writeText(cmd); hint.innerHTML = isPhone ? '<span class="ok">Copied ✓</span> Open a-Shell, paste, and tap Return. Then in step 1 choose Browse → On My iPhone → a-Shell → SpinStudio.' : '<span class="ok">Copied ✓</span> Paste it into Terminal and press Return. The clip lands in Videos for Social → Spin Studio Gifs.'; }
+  catch(err){ ta.focus(); ta.select(); hint.textContent = 'Press ⌘C to copy the command above, then paste it into Terminal.'; }
+};
+
+function loadFile(f){
+  const m = f.name.match(/spin-([\w-]{11})-s(\d+(?:\.\d+)?)-e(\d+(?:\.\d+)?)/);
+  if(m){
+    clipOffset = parseFloat(m[2]);
+    $('#start').value = fmtTime(clipOffset);
+    $('#end').value = fmtTime(parseFloat(m[3]));
+    if(!parseYouTube($('#ytUrl').value)) $('#ytUrl').value = 'https://www.youtube.com/watch?v=' + m[1];
+    setTimeout(() => { $('#ytInfo').innerHTML = '<span class="ok">✓ Clip file detected: times set automatically</span>'; }, 0);
+  } else clipOffset = 0;
+  fileName = f.name.replace(/\.[^.]+$/, '').replace(/[^\w\- ]+/g, '').trim().slice(0,60) || 'clip';
+  if(video.src) URL.revokeObjectURL(video.src);
+  video.src = URL.createObjectURL(f);
+  video.style.display = 'block';
+  drop.style.padding = '10px';
+  drop.innerHTML = '<strong>' + escapeHtml(f.name) + '</strong> · tap to swap video';
+  $('#vidInfo').textContent = 'Loading…';
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+video.addEventListener('loadedmetadata', () => {
+  $('#vidInfo').innerHTML = `<b>${video.videoWidth}×${video.videoHeight}</b> · ${fmtTime(video.duration)} long`;
+  const d = video.duration;
+  let st = getSt(), en = getEn();
+  if(!(st < d)) st = 0;
+  if(!(en <= d)) en = d;
+  if(!(en > st)) en = Math.min(st + 3, d);
+  setSt(st); setEn(en);
+  seek(st);
+  $('#make').disabled = false;
+  updateClipInfo(); updatePreview();
+});
+video.addEventListener('error', () => {
+  $('#vidInfo').innerHTML = '<span class="err">This browser can\'t play that video file. Try Chrome, or an MP4 version of the download.</span>';
+});
+video.addEventListener('seeked', () => { if(!busy) updatePreview(); });
+video.addEventListener('loadeddata', updatePreview);
+video.addEventListener('play', tick);
+
+function tick(){
+  if(busy) return;
+  if(loopRange){
+    const st = getSt(), en = getEn();
+    if(video.currentTime >= en || video.currentTime < st - 0.25) video.currentTime = st;
+  }
+  updatePreview();
+  if(!video.paused) requestAnimationFrame(tick);
+}
+
+// ---------- clip controls ----------
+$('#setStart').onclick = () => { setSt(video.currentTime); updateClipInfo(); };
+$('#setEnd').onclick = () => { setEn(video.currentTime); updateClipInfo(); };
+document.querySelectorAll('[data-nudge]').forEach(b => b.onclick = () => {
+  const inp = $('#' + b.dataset.nudge); let t = parseTime(inp.value); if(isNaN(t)) t = 0;
+  t = Math.max(clipOffset, t + parseFloat(b.dataset.d)); if(video.duration) t = Math.min(t, clipOffset + video.duration);
+  inp.value = fmtTime(t); updateClipInfo(); seek(toFile(t));
+});
+['start','end'].forEach(id => {
+  $('#'+id).addEventListener('change', () => { const t = parseTime($('#'+id).value); if(!isNaN(t)){ $('#'+id).value = fmtTime(t); seek(toFile(t)); } updateClipInfo(); });
+  $('#'+id).addEventListener('input', updateClipInfo);
+  $('#'+id).addEventListener('keydown', e => { if(e.key === 'Enter') e.target.blur(); });
+});
+function seek(t){ if(video.readyState >= 1) video.currentTime = Math.min(t, video.duration || t); }
+
+$('#playRange').onclick = () => {
+  if(!video.src) return;
+  if(loopRange && !video.paused){ loopRange = false; video.pause(); $('#playRange').textContent = '▶ Loop this clip'; return; }
+  loopRange = true; video.currentTime = Math.max(0, getSt() || 0); video.play().catch(()=>{});
+  $('#playRange').textContent = '■ Stop loop';
+};
+video.addEventListener('pause', () => { if(loopRange){ loopRange = false; $('#playRange').textContent = '▶ Loop this clip'; } });
+
+function updateClipInfo(){
+  const st = getSt(), en = getEn(), fps = +$('#fps').value;
+  const el = $('#clipLen');
+  if(isNaN(st) || isNaN(en)) { el.innerHTML = '<span class="err">Check the time. Type it like 1:23.5, or on a phone 123.5 (or 1.23.5) for 1:23.5</span>'; return; }
+  const reads = `<span class="info">Reads as <b>${fmtTime(toYT(st))}</b> to <b>${fmtTime(toYT(en))}</b></span><br>`;
+  if(en <= st) { el.innerHTML = reads + '<span class="err">End needs to be after start</span>'; return; }
+  const d = video.duration;
+  if(d && st >= d) { el.innerHTML = reads + `<span class="err">Start is after this video ends (it ends at ${fmtTime(toYT(d))})</span>`; return; }
+  const past = d && en > d + 0.05;
+  const len = Math.min(en, d || en) - st, frames = Math.round(len * fps);
+  el.innerHTML = reads + `<b>${len.toFixed(2)}s</b> · ${frames} frames` + (past ? ` <span class="warn">· this video ends at ${fmtTime(toYT(d))}, so the GIF stops there</span>` : '') + (len > 10 ? ' <span class="warn">· long clips make big files</span>' : '');
+}
+
+// ---------- framing ----------
+function setAspect(a, silent){
+  if(a === 'free' && aspect !== 'free' && video.videoWidth){ const g = getGeom(); freeA = g.sw / g.sh; }
+  aspect = a;
+  document.querySelectorAll('#aspects .chip').forEach(c => c.classList.toggle('on', c.dataset.a === a));
+  if(!silent){ saveSettings(); updatePreview(); }
+}
+document.querySelectorAll('#aspects .chip').forEach(c => c.onclick = () => setAspect(c.dataset.a));
+[['zoom','%'],['px',''],['py','']].forEach(([id,suf]) => {
+  const inp = $('#'+id), out = $('#'+id+'V');
+  inp.oninput = () => { out.textContent = Math.round(+inp.value) + suf; updatePreview(); };
+});
+['width','fps','capSize','capPos','dither'].forEach(id => $('#'+id).addEventListener('change', () => { saveSettings(); updateClipInfo(); updatePreview(); }));
+$('#capText').addEventListener('input', updatePreview);
+
+function getGeom(){
+  const vw = video.videoWidth || 16, vh = video.videoHeight || 9;
+  let sw = vw, sh = vh;
+  if(aspect !== 'orig'){
+    const a = aspect === 'free' ? freeA : parseFloat(aspect);
+    if(vw / vh > a){ sh = vh; sw = vh * a; } else { sw = vw; sh = vw / a; }
+  }
+  const z = (+$('#zoom').value) / 100; sw /= z; sh /= z;
+  const sx = (vw - sw) * (+$('#px').value / 100), sy = (vh - sh) * (+$('#py').value / 100);
+  const W = +$('#width').value, H = Math.max(2, Math.round(W * sh / sw));
+  return {sx, sy, sw, sh, W, H};
+}
+
+function drawCaption(ctx, W, H){
+  const text = $('#capText').value.trim(); if(!text) return;
+  const size = Math.round(W * ({s:.065, m:.09, l:.12}[$('#capSize').value]));
+  ctx.font = `900 ${size}px Impact, "Arial Black", "Helvetica Neue", sans-serif`;
+  ctx.textAlign = 'center'; ctx.lineJoin = 'round';
+  ctx.lineWidth = Math.max(2, size * .16); ctx.strokeStyle = '#000'; ctx.fillStyle = '#fff';
+  // word wrap
+  const maxW = W * .92, words = text.split(/\s+/), lines = []; let line = '';
+  for(const w of words){ const t = line ? line + ' ' + w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else line = t; }
+  if(line) lines.push(line);
+  const lh = size * 1.08, pad = size * .3;
+  const top = $('#capPos').value === 'top';
+  ctx.textBaseline = top ? 'top' : 'bottom';
+  lines.forEach((l, i) => {
+    const y = top ? pad + i * lh : H - pad - (lines.length - 1 - i) * lh;
+    ctx.strokeText(l, W/2, y); ctx.fillText(l, W/2, y);
+  });
+}
+
+window.__boothRefresh = () => updatePreview();
+function drawFrame(ctx, g){
+  ctx.drawImage(video, g.sx, g.sy, g.sw, g.sh, 0, 0, g.W, g.H);
+  drawCaption(ctx, g.W, g.H);
+  if(window.Stickers) Stickers.drawOn(ctx, g.W, g.H);
+}
+
+function updatePreview(){
+  if(!video.videoWidth) return;
+  const g = getGeom();
+  if(prev.width !== g.W || prev.height !== g.H){ prev.width = g.W; prev.height = g.H; }
+  drawFrame(pctx, g);
+  $('#dims').textContent = `${g.W}×${g.H}px`;
+  drawCropView();
+}
+
+// ---------- crop editor (drag the box on the full picture) ----------
+const cropCv = $('#cropView'), cctx = cropCv.getContext('2d'), cropWrap = cropCv.parentElement;
+let drag = null;
+function cropScale(){ return cropCv.width / (video.videoWidth || 16); }
+function drawCropView(){
+  if($('#sheet').hidden || !video.videoWidth) return;
+  const vw = video.videoWidth, vh = video.videoHeight;
+  const cssW = cropCv.clientWidth || 360, dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = Math.round(cssW * dpr), H = Math.round(W * vh / vw);
+  if(cropCv.width !== W || cropCv.height !== H){ cropCv.width = W; cropCv.height = H; }
+  const k = W / vw, g = getGeom();
+  cctx.drawImage(video, 0, 0, W, H);
+  const x = g.sx * k, y = g.sy * k, w = g.sw * k, h = g.sh * k;
+  cctx.save(); cctx.fillStyle = 'rgba(0,0,0,.6)'; cctx.beginPath(); cctx.rect(0, 0, W, H); cctx.rect(x, y, w, h); cctx.fill('evenodd'); cctx.restore();
+  cctx.strokeStyle = 'rgba(255,255,255,.35)'; cctx.lineWidth = 1 * dpr; cctx.beginPath();
+  for(let i = 1; i < 3; i++){ cctx.moveTo(x + w * i / 3, y); cctx.lineTo(x + w * i / 3, y + h); cctx.moveTo(x, y + h * i / 3); cctx.lineTo(x + w, y + h * i / 3); }
+  cctx.stroke();
+  cctx.strokeStyle = '#ff63a9'; cctx.lineWidth = 3 * dpr; cctx.strokeRect(x, y, w, h);
+  const hs = 16 * dpr; cctx.fillStyle = '#fff';
+  [[x, y], [x + w, y], [x, y + h], [x + w, y + h]].forEach(([cx, cy]) => { cctx.fillRect(cx - hs / 2, cy - hs / 2, hs, hs); cctx.strokeRect(cx - hs / 2, cy - hs / 2, hs, hs); });
+}
+function curRatio(){ const vw = video.videoWidth, vh = video.videoHeight; return aspect === 'orig' ? vw / vh : aspect === 'free' ? freeA : parseFloat(aspect); }
+function setFromBox(sx, sy, sw, sh){
+  const vw = video.videoWidth, vh = video.videoHeight;
+  if(aspect === 'free') freeA = sw / sh;
+  const a = curRatio(); let bw, bh;
+  if(vw / vh > a){ bh = vh; bw = vh * a; } else { bw = vw; bh = vw / a; }
+  const z = Math.min(10, Math.max(1, bw / sw)); sw = bw / z; sh = bh / z;
+  sx = Math.max(0, Math.min(vw - sw, sx)); sy = Math.max(0, Math.min(vh - sh, sy));
+  const px = vw - sw > 0.5 ? sx / (vw - sw) * 100 : 50, py = vh - sh > 0.5 ? sy / (vh - sh) * 100 : 50;
+  $('#zoom').value = z * 100; $('#zoomV').textContent = Math.round(z * 100) + '%';
+  $('#px').value = px; $('#pxV').textContent = Math.round(px);
+  $('#py').value = py; $('#pyV').textContent = Math.round(py);
+  updatePreview();
+}
+function ptr(e){ const r = cropCv.getBoundingClientRect(), vw = video.videoWidth; return {x: (e.clientX - r.left) / r.width * vw, y: (e.clientY - r.top) / r.height * video.videoHeight, px: r.width / vw}; }
+cropWrap.addEventListener('pointerdown', e => {
+  if(!video.videoWidth || busy) return;
+  const p = ptr(e), g = getGeom(), grab = 28 / p.px;
+  const corners = [[g.sx, g.sy], [g.sx + g.sw, g.sy], [g.sx, g.sy + g.sh], [g.sx + g.sw, g.sy + g.sh]];
+  let ci = -1, best = grab;
+  corners.forEach(([cx, cy], i) => { const d = Math.hypot(p.x - cx, p.y - cy); if(d < best){ best = d; ci = i; } });
+  if(ci >= 0){ const [ax, ay] = corners[3 - ci]; drag = {mode: 'size', ax, ay}; }
+  else { drag = {mode: 'move', x0: p.x, y0: p.y, sx: g.sx, sy: g.sy, sw: g.sw, sh: g.sh};
+    if(!(p.x > g.sx && p.x < g.sx + g.sw && p.y > g.sy && p.y < g.sy + g.sh)){ drag.sx = p.x - g.sw / 2; drag.sy = p.y - g.sh / 2; setFromBox(drag.sx, drag.sy, g.sw, g.sh); const g2 = getGeom(); drag.sx = g2.sx; drag.sy = g2.sy; } }
+  cropWrap.setPointerCapture(e.pointerId); e.preventDefault();
+});
+cropWrap.addEventListener('pointermove', e => {
+  if(!drag) return; e.preventDefault();
+  const p = ptr(e), vw = video.videoWidth, vh = video.videoHeight;
+  if(drag.mode === 'move'){ setFromBox(drag.sx + p.x - drag.x0, drag.sy + p.y - drag.y0, drag.sw, drag.sh); return; }
+  const {ax, ay} = drag, dx = p.x >= ax ? 1 : -1, dy = p.y >= ay ? 1 : -1;
+  const maxW = dx > 0 ? vw - ax : ax, maxH = dy > 0 ? vh - ay : ay, minS = Math.max(24, vw / 10);
+  let w = Math.min(maxW, Math.max(minS, Math.abs(p.x - ax))), h = Math.min(maxH, Math.max(minS, Math.abs(p.y - ay)));
+  if(aspect !== 'free'){ const a = curRatio(); w = Math.max(w, h * a); w = Math.min(w, maxW, maxH * a); h = w / a; }
+  setFromBox(dx > 0 ? ax : ax - w, dy > 0 ? ay : ay - h, w, h);
+});
+const endDrag = () => { if(drag){ drag = null; saveSettings(); } };
+cropWrap.addEventListener('pointerup', endDrag); cropWrap.addEventListener('pointercancel', endDrag);
+window.addEventListener('resize', drawCropView);
+
+let edState = null;
+const edCards = ['previewCard', 'frameCard', 'clipCard', 'capCard'];
+function openEditor(opts){
+  if(!video.videoWidth){ $('#status').innerHTML = '<span class="warn">Load your video first (step 1).</span>'; return; }
+  if(busy) return;
+  edState = opts || {};
+  const slot = $('#edSlot');
+  edCards.forEach(id => { const c = $('#' + id); const ph = document.createComment(id); c.parentNode.insertBefore(ph, c); c._ph = ph; slot.appendChild(c); });
+  $('#edTitle').textContent = edState.title || 'Edit GIF';
+  $('#edGo').textContent = edState.remake ? '↻ Remake this GIF' : 'Make this GIF';
+  $('#edStatus').textContent = '';
+  $('#sheet').hidden = false; document.body.classList.add('editing'); $('#sheet').scrollTop = 0;
+  requestAnimationFrame(() => { drawCropView(); edPlay(true); });
+}
+function closeEditor(){
+  if(busy) return;
+  loopRange = false; video.pause();
+  edCards.forEach(id => { const c = $('#' + id); if(c._ph){ c._ph.parentNode.insertBefore(c, c._ph); c._ph.remove(); c._ph = null; } });
+  $('#sheet').hidden = true; document.body.classList.remove('editing');
+  const back = edState && edState.back; edState = null;
+  if(back) back.scrollIntoView({block: 'center'});
+}
+function edPlay(on){
+  if(on){ loopRange = true; const st = getSt(); if(!(video.currentTime >= st && video.currentTime < getEn())) video.currentTime = Math.max(0, st || 0); video.play().catch(() => {}); $('#playRange').textContent = '■ Stop loop'; }
+  else { loopRange = false; video.pause(); }
+  $('#edPlay').textContent = on ? '❚❚ Pause' : '▶ Play';
+}
+video.addEventListener('pause', () => { if(!$('#sheet').hidden) $('#edPlay').textContent = '▶ Play'; });
+video.addEventListener('play', () => { if(!$('#sheet').hidden) $('#edPlay').textContent = '❚❚ Pause'; });
+$('#edPlay').onclick = () => edPlay(video.paused);
+$('#edClose').onclick = closeEditor;
+$('#openEd').onclick = () => openEditor({title: 'Crop & preview'});
+$('#edReset').onclick = () => { setAspect('orig'); $('#zoom').value = 100; $('#px').value = 50; $('#py').value = 50; ['zoom','px','py'].forEach(id => $('#' + id).oninput()); };
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('#sheet').hidden) closeEditor(); });
+$('#edGo').onclick = async () => {
+  if(busy || !edState) return;
+  if(edState.remake){
+    const st = Math.max(0, getSt()), en = Math.min(getEn(), video.duration);
+    if(isNaN(st) || isNaN(en) || en <= st){ $('#edStatus').innerHTML = '<span class="err">Fix the start/end times first.</span>'; return; }
+    busy = true; loopRange = false; video.pause(); $('#edGo').disabled = true;
+    try{
+      const r = await encodeRange(st, en, (i, n) => { $('#edStatus').textContent = `Remaking… frame ${i + 1} of ${n}`; });
+      edState.remake(r, st, en);
+      $('#edStatus').innerHTML = '<span class="ok">✓ Remade. It replaced the old one in your list.</span>';
+    }catch(err){ $('#edStatus').innerHTML = '<span class="err">Something went wrong: ' + escapeHtml(String(err && err.message || err)) + '</span>'; }
+    finally{ busy = false; $('#edGo').disabled = false; }
+    if(!$('#edStatus').querySelector('.err')) closeEditor();
+  } else {
+    closeEditor();
+    $('#make').scrollIntoView({behavior: 'smooth', block: 'center'});
+    $('#make').click();
+  }
+};
+
+document.addEventListener('keydown', e => {
+  if(e.code === 'Space' && !/INPUT|SELECT|BUTTON/.test(document.activeElement.tagName) && video.src){
+    e.preventDefault(); video.paused ? video.play() : video.pause();
+  }
+});
+
+// ---------- GIF encoding ----------
+class ByteOut{
+  constructor(n){ this.buf = new Uint8Array(n || 1<<20); this.len = 0; }
+  ensure(n){ if(this.len + n > this.buf.length){ const nb = new Uint8Array(Math.max(this.buf.length*2, this.len+n)); nb.set(this.buf.subarray(0,this.len)); this.buf = nb; } }
+  byte(b){ this.ensure(1); this.buf[this.len++] = b; }
+  u16(v){ this.byte(v & 255); this.byte((v >> 8) & 255); }
+  bytes(a){ this.ensure(a.length); this.buf.set(a, this.len); this.len += a.length; }
+  str(s){ for(let i=0;i<s.length;i++) this.byte(s.charCodeAt(i)); }
+  result(){ return this.buf.subarray(0, this.len); }
+}
+
+// Median-cut palette (256 colors) from a frame's pixels
+function buildPalette(data){
+  const n = data.length >> 2, step = Math.max(1, Math.floor(n / 40000));
+  const cnt = Math.ceil(n / step);
+  const ch = [new Uint8Array(cnt), new Uint8Array(cnt), new Uint8Array(cnt)];
+  let k = 0;
+  for(let i = 0; i < n; i += step){ const o = i << 2; ch[0][k] = data[o]; ch[1][k] = data[o+1]; ch[2][k] = data[o+2]; k++; }
+  const idx = new Uint32Array(k), tmp = new Uint32Array(k);
+  for(let i = 0; i < k; i++) idx[i] = i;
+  function stat(lo, hi){
+    let mn=[255,255,255], mx=[0,0,0];
+    for(let i = lo; i < hi; i++){ const p = idx[i]; for(let c=0;c<3;c++){ const v = ch[c][p]; if(v<mn[c]) mn[c]=v; if(v>mx[c]) mx[c]=v; } }
+    const r = [mx[0]-mn[0], mx[1]-mn[1], mx[2]-mn[2]];
+    const axis = r[0] >= r[1] && r[0] >= r[2] ? 0 : (r[1] >= r[2] ? 1 : 2);
+    return {lo, hi, axis, score: r[axis] * Math.sqrt(hi - lo)};
+  }
+  const boxes = [stat(0, k)];
+  const counts = new Uint32Array(256);
+  while(boxes.length < 256){
+    let bi = -1, best = 0;
+    for(let i = 0; i < boxes.length; i++){ const b = boxes[i]; if(b.hi - b.lo > 1 && b.score > best){ best = b.score; bi = i; } }
+    if(bi < 0) break;
+    const b = boxes[bi], c = ch[b.axis];
+    counts.fill(0);
+    for(let i = b.lo; i < b.hi; i++) counts[c[idx[i]]]++;
+    let pos = b.lo; const starts = new Uint32Array(256);
+    for(let v = 0; v < 256; v++){ starts[v] = pos; pos += counts[v]; }
+    for(let i = b.lo; i < b.hi; i++){ const p = idx[i]; tmp[starts[c[p]]++] = p; }
+    idx.set(tmp.subarray(b.lo, b.hi), b.lo);
+    const mid = b.lo + ((b.hi - b.lo) >> 1);
+    boxes.splice(bi, 1, stat(b.lo, mid), stat(mid, b.hi));
+  }
+  const pal = new Uint8Array(768);
+  boxes.forEach((b, j) => {
+    let r=0,g=0,bl=0; for(let i=b.lo;i<b.hi;i++){ const p=idx[i]; r+=ch[0][p]; g+=ch[1][p]; bl+=ch[2][p]; }
+    const m = Math.max(1, b.hi - b.lo);
+    pal[j*3] = Math.round(r/m); pal[j*3+1] = Math.round(g/m); pal[j*3+2] = Math.round(bl/m);
+  });
+  return {pal, size: boxes.length};
+}
+
+const cache = new Int16Array(1 << 18);
+function mapFrame(data, W, H, P, dither){
+  const {pal, size} = P, out = new Uint8Array(W * H);
+  cache.fill(-1);
+  const nearest = (r, g, b) => {
+    const key = ((r >> 2) << 12) | ((g >> 2) << 6) | (b >> 2);
+    let c = cache[key];
+    if(c < 0){
+      let bd = 1e9;
+      for(let i = 0; i < size; i++){
+        const dr = r - pal[i*3], dg = g - pal[i*3+1], db = b - pal[i*3+2];
+        const d = dr*dr*2 + dg*dg*4 + db*db*3;
+        if(d < bd){ bd = d; c = i; }
+      }
+      cache[key] = c;
+    }
+    return c;
+  };
+  if(!dither){
+    for(let i = 0, o = 0; i < W*H; i++, o += 4) out[i] = nearest(data[o], data[o+1], data[o+2]);
+    return out;
+  }
+  const S = 0.8; // dither strength
+  let cur = new Float32Array((W + 2) * 3), nxt = new Float32Array((W + 2) * 3);
+  for(let y = 0; y < H; y++){
+    nxt.fill(0);
+    for(let x = 0; x < W; x++){
+      const o = (y * W + x) << 2, j = (x + 1) * 3;
+      let r = data[o] + cur[j], g = data[o+1] + cur[j+1], b = data[o+2] + cur[j+2];
+      r = r < 0 ? 0 : r > 255 ? 255 : r; g = g < 0 ? 0 : g > 255 ? 255 : g; b = b < 0 ? 0 : b > 255 ? 255 : b;
+      const ci = nearest(r|0, g|0, b|0); out[y*W + x] = ci;
+      const e = [(r - pal[ci*3]) * S, (g - pal[ci*3+1]) * S, (b - pal[ci*3+2]) * S];
+      for(let c = 0; c < 3; c++){
+        cur[j+3+c] += e[c] * 7/16; nxt[j-3+c] += e[c] * 3/16; nxt[j+c] += e[c] * 5/16; nxt[j+3+c] += e[c] / 16;
+      }
+    }
+    const t = cur; cur = nxt; nxt = t;
+  }
+  return out;
+}
+
+const lzwTable = new Int16Array(4096 * 256);
+function lzw(indices, out){
+  out.byte(8); // min code size
+  const tmp = new ByteOut(indices.length);
+  let codeSize = 9, next = 258, cur = 0, bits = 0;
+  const emit = c => { cur |= c << bits; bits += codeSize; while(bits >= 8){ tmp.byte(cur & 255); cur >>>= 8; bits -= 8; } };
+  lzwTable.fill(-1);
+  emit(256);
+  let prefix = indices[0];
+  for(let i = 1; i < indices.length; i++){
+    const k = indices[i], key = (prefix << 8) | k, c = lzwTable[key];
+    if(c >= 0){ prefix = c; continue; }
+    emit(prefix);
+    if(next === 4096){ emit(256); next = 258; codeSize = 9; lzwTable.fill(-1); }
+    else { if(next >= (1 << codeSize)) codeSize++; lzwTable[key] = next++; }
+    prefix = k;
+  }
+  emit(prefix); emit(257);
+  if(bits > 0) tmp.byte(cur & 255);
+  const d = tmp.result();
+  for(let i = 0; i < d.length; i += 255){ const n = Math.min(255, d.length - i); out.byte(n); out.bytes(d.subarray(i, i + n)); }
+  out.byte(0);
+}
+
+function gifHeader(out, W, H){
+  out.str('GIF89a'); out.u16(W); out.u16(H); out.byte(0x70); out.byte(0); out.byte(0);
+  out.byte(0x21); out.byte(0xFF); out.byte(11); out.str('NETSCAPE2.0'); out.byte(3); out.byte(1); out.u16(0); out.byte(0);
+}
+function gifFrame(out, W, H, P, indices, delay){
+  out.byte(0x21); out.byte(0xF9); out.byte(4); out.byte(0); out.u16(delay); out.byte(0); out.byte(0);
+  out.byte(0x2C); out.u16(0); out.u16(0); out.u16(W); out.u16(H); out.byte(0x87);
+  out.bytes(P.pal);
+  lzw(indices, out);
+}
+
+function seekTo(t){
+  return new Promise(res => {
+    if(Math.abs(video.currentTime - t) < 1e-4 && video.readyState >= 2) return res();
+    let to;
+    const done = () => { video.removeEventListener('seeked', done); clearTimeout(to); res(); };
+    to = setTimeout(done, 4000);
+    video.addEventListener('seeked', done);
+    video.currentTime = t;
+  });
+}
+const yieldUI = () => new Promise(r => setTimeout(r, 0));
+
+const sigCanvas = document.createElement('canvas'); sigCanvas.width = 32; sigCanvas.height = 18;
+const sigCtx = sigCanvas.getContext('2d', {willReadFrequently: true});
+const sig = () => { sigCtx.drawImage(video, 0, 0, 32, 18); return sigCtx.getImageData(0, 0, 32, 18).data; };
+const diff = (a, b) => { let s = 0; for(let i = 0; i < a.length; i += 4) s += Math.abs(a[i]-b[i]) + Math.abs(a[i+1]-b[i+1]) + Math.abs(a[i+2]-b[i+2]); return s / (a.length * .75); };
+// Colour mix of a frame (4×4×4 bins). Camera angles on the same stage share a colour mix;
+// a different clip in a compilation usually doesn't.
+const hist = d => { const h = new Float32Array(64); let n = 0; for(let i = 0; i < d.length; i += 4){ h[(d[i] >> 6) * 16 + (d[i+1] >> 6) * 4 + (d[i+2] >> 6)]++; n++; } for(let k = 0; k < 64; k++) h[k] /= n; return h; };
+const hdist = (a, b) => { let s = 0; for(let k = 0; k < 64; k++) s += Math.abs(a[k] - b[k]); return s / 2; };
+const NEW_CLIP = 0.45;
+async function encodeRange(st, en, onFrame){
+  const fps = +$('#fps').value, n = Math.max(1, Math.round((en - st) * fps));
+  const g = getGeom(), dither = $('#dither').checked;
+  const cv = document.createElement('canvas'); cv.width = g.W; cv.height = g.H;
+  const ctx = cv.getContext('2d', {willReadFrequently: true});
+  const out = new ByteOut(1 << 22);
+  gifHeader(out, g.W, g.H);
+  const stats = {maxJump: 0, jumpAt: 0, lum: 0, dark: 0, still: 0, maxScene: 0, sceneAt: 0};
+  let prevSig = null, prevH = null;
+  for(let i = 0; i < n; i++){
+    await seekTo(Math.min(st + i / fps, video.duration - 0.001));
+    drawFrame(ctx, g);
+    { const sg = sig(); let l = 0; for(let k = 0; k < sg.length; k += 4) l += sg[k] * .3 + sg[k+1] * .59 + sg[k+2] * .11; l /= sg.length / 4;
+      stats.lum += l; if(l < 18) stats.dark++;
+      const hh = hist(sg);
+      if(prevSig){ const d = diff(prevSig, sg); if(d > stats.maxJump){ stats.maxJump = d; stats.jumpAt = i / fps; } if(d < 0.6) stats.still++;
+        const hd = hdist(prevH, hh); if(hd > stats.maxScene){ stats.maxScene = hd; stats.sceneAt = i / fps; } }
+      prevSig = sg; prevH = hh; }
+    if(i % 3 === 0) pctx.drawImage(cv, 0, 0);
+    const img = ctx.getImageData(0, 0, g.W, g.H).data;
+    const P = buildPalette(img);
+    const ind = mapFrame(img, g.W, g.H, P, dither);
+    const delay = Math.round((i + 1) * 100 / fps) - Math.round(i * 100 / fps);
+    gifFrame(out, g.W, g.H, P, ind, delay);
+    onFrame && onFrame(i, n);
+    await yieldUI();
+  }
+  out.byte(0x3B);
+  stats.lum /= n; stats.darkShare = stats.dark / n; stats.stillShare = n > 1 ? stats.still / (n - 1) : 0;
+  return {blob: new Blob([out.result()], {type: 'image/gif'}), g, n, stats};
+}
+const fmtSize = b => b < 1048576 ? Math.round(b/1024) + ' KB' : (b/1048576).toFixed(1) + ' MB';
+
+$('#make').onclick = async () => {
+  if(busy) return;
+  if(!video.videoWidth){
+    $('#status').innerHTML = '<span class="warn">Load your video first (step 1).</span> ' + (parseYouTube($('#ytUrl').value) && !isPhone
+      ? 'Copy the clip-download command at the top, paste it into Terminal and press Return, then drop the "spin-…" file from Videos for Social → Spin Studio Gifs into step 1.'
+      : 'Drop in the video file you downloaded.');
+    return;
+  }
+  const st = Math.max(0, getSt()), en = Math.min(getEn(), video.duration);
+  const status = $('#status');
+  if(isNaN(st) || isNaN(en) || en <= st){ status.innerHTML = '<span class="err">Fix the start/end times first.</span>'; return; }
+  const fps = +$('#fps').value, n = Math.max(1, Math.round((en - st) * fps));
+  if(n > 600){ status.innerHTML = `<span class="err">That's ${n} frames. Shorten the clip or lower the frames/sec (max 600).</span>`; return; }
+  busy = true; loopRange = false; video.pause();
+  $('#make').disabled = true; $('#result').style.display = 'none';
+  const bar = $('#bar'), fill = bar.firstElementChild; bar.style.display = 'block'; fill.style.width = '0%';
+  const t0 = performance.now();
+  try{
+    const r = await encodeRange(st, en, (i, n) => { fill.style.width = ((i + 1) / n * 100).toFixed(1) + '%'; status.textContent = `Frame ${i + 1} of ${n}…`; });
+    gifBlob = r.blob;
+    const img = $('#out'); if(img.src) URL.revokeObjectURL(img.src); img.src = URL.createObjectURL(gifBlob);
+    const mb = gifBlob.size / 1048576;
+    $('#outInfo').innerHTML = `<b>${r.g.W}×${r.g.H}</b> · ${r.n} frames · <b>${fmtSize(gifBlob.size)}</b>` + (mb > 8 ? ' <span class="warn">(big: try a smaller width or lower fps)</span>' : '');
+    $('#result').style.display = 'block';
+    status.textContent = `Done in ${((performance.now() - t0)/1000).toFixed(1)}s ✨`;
+    $('#saveHint').textContent = downloads ? '' : 'To save: right-click the GIF → "Save image as…" (or long-press on phone).';
+  }catch(err){
+    status.innerHTML = '<span class="err">Something went wrong: ' + escapeHtml(String(err && err.message || err)) + '</span>';
+  }finally{
+    busy = false; $('#make').disabled = false; bar.style.display = 'none';
+    seek(st);
+  }
+};
+
+// ---------- download ----------
+function __siteSave(name, blob){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),60000); }
+let downloads = null;
+(async () => { try{ if(window.claude && window.claude.use) downloads = await window.claude.use('downloads'); }catch(e){} })();
+async function offerSave(name, blob, hint, fallback){
+  if(!downloads){ __siteSave(name, blob); hint.textContent = 'Saved to your Downloads ✓ (on iPhone: Files → Downloads)'; return; }
+  try{ await downloads.save({filename: name, data: blob}); hint.textContent = 'Saved ✓'; }
+  catch(e){
+    const code = e && e.code;
+    hint.textContent = code === 'declined' ? 'Download cancelled.' :
+      code === 'rate_limited' ? 'A download prompt is already open. Try again in a moment.' :
+      'Download isn\'t available here. ' + fallback;
+  }
+}
+$('#save').onclick = () => {
+  if(!gifBlob) return;
+  const name = `${/^spin-/i.test(fileName) ? '' : 'spin-'}${fileName}-${$('#start').value.replace(/[:.]/g,'-')}.gif`;
+  offerSave(name, gifBlob, $('#saveHint'), 'Right-click the GIF above → "Save image as…" (or long-press on phone).');
+};
+
+// ---------- scan for snippets ----------
+let scan = null, segs = [], scanAbort = false, batchFiles = [];
+const joined = new Set(), picked = new Set(), labels = new Map();
+const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+
+// Narrow a cut down to the exact frame: returns {lo: last time in old scene, hi: first time in new scene}
+async function refineCut(c){
+  if(c.ref) return c.ref;
+  let lo = c.a, hi = c.b;
+  for(let k = 0; k < 6 && hi - lo > 0.02; k++){
+    const mid = (lo + hi) / 2; await seekTo(mid);
+    const s = sig();
+    if(diff(s, c.sa) <= diff(s, c.sb)) lo = mid; else hi = mid;
+  }
+  return (c.ref = {lo, hi});
+}
+async function doScan(onP){
+  const T = document.createElement('canvas'); T.width = 192; T.height = Math.max(2, Math.round(192 * video.videoHeight / video.videoWidth));
+  const tx = T.getContext('2d');
+  const thumb = () => { tx.drawImage(video, 0, 0, T.width, T.height); return T.toDataURL('image/jpeg', .7); };
+  const dur = video.duration, cands = [];
+  let prev = null, prevT = 0, firstThumb = null;
+  const handle = t => {
+    const s = sig();
+    if(!prev) firstThumb = thumb();
+    else { const d = diff(prev, s); if(d >= 12) cands.push({a: prevT, b: t, d, sa: prev, sb: s, hd: hdist(hist(prev), hist(s)), thumb: thumb()}); }
+    prev = s; prevT = t; onP(Math.min(1, t / dur));
+  };
+  await seekTo(0);
+  if('requestVideoFrameCallback' in HTMLVideoElement.prototype){
+    await new Promise((res, rej) => {
+      let done = false;
+      const fin = () => { if(done) return; done = true; video.pause(); res(); };
+      const cb = (now, meta) => {
+        if(done) return;
+        if(scanAbort){ fin(); return; }
+        handle(meta.mediaTime);
+        if(video.ended || meta.mediaTime >= dur - 0.05) fin(); else video.requestVideoFrameCallback(cb);
+      };
+      video.addEventListener('ended', fin, {once: true});
+      video.muted = true; video.playbackRate = 16;
+      video.requestVideoFrameCallback(cb);
+      video.play().catch(e => { done = true; rej(e); });
+    });
+  } else {
+    for(let t = 0; t < dur && !scanAbort; t += 0.5){ await seekTo(t); handle(t); await yieldUI(); }
+  }
+  return {cands, firstThumb, dur: scanAbort ? prevT : dur};
+}
+
+function reviewGif(r, len, edgeFuzzy, part){
+  const why = [];
+  if(len < 1.5) why.push(`Very short (${len.toFixed(1)}s)`);
+  if(r.stats.maxScene >= NEW_CLIP && r.stats.sceneAt > 0.3 && r.stats.sceneAt < len - 0.3) why.push(`Looks like 2 clips: it changes to a new scene at ${r.stats.sceneAt.toFixed(1)}s`);
+  if(r.stats.darkShare > 0.5) why.push('Mostly dark or blank');
+  if(r.stats.stillShare > 0.85 && len > 1) why.push('Barely moves (maybe a title card or a pause)');
+  if(r.blob.size > 8 * 1048576) why.push(`Big file (${fmtSize(r.blob.size)}): try width 320 or fewer frames/sec`);
+  if(edgeFuzzy) why.push('The cut at the start or end may be off by a frame');
+  if(part) why.push(`Long snippet, saved as ${part}`);
+  return why;
+}
+function fillFig(fig, entry){
+  const {name, blob, why} = entry;
+  fig.className = why.length ? 'flag' : '';
+  const old = fig.querySelector('img'); if(old) URL.revokeObjectURL(old.src);
+  fig.innerHTML = `<img src="${URL.createObjectURL(blob)}" alt=""><div>${escapeHtml(name)}</div><div>${fmtSize(blob.size)} · ${(entry.e - entry.s).toFixed(1)}s</div>${why.length ? `<ul class="why">${why.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>` : '<div class="okk">✓ Looks good</div>'}<button class="sm">⬇ Save</button><button class="sm redo">✂ Edit / crop</button><div class="hint"></div>`;
+  fig.querySelector('button').onclick = () => offerSave(name, entry.blob, fig.querySelector('.hint'), 'Right-click the GIF → "Save image as…"');
+  fig.querySelector('.redo').onclick = () => {
+    if(busy) return;
+    setSt(entry.s); setEn(entry.e); updateClipInfo(); seek(entry.s);
+    openEditor({title: 'Edit ' + name, back: fig, remake: (r, st, en) => {
+      entry.blob = r.blob; entry.s = st; entry.e = en; entry.why = reviewGif(r, en - st, false, '');
+      fillFig(fig, entry);
+    }});
+  };
+}
+function threshold(){ return 60 - (+$('#sens').value) * 0.48; }
+function computeSegs(){
+  if(!scan) return;
+  const thr = threshold(), minLen = +$('#minLen').value, dur = scan.dur;
+  segs = [];
+  let cur = {s: 0, thumb: scan.firstThumb, key: '0.000', c: null};
+  for(const c of scan.cands){
+    const key = c.b.toFixed(3);
+    if(c.d < thr || joined.has(key) || c.b > dur) continue;
+    // Only camera-angle changes inside the same clip get merged to reach the shortest length.
+    // A real change to a new clip always starts a new snippet, even if the piece is short.
+    if(c.a - cur.s < minLen && !(c.hd >= NEW_CLIP)) continue;
+    segs.push({...cur, e: c.ref ? c.ref.lo : c.a, endC: c});
+    cur = {s: c.ref ? c.ref.hi : c.b, thumb: c.thumb, key, c};
+  }
+  segs.push({...cur, e: dur, endC: null});
+  const lastSeg = segs[segs.length-1];
+  if(segs.length > 1 && lastSeg.e - lastSeg.s < minLen && !(lastSeg.c && lastSeg.c.hd >= NEW_CLIP)){ const last = segs.pop(); segs[segs.length-1].e = last.e; segs[segs.length-1].endC = null; }
+  renderSegs();
+}
+async function exactTimes(sg){
+  const was = busy; busy = true;
+  try{
+    const s0 = sg.c ? (await refineCut(sg.c)).hi + 0.005 : sg.s;
+    const e0 = sg.endC ? (await refineCut(sg.endC)).lo : sg.e;
+    return [s0, Math.max(s0 + 0.1, e0)];
+  } finally { busy = was; }
+}
+function renderSegs(){
+  const grid = $('#segGrid'); grid.innerHTML = '';
+  segs.forEach((sg, i) => {
+    const len = sg.e - sg.s;
+    const el = document.createElement('div');
+    el.className = 'seg' + (picked.has(sg.key) ? ' on' : '');
+    el.innerHTML = `<img src="${sg.thumb}" alt=""><span class="check">✓</span>
+      <div class="meta"><span>#${i+1} · ${fmtTime(toYT(sg.s))}</span><span class="${len > 12 ? 'long' : ''}">${len.toFixed(1)}s</span></div>
+      <input class="lbl" type="text" placeholder="Label (optional)" value="${escapeHtml(labels.get(sg.key) || '')}">
+      <div class="acts"><button data-act="play" title="Play this snippet">▶</button><button data-act="edit" title="Open in the editor above">Edit</button>${i < segs.length - 1 ? '<button data-act="join" title="Merge with the next snippet">Join ↓</button>' : ''}</div>`;
+    el.onclick = e => {
+      if(e.target.closest('input')) return;
+      const act = e.target.closest('button') && e.target.closest('button').dataset.act;
+      if(act === 'play' || act === 'edit'){ if(busy) return; exactTimes(sg).then(([s0, e0]) => {
+        setSt(s0); setEn(e0); updateClipInfo();
+        if(act === 'play'){ loopRange = true; video.currentTime = s0; video.play().catch(()=>{}); $('#playRange').textContent = '■ Stop loop'; }
+        else { seek(s0); openEditor({title: `Edit snippet #${i + 1}`, back: el}); }
+      }); return; }
+      if(act === 'join'){ joined.add(segs[i+1].key); if(picked.has(segs[i+1].key)){ picked.delete(segs[i+1].key); picked.add(sg.key); } computeSegs(); return; }
+      picked.has(sg.key) ? picked.delete(sg.key) : picked.add(sg.key);
+      el.classList.toggle('on'); updateBatchBtn();
+    };
+    el.querySelector('input').oninput = e => labels.set(sg.key, e.target.value);
+    grid.appendChild(el);
+  });
+  updateBatchBtn();
+}
+function updateBatchBtn(){
+  const n = segs.filter(s => picked.has(s.key)).length;
+  $('#batchBtn').disabled = !n; $('#batchBtn').textContent = n ? `Make ${n} GIF${n > 1 ? 's' : ''}` : 'Tick snippets to make GIFs';
+}
+$('#sens').oninput = () => { const v = +$('#sens').value; $('#sensV').textContent = v < 34 ? 'Fewer' : v < 67 ? 'Normal' : 'More'; computeSegs(); };
+$('#minLen').onchange = () => { saveSettings(); computeSegs(); };
+$('#selAll').onclick = () => { segs.forEach(s => picked.add(s.key)); renderSegs(); };
+$('#selNone').onclick = () => { picked.clear(); renderSegs(); };
+
+$('#scanBtn').onclick = async () => {
+  const st = $('#scanStatus');
+  if(!video.videoWidth){ st.innerHTML = '<span class="warn">Load a video first (step 1).</span>'; return; }
+  if(busy) return;
+  busy = true; scanAbort = false; loopRange = false;
+  $('#scanBtn').disabled = true; $('#scanCancel').hidden = false; $('#make').disabled = true;
+  const t0 = performance.now();
+  try{
+    scan = await doScan(p => st.textContent = `Scanning… ${Math.round(p * 100)}%`);
+    joined.clear(); picked.clear(); labels.clear(); batchFiles = [];
+    $('#batchOut').innerHTML = ''; $('#batchSaveRow').hidden = true;
+    $('#scanControls').hidden = false;
+    computeSegs();
+    // fine-tune every cut we use so the lengths shown are exact
+    const used = segs.map(g => g.c).filter(Boolean);
+    for(let i = 0; i < used.length && !scanAbort; i++){ st.textContent = `Fine-tuning the cuts… ${i + 1} of ${used.length}`; await refineCut(used[i]); if(i % 5 === 0) await yieldUI(); }
+    computeSegs();
+    st.textContent = `Found ${segs.length} snippets in ${((performance.now() - t0)/1000).toFixed(0)}s${scanAbort ? ' (stopped early)' : ''}. Tap the ones you want.`;
+  }catch(err){
+    st.innerHTML = '<span class="err">Scan failed: ' + escapeHtml(String(err && err.message || err)) + '</span>';
+  }finally{
+    busy = false; video.playbackRate = 1; video.pause();
+    $('#scanBtn').disabled = false; $('#scanCancel').hidden = true; $('#make').disabled = false;
+    seek(0);
+  }
+};
+$('#scanCancel').onclick = () => { scanAbort = true; };
+
+$('#batchBtn').onclick = async () => {
+  const list = segs.filter(s => picked.has(s.key));
+  if(!list.length || busy) return;
+  const fps = +$('#fps').value, maxLen = 600 / fps;
+  busy = true; loopRange = false; video.pause();
+  $('#batchBtn').disabled = true; $('#make').disabled = true; $('#scanBtn').disabled = true;
+  const bar = $('#bbar'), fill = bar.firstElementChild, status = $('#batchStatus');
+  bar.style.display = 'block'; fill.style.width = '0%';
+  const totalFrames = list.reduce((a, s) => a + Math.max(1, Math.round((s.e - s.s) * fps)), 0);
+  let doneFrames = 0, trimmed = 0, flagged = 0; batchFiles = [];
+  const outEl = $('#batchOut'); outEl.innerHTML = ''; $('#batchSaveRow').hidden = true;
+  const base = slug(fileName.replace(/^spin-/i, '')) || 'clip';
+  const t0 = performance.now();
+  try{
+    for(let k = 0; k < list.length; k++){
+      const sg = list[k];
+      status.textContent = `GIF ${k + 1} of ${list.length} · finding the exact cut…`;
+      const s0 = sg.c ? (await refineCut(sg.c)).hi + 0.005 : sg.s;
+      const e0 = sg.endC ? (await refineCut(sg.endC)).lo : sg.e;
+      const fuzzy = (sg.c && sg.c.ref && sg.c.ref.hi - sg.c.ref.lo > 0.08) || (sg.endC && sg.endC.ref && sg.endC.ref.hi - sg.endC.ref.lo > 0.08);
+      const total = e0 - s0, parts = Math.max(1, Math.ceil(total / maxLen - 0.001));
+      if(parts > 1) trimmed++;
+      for(let q = 0; q < parts; q++){
+        const ps = s0 + q * total / parts, pe = s0 + (q + 1) * total / parts;
+        const r = await encodeRange(ps, pe, (i, n) => {
+          doneFrames++; fill.style.width = Math.min(100, doneFrames / totalFrames * 100).toFixed(1) + '%';
+          status.textContent = `GIF ${k + 1} of ${list.length}${parts > 1 ? ` (part ${q + 1} of ${parts})` : ''} · frame ${i + 1} of ${n}…`;
+        });
+        const lbl = slug(labels.get(sg.key));
+        const name = `spin-${lbl || base}-${String(segs.indexOf(sg) + 1).padStart(2, '0')}${parts > 1 ? 'abcdefghij'[q] : ''}.gif`;
+        const why = reviewGif(r, pe - ps, fuzzy, parts > 1 ? `part ${q + 1} of ${parts}` : '');
+        if(why.length) flagged++;
+        const entry = {name, blob: r.blob, why, s: ps, e: pe};
+        batchFiles.push(entry);
+        const fig = document.createElement('figure');
+        fillFig(fig, entry);
+        outEl.appendChild(fig);
+      }
+    }
+    const made = batchFiles.length;
+    status.innerHTML = `Made ${made} GIFs in ${((performance.now() - t0)/1000).toFixed(0)}s ✨` + (trimmed ? ` · ${trimmed} long snippet${trimmed > 1 ? 's were' : ' was'} split into parts so nothing got cut off` : '') +
+      (flagged ? `<br><b class="warn">⚠ ${flagged} to check</b> · ${made - flagged} look good <button class="sm" id="onlyFlag">Show only the ones to check</button>` : `<br><span class="ok">✓ All ${made} look good</span>`);
+    const of = $('#onlyFlag'); if(of) of.onclick = () => { const on = outEl.classList.toggle('onlyflag'); of.textContent = on ? 'Show all' : 'Show only the ones to check'; };
+    $('#batchSaveRow').hidden = false; $('#zipHint').textContent = '';
+  }catch(err){
+    status.innerHTML = '<span class="err">Something went wrong: ' + escapeHtml(String(err && err.message || err)) + '</span>';
+  }finally{
+    busy = false; bar.style.display = 'none'; updateBatchBtn();
+    $('#make').disabled = false; $('#scanBtn').disabled = false;
+  }
+};
+
+// ---------- zip (store only) ----------
+const CRC = (() => { const t = new Uint32Array(256); for(let n = 0; n < 256; n++){ let c = n; for(let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u8){ let c = 0xFFFFFFFF; for(let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+async function makeZip(files){
+  const out = new ByteOut(1 << 22), cd = new ByteOut(4096), enc = new TextEncoder();
+  const u32 = (o, v) => { o.byte(v & 255); o.byte((v >>> 8) & 255); o.byte((v >>> 16) & 255); o.byte((v >>> 24) & 255); };
+  const d = new Date();
+  const dt = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  const tm = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  for(const f of files){
+    const data = new Uint8Array(await f.blob.arrayBuffer()), name = enc.encode(f.name), crc = crc32(data), off = out.len;
+    u32(out, 0x04034b50); out.u16(20); out.u16(0x0800); out.u16(0); out.u16(tm); out.u16(dt); u32(out, crc); u32(out, data.length); u32(out, data.length); out.u16(name.length); out.u16(0); out.bytes(name); out.bytes(data);
+    u32(cd, 0x02014b50); cd.u16(20); cd.u16(20); cd.u16(0x0800); cd.u16(0); cd.u16(tm); cd.u16(dt); u32(cd, crc); u32(cd, data.length); u32(cd, data.length); cd.u16(name.length); cd.u16(0); cd.u16(0); cd.u16(0); cd.u16(0); u32(cd, 0); u32(cd, off); cd.bytes(name);
+  }
+  const cdOff = out.len; out.bytes(cd.result());
+  u32(out, 0x06054b50); out.u16(0); out.u16(0); out.u16(files.length); out.u16(files.length); u32(out, cd.len); u32(out, cdOff); out.u16(0);
+  return new Blob([out.result()], {type: 'application/zip'});
+}
+$('#saveZip').onclick = async () => {
+  if(!batchFiles.length) return;
+  const zip = await makeZip(batchFiles);
+  offerSave(`spin-${slug(fileName.replace(/^spin-/i, '')) || 'clip'}-${batchFiles.length}-gifs.zip`, zip, $('#zipHint'), 'Save each GIF with its own button instead.');
+};
+
+window.spinDebug = () => ({batchFiles, makeZip, segs});
+try{ const l = localStorage.getItem(KEY + '-link'); if(l){ $('#ytUrl').value = l; onLink(false); } }catch(e){}
+updateClipInfo();
+})();
+</script>
+<script src="stickers.js"></script>
+<script>
+{const pv=document.getElementById('preview');
+Stickers.init({panel:document.getElementById('stickerPanel'),canvas:pv,
+ toFrac:(e)=>{const r=pv.getBoundingClientRect();if(!r.width)return null;return {x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height,W:pv.width,H:pv.height}},
+ onChange:()=>{try{window.__boothRefresh&&window.__boothRefresh()}catch(_){}}});}
+</script>
+</body>
+</html>
