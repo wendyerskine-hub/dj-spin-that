@@ -76,7 +76,8 @@ input:focus-visible,.pick:focus-visible,.big:focus-visible{outline:4px solid #ff
     <div class="row"><label class="big alt small" for="addPh" id="addLbl">＋ Add photos</label><input id="addPh" type="file" accept="image/*" multiple hidden><button type="button" class="big alt small" id="editPh">🗑 Remove photos</button></div>
     <p class="lbl" style="margin:0">Photos stay on this iPad only. They never go on the website.</p>
   </section>
-  <section class="step" aria-labelledby="s2"><h2 id="s2"><span class="n">3</span>Pick a sticker</h2>
+  <section class="step" aria-labelledby="s2"><h2 id="s2"><span class="n">3</span>Pick stickers</h2>
+    <p class="lbl" style="margin:0">Pick a Little DJ sticker, an emoji, or both! Tap one again to take it off.</p>
     <p class="lbl" style="margin:0">💜 Little DJ's stickers</p>
     <div class="grid stk ldset" id="ldStickers" role="group" aria-label="Little DJ stickers"></div>
     <p class="lbl" style="margin:0">Or an emoji</p>
@@ -124,9 +125,9 @@ const LDKEYS=LD.map(([n])=>'ld-'+n);
 const isLD=s=>LDKEYS.includes(s);
 const imgCache={};
 function loadImg(src){if(!imgCache[src])imgCache[src]=new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src});return imgCache[src]}
-const ldSrc=s=>'stickers/'+s.slice(3)+'.png?v=2';
+const ldSrc=s=>'stickers/'+s.slice(3)+'.png?v=3';
 const clean=s=>String(s||'').replace(/[<>]/g,'').replace(/\s+/g,' ').trim().slice(0,14);
-let pick='jk',sticker='💜',photoId=null,editing=false;
+let pick='jk',ldStk=null,emoji='💜',photoId=null,editing=false;
 /* photos: saved in this browser's IndexedDB only, never uploaded */
 const DBN='little-army',ST='photos';
 function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DBN,1);r.onupgradeneeded=()=>r.result.createObjectStore(ST,{keyPath:'id',autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
@@ -147,11 +148,12 @@ loadPhotos();
 try{const f=localStorage.getItem('la-from');if(f)$('#from').value=f}catch(e){}
 
 $('#members').innerHTML=ORDER.map(k=>{const d=M[k];return `<button type="button" class="pick" data-m="${k}" aria-pressed="${k===pick}" style="--c:${d.c}"><span class="dot" style="background:${k==='ot7'?'conic-gradient(#c9ced8,#ff8fc8,#c9ced8,#f4f4f8,#2a2a33,#ff4d5e,#e8c46a,#c9ced8)':k==='jimin'?'#15151b':d.c}"></span>${d.n}<small>${d.kr}</small></button>`}).join('');
-$('#ldStickers').innerHTML=LD.map(([n,label])=>`<button type="button" class="pick ld" data-s="ld-${n}" aria-pressed="false" aria-label="${label}"><img src="stickers/${n}.png?v=2" alt="" loading="lazy"></button>`).join('');
-$('#stickers').innerHTML=STICKERS.map(s=>`<button type="button" class="pick" data-s="${s}" aria-pressed="${s===sticker}" aria-label="Sticker ${s}">${s}</button>`).join('');
+$('#ldStickers').innerHTML=LD.map(([n,label])=>`<button type="button" class="pick ld" data-s="ld-${n}" aria-pressed="false" aria-label="${label}"><img src="stickers/${n}.png?v=3" alt="" loading="lazy"></button>`).join('');
+$('#stickers').innerHTML=STICKERS.map(s=>`<button type="button" class="pick" data-s="${s}" aria-pressed="${s===emoji}" aria-label="Sticker ${s}">${s}</button>`).join('');
+const syncStk=()=>document.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===ldStk||x.dataset.s===emoji)));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-m],[data-s]');if(!b)return;
-  if(b.dataset.m){pick=b.dataset.m;photoId=null;drawTray();document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(sticker==='💜'||Object.values(M).some(d=>d.e===sticker)){sticker=M[pick].e;document.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.s===sticker)))}}
-  else{sticker=b.dataset.s;document.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}});
+  if(b.dataset.m){pick=b.dataset.m;photoId=null;drawTray();document.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(emoji==='💜'||Object.values(M).some(d=>d.e===emoji)){emoji=M[pick].e;syncStk()}}
+  else{const v=b.dataset.s;if(isLD(v))ldStk=ldStk===v?null:v;else emoji=emoji===v?null:v;syncStk()}});
 
 /* ---- drawing ---- */
 const W=650,H=1004;
@@ -159,7 +161,7 @@ function rr(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);
 function ground(x){x.fillStyle='#0b0912';x.fillRect(0,0,W,H);let g=x.createRadialGradient(80,60,0,80,60,700);g.addColorStop(0,'rgba(255,42,75,.42)');g.addColorStop(1,'rgba(255,42,75,0)');x.fillStyle=g;x.fillRect(0,0,W,H);g=x.createRadialGradient(W-60,H-60,0,W-60,H-60,760);g.addColorStop(0,'rgba(168,85,247,.5)');g.addColorStop(1,'rgba(168,85,247,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
 function frame(x,c){x.save();x.shadowColor=c;x.shadowBlur=26;x.lineWidth=5;x.strokeStyle=c;rr(x,22,22,W-44,H-44,32);x.stroke();x.restore()}
 function fit(x,txt,font,max,size){let s=size;do{x.font=font.replace('{s}',s);s-=2}while(x.measureText(txt).width>max&&s>20);return s+2}
-function drawFront(x,m,stk,to,img,stkImg){const d=M[m];ground(x);frame(x,d.c);
+function drawFront(x,m,em,to,img,stkImg){const d=M[m];ground(x);frame(x,d.c);
   x.textAlign='center';x.fillStyle='#e6dbff';x.font="600 20px 'JetBrains Mono',monospace";x.fillText('ARIRANG',120,72);x.fillText('2026',W-110,72);
   x.font="900 40px 'Barlow Condensed',sans-serif";const a='DJ SPIN ',b='THAT',wa=x.measureText(a).width,wb=x.measureText(b).width,sx=W/2-(wa+wb)/2;x.textAlign='left';x.fillStyle='#ff2a4b';x.fillText(a,sx,128);x.fillStyle='#a855f7';x.fillText(b,sx+wa,128);x.textAlign='center';
   if(img){// photo window, cover-cropped toward the top (faces)
@@ -175,7 +177,10 @@ function drawFront(x,m,stk,to,img,stkImg){const d=M[m];ground(x);frame(x,d.c);
   x.beginPath();x.arc(cx,cy,img?5:8,0,7);x.fillStyle='#08070c';x.fill();
   // sticker
   if(stkImg){const S=img?150:190,cy2=(img?620:560)-34;x.save();x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=18;x.drawImage(stkImg,W-128-S/2,cy2-S/2,S,S);x.restore()}
-  else{x.font='96px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';x.fillText(stk,W-128,img?620:560)}
+  if(em){x.font=(stkImg&&img?'80px ':'96px ')+'"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+    if(!stkImg)x.fillText(em,W-128,img?620:560);       // emoji alone: the usual sticker spot
+    else if(img){x.save();x.translate(116,206);x.rotate(-.18);x.fillText(em,0,26);x.restore()}  // both, with a photo: stuck on the photo's top corner
+    else x.fillText(em,128,560)}                         // both, no photo: mirrored on the left
   // name
   const nm=d.lower?d.n:d.n.toUpperCase();const s=fit(x,nm,"900 {s}px 'Barlow Condensed',sans-serif",W-120,120);x.font=`900 ${s}px 'Barlow Condensed',sans-serif`;x.save();x.shadowColor=d.c;x.shadowBlur=24;x.fillStyle=d.c;x.fillText(nm,W/2,690);x.restore();
   x.fillStyle='#fff';x.font="700 40px 'Noto Sans KR',sans-serif";x.fillText(d.kr,W/2,752);
@@ -187,27 +192,26 @@ function drawBack(x,from,badge){ground(x);frame(x,'#a855f7');x.textAlign='center
   UM.forEach(([a,b,r])=>{const X=ux(a),Y=uy(b),R=r*1.5;x.save();x.shadowColor='#b48cff';x.shadowBlur=14;x.beginPath();for(let k=0;k<10;k++){const an=-Math.PI/2+k*Math.PI/5,rr2=k%2?R*.45:R;x.lineTo(X+Math.cos(an)*rr2,Y+Math.sin(an)*rr2)}x.closePath();x.fillStyle='#fff';x.fill();x.restore()});
   x.save();x.shadowColor='#a855f7';x.shadowBlur=30;x.fillStyle='#fff';x.font="900 130px 'Barlow Condensed',sans-serif";x.fillText('ARMY',W/2,440);x.restore();
   x.fillStyle='#e6dbff';x.font="800 42px Outfit,sans-serif";x.fillText('Borahae 💜',W/2,505);
-  x.fillStyle='#fff';x.font="800 34px Outfit,sans-serif";x.fillText('We met at the',W/2,610);x.fillText('BTS live viewing! 🎬',W/2,656);
-  if(from){x.fillStyle='#e6dbff';x.font="800 36px Outfit,sans-serif";const t='From '+from;const s=fit(x,t,"800 {s}px Outfit,sans-serif",W-120,36);x.font=`800 ${s}px Outfit,sans-serif`;x.fillText(t,W/2,750)}
+  if(from){x.fillStyle='#e6dbff';x.font="800 36px Outfit,sans-serif";const t='From '+from;const s=fit(x,t,"800 {s}px Outfit,sans-serif",W-120,36);x.font=`800 ${s}px Outfit,sans-serif`;x.fillText(t,W/2,640)}
   x.fillStyle='#fff';x.font="800 26px Outfit,sans-serif";x.fillText('Every BTS surprise song 🎧',W/2-80,850);
   x.fillStyle='#e6dbff';x.font="600 26px 'JetBrains Mono',monospace";x.fillText('djspinthat.net',W/2-80,892);
   // "Made by Little DJ" badge (its QR opens djspinthat.net)
   if(badge){x.save();x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=16;x.drawImage(badge,W-196,H-226,150,150);x.restore()}}
 
-async function render(m,stk,to,from,img){try{await document.fonts.load("900 40px 'Barlow Condensed'");await document.fonts.load("800 40px Outfit");await document.fonts.load("700 40px 'Noto Sans KR'")}catch(e){}
-  const [stkImg,badge]=await Promise.all([isLD(stk)?loadImg(ldSrc(stk)):null,loadImg('stickers/sticker.png')]);
-  drawFront($('#cvF').getContext('2d'),m,stk,to,img,stkImg);drawBack($('#cvB').getContext('2d'),from,badge)}
-function link(m,stk,to,from){const u=new URL(location.origin+location.pathname);u.searchParams.set('m',m);u.searchParams.set('s',stk);if(to)u.searchParams.set('to',to);if(from)u.searchParams.set('from',from);return u.toString()}
+async function render(m,ld,em,to,from,img){try{await document.fonts.load("900 40px 'Barlow Condensed'");await document.fonts.load("800 40px Outfit");await document.fonts.load("700 40px 'Noto Sans KR'")}catch(e){}
+  const [stkImg,badge]=await Promise.all([isLD(ld)?loadImg(ldSrc(ld)):null,loadImg('stickers/sticker.png')]);
+  drawFront($('#cvF').getContext('2d'),m,em,to,img,stkImg);drawBack($('#cvB').getContext('2d'),from,badge)}
+function link(m,ld,em,to,from){const u=new URL(location.origin+location.pathname);u.searchParams.set('m',m);if(ld)u.searchParams.set('s',ld);if(em)u.searchParams.set('e',em);if(to)u.searchParams.set('to',to);if(from)u.searchParams.set('from',from);return u.toString()}
 function cardBlob(){return new Promise(res=>{const c=document.createElement('canvas');c.width=W*2+40;c.height=H;const x=c.getContext('2d');x.fillStyle='#0b0912';x.fillRect(0,0,c.width,c.height);x.drawImage($('#cvF'),0,0);x.drawImage($('#cvB'),W+40,0);c.toBlob(res,'image/png')})}
 let current=null;
-async function show(m,stk,to,from,received,img){current={m,stk,to,from};$('#maker').hidden=true;$('#resultWrap').hidden=false;$('#flip').classList.remove('turned');
-  await render(m,stk,to,from,img);$('#qrNote').hidden=!img;
+async function show(m,ld,em,to,from,received,img){current={m,ld,em,to,from};$('#maker').hidden=true;$('#resultWrap').hidden=false;$('#flip').classList.remove('turned');
+  await render(m,ld,em,to,from,img);$('#qrNote').hidden=!img;
   $('#doneTxt').textContent=received?(to?`${to}, you got a card! 💜`:'You got a card! 💜'):'Here’s your card! 💜';
   $('#qrbox').hidden=!!received;$('#again').hidden=!!received;$('#recvHint').hidden=!received;
-  if(!received){$('#qr').innerHTML='';if(window.qrcode){const q=qrcode(0,'M');q.addData(link(m,stk,to,from),'Byte');q.make();$('#qr').innerHTML=q.createSvgTag({cellSize:6,margin:0,scalable:true});const sv=$('#qr svg');if(sv){sv.setAttribute('width','240');sv.setAttribute('height','240');sv.querySelectorAll('path,rect').forEach(e=>{if(e.getAttribute('fill')==='black')e.setAttribute('fill','#1a0b2e')})}}else $('#qr').textContent=link(m,stk,to,from)}
+  if(!received){$('#qr').innerHTML='';if(window.qrcode){const q=qrcode(0,'M');q.addData(link(m,ld,em,to,from),'Byte');q.make();$('#qr').innerHTML=q.createSvgTag({cellSize:6,margin:0,scalable:true});const sv=$('#qr svg');if(sv){sv.setAttribute('width','240');sv.setAttribute('height','240');sv.querySelectorAll('path,rect').forEach(e=>{if(e.getAttribute('fill')==='black')e.setAttribute('fill','#1a0b2e')})}}else $('#qr').textContent=link(m,ld,em,to,from)}
   setTimeout(()=>$('#flip').classList.add('turned'),1400);setTimeout(()=>$('#flip').classList.remove('turned'),3400);
   scrollTo({top:0,behavior:'smooth'})}
-$('#make').addEventListener('click',async()=>{const to=clean($('#to').value),from=clean($('#from').value);try{localStorage.setItem('la-from',from)}catch(e){}const p=photoId&&PH.find(x=>x.id===photoId);let img=null;if(p){img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=urls[p.id]||URL.createObjectURL(p.blob)})}show(pick,sticker,to,from,false,img)});
+$('#make').addEventListener('click',async()=>{const to=clean($('#to').value),from=clean($('#from').value);try{localStorage.setItem('la-from',from)}catch(e){}const p=photoId&&PH.find(x=>x.id===photoId);let img=null;if(p){img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=urls[p.id]||URL.createObjectURL(p.blob)})}show(pick,ldStk,emoji,to,from,false,img)});
 $('#flip').addEventListener('click',()=>$('#flip').classList.toggle('turned'));
 $('#flip').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#flip').classList.toggle('turned')}});
 $('#again').addEventListener('click',()=>{$('#resultWrap').hidden=true;$('#maker').hidden=false;$('#to').value='';$('#to').focus()});
@@ -215,7 +219,7 @@ $('#save').addEventListener('click',async()=>{const blob=await cardBlob();const 
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'My ARMY card 💜'});return}catch(e){if(e&&e.name==='AbortError')return}}
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-army-card.png';document.body.appendChild(a);a.click();a.remove()});
 // opened from a QR: show the friend's card
-const P=new URLSearchParams(location.search);if(P.get('m')&&M[P.get('m')]){const stk=STICKERS.includes(P.get('s'))||isLD(P.get('s'))?P.get('s'):M[P.get('m')].e;show(P.get('m'),stk,clean(P.get('to')),clean(P.get('from')),true)}
+const P=new URLSearchParams(location.search);if(P.get('m')&&M[P.get('m')]){const s0=P.get('s'),e0=P.get('e');const ld=isLD(s0)?s0:null;let em=STICKERS.includes(e0)?e0:STICKERS.includes(s0)?s0:null;if(!ld&&!em)em=M[P.get('m')].e;show(P.get('m'),ld,em,clean(P.get('to')),clean(P.get('from')),true)}
 })();
 </script>
 </body>
