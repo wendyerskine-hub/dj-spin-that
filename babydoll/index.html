@@ -54,10 +54,6 @@ button:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
 .song b{display:block}
 .song small{color:var(--muted);font-size:14px}
 .status{font-size:14px;color:var(--muted);min-height:1.4em}
-.map{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.map li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;font-size:15px;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}
-.map li b{font-family:"Geist Mono",monospace;font-weight:500;color:var(--violet);font-variant-numeric:tabular-nums}
-.map li.on{color:var(--ink)}
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .cta a{display:inline-flex;align-items:center;min-height:44px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);text-decoration:none;color:var(--ink);font-weight:600}
 .fine{font-size:13px;color:var(--muted);margin:0}
@@ -93,16 +89,6 @@ button:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
         <div><b>Jamie Miller – Babydoll (feat. Antonio Cipriano)</b><small>The song plays from the official YouTube upload, in sync with the edit.</small></div>
       </div>
 
-      <ol class="map" id="map">
-        <li data-t="0"><b>0:00</b>Intro · Kaohsiung stadium</li>
-        <li data-t="7.3"><b>0:07</b>Verse 1 · Jimin, V, JK, RM</li>
-        <li data-t="23.2"><b>0:23</b>Pre-chorus</li>
-        <li data-t="39.05"><b>0:39</b>Chorus</li>
-        <li data-t="70.8"><b>1:11</b>Verse 2 · Suga, then V</li>
-        <li data-t="80.7"><b>1:21</b>Build · "bring it on" at 1:30</li>
-        <li data-t="98.5"><b>1:39</b>Chorus 2</li>
-        <li data-t="130.3"><b>2:10</b>Final run · all seven together</li>
-      </ol>
 
       <div class="cta">
         <a href="/#tour">Which surprise song did your city get? →</a>
@@ -117,7 +103,6 @@ button:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
 {
 const V=document.getElementById('edit'), big=document.getElementById('big'), playB=document.getElementById('play'), restartB=document.getElementById('restart');
 const timeEl=document.getElementById('time'), prog=document.getElementById('prog'), statusEl=document.getElementById('status');
-const items=[...document.querySelectorAll('#map li')];
 const END=174.3;
 let yt=null, ytReady=false, want=false, timer=null;
 const fmt=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
@@ -149,7 +134,6 @@ function sync(){
     if(V.paused) V.play().catch(()=>{});
   }
   timeEl.textContent=fmt(Math.min(t,END))+' / 2:54'; prog.style.width=Math.min(100,t/END*100)+'%';
-  items.forEach((li,i)=>{const a=+li.dataset.t, b=items[i+1]?+items[i+1].dataset.t:999; li.classList.toggle('on',t>=a&&t<b)});
 }
 function play(){
   if(!ytReady){ say('The song is still loading. Try again in a second.'); return; }
@@ -160,7 +144,6 @@ function pause(){ want=false; if(yt) yt.pauseVideo(); V.pause(); setUI(false); }
 function toggle(){ want?pause():play(); }
 playB.addEventListener('click',toggle); big.addEventListener('click',play); V.addEventListener('click',toggle);
 restartB.addEventListener('click',()=>{ if(!ytReady) return; yt.seekTo(0,true); V.currentTime=0; play(); });
-items.forEach(li=>{li.style.cursor='pointer'; li.addEventListener('click',()=>{ if(!ytReady) return; const t=+li.dataset.t; yt.seekTo(t,true); V.currentTime=t; play(); })});
 document.addEventListener('keydown',e=>{ if(e.code==='Space' && e.target===document.body){ e.preventDefault(); toggle(); } });
 }
 </script>
