@@ -1256,6 +1256,70 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Black+Han+Sans&display=swap">
+<style>
+/* ======================= Upcoming schedule (Tour tab) + next-show bar ======================= */
+section#sched{grid-column:1/-1;scroll-margin-top:110px}
+@media (max-width:760px){section#sched{scroll-margin-top:96px}}
+.sc-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+.sc-wait{color:var(--v2muted);font-size:17px;padding:8px 0}
+.sc-it{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px;border-radius:14px;border:1px solid var(--v2line);background:rgba(255,255,255,.03)}
+.sc-date{display:grid;place-items:center;align-content:center;gap:2px;min-height:84px;border-radius:12px;background:rgba(255,255,255,.05);text-align:center;padding:6px 4px}
+.sc-date .m{font:600 13px var(--v2mono);letter-spacing:.1em;color:var(--jade)}
+.sc-date b{font-family:var(--hfont);font-weight:var(--hweight);font-size:26px;line-height:1.05;color:#fff;white-space:nowrap}
+.sc-main{min-width:0;display:grid;gap:4px}
+.sc-k{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:600 14px var(--v2sans);letter-spacing:.02em;color:var(--v2muted)}
+.sc-main h3{margin:0;font-family:var(--hfont);font-weight:var(--hweight);font-size:24px;line-height:1.15;color:#fff;overflow-wrap:anywhere}
+.sc-sub{margin:0;font-size:16px;color:#d9cfe8}
+.sc-nights{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.sc-nights li{font:500 16px var(--v2sans);color:#fff;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid var(--v2line);white-space:nowrap}
+.sc-nights li span{color:var(--v2muted)}
+.sc-tbc{margin:4px 0 0;font-size:15px;color:var(--jade)}
+/* concerts: the tab colour · birthdays: that member's colour */
+.sc-it.show .sc-date{box-shadow:inset 0 3px 0 var(--gold)}
+.sc-it.bday{border-color:color-mix(in srgb,var(--mc) 40%,transparent)}
+.sc-it.bday .sc-date{background:color-mix(in srgb,var(--mc) 22%,transparent);box-shadow:inset 0 3px 0 var(--mc)}
+.sc-it.bday .sc-date .m{color:#fff}
+/* only the very next thing stands out */
+.sc-it.next{border:2px solid var(--gold);background:color-mix(in srgb,var(--gold) 12%,rgba(255,255,255,.02));position:relative;overflow:hidden}
+.sc-it.next::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#ff2a4b,#ff63a9 50%,#a855f7)}
+.sc-it.bday.next{border-color:var(--mc)}
+.sc-cd{display:inline-block;font:700 15px var(--v2sans);letter-spacing:0;color:#1a0b14;background:var(--gold);border-radius:999px;padding:3px 12px}
+.sc-it.bday .sc-cd{background:#fff;color:#1a0b14;box-shadow:inset 0 0 0 2px var(--mc)}
+.sc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.04);color:#fff;font:600 16px var(--v2sans);cursor:pointer;text-decoration:none;white-space:nowrap}
+.sc-btn:hover{border-color:rgba(255,255,255,.45)}
+.sc-btn:focus-visible,.sc-more>summary:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.sc-btn.pri{background:var(--gold);border-color:transparent;color:#1a0b14}
+.sc-more{margin-top:12px}
+.sc-more>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px;padding:12px 16px;border-radius:12px;border:1px solid var(--v2line);background:rgba(255,255,255,.02);font:600 17px var(--v2sans);color:#fff}
+.sc-more>summary::-webkit-details-marker{display:none}
+.sc-more>summary b{font:500 15px var(--v2sans);color:var(--v2muted)}
+.sc-more>summary b::after{content:" ▾"}.sc-more[open]>summary b::after{content:" ▴"}
+.sc-more .sc-list{margin-top:12px}
+.sc-wv{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px 20px;padding:16px;border-radius:14px;border:1px solid var(--v2line);background:rgba(255,255,255,.02)}
+.sc-wv p{margin:0;font-size:17px;line-height:1.45;color:#e6dcef}
+.sc-wv p b{color:#fff}
+.sc-bday{margin-top:14px;padding:14px 16px;border-radius:14px;font:600 18px var(--v2sans);color:#fff;background:color-mix(in srgb,var(--bd,#b48cff) 30%,transparent);border:2px solid var(--bd,#b48cff)}
+/* phones: stack, never shrink */
+@media (max-width:620px){
+  .sc-it{grid-template-columns:72px minmax(0,1fr);gap:12px 14px;padding:14px;align-items:start}
+  .sc-date{min-height:76px}
+  .sc-acts{grid-column:1/-1}
+  .sc-btn{width:100%}
+  .sc-wv{flex-direction:column;align-items:stretch}
+}
+/* home: next-show bar, stacked so nothing wraps mid-line */
+#home2>.h2-next,.h2-next{all:unset;box-sizing:border-box;cursor:pointer;justify-self:center;width:min(100%,560px);margin-top:-32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px 12px 12px 18px;border-radius:16px;border:1px solid var(--v2line);background:var(--v2card);color:#fff;font:400 17px/1.3 var(--v2sans);min-height:44px}
+.h2-next .nb-txt{display:grid;gap:2px;min-width:0}
+.h2-next .nb-k{font:600 13px var(--v2mono);letter-spacing:.1em;text-transform:uppercase;color:var(--jade)}
+.h2-next b{font-weight:700;color:#fff;font-size:18px}
+#home2>.h2-next .go,.h2-next .go{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font:600 16px var(--v2sans);text-decoration:none}
+.h2-next:hover .go{background:rgba(255,255,255,.14)}
+.h2-next .nb-bd{flex:1 0 100%;font:600 17px var(--v2sans);color:#fff}
+html[data-bday] #home2>.h2-next,html[data-bday] .h2-next{border:2px solid var(--bd)}
+html[data-bday] .v2xf{background:linear-gradient(90deg,#ff2a4b,var(--bd) 50%,#a855f7)}
+@media (max-width:620px){#home2>.h2-next{margin-top:-24px}}
+@media (max-width:420px){#home2>.h2-next .go,.h2-next .go{flex:1 0 100%;justify-content:center}}
+</style>
 </head>
 <body>
 <div id="stage" aria-hidden="true">
@@ -1542,6 +1606,20 @@ details.v2filt:not([open])>:not(summary),details.v2fold:not([open])>:not(summary
       </div>
       <div class="night-songs" id="cityResult" aria-live="polite"></div>
       <p class="chant-nudge"><a href="#chantsSt">📣 Going to a show? Learn the fan chants →</a></p>
+    </section>
+
+    <section class="station sched" id="sched" aria-labelledby="schedH">
+      <h2 id="schedH"><small>Coming up · Shows &amp; birthdays</small>BTS schedule</h2>
+      <p class="help">The next concerts and member birthdays. Each date drops off once it has passed, so the next one is always on top.</p>
+      <div class="sc-bday" id="scBday" hidden></div>
+      <div class="sc-body"><!-- wrapper keeps "See full schedule" folded when someone jumps here -->
+      <ol class="sc-list" id="scList" aria-live="polite"><li class="sc-wait">Loading the schedule…</li></ol>
+      <details class="sc-more" id="scMore" hidden><summary><span>See full schedule</span><b id="scMoreN"></b></summary><ol class="sc-list" id="scRest"></ol></details>
+      </div>
+      <div class="sc-wv">
+        <p><b>Check Weverse</b> for each city's activations (pop-ups, light shows, cafés), merch drops and ticketing news. Dates can change, so Weverse has the final word.</p>
+        <a class="sc-btn pri" href="https://weverse.io/bts" target="_blank" rel="noopener" data-track="sched/weverse">Check Weverse</a>
+      </div>
     </section>
 
     <section class="station" id="bias" hidden>
@@ -2729,9 +2807,9 @@ function syncFixFromCity(){ if(!fixCity.dataset.touched){fixCity.value=citySel.v
 fixCity.addEventListener("change",()=>fixCity.dataset.touched="1");
 
 /* ---------- Tabs, find your show, share links ---------- */
-const TAB_SECTIONS={spin:["home2"],tour:["city","tourLinks","watch"],music:["disco","credits","units","vault","fix"],army:["armyLinks","chantsSt","freebies","gifs"],tv:["burrow"]};
+const TAB_SECTIONS={spin:["home2"],tour:["city","sched","tourLinks","watch"],music:["disco","credits","units","vault","fix"],army:["armyLinks","chantsSt","freebies","gifs"],tv:["burrow"]};
 // old tab links keep working: #show, #bias, #list, #burrow, #freebies go to their new home
-const TAB_ALIAS={show:["tour"],list:["music"],bias:["spin","h2bias"],city:["tour","city"],disco:["music","disco"],checklist:["music","disco"],"remix-the-set":["spin","h2remix"],"be-the-dj":["army","armyLinks"],burrow:["tv","burrow"],more:["music","vault"],fix:["music","fix"],freebies:["army","freebies"],gifs:["army","gifs"],watch:["tour","watch"],vault:["music","vault"],credits:["music","credits"],units:["music","units"],moments:["tour","tourLinks"],remix:["army","armyLinks"]};
+const TAB_ALIAS={show:["tour"],list:["music"],bias:["spin","h2bias"],city:["tour","city"],disco:["music","disco"],checklist:["music","disco"],"remix-the-set":["spin","h2remix"],"be-the-dj":["army","armyLinks"],burrow:["tv","burrow"],more:["music","vault"],fix:["music","fix"],freebies:["army","freebies"],gifs:["army","gifs"],watch:["tour","watch"],schedule:["tour","sched"],sched:["tour","sched"],vault:["music","vault"],credits:["music","credits"],units:["music","units"],moments:["tour","tourLinks"],remix:["army","armyLinks"]};
 const TAB_NAMES=Object.keys(TAB_SECTIONS);
 const citySlug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const showSlug=s=>citySlug(s.city)+"-"+((s.night.match(/\d+/)||["1"])[0]);
@@ -2783,7 +2861,7 @@ const DK_SAY={"tour:city":"Tour · find your show","tour:watch":"Tour · watch i
 document.addEventListener("click",e=>{const b=e.target.closest("#deck [data-go]");if(!b)return;const g=b.dataset.go;const[k,v]=g.split(":");
   if(DK_SAY[g])$("#dkNow").textContent="▶ "+DK_SAY[g];track("deck/"+g);
   if(k==="action"){if(v==="spin"){$("#spin").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>$("#spinBtn").click(),500)}else $("#pageShare").click();return}
-  if(k==="show"){const nx=(typeof UPCOMING!=="undefined"&&UPCOMING[0])||ALL.find(s=>!s.songTitles.length);if(nx)openShow(nx);else goSection("tour","city");window.scrollTo({top:0});return}
+  if(k==="show"){const nx=(window.djSched&&djSched.nextShow())||(typeof UPCOMING!=="undefined"&&UPCOMING[0])||ALL.find(s=>!s.songTitles.length);if(nx)openShow(nx);else goSection("tour","city");window.scrollTo({top:0});return}
   goSection(k,v)});
 document.addEventListener("mouseover",e=>{const b=e.target.closest("#deck [data-go]");if(b&&DK_SAY[b.dataset.go])$("#dkNow").textContent=DK_SAY[b.dataset.go]});
 setTab("spin",{keepHash:true,noScroll:true});routeHash();
@@ -2837,8 +2915,7 @@ document.querySelectorAll(".pc-side button").forEach(b=>b.addEventListener("clic
 
 /* ---------- Next show + live status ---------- */
 function renderNext(){
-  const today=new Date().toISOString().slice(0,10);
-  const next=UPCOMING.filter(s=>!s.date||s.date>=today).sort((a,b)=>(a.order||0)-(b.order||0))[0];
+  const next=window.djSched?djSched.nextShow():UPCOMING[0];
   const last=SHOWS[SHOWS.length-1];
   const el=$("#nextShow");
   if(!next&&!last){el.hidden=true;return}
@@ -2900,7 +2977,7 @@ let firstLoad=true;
   function apply(docs){
     ingest(docs);
     playedTitles=[...new Set(SHOWS.flatMap(s=>s.songTitles))];
-    fillCities();fillNights();renderCity();renderNext();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();renderDisco();fillGifCities();fillFind();if(pendingShow){const sh=findBySlug(pendingShow);if(sh){pendingShow=null;deepOpened=sh}}
+    fillCities();fillNights();renderCity();renderNext();if(window.djSched)djSched.render();fillFixCities();syncFixFromCity();fillYtCities();updateYt();fillVault();renderDisco();fillGifCities();fillFind();if(pendingShow){const sh=findBySlug(pendingShow);if(sh){pendingShow=null;deepOpened=sh}}
     if(firstLoad){
       firstLoad=false;
       const last=SHOWS[SHOWS.length-1];
@@ -2920,7 +2997,7 @@ let firstLoad=true;
       setLive("snapshot",j.updated);
     }catch(e){setLive("off");renderBias(startM,biasPick(startM))}
   }
-  const db=window.claude&&window.claude.use?await window.claude.use("db"):null;
+  let db=null;try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){db=null}
   if(!db){fallback();return}
   const timer=setTimeout(fallback,6000);
   db.collection("shows").onSnapshot(snap=>{
@@ -2960,7 +3037,7 @@ function icons(title,artist){artist=artist||"BTS";const a=esc(artist),t=esc(titl
 /* share = the station you're looking at */
 const STN=[["home2","spin","DJ Spin That","Spin two surprise songs from BTS's ARIRANG tour 💜"],["h2bias","bias","Pick your bias","Pick your bias and get one of their songs 💜"],["h2remix","remix-the-set","Remix the ARIRANG set","Keep the setlist, add one BTS song. Make your remix 💿"],
  ["home2b","spin","DJ Spin That","Spin a surprise song from BTS's ARIRANG tour 💜"],
- ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["tourLinks","moments","Tour scrapbook","Every ARIRANG show, every moment, with fancams 📸"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
+ ["city","city","Find your show","Pick your city and night to see the surprise songs 🎤"],["sched","schedule","BTS schedule","The next BTS concerts and member birthdays 💜"],["tourLinks","moments","Tour scrapbook","Every ARIRANG show, every moment, with fancams 📸"],["watch","watch","Watch it again","Concert clips from the ARIRANG tour"],
  ["disco","checklist","BTS song checklist","Which BTS songs have been played on the ARIRANG tour, and which are still in the vault?"],["credits","credits","Liner notes","Who wrote and produced each BTS song"],["units","units","Subunit songs","BTS subunit songs played on the tour"],["vault","vault","Look up a song","Look up any BTS surprise song"],["fix","fix","Report a correction","Spot a mistake on DJ Spin That? Tell us"],
  ["armyLinks","be-the-dj","Be the DJ","Remix the ARIRANG setlist 🎧"],["chantsSt","fan-chants","Be the crowd","Learn the fan chants for the ARIRANG tour 📣"],["freebies","freebies","Photocards & freebies","Make a free photocard for your ARIRANG night 💜"],["gifs","gifs","GIFs to share","BTS GIFs for your posts and group chats"],["burrow","dance","DJ Spin TV","Dance practices, BTS shows, behind the scenes and reactions 📺"]];
 let lastTouch=null;document.addEventListener("pointerdown",e=>{const s=STN.find(x=>{const el=document.getElementById(x[0]);return el&&el.contains(e.target)&&x[0]!=="home2"&&x[0]!=="home2b"});if(s)lastTouch={s,t:Date.now()}},true);
@@ -2984,10 +3061,8 @@ const lg=q(".v2logo");if(lg)lg.onclick=e=>{e.preventDefault();setTab("spin")};
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go2]");if(!b)return;const [t,id]=b.dataset.go2.split(":");goSection(t,id);track("v2/go/"+b.dataset.go2)});
 
 /* ---- next show / last night / checklist ---- */
-function days(iso){if(!iso)return"";const d=Math.round((new Date(iso+"T12:00:00")-new Date(new Date().toDateString()+" 12:00"))/864e5);return d<=0?"today":d===1?"tomorrow":"in "+d+" days"}
 function renderInfo(){
-  const nx=UPCOMING[0],nb=q("#h2Next");
-  if(nx&&nb){nb.hidden=false;nb.innerHTML=`<span class="dot"></span><span>Next show: <b>${esc(nx.city)} ${esc(nx.night)}</b> · ${esc(days(nx.date))}</span><span class="go">See every night →</span>`;nb.onclick=()=>{openShow(nx);track("v2/next")}}
+  if(window.djSched)djSched.renderBar();
   const last=SHOWS.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))||(a.order||0)-(b.order||0)).pop(),lb=q("#h2Last");
   if(last&&lb){lb.hidden=false;lb.setAttribute("role","button");lb.tabIndex=0;
     lb.innerHTML=`<span class="k">LAST NIGHT</span><span><b>${esc(last.city)} ${esc(last.night)}</b> · ${esc(last.songTitles.join(" × "))}</span><span class="r">Every surprise song, city by city →</span>`;
@@ -3110,6 +3185,134 @@ let tries=0;(function ready(){if(typeof playedTitles!=="undefined"&&playedTitles
    if(cs.position==="fixed"&&r.top>vh/2)bot=Math.max(bot,vh-r.top);else if(cs.position==="fixed"||cs.position==="sticky")top=Math.max(top,r.bottom)}
   const z=parseFloat(getComputedStyle(document.documentElement).zoom)||1;document.documentElement.style.setProperty("--fitH",Math.max(300,Math.round((vh-top-bot-36)/z))+"px")};
  size();addEventListener("resize",size);if(window.visualViewport)visualViewport.addEventListener("resize",size);setTimeout(size,600);
+})();
+</script>
+<script>
+/* ======================= Upcoming schedule =======================
+   One list feeds everything: the Tour "BTS schedule" card, the home next-show bar and the old next-show line.
+   Concerts come from shows.json (or the live database). Birthdays repeat every year, so they never need updating.
+   Preview a date: ?schedDate=2026-12-04  ·  Preview a birthday theme: ?bday=jin */
+(()=>{
+const BDAYS=[["rm","09-12","🐨"],["jin","12-04","🐹"],["suga","03-09","🐈‍⬛"],["jhope","02-18","🐿️"],["jimin","10-13","🐥"],["v","12-30","🧸"],["jk","09-01","🐰"]];
+const UP_FRONT=4; // Hick's Law: the next 4 things up front, the rest folded
+const qs=new URLSearchParams(location.search);
+const pad=n=>String(n).padStart(2,"0");
+const localISO=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+function todayISO(){const o=qs.get("schedDate");return /^\d{4}-\d{2}-\d{2}$/.test(o||"")?o:localISO(new Date())}
+const D=iso=>new Date(iso+"T12:00:00");
+const dayDiff=iso=>Math.round((D(iso)-D(todayISO()))/864e5);
+const MON=iso=>D(iso).toLocaleDateString("en-US",{month:"short"}).toUpperCase();
+const DAY=iso=>D(iso).getDate();
+const WD=iso=>D(iso).toLocaleDateString("en-US",{weekday:"short"});
+const LONG=iso=>D(iso).toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
+const countdown=(iso,show)=>{const n=dayDiff(iso);return n<=0?(show?"Tonight":"Today"):n===1?"Tomorrow":"In "+n+" days"};
+const member=id=>(typeof MEMBERS!=="undefined"&&MEMBERS.find(m=>m.id===id))||{id,en:id,c:"#b48cff"};
+const nightLabel=s=>String(s.night||"").replace(" (FESTA)","");
+
+/* the one list */
+function build(){
+  const t=todayISO();
+  const shows=(typeof ALL!=="undefined"?ALL:[]).filter(s=>s.date&&s.date>=t&&s.status!=="cancelled").sort((a,b)=>a.date.localeCompare(b.date)||(a.order||0)-(b.order||0));
+  const runs=[];
+  shows.forEach(s=>{const r=runs[runs.length-1];if(r&&r.city===s.city)r.nights.push(s);else runs.push({type:"show",city:s.city,country:s.country||"",venue:s.venue||"",nights:[s]})});
+  runs.forEach(r=>{r.start=r.nights[0].date;r.end=r.nights[r.nights.length-1].date;r.tentative=r.nights.some(n=>n.tentative)});
+  const lastShow=runs.length?runs[runs.length-1].end:null;
+  const ty=+t.slice(0,4);
+  const horizon=lastShow||localISO(new Date(D(t).getTime()+120*864e5));
+  const bdays=BDAYS.map(([id,md,emo])=>{let iso=ty+"-"+md;if(iso<t)iso=(ty+1)+"-"+md;return{type:"bday",id,emo,start:iso,end:iso,m:member(id)}}).filter(b=>b.start<=horizon);
+  return runs.concat(bdays).sort((a,b)=>a.start.localeCompare(b.start)||(a.type==="bday"?-1:1));
+}
+function nextShow(){const t=todayISO();return (typeof ALL!=="undefined"?ALL:[]).filter(s=>s.date&&s.date>=t&&s.status!=="cancelled").sort((a,b)=>a.date.localeCompare(b.date)||(a.order||0)-(b.order||0))[0]||null}
+function bdayToday(){const o=qs.get("bday");if(o){const b=BDAYS.find(x=>x[0]===o);if(b)return{id:b[0],emo:b[2],m:member(b[0])}}
+  const md=todayISO().slice(5);const b=BDAYS.find(x=>x[1]===md);return b?{id:b[0],emo:b[2],m:member(b[0])}:null}
+
+/* add to calendar (.ics): every remaining night of a city, or a birthday that repeats each year */
+const icsEsc=s=>String(s).replace(/\\/g,"\\\\").replace(/[,;]/g,m=>"\\"+m).replace(/\n/g,"\\n");
+const icsDay=iso=>iso.replace(/-/g,"");
+const plusDay=iso=>localISO(new Date(D(iso).getTime()+864e5));
+function ics(it){
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const ev=[];
+  if(it.type==="show")it.nights.forEach(n=>{const slug=typeof showSlug==="function"?showSlug(n):"";ev.push(["UID:"+(n.id||slug)+"@djspinthat.net","DTSTART;VALUE=DATE:"+icsDay(n.date),"DTEND;VALUE=DATE:"+icsDay(plusDay(n.date)),
+    "SUMMARY:"+icsEsc("BTS ARIRANG · "+n.city+" "+nightLabel(n)+(n.tentative?" (to be confirmed)":"")),
+    "LOCATION:"+icsEsc([n.venue,n.city,n.country].filter(Boolean).join(", ")),
+    "DESCRIPTION:"+icsEsc("Check Weverse for activations, merch and ticketing: https://weverse.io/bts\nSurprise songs after the show: https://djspinthat.net/#"+slug)])});
+  else ev.push(["UID:bday-"+it.id+"@djspinthat.net","DTSTART;VALUE=DATE:"+icsDay(it.start),"DTEND;VALUE=DATE:"+icsDay(plusDay(it.start)),"RRULE:FREQ=YEARLY",
+    "SUMMARY:"+icsEsc(it.emo+"🎂 "+it.m.en+"'s birthday"),"DESCRIPTION:"+icsEsc("Happy birthday, "+it.m.en+"! 💜 https://djspinthat.net")]);
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//DJ Spin That//BTS schedule//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH"]
+    .concat(...ev.map(e=>["BEGIN:VEVENT","DTSTAMP:"+stamp].concat(e,["TRANSP:TRANSPARENT","END:VEVENT"])),["END:VCALENDAR"]).join("\r\n")+"\r\n";
+}
+const fileName=it=>"bts-"+(it.type==="show"?citySlug(it.city):it.id+"-birthday")+".ics";
+
+/* one card per item: date on the left, name in the middle, button on the right (stacks on phones) */
+function dateBlock(it){
+  if(it.start===it.end)return `<span class="m">${MON(it.start)}</span><b>${DAY(it.start)}</b>`;
+  const sameM=MON(it.start)===MON(it.end);
+  return `<span class="m">${sameM?MON(it.start):MON(it.start)+"–"+MON(it.end)}</span><b>${DAY(it.start)}–${DAY(it.end)}</b>`;
+}
+function card(it,i,isNext){
+  const cd=isNext?`<span class="sc-cd">${esc(countdown(it.start,it.type==="show"))}</span>`:"";
+  let mid;
+  if(it.type==="show"){
+    const sub=[it.country&&it.country!==it.city?it.country:"",it.venue].filter(Boolean).join(" · ");
+    mid=`<p class="sc-k"><span aria-hidden="true">⭕️🏟️</span> Concert${it.nights.length>1?" · "+it.nights.length+" nights":""}${cd}</p>
+      <h3>${esc(it.city)}</h3>${sub?`<p class="sc-sub">${esc(sub)}</p>`:""}
+      <ul class="sc-nights">${it.nights.map(n=>`<li>${esc(WD(n.date))} ${esc(MON(n.date).charAt(0)+MON(n.date).slice(1).toLowerCase())} ${DAY(n.date)}<span> · ${esc(nightLabel(n))}</span></li>`).join("")}</ul>
+      ${it.tentative?`<p class="sc-tbc">Dates still to be confirmed</p>`:""}`;
+  }else{
+    mid=`<p class="sc-k"><span aria-hidden="true">${it.emo}🎂</span> Birthday${cd}</p><h3>${esc(it.m.en)}'s birthday</h3><p class="sc-sub">${esc(LONG(it.start))}</p>`;
+  }
+  const aria=it.type==="show"?`Add ${it.city} to your calendar`:`Add ${it.m.en}'s birthday to your calendar`;
+  return `<li class="sc-it ${it.type}${isNext?" next":""}"${it.type==="bday"?` style="--mc:${it.m.c}"`:""}>
+    <div class="sc-date" aria-hidden="true">${dateBlock(it)}</div>
+    <div class="sc-main">${mid}</div>
+    <div class="sc-acts"><button type="button" class="sc-btn" data-ics="${i}" aria-label="${esc(aria)}">📅 Add to calendar</button></div></li>`;
+}
+
+let LIST=[];
+function render(){
+  const list=$("#scList");if(!list)return;
+  LIST=build();
+  if(!LIST.length){list.innerHTML=`<li class="sc-wait">No dates announced right now. Check Weverse for the next ones.</li>`;$("#scMore").hidden=true;}
+  else{
+    list.innerHTML=LIST.slice(0,UP_FRONT).map((it,i)=>card(it,i,i===0)).join("");
+    const rest=LIST.slice(UP_FRONT);$("#scMore").hidden=!rest.length;
+    $("#scRest").innerHTML=rest.map((it,i)=>card(it,i+UP_FRONT,false)).join("");
+    $("#scMoreN").textContent=rest.length+" more";
+  }
+  /* birthday theme for the day */
+  const bd=bdayToday(),root=document.documentElement,bx=$("#scBday");
+  if(bd){root.dataset.bday=bd.id;root.style.setProperty("--bd",bd.m.c);
+    bx.hidden=false;bx.innerHTML=`<span aria-hidden="true">${bd.emo}🎂</span> Happy birthday, ${esc(bd.m.en)}! 💜`}
+  else{delete root.dataset.bday;root.style.removeProperty("--bd");bx.hidden=true}
+  renderBar();
+}
+/* the home page bar: next show, stacked so it never wraps awkwardly */
+function renderBar(){
+  const nb=$("#h2Next");if(!nb)return;
+  const nx=nextShow(),bd=bdayToday();
+  if(!nx&&!bd){nb.hidden=true;return}
+  nb.hidden=false;
+  nb.setAttribute("aria-label",(bd?`Happy birthday ${bd.m.en}. `:"")+(nx?`Next show: ${nx.city} ${nightLabel(nx)}, ${countdown(nx.date,true).toLowerCase()}. `:"")+"Open the BTS schedule");
+  nb.innerHTML=(bd?`<span class="nb-bd"><span aria-hidden="true">${bd.emo}🎂</span> Happy birthday, ${esc(bd.m.en)}!</span>`:"")+
+    (nx?`<span class="nb-txt"><span class="nb-k">Next show · ${esc(countdown(nx.date,true))}</span><b>${esc(nx.city)} · ${esc(nightLabel(nx))}</b></span>`:`<span class="nb-txt"><b>See what's coming up</b></span>`)+
+    `<span class="go">Schedule →</span>`;
+  nb.onclick=()=>{goSection("tour","sched");try{track("v2/next-schedule")}catch(e){}};
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-ics]");if(b){const it=LIST[+b.dataset.ics];if(!it)return;
+    const url=URL.createObjectURL(new Blob([ics(it)],{type:"text/calendar;charset=utf-8"}));
+    const a=document.createElement("a");a.href=url;a.download=fileName(it);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+    try{toast("Calendar file ready. Open it to add "+(it.type==="show"?it.city:it.m.en+"'s birthday")+" 📅")}catch(_){}
+    try{track("sched/ics/"+(it.type==="show"?citySlug(it.city):it.id))}catch(_){}return}
+  const w=e.target.closest("[data-track]");if(w){try{track(w.dataset.track)}catch(_){}}
+});
+$("#scMore")&&$("#scMore").addEventListener("toggle",e=>{if(e.target.open)try{track("sched/full")}catch(_){}});
+window.djSched={render,renderBar,build,nextShow,todayISO,countdown};
+if(typeof ALL!=="undefined"&&ALL.length)render();
+/* past dates drop off on their own: re-check after midnight and when the page comes back into view */
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&typeof ALL!=="undefined"&&ALL.length)render()});
+setInterval(()=>{if(typeof ALL!=="undefined"&&ALL.length)render()},30*60*1000);
 })();
 </script>
 </body>

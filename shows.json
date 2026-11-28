@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22",
+ "updated": "2026-11-28",
  "shows": [
   {
    "city": "Goyang",
@@ -1909,30 +1909,54 @@
    "id": "2026-0660-jakarta-n2"
   },
   {
+   "city": "Jakarta",
+   "country": "Indonesia",
+   "date": "2026-12-29",
+   "disputed": false,
+   "night": "Night 3",
+   "order": 665,
+   "status": "upcoming",
+   "tentative": false,
+   "venue": "Gelora Bung Karno Main Stadium",
+   "id": "2026-0665-jakarta-n3"
+  },
+  {
+   "city": "Melbourne",
+   "country": "Australia",
+   "date": "2027-02-10",
+   "disputed": false,
+   "night": "Night 1",
+   "order": 668,
+   "status": "upcoming",
+   "tentative": false,
+   "venue": "",
+   "id": "2027-0668-melbourne-n1"
+  },
+  {
    "city": "Melbourne",
    "country": "Australia",
    "date": "2027-02-12",
    "disputed": false,
-   "night": "Night 1",
+   "night": "Night 2",
    "order": 670,
    "songs": [],
    "status": "upcoming",
    "tentative": false,
    "venue": "",
-   "id": "2027-0670-melbourne-n1"
+   "id": "2027-0670-melbourne-n2"
   },
   {
    "city": "Melbourne",
    "country": "Australia",
    "date": "2027-02-13",
    "disputed": false,
-   "night": "Night 2",
+   "night": "Night 3",
    "order": 680,
    "songs": [],
    "status": "upcoming",
    "tentative": false,
    "venue": "",
-   "id": "2027-0680-melbourne-n2"
+   "id": "2027-0680-melbourne-n3"
   },
   {
    "city": "Sydney",
@@ -2024,6 +2048,18 @@
    "tentative": false,
    "venue": "",
    "id": "2027-0750-manila-n2"
+  },
+  {
+   "city": "Manila",
+   "country": "Philippines",
+   "date": "2027-03-16",
+   "disputed": false,
+   "night": "Night 3",
+   "order": 755,
+   "status": "upcoming",
+   "tentative": false,
+   "venue": "",
+   "id": "2027-0755-manila-n3"
   }
  ]
 }
